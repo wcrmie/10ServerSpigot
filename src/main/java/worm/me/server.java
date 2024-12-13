@@ -33,6 +33,8 @@ public final class server extends JavaPlugin {
     public List<Material> planks = new ArrayList<>();
     public List<Material> miscs = new ArrayList<>();
 
+    public List<String> quests = new ArrayList<>();
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -120,6 +122,17 @@ public final class server extends JavaPlugin {
         miscs.add(Material.QUARTZ);
         miscs.add(Material.REDSTONE);
         miscs.add(Material.GLOWSTONE_DUST);
+
+        // CREATE QUESTS
+        quests.add("minecobble");
+        quests.add("collectiron");
+        quests.add("fish64");
+        quests.add("buildsnowmen");
+        quests.add("killmobs100");
+        quests.add("fishsaddle");
+        quests.add("growtrees25");
+        quests.add("eatgapple");
+        quests.add("donthurt10");
 
 
     }

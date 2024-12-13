@@ -34,7 +34,7 @@ public class shoutCommand implements CommandExecutor {
                     p.sendMessage(String.format(ChatColor.RED + "Your /shout is on cooldown for %s seconds.", container.get(shoutCd, PersistentDataType.LONG) - System.currentTimeMillis()/1000L));
                     return true;
                 } else {
-                    container.set(shoutCd, PersistentDataType.LONG, System.currentTimeMillis()/1000L + 900);
+                    container.set(shoutCd, PersistentDataType.LONG, System.currentTimeMillis()/1000L + 300);
                 }
                 plugin.broadcast(ChatColor.GOLD + "[SHOUT] " + ChatColor.YELLOW + p.getName() + ": " + Joiner.on(" ").join(args));
                 return true;

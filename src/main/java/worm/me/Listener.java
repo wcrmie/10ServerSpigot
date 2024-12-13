@@ -35,6 +35,7 @@ import org.bukkit.scoreboard.Team;
 import worm.me.PlayerSystems.*;
 import worm.me.PlayerSystems.Abilities.AgilityDash;
 import worm.me.PlayerSystems.Abilities.AgilityDoubleJump;
+import worm.me.PlayerSystems.Quests.QuestAssign;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -120,6 +121,10 @@ public class Listener implements org.bukkit.event.Listener {
             }
             nHide.addEntry(player.getName());
         }
+
+        // Assign quests
+        QuestAssign questAssign = new QuestAssign(plugin);
+        questAssign.dailyCheck(player);
 
 
 

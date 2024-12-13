@@ -31,7 +31,7 @@ public class setVoiceCommand implements CommandExecutor {
                 }
                 MessageHead voiceHandler = new MessageHead(plugin);
                 voiceHandler.setVoice(p, voiceVal);
-                if (!args[1].isEmpty()){
+                if (args.length > 1){
                     String pitch = args[1];
                     try {
                         float pitchVal = Float.parseFloat(pitch);
