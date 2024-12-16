@@ -124,15 +124,8 @@ public final class server extends JavaPlugin {
         miscs.add(Material.GLOWSTONE_DUST);
 
         // CREATE QUESTS
-        quests.add("minecobble");
-        quests.add("collectiron");
-        quests.add("fish64");
-        quests.add("buildsnowmen");
-        quests.add("killmobs100");
-        quests.add("fishsaddle");
-        quests.add("growtrees25");
-        quests.add("eatgapple");
-        quests.add("donthurt10");
+        QuestInitialize questInitialize = new QuestInitialize(this);
+        questInitialize.questInitialize();
 
 
     }
