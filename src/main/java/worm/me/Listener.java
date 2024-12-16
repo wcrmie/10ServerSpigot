@@ -270,10 +270,9 @@ public class Listener implements org.bukkit.event.Listener {
         guideBook.guideBook(p);
     }
 
-    @EventHandler
-    public void onPlayerRightClick(PlayerInteractEvent e){
-        Player p = e.getPlayer();
-        if (!e.getAction().name().equals("RIGHT_CLICK_AIR") || e.getAction().name().equals("RIGHT_CLICK_BLOCK")) return;
+    @EventHandler (ignoreCancelled = true)
+    public void onPlayerRightClick(UseItemEvent e){
+        Player p = e.getCause().getFirstPlayer();
 
         if (p.getInventory().getItemInMainHand().toString().toLowerCase().contains("sword")) {
             if (p.isSneaking()){
