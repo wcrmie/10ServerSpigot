@@ -35,6 +35,7 @@ import org.bukkit.scoreboard.Team;
 import worm.me.PlayerSystems.*;
 import worm.me.PlayerSystems.Abilities.AgilityDash;
 import worm.me.PlayerSystems.Abilities.AgilityDoubleJump;
+import worm.me.PlayerSystems.Abilities.AgilityLeap;
 import worm.me.PlayerSystems.Quests.QuestAssign;
 
 import java.util.HashMap;
