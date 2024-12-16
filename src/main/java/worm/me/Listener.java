@@ -377,6 +377,9 @@ public class Listener implements org.bukkit.event.Listener {
                 container.set(genEdit.miscItem, PersistentDataType.INTEGER, plugin.miscs.indexOf(clickedItem.getType()));
                 p.sendMessage(ChatColor.GREEN + "Your misc. item has been changed to " + clickedItem.getTranslationKey());
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(p);
+        } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Quests")){
+            e.setCancelled(true);
+
         }
 
 
