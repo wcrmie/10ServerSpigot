@@ -122,6 +122,9 @@ public class Listener implements org.bukkit.event.Listener {
             nHide.addEntry(player.getName());
         }
 
+        // If the player's dash cooldown is expired, allow them to fly.
+        player.setAllowFlight(Objects.requireNonNullElse(c.get(new AgilityDash().dashCooldown, PersistentDataType.LONG), 0L) <= System.currentTimeMillis() / 1000L);
+
         // Assign quests
         QuestAssign questAssign = new QuestAssign(plugin);
         questAssign.dailyCheck(player);

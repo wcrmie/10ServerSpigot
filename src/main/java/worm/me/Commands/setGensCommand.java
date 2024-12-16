@@ -23,6 +23,8 @@ public class setGensCommand implements CommandExecutor {
         if (sender instanceof Player){
             Player p = (Player) sender;
             GeneratorEdit genInv = new GeneratorEdit();
+
+            // This opens the GUI for the player
             genInv.genOptions(p);
             return true;
         } else sender.sendMessage("This command is for the player, silly!");
