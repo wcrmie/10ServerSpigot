@@ -256,6 +256,8 @@ public class Listener implements org.bukkit.event.Listener {
         if (!(p.getGameMode().equals(GameMode.CREATIVE))) {
             e.setCancelled(true);
             p.setFlying(false);
+            AgilityDash dash = new AgilityDash();
+            if (p.getPersistentDataContainer().get(dash.dashCooldown, PersistentDataType.LONG) > System.currentTimeMillis()/1000L) return;
             doubleJump.doubleJump(p);
             doubleJumpMap.replace(e.getPlayer(), false);
         }
