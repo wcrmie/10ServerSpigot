@@ -16,11 +16,11 @@ import java.util.Objects;
 
 public class AgilityDash {
 
-    public final NamespacedKey dashCooldown = new NamespacedKey("10server", "dashcooldown");
+    private final AbilitiesMain ability = new AbilitiesMain();
 
     public void dash(Player p){
         PersistentDataContainer container = p.getPersistentDataContainer();
-        long cd = Objects.requireNonNullElse(container.get(dashCooldown, PersistentDataType.LONG), 0L);
+        long cd = Objects.requireNonNullElse(container.get(ability.moveCooldown, PersistentDataType.LONG), 0L);
         if (cd > System.currentTimeMillis()/1000L){
             p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacy(String.format(ChatColor.RED + "Your Dash is on cooldown for %s seconds", cd - System.currentTimeMillis()/1000L)));
             return;
@@ -29,6 +29,6 @@ public class AgilityDash {
         direction.multiply(1.5);
         direction.setY(0.5);
         p.setVelocity(direction);
-        container.set(dashCooldown, PersistentDataType.LONG, System.currentTimeMillis()/1000L + 10);
+        container.set(ability.moveCooldown, PersistentDataType.LONG, System.currentTimeMillis()/1000L + 10);
     }
 }

@@ -11,7 +11,7 @@ import org.bukkit.util.Vector;
 
 public class AgilityDoubleJump {
 
-    private final AgilityDash dash = new AgilityDash();
+    private final AbilitiesMain ability = new AbilitiesMain();
 
     public void doubleJump(Player p){
         PersistentDataContainer container = p.getPersistentDataContainer();
@@ -21,7 +21,7 @@ public class AgilityDoubleJump {
         p.setVelocity(direction);
         p.setFlying(false);
         p.setAllowFlight(false);
-        container.set(dash.dashCooldown, PersistentDataType.LONG, System.currentTimeMillis()/1000L + 15);
+        container.set(ability.moveCooldown, PersistentDataType.LONG, System.currentTimeMillis()/1000L + 15);
         p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacy(String.format(ChatColor.RED + "Your Double Jump is now on cooldown for 15 seconds")));
     }
 }

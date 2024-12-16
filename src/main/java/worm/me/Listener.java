@@ -33,6 +33,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import worm.me.PlayerSystems.*;
+import worm.me.PlayerSystems.Abilities.AbilitiesMain;
 import worm.me.PlayerSystems.Abilities.AgilityDash;
 import worm.me.PlayerSystems.Abilities.AgilityDoubleJump;
 import worm.me.PlayerSystems.Abilities.AgilityLeap;
@@ -122,12 +123,13 @@ public class Listener implements org.bukkit.event.Listener {
             nHide.addEntry(player.getName());
         }
 
-        // If the player's dash cooldown is expired, allow them to fly.
-        player.setAllowFlight(Objects.requireNonNullElse(c.get(new AgilityDash().dashCooldown, PersistentDataType.LONG), 0L) <= System.currentTimeMillis() / 1000L);
-
         // Assign quests
         QuestAssign questAssign = new QuestAssign(plugin);
         questAssign.dailyCheck(player);
+
+
+        // DO NOT ALLOW THE PLAYER TO FLY
+        player.setAllowFlight(false);
 
 
 
@@ -186,10 +188,12 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onPlayerPlace(BlockPlaceEvent e){
         Player p = e.getPlayer();
+
+        // Height limit for building
         if (p.getGameMode() == GameMode.CREATIVE) return;
-        if (e.getBlock().getLocation().getBlockY() > 270){
+        if (e.getBlock().getLocation().getBlockY() > 270 || e.getBlock().getLocation().getBlockY() < 220){
             e.setCancelled(true);
-            p.sendMessage(ChatColor.RED + "The height limit for building is y = 270.");
+            p.sendMessage(ChatColor.RED + "The build area is between y = 220 and y = 270.");
         }
     }
 
@@ -235,30 +239,35 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
     @EventHandler
-    public void onPlayerMoveEvent(PlayerMoveEvent e){
-        AgilityDash doubleJump = new AgilityDash();
-        if (Objects.requireNonNullElse(e.getPlayer().getPersistentDataContainer().get(doubleJump.dashCooldown, PersistentDataType.LONG), 0L) <= System.currentTimeMillis()/1000L && !Objects.requireNonNullElse(doubleJumpMap.get(e.getPlayer()), false)){
-            e.getPlayer().setAllowFlight(true);
-            e.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacy(ChatColor.GREEN + "Your Double Jump is now ready!"));
-            doubleJumpMap.put(e.getPlayer(), true);
+    public void onPlayerCrouchEvent(PlayerToggleSneakEvent e){
+        Player p = e.getPlayer();
+        Location loc = p.getLocation();
+
+        // If the block below the player is not air
+        loc.setY(loc.getY() - 1);
+        if (!loc.getBlock().getType().isAir()) return;
+
+        // Check cooldown
+        AbilitiesMain ability = new AbilitiesMain();
+        PersistentDataContainer container = p.getPersistentDataContainer();
+        long cooldown = Objects.requireNonNullElse(container.get(ability.moveCooldown, PersistentDataType.LONG), 0L);
+        if (cooldown <= System.currentTimeMillis()/1000L){
+
+            // Make the player double jump
+            AgilityDoubleJump doubleJump = new AgilityDoubleJump();
+            doubleJump.doubleJump(p);
         }
+    }
+
+    @EventHandler
+    public void onPlayerMoveEvent(PlayerMoveEvent e){
+
+        // Kill the player if they walk into a deathbox (so they don't fall for a whole minute)
         if (e.getFrom() == e.getTo()) return;
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(BukkitAdapter.adapt(e.getPlayer().getWorld()));
         ProtectedRegion deathBox = regions.getRegion("deathbox");
         if (deathBox.contains(e.getTo().getBlockX(), e.getTo().getBlockY(), e.getTo().getBlockZ())) e.getPlayer().damage(1000000);
-    }
-
-    @EventHandler
-    public void onPlayerFlight(PlayerToggleFlightEvent e){
-        AgilityDoubleJump doubleJump = new AgilityDoubleJump();
-        Player p = e.getPlayer();
-        if (!(p.getGameMode().equals(GameMode.CREATIVE))) {
-            e.setCancelled(true);
-            p.setFlying(false);
-            doubleJump.doubleJump(p);
-            doubleJumpMap.replace(e.getPlayer(), false);
-        }
     }
 
     @EventHandler
