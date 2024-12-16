@@ -303,7 +303,6 @@ public class Listener implements org.bukkit.event.Listener {
             QuestGui questGui = new QuestGui();
             questGui.questGuiOpen(p);
         }
-        p.sendMessage(e.getAction().name());
     }
 
     @EventHandler
