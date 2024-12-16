@@ -24,7 +24,7 @@ public final class server extends JavaPlugin {
 
     public Map<Material, Integer> miningBlocks = new HashMap<>();
 
-    public static  final Map<NamespacedKey, NamespacedKey> expToLevel = new HashMap<>();
+    public static final Map<NamespacedKey, NamespacedKey> expToLevel = new HashMap<>();
 
     Level level = new Level(this);
 
