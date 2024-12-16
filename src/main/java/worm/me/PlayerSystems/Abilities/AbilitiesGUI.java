@@ -15,7 +15,7 @@ public class AbilitiesGUI {
         GuiConstructor guiConstructor = new GuiConstructor();
 
         // Create the GUI
-        Inventory gui = guiConstructor.chestInventory("Abilities", 54);
+        Inventory gui = guiConstructor.chestInventory( ChatColor.DARK_GRAY + "Abilities", 54);
 
         // Create gui items methodically
         AbilitiesMain abilities = new AbilitiesMain();
