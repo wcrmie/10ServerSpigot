@@ -2,6 +2,7 @@ package worm.me;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
@@ -13,7 +14,6 @@ import net.skinsrestorer.api.property.InputDataResult;
 import net.skinsrestorer.api.storage.PlayerStorage;
 import net.skinsrestorer.api.storage.SkinStorage;
 import org.bukkit.*;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -62,8 +62,6 @@ public class Listener implements org.bukkit.event.Listener {
         Player player = event.getPlayer();
         MessageHead messageHead = new MessageHead(plugin);
         player.getPersistentDataContainer().set(messageHead.armorStandExists, PersistentDataType.BOOLEAN, false);
-
-        player.setAllowFlight(true);
 
         // Give the player a random item every 10 seconds
         new BukkitRunnable() {
