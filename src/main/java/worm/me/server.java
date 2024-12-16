@@ -53,6 +53,7 @@ public final class server extends JavaPlugin {
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 
+        // Set exp to level keys
         expToLevel.put(level.mining, level.miningLevel);
         expToLevel.put(level.combat, level.combatLevel);
         expToLevel.put(level.crafting, level.craftingLevel);
