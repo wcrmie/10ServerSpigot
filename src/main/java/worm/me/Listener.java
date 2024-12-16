@@ -128,11 +128,6 @@ public class Listener implements org.bukkit.event.Listener {
         questAssign.dailyCheck(player);
 
 
-        // DO NOT ALLOW THE PLAYER TO FLY
-        player.setAllowFlight(false);
-
-
-
     }
 
 
