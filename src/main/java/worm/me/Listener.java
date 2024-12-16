@@ -280,7 +280,22 @@ public class Listener implements org.bukkit.event.Listener {
                 AgilityDash dash = new AgilityDash();
                 dash.dash(p);
             }
-        } else return;
+        } else if (p.getInventory().getItemInMainHand().toString().toLowerCase().contains("_axe")) {
+            if (p.isSneaking()){
+                AgilityLeap leap = new AgilityLeap();
+                leap.leap(p);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e){
+        Player p = e.getPlayer();
+        if (e.getClickedBlock().getType().equals(Material.END_PORTAL_FRAME)){
+            QuestGui questGui = new QuestGui();
+            questGui.questGuiOpen(p);
+        }
+        p.sendMessage(e.getAction().name());
     }
 
     @EventHandler
