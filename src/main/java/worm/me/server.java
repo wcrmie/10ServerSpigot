@@ -130,6 +130,10 @@ public final class server extends JavaPlugin {
         QuestInitialize questInitialize = new QuestInitialize(this);
         questInitialize.questInitialize();
 
+        // Initialize Ability GUI Components
+        AbilitiesMain abilitiesMain = new AbilitiesMain();
+        abilitiesMain.abilitiesInit();
+
 
     }
 
