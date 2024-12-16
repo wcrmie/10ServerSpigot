@@ -1,5 +1,6 @@
 package worm.me.PlayerSystems.Abilities;
 
+import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
