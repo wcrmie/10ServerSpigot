@@ -26,6 +26,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -39,6 +40,7 @@ import worm.me.PlayerSystems.Abilities.AgilityDoubleJump;
 import worm.me.PlayerSystems.Abilities.AgilityLeap;
 import worm.me.PlayerSystems.Quests.QuestAssign;
 import worm.me.PlayerSystems.Quests.QuestGui;
+import worm.me.PlayerSystems.Skin.SkinGui;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -99,8 +101,8 @@ public class Listener implements org.bukkit.event.Listener {
 
 
             if (result.isEmpty()){
-               player.sendMessage("Skin could not be loaded.");
-               return;
+                player.sendMessage("Skin could not be loaded.");
+                return;
             }
 
             PlayerStorage playerStorage = plugin.skinsRestorer.getPlayerStorage();
@@ -321,7 +323,16 @@ public class Listener implements org.bukkit.event.Listener {
     public void onInventoryClick(InventoryClickEvent e){
         GeneratorEdit genEdit = new GeneratorEdit();
         Player p = (Player) e.getWhoClicked();
-        if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Generated Blocks")) {
+        InventoryView inv = e.getView();
+        String invName = inv.getTitle();
+
+
+        if (invName.equals(ChatColor.DARK_GRAY + "Skins")){
+            e.setCancelled(true);
+            SkinGui.skinGuiDo(e);
+        }
+        // needs to be moved \/ \/ \/
+        else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Generated Blocks")) {
             e.setCancelled(true);
 
             ItemStack clickedItem = e.getCurrentItem();

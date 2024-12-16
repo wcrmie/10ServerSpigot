@@ -3,11 +3,13 @@ package worm.me.PlayerSystems.Skin;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import worm.me.GuiConstructor;
+
 
 
 public class SkinGui {
@@ -42,8 +44,27 @@ public class SkinGui {
         back.setItemMeta(meta);
         GUI.setItem(22, back);
 
-
         p.openInventory(GUI);
 
     }
+
+    public static void skinGuiDo(InventoryClickEvent e){
+        int slot = e.getRawSlot();
+        Player p = (Player) e.getWhoClicked();
+
+        if (slot == 11){
+            //set player skin to snowman
+        }
+        else if (slot == 13){
+            //set player skin to steeve
+        }
+        else if (slot == 15){
+            //set player skin to alex
+        }
+        else if (slot == 22){
+            // menu back
+        }
+
+    }
+
 }
