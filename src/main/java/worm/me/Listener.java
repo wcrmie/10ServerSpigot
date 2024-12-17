@@ -280,6 +280,7 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler (ignoreCancelled = true)
     public void onPlayerRightClick(UseItemEvent e){
         Player p = e.getCause().getFirstPlayer();
+        p.sendMessage(e.getEventName());
 
         if (p.getInventory().getItemInMainHand().toString().toLowerCase().contains("sword")) {
             if (p.isSneaking()){
