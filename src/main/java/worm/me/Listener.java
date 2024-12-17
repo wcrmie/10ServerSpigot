@@ -186,6 +186,7 @@ public class Listener implements org.bukkit.event.Listener {
 
         // Height limit for building
         if (p.getGameMode() == GameMode.CREATIVE) return;
+        if (Objects.requireNonNull(e.getBlock().getLocation().getWorld()).getName().equals("ul_Void_nether")) return;
         if (e.getBlock().getLocation().getBlockY() > 270 || e.getBlock().getLocation().getBlockY() < 220){
             e.setCancelled(true);
             p.sendMessage(ChatColor.RED + "The build area is between y = 220 and y = 270.");
