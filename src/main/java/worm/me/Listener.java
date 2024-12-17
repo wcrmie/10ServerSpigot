@@ -39,6 +39,8 @@ import worm.me.PlayerSystems.Abilities.AgilityDoubleJump;
 import worm.me.PlayerSystems.Abilities.AgilityLeap;
 import worm.me.PlayerSystems.Quests.QuestAssign;
 import worm.me.PlayerSystems.Quests.QuestGui;
+import worm.me.PlayerSystems.Social.MessageHead;
+import worm.me.PlayerSystems.Social.PlayerReputation;
 
 import java.util.HashMap;
 import java.util.Map;
