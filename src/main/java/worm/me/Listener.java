@@ -386,6 +386,10 @@ public class Listener implements org.bukkit.event.Listener {
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Quests")){
             e.setCancelled(true);
 
+        } else if (e.getView().getTitle().contains(ChatColor.DARK_GRAY + "Abilities")){
+            e.setCancelled(true);
+            AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
+            abilitiesGUI.guiHandler(e);
         }
 
 
