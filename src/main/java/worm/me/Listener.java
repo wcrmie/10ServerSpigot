@@ -238,6 +238,8 @@ public class Listener implements org.bukkit.event.Listener {
         Player p = e.getPlayer();
         Location loc = p.getLocation();
 
+        if (p.isFlying()) return;
+
         // If the block below the player is not air
         loc.setY(loc.getY() - 1);
         if (!loc.getBlock().getType().isAir()) return;
