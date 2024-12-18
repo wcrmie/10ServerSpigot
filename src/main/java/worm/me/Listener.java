@@ -40,7 +40,7 @@ import worm.me.PlayerSystems.Abilities.AgilityDoubleJump;
 import worm.me.PlayerSystems.Abilities.AgilityLeap;
 import worm.me.PlayerSystems.Quests.QuestAssign;
 import worm.me.PlayerSystems.Quests.QuestGui;
-import worm.me.PlayerSystems.Skin.SkinGui;
+import worm.me.PlayerSystems.Social.Skin.SkinGui;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -325,7 +325,7 @@ public class Listener implements org.bukkit.event.Listener {
 
         if (invName.equals(ChatColor.DARK_GRAY + "Skins")){
             e.setCancelled(true);
-            SkinGui.skinGuiDo(e);
+            SkinGui.skinGuiDo(e, plugin);
         }
         // needs to be moved \/ \/ \/
         else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Generated Blocks")) {

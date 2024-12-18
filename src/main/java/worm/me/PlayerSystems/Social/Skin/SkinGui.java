@@ -1,5 +1,6 @@
-package worm.me.PlayerSystems.Skin;
+package worm.me.PlayerSystems.Social.Skin;
 
+import net.skinsrestorer.api.storage.SkinStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -9,11 +10,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import worm.me.GuiConstructor;
-
-
+import net.skinsrestorer.api.exception.DataRequestException;
+import net.skinsrestorer.api.exception.MineSkinException;
+import net.skinsrestorer.api.property.InputDataResult;
+import net.skinsrestorer.api.storage.PlayerStorage;
+import worm.me.server;
+import java.util.Optional;
 
 public class SkinGui {
-    public void skinGuiOpen(Player p){
+
+
+    public void setSkin(Player p){
+
         GuiConstructor guiConstructor = new GuiConstructor();
         Inventory GUI = guiConstructor.chestInventory(ChatColor.DARK_GRAY + "Skins", 9*3);
 
@@ -45,21 +53,21 @@ public class SkinGui {
         GUI.setItem(22, back);
 
         p.openInventory(GUI);
-
     }
 
-    public static void skinGuiDo(InventoryClickEvent e){
+    public static void skinGuiDo(InventoryClickEvent e, server plugin){
+
         int slot = e.getRawSlot();
         Player p = (Player) e.getWhoClicked();
 
         if (slot == 11){
-            //set player skin to snowman
+            setSkin(p, "snowmaam", plugin);
         }
         else if (slot == 13){
-            //set player skin to steeve
+            setSkin(p, "worrm", plugin);
         }
         else if (slot == 15){
-            //set player skin to alex
+            setSkin(p, "goobier", plugin);
         }
         else if (slot == 22){
             // menu back
@@ -67,4 +75,21 @@ public class SkinGui {
 
     }
 
+    public static void setSkin(Player player, String skinName, server plugin) {
+        SkinStorage storage = plugin.skinsRestorer.getSkinStorage();
+
+        try {
+            Optional<InputDataResult> result = storage.findOrCreateSkinData(skinName);
+            if (result.isEmpty()){
+                player.sendMessage("Skin could not be loaded.");
+                return;
+            }
+            PlayerStorage playerStorage = plugin.skinsRestorer.getPlayerStorage();
+            playerStorage.setSkinIdOfPlayer(player.getUniqueId(), result.get().getIdentifier());
+            plugin.skinsRestorer.getSkinApplier(Player.class).applySkin(player);
+
+        } catch (DataRequestException | MineSkinException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
