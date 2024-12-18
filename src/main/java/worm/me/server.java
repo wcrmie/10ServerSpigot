@@ -12,6 +12,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import worm.me.Commands.*;
+import worm.me.PlayerSystems.Abilities.AbilitiesMain;
 import worm.me.PlayerSystems.Level;
 import worm.me.PlayerSystems.Quests.QuestInitialize;
 
@@ -23,7 +24,7 @@ public final class server extends JavaPlugin {
 
     public Map<Material, Integer> miningBlocks = new HashMap<>();
 
-    public static  final Map<NamespacedKey, NamespacedKey> expToLevel = new HashMap<>();
+    public static final Map<NamespacedKey, NamespacedKey> expToLevel = new HashMap<>();
 
     Level level = new Level(this);
 
@@ -53,6 +54,7 @@ public final class server extends JavaPlugin {
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 
+        // Set exp to level keys
         expToLevel.put(level.mining, level.miningLevel);
         expToLevel.put(level.combat, level.combatLevel);
         expToLevel.put(level.crafting, level.craftingLevel);
@@ -127,6 +129,10 @@ public final class server extends JavaPlugin {
         // CREATE QUESTS
         QuestInitialize questInitialize = new QuestInitialize(this);
         questInitialize.questInitialize();
+
+        // Initialize Ability GUI Components
+        AbilitiesMain abilitiesMain = new AbilitiesMain();
+        abilitiesMain.abilitiesInit();
 
 
     }

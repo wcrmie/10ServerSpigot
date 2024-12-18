@@ -19,8 +19,6 @@ public class AgilityDoubleJump {
         direction.multiply(0.5);
         direction.setY(0.5);
         p.setVelocity(direction);
-        p.setFlying(false);
-        p.setAllowFlight(false);
         container.set(ability.moveCooldown, PersistentDataType.LONG, System.currentTimeMillis()/1000L + 15);
         p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacy(String.format(ChatColor.RED + "Your Double Jump is now on cooldown for 15 seconds")));
     }

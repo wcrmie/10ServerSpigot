@@ -25,7 +25,7 @@ public class AgilityLeap {
         }
         Vector direction = p.getLocation().getDirection();
         direction.multiply(0.1);
-        direction.setY(2.5);
+        direction.setY(1.25);
         p.setVelocity(direction);
         container.set(ability.moveCooldown, PersistentDataType.LONG, System.currentTimeMillis()/1000L + 10);
     }

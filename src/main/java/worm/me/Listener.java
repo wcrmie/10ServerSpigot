@@ -130,11 +130,6 @@ public class Listener implements org.bukkit.event.Listener {
         questAssign.dailyCheck(player);
 
 
-        // DO NOT ALLOW THE PLAYER TO FLY
-        player.setAllowFlight(false);
-
-
-
     }
 
 
@@ -245,6 +240,8 @@ public class Listener implements org.bukkit.event.Listener {
         Player p = e.getPlayer();
         Location loc = p.getLocation();
 
+        if (p.isFlying()) return;
+
         // If the block below the player is not air
         loc.setY(loc.getY() - 1);
         if (!loc.getBlock().getType().isAir()) return;
@@ -301,11 +298,10 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e){
         Player p = e.getPlayer();
-        if (e.getClickedBlock().getType().equals(Material.END_PORTAL_FRAME)){
+        if (Objects.requireNonNull(e.getClickedBlock()).getType().equals(Material.END_PORTAL_FRAME)){
             QuestGui questGui = new QuestGui();
             questGui.questGuiOpen(p);
         }
-        p.sendMessage(e.getAction().name());
     }
 
     @EventHandler
