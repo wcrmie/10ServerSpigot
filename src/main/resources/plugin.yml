@@ -25,3 +25,6 @@ commands:
   sit:
     description: Makes the player sit.
     usage: /<command>
+  setSkin:
+    description: Opens the set skin GUI.
+    usage: /<command>

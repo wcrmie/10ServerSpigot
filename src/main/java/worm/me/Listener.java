@@ -6,6 +6,8 @@ import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.skinsrestorer.api.exception.DataRequestException;
 import net.skinsrestorer.api.exception.MineSkinException;
 import net.skinsrestorer.api.property.InputDataResult;
@@ -24,6 +26,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -31,11 +34,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import worm.me.PlayerSystems.*;
-import worm.me.PlayerSystems.Abilities.*;
+import worm.me.PlayerSystems.Abilities.AbilitiesMain;
+import worm.me.PlayerSystems.Abilities.AgilityDash;
+import worm.me.PlayerSystems.Abilities.AgilityDoubleJump;
+import worm.me.PlayerSystems.Abilities.AgilityLeap;
 import worm.me.PlayerSystems.Quests.QuestAssign;
 import worm.me.PlayerSystems.Quests.QuestGui;
 import worm.me.PlayerSystems.Social.MessageHead;
 import worm.me.PlayerSystems.Social.PlayerReputation;
+import worm.me.PlayerSystems.Social.Skin.SkinGui;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -96,8 +103,8 @@ public class Listener implements org.bukkit.event.Listener {
 
 
             if (result.isEmpty()){
-               player.sendMessage("Skin could not be loaded.");
-               return;
+                player.sendMessage("Skin could not be loaded.");
+                return;
             }
 
             PlayerStorage playerStorage = plugin.skinsRestorer.getPlayerStorage();
@@ -240,7 +247,7 @@ public class Listener implements org.bukkit.event.Listener {
 
         // If the block below the player is not air
         loc.setY(loc.getY() - 1);
-        if (!loc.getBlock().getType().isAir() || !loc.getBlock().getType().equals(Material.SNOW)) return;
+        if (!loc.getBlock().getType().isAir()) return;
 
         // Check cooldown
         AbilitiesMain ability = new AbilitiesMain();
@@ -277,7 +284,6 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler (ignoreCancelled = true)
     public void onPlayerRightClick(UseItemEvent e){
         Player p = e.getCause().getFirstPlayer();
-        p.sendMessage(e.getEventName());
 
         if (p.getInventory().getItemInMainHand().toString().toLowerCase().contains("sword")) {
             if (p.isSneaking()){
@@ -316,7 +322,16 @@ public class Listener implements org.bukkit.event.Listener {
     public void onInventoryClick(InventoryClickEvent e){
         GeneratorEdit genEdit = new GeneratorEdit();
         Player p = (Player) e.getWhoClicked();
-        if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Generated Blocks")) {
+        InventoryView inv = e.getView();
+        String invName = inv.getTitle();
+
+
+        if (invName.equals(ChatColor.DARK_GRAY + "Skins")){
+            e.setCancelled(true);
+            SkinGui.skinGuiDo(e, plugin);
+        }
+        // needs to be moved \/ \/ \/
+        else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Generated Blocks")) {
             e.setCancelled(true);
 
             ItemStack clickedItem = e.getCurrentItem();
@@ -384,10 +399,6 @@ public class Listener implements org.bukkit.event.Listener {
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Quests")){
             e.setCancelled(true);
 
-        } else if (e.getView().getTitle().contains(ChatColor.DARK_GRAY + "Abilities")){
-            e.setCancelled(true);
-            AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
-            abilitiesGUI.guiHandler(e.getCurrentItem(), p);
         }
 
 
