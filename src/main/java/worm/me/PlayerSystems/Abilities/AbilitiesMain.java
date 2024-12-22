@@ -3,6 +3,8 @@ package worm.me.PlayerSystems.Abilities;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +12,8 @@ import java.util.List;
 public class AbilitiesMain {
 
     public final NamespacedKey moveCooldown = new NamespacedKey("10server", "movecooldown");
+
+    public final NamespacedKey abilitiesUnlocked = new NamespacedKey("10server", "abilitiesunlocked");
 
     public static final HashMap<String, List<String>> abilityGuiComponents = new HashMap<>();
 
@@ -26,5 +30,17 @@ public class AbilitiesMain {
 
     public boolean hasAbilityUnlocked(Integer ability, Player p){
         return false;
+    }
+
+    public void unlockAbility(Integer ability, Player p){
+        // Does player have any other abilities unlocked? (Check for variable)
+        PersistentDataContainer container = p.getPersistentDataContainer();
+        int[] unlocked = container.get(abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY);
+        if (unlocked == null){
+            unlocked = new int[abilityGuiComponents.size()];
+        }
+
+        // Set the ability to unlocked
+        unlocked[ability] = 1;
     }
 }

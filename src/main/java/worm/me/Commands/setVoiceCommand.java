@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import worm.me.PlayerSystems.MessageHead;
+import worm.me.PlayerSystems.Social.MessageHead;
 import worm.me.server;
 
 public class setVoiceCommand implements CommandExecutor {

@@ -2,9 +2,11 @@ package worm.me.PlayerSystems.Abilities;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import worm.me.GuiConstructor;
 
 import java.util.Arrays;
@@ -52,6 +54,15 @@ public class AbilitiesGUI {
 
             // Open inventory to player.
             p.openInventory(gui);
+        }
+    }
+
+    public void guiHandler(ItemStack item, Player p){
+        // Handle the GUI events here
+        AbilitiesMain abilities = new AbilitiesMain();
+
+        if (item.getType().equals(Material.RED_STAINED_GLASS_PANE)){
+
         }
     }
 }

@@ -6,8 +6,6 @@ import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.skinsrestorer.api.exception.DataRequestException;
 import net.skinsrestorer.api.exception.MineSkinException;
 import net.skinsrestorer.api.property.InputDataResult;
@@ -242,7 +240,7 @@ public class Listener implements org.bukkit.event.Listener {
 
         // If the block below the player is not air
         loc.setY(loc.getY() - 1);
-        if (!loc.getBlock().getType().isAir()) return;
+        if (!loc.getBlock().getType().isAir() || !loc.getBlock().getType().equals(Material.SNOW)) return;
 
         // Check cooldown
         AbilitiesMain ability = new AbilitiesMain();
@@ -389,7 +387,7 @@ public class Listener implements org.bukkit.event.Listener {
         } else if (e.getView().getTitle().contains(ChatColor.DARK_GRAY + "Abilities")){
             e.setCancelled(true);
             AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
-            abilitiesGUI.guiHandler(e);
+            abilitiesGUI.guiHandler(e.getCurrentItem(), p);
         }
 
 

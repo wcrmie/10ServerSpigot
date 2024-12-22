@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems;
+package worm.me.PlayerSystems.Social;
 
 import worm.me.server;
 

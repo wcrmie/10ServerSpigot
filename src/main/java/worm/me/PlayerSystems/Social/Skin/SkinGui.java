@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems.Skin;
+package worm.me.PlayerSystems.Social.Skin;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
