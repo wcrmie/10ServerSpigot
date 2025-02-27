@@ -34,7 +34,7 @@ public class QuestInitialize {
         dailyQuestAttributes.put(6, growtrees25);
         List<String> eatgapple = List.of("The Garden of Eden", "Eat a golden apple.", "1", Material.GOLDEN_APPLE.toString());
         dailyQuestAttributes.put(7, eatgapple);
-        List<String> donthurt10 = List.of("Peaceful", "Don't take damage for 10 minutes. (OUTSIDE OF SPAWN)", "600");
+        List<String> donthurt10 = List.of("Peaceful", "Don't take damage for 10 minutes. (OUTSIDE OF SPAWN)", "600", Material.FEATHER.toString());
         dailyQuestAttributes.put(8, donthurt10);
 
     }
