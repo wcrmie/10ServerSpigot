@@ -18,7 +18,7 @@ public class QuestInitialize {
     public void questInitialize(){
 
         // Daily Quests
-        List<String> minecobble = List.of("Mine Cobblestone", "Break 500 cobblestone blocks.", "500");
+        List<String> minecobble = List.of("Mine Cobblestone", "Break 500 cobblestone blocks.", "500", Material.COBBLESTONE.toString());
         dailyQuestAttributes.put(0, minecobble);
         List<String> collectiron = List.of("Yeah... I use forge actually.", "Collect 32 iron ingots out of furnaces.", "32");
         dailyQuestAttributes.put(1, collectiron);
