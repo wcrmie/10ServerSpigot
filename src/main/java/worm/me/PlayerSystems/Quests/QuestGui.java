@@ -24,6 +24,7 @@ public class QuestGui {
     public void questGuiOpen(Player p){
         // Open the quest GUI for the player
         QuestAssign questAssign = new QuestAssign(this.plugin);
+        QuestComplete questComplete = new QuestComplete();
         PersistentDataContainer container = p.getPersistentDataContainer();
 
         GuiConstructor guiConstructor = new GuiConstructor();
