@@ -69,7 +69,7 @@ public class MessageHead {
                 PlayerReputation playerReputation = new PlayerReputation(plugin);
                 char character = m.charAt(finalI[0]);
                 chatMessage[0] = chatMessage[0] + character;
-                chat.setCustomName(ChatColor.valueOf(playerReputation.calcRep(p)) + chatMessage[0]);
+                chat.setCustomName(ChatColor.of(playerReputation.calcRep(p)) + chatMessage[0]);
                 chat.setCustomNameVisible(true);
                 chat.setInvulnerable(true);
                 chat.setMarker(true);
