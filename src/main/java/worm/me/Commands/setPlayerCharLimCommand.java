@@ -28,6 +28,10 @@ public class setPlayerCharLimCommand implements CommandExecutor {
                 p.getPersistentDataContainer().set(messageHead.msgLength, PersistentDataType.INTEGER, Integer.parseInt(args[1]));
                 p.sendMessage(ChatColor.RED + "Your character limit for messages has been set to " + args[1]);
                 sender.sendMessage(ChatColor.GREEN + "Character limit for " + args[0] + " has been set to " + args[1]);
+                return true;
+            } else {
+                sender.sendMessage(ChatColor.RED + "Character limit must be greater than 0!");
+                return false;
             }
         }
         return false;
