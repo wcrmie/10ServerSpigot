@@ -36,8 +36,6 @@ public final class server extends JavaPlugin {
     public List<Material> planks = new ArrayList<>();
     public List<Material> miscs = new ArrayList<>();
 
-    public List<String> quests = new ArrayList<>();
-
     @Override
     public void onEnable() {
         // Plugin startup logic
