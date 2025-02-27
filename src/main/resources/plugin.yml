@@ -30,8 +30,8 @@ commands:
     usage: /<command>
   blockcount:
     description: Check or set the current block count
-    usage: /blockcount [newValue]
-    permission: clemvoidwbps.blockcount
+    usage: /<command> <float>
+    permission: 10VS.blockcount
   expansionpercentage:
     description: Set the percentage of blocks needed for world border expansion
     usage: /expansionpercentage [newPercentage]
