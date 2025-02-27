@@ -62,4 +62,13 @@ public class QuestGui {
         return m.get(questID).get(1);
     }
 
+    public String getQuestRequiredProgress(Player p, NamespacedKey quest){
+
+        // Get the progress of the quest
+        QuestInitialize questInitialize = new QuestInitialize(this.plugin);
+        Map<Integer, List<String>> m = QuestInitialize.dailyQuestAttributes;
+        int questID = p.getPersistentDataContainer().get(quest, PersistentDataType.INTEGER);
+        return m.get(questID).get(2);
+    }
+
 }
