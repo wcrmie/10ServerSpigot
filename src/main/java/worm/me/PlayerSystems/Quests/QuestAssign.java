@@ -37,6 +37,11 @@ public class QuestAssign {
         playerQuestAssign(p, daily1);
         playerQuestAssign(p, daily2);
         playerQuestAssign(p, daily3);
+
+        // And the same here
+        while (Objects.equals(container.get(daily3, PersistentDataType.INTEGER), container.get(daily1, PersistentDataType.INTEGER)) || Objects.equals(container.get(daily3, PersistentDataType.INTEGER), container.get(daily2, PersistentDataType.INTEGER))){
+            playerQuestAssign(p, daily3);
+        }
         container.set(questAssigned, PersistentDataType.LONG, System.currentTimeMillis()/1000L);
     }
 
