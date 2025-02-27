@@ -6,8 +6,6 @@ import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.skinsrestorer.api.exception.DataRequestException;
 import net.skinsrestorer.api.exception.MineSkinException;
 import net.skinsrestorer.api.property.InputDataResult;
@@ -43,6 +41,7 @@ import worm.me.PlayerSystems.Quests.QuestGui;
 import worm.me.PlayerSystems.Social.MessageHead;
 import worm.me.PlayerSystems.Social.PlayerReputation;
 import worm.me.PlayerSystems.Social.Skin.SkinGui;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +58,8 @@ public class Listener implements org.bukkit.event.Listener {
     public Listener(server plugin) {
         this.plugin = plugin;
     }
+
+
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){

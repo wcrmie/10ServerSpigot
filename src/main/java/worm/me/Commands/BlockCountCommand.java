@@ -1,0 +1,43 @@
+package worm.me.Commands;
+
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import worm.me.WorldBorder.worldBorderSize;
+
+public class BlockCountCommand implements CommandExecutor {
+
+    private final worldBorderSize worldBorderSizeHandler;
+
+    public BlockCountCommand(worldBorderSize worldBorderSizeHandler) {
+        this.worldBorderSizeHandler = worldBorderSizeHandler;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length > 0) {
+            try {
+                long newBlockCount = Long.parseLong(args[0]);
+                if (newBlockCount < 0) {
+                    sender.sendMessage(ChatColor.RED + "Block count cannot be negative!");
+                    return false;
+                }
+
+                worldBorderSizeHandler.setBlockCount(newBlockCount);
+                sender.sendMessage(ChatColor.GREEN + "Block count set to: " + ChatColor.GOLD + newBlockCount);
+            } catch (NumberFormatException e) {
+                sender.sendMessage(ChatColor.RED + "Invalid number format! Please provide a valid number.");
+                return false;
+            }
+        } else {
+            long blockCount = worldBorderSizeHandler.getBlockCount();
+            double worldBorderSize = worldBorderSizeHandler.getWorldBorderSize();
+
+            sender.sendMessage(ChatColor.GREEN + "Current block count: " + ChatColor.GOLD + blockCount);
+            sender.sendMessage(ChatColor.GREEN + "Current world border size: " + ChatColor.GOLD + worldBorderSize);
+        }
+
+        return true;
+    }
+}
