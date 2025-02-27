@@ -6,19 +6,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.WorldBorder;
+import worm.me.server;
 
 
 public class PlayerSpawning {
 
     private final JavaPlugin plugin;
-    private final World world;
-    private final WorldBorder worldBorder;
+    private final World world = Bukkit.getWorld("ul_Void");
+    private final WorldBorder worldBorder = world.getWorldBorder();
     private int xMoreThan, xLessThan, yMoreThan, yLessThan, zMoreThan, zLessThan;
 
-    public PlayerSpawning(JavaPlugin plugin, World world) {
+    public PlayerSpawning(server plugin) {
         this.plugin = plugin;
-        this.world = world;
-        this.worldBorder = world.getWorldBorder();
         updateBorderValues();
     }
 

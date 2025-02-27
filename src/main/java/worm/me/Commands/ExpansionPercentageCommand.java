@@ -4,13 +4,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import worm.me.WorldBorder.worldBorderSize;
 
 public class ExpansionPercentageCommand implements CommandExecutor {
 
-    private final worldBorderSize worldBorderSizeHandler;
+    private final worm.me.WorldBorder.worldBorderSizeHandler worldBorderSizeHandler;
 
-    public ExpansionPercentageCommand(worldBorderSize worldBorderSizeHandler) {
+    public ExpansionPercentageCommand(worm.me.WorldBorder.worldBorderSizeHandler worldBorderSizeHandler) {
         this.worldBorderSizeHandler = worldBorderSizeHandler;
     }
 

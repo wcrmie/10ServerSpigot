@@ -4,13 +4,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import worm.me.WorldBorder.worldBorderSize;
 
 public class BlockCountCommand implements CommandExecutor {
 
-    private final worldBorderSize worldBorderSizeHandler;
+    private final worm.me.WorldBorder.worldBorderSizeHandler worldBorderSizeHandler;
 
-    public BlockCountCommand(worldBorderSize worldBorderSizeHandler) {
+    public BlockCountCommand(worm.me.WorldBorder.worldBorderSizeHandler worldBorderSizeHandler) {
         this.worldBorderSizeHandler = worldBorderSizeHandler;
     }
 

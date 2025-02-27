@@ -3,19 +3,19 @@ package worm.me.WorldBorder;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.configuration.file.FileConfiguration;
+import worm.me.server;
 
-public class worldBorderSize {
-    private final JavaPlugin plugin;
-    private final WorldBorder worldBorder;
+public class worldBorderSizeHandler {
+    private final server plugin;
+    private final World world = Bukkit.getWorld("ul_Void");
+    private final WorldBorder worldBorder = world.getWorldBorder();
     private long blockCount;
     private final int baseSize;
     private double expansionPercentage;
 
-    public worldBorderSize(JavaPlugin plugin, World world) {
+    public worldBorderSizeHandler(server plugin) {
         this.plugin = plugin;
-        this.worldBorder = world.getWorldBorder();
         this.baseSize = 20;
         this.blockCount = 0;
 

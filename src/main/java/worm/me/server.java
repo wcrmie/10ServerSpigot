@@ -13,7 +13,7 @@ import worm.me.PlayerSystems.Level;
 import worm.me.PlayerSystems.Quests.QuestInitialize;
 import worm.me.PlayerSystems.Quests.QuestListener;
 import worm.me.PlayerSystems.PlayerSpawning;
-import worm.me.WorldBorder.worldBorderSize;
+import worm.me.WorldBorder.worldBorderSizeHandler;
 
 import java.util.*;
 
@@ -21,7 +21,7 @@ public final class server extends JavaPlugin {
 
     public SkinsRestorer skinsRestorer;
 
-    private worldBorderSize worldBorderSizeHandler;
+    private worm.me.WorldBorder.worldBorderSizeHandler worldBorderSizeHandler;
 
     public Map<Material, Integer> miningBlocks = new HashMap<>();
 
@@ -53,8 +53,8 @@ public final class server extends JavaPlugin {
 
         World world = Bukkit.getWorld("world");
         assert world != null;
-        PlayerSpawning playerSpanwingHandler = new PlayerSpawning(this, world);
-        worldBorderSizeHandler = new worldBorderSize(this, world);
+        PlayerSpawning playerSpanwingHandler = new PlayerSpawning(this);
+        worldBorderSizeHandler = new worldBorderSizeHandler(this);
 
         long savedBlockCount = config.getLong("blockCount", 0);
         worldBorderSizeHandler.setBlockCount(savedBlockCount);
@@ -75,6 +75,7 @@ public final class server extends JavaPlugin {
         this.getCommand("shout").setExecutor(new shoutCommand(this));
         this.getCommand("rules").setExecutor(new RulesCommand());
         this.getCommand("sit").setExecutor(new SitCommand());
+        this.getCommand("setCharLimit").setExecutor(new setPlayerCharLimCommand(this));
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 
@@ -165,12 +166,12 @@ public final class server extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
 
-        HandlerList.unregisterAll(this);
-
         FileConfiguration config = getConfig();
+        worm.me.WorldBorder.worldBorderSizeHandler worldBorderSizeHandler = new worldBorderSizeHandler(this);
         config.set("blockCount", worldBorderSizeHandler.getBlockCount());
         config.set("pluginEnabled", false);
         saveConfig();
+        HandlerList.unregisterAll(this);
 
         getLogger().info("Plugin disabled");
     }
