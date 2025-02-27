@@ -64,6 +64,7 @@ public class MessageHead {
             public void run() {
 
                 // Display message character by character
+                PlayerReputation playerReputation = new PlayerReputation(plugin);
                 char character = m.charAt(finalI[0]);
                 chatMessage[0] = chatMessage[0] + character;
                 chat.setCustomName(chatMessage[0]);
