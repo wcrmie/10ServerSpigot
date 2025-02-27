@@ -34,5 +34,9 @@ commands:
     permission: 10VS.blockcount
   expansionpercentage:
     description: Set the percentage of blocks needed for world border expansion
-    usage: /expansionpercentage [newPercentage]
-    permission: clemvoidwbps.expansionpercentage
+    usage: /<command> <float>
+    permission: 10VS.expansionpercentage
+  setCharLimit:
+    description: Set the character limit for chat messages for a specific player
+    usage: /<command> <Player> <integer>
+    permission: 10VS.setCharLimit
