@@ -1,5 +1,12 @@
 package worm.me.PlayerSystems.Quests;
 
+import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+
+import static java.lang.Integer.parseInt;
+
 public class QuestComplete {
 
         public NamespacedKey daily1progress = new NamespacedKey("10plugin", "daily1progress");
