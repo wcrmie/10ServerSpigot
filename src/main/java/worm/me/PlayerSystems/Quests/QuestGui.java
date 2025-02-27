@@ -28,9 +28,9 @@ public class QuestGui {
 
         GuiConstructor guiConstructor = new GuiConstructor();
         Inventory GUI = guiConstructor.chestInventory(ChatColor.DARK_GRAY + "Quests", 27);
-        GUI.setItem(11, guiConstructor.createGuiItem(getQuestMaterial(p, questAssign.daily1), ChatColor.GRAY + getQuestName(p, questAssign.daily1)," ", ChatColor.DARK_GRAY + getQuestDescription(p, questAssign.daily1)));
-        GUI.setItem(13, guiConstructor.createGuiItem(getQuestMaterial(p, questAssign.daily2), ChatColor.GRAY + getQuestName(p, questAssign.daily2)," ", ChatColor.DARK_GRAY + getQuestDescription(p, questAssign.daily2)));
-        GUI.setItem(15, guiConstructor.createGuiItem(getQuestMaterial(p, questAssign.daily3), ChatColor.GRAY + getQuestName(p, questAssign.daily3)," ", ChatColor.DARK_GRAY + getQuestDescription(p, questAssign.daily3)));
+        GUI.setItem(11, guiConstructor.createGuiItem(getQuestMaterial(p, questAssign.daily1), ChatColor.GRAY + getQuestName(p, questAssign.daily1)," ", ChatColor.DARK_GRAY + getQuestDescription(p, questAssign.daily1), ChatColor.LIGHT_PURPLE + "Progress: " + container.getOrDefault(questComplete.daily1progress, PersistentDataType.INTEGER, 0) + "/" + getQuestRequiredProgress(p, questAssign.daily1)));
+        GUI.setItem(13, guiConstructor.createGuiItem(getQuestMaterial(p, questAssign.daily2), ChatColor.GRAY + getQuestName(p, questAssign.daily2)," ", ChatColor.DARK_GRAY + getQuestDescription(p, questAssign.daily2), ChatColor.LIGHT_PURPLE + "Progress: " + container.getOrDefault(questComplete.daily2progress, PersistentDataType.INTEGER, 0) + "/" + getQuestRequiredProgress(p, questAssign.daily2)));
+        GUI.setItem(15, guiConstructor.createGuiItem(getQuestMaterial(p, questAssign.daily3), ChatColor.GRAY + getQuestName(p, questAssign.daily3)," ", ChatColor.DARK_GRAY + getQuestDescription(p, questAssign.daily3), ChatColor.LIGHT_PURPLE + "Progress: " + container.getOrDefault(questComplete.daily3progress, PersistentDataType.INTEGER, 0) + "/" + getQuestRequiredProgress(p, questAssign.daily3)));
         p.openInventory(GUI);
     }
 
