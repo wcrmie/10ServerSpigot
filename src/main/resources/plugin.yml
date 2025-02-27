@@ -2,7 +2,7 @@ name: 10ServerSpigot
 version: '1.0-SNAPSHOT'
 main: worm.me.server
 api-version: '1.21'
-authors: [ worm ]
+authors: [ worm, clem ]
 depend: [WorldGuard]
 softdepend: [SkinsRestorer]
 commands:
