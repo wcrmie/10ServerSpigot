@@ -28,9 +28,8 @@ public class QuestAssign {
 
     public void playerQuestAssign(Player p, NamespacedKey questSlot){
         PersistentDataContainer container = p.getPersistentDataContainer();
-        int RNG = ThreadLocalRandom.current().nextInt(0, plugin.quests.size());
-        String randomQuest = plugin.quests.get(RNG);
-        container.set(questSlot, PersistentDataType.STRING, randomQuest);
+        int RNG = ThreadLocalRandom.current().nextInt(0, QuestInitialize.dailyQuestAttributes.size() - 1);
+        container.set(questSlot, PersistentDataType.INTEGER, RNG);
     }
 
     public void dailyReset(Player p){
