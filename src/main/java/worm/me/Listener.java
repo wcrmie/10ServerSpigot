@@ -42,6 +42,7 @@ import worm.me.PlayerSystems.Social.MessageHead;
 import worm.me.PlayerSystems.Social.PlayerReputation;
 import worm.me.PlayerSystems.Social.Skin.SkinGui;
 import org.bukkit.event.player.PlayerJoinEvent;
+import worm.me.WorldBorder.worldBorderSizeHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +54,7 @@ public class Listener implements org.bukkit.event.Listener {
 
     private final server plugin;
 
+
     private final Map<Player, Boolean> doubleJumpMap = new HashMap<>();
 
     public Listener(server plugin) {
@@ -60,6 +62,21 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
 
+    @EventHandler public void onBlockPlace(BlockPlaceEvent event){
+        worldBorderSizeHandler handler = new worldBorderSizeHandler(plugin);
+        handler.incrementBlockCount();
+    }
+
+    @EventHandler public void onBlockBreak(BlockBreakEvent event){
+        worldBorderSizeHandler handler = new worldBorderSizeHandler(plugin);
+        handler.decrementBlockCount();
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event){
+        PlayerSpawning handler = new PlayerSpawning(plugin);
+        handler.playerSpawn(event.getPlayer());
+    }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
