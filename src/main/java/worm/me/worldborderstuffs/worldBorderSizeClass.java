@@ -28,7 +28,7 @@ public class worldBorderSizeClass {
     }
 
     public void adjustWorldBorder() {
-        long worldBlockSize = (long) (worldBorder.getSize() * worldBorder.getSize() * 75); // 75 is world height
+        long worldBlockSize = (long) (worldBorder.getSize() * worldBorder.getSize() * 60); // 60 is world height
 
 
         int newSize = (int) (baseSize + (blockCount / (worldBlockSize * (expansionPercentage / 100.0))));

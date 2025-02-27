@@ -27,8 +27,8 @@ public class worldBorderClass {
         xLessThan = (int) (borderSize / 2) - 1;
         zMoreThan = (int) ((borderSize / 2) * -1);
         zLessThan = (int) (borderSize / 2) - 1;
-        yMoreThan = 0;
-        yLessThan = 75;
+        yMoreThan = 220;
+        yLessThan = 280;
     }
 
     public Location worldBorderGetRandomBlock() {
