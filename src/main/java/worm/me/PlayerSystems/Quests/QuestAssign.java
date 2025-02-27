@@ -36,6 +36,12 @@ public class QuestAssign {
         PersistentDataContainer container = p.getPersistentDataContainer();
         playerQuestAssign(p, daily1);
         playerQuestAssign(p, daily2);
+
+        // If the second quest is the same as the first, reassign it.
+        while (Objects.equals(container.get(daily2, PersistentDataType.INTEGER), container.get(daily1, PersistentDataType.INTEGER))){
+            playerQuestAssign(p, daily2);
+        }
+
         playerQuestAssign(p, daily3);
 
         // And the same here
