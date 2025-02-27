@@ -26,7 +26,7 @@ public class QuestInitialize {
         dailyQuestAttributes.put(2, fish64);
         List<String> buildsnowmen = List.of("Do you wanna build a snowman?", "Build 10 snowmen.", "10", Material.CARVED_PUMPKIN.toString());
         dailyQuestAttributes.put(3, buildsnowmen);
-        List<String> killmobs100 = List.of("Revenge...", "Kill 100 mobs.", "100");
+        List<String> killmobs100 = List.of("Revenge...", "Kill 100 mobs.", "100", Material.SKELETON_SKULL.toString());
         dailyQuestAttributes.put(4, killmobs100);
         List<String> fishsaddle = List.of("How Hungry...", "Catch a saddle while fishing.", "1");
         dailyQuestAttributes.put(5, fishsaddle);
