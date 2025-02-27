@@ -13,4 +13,32 @@ public class QuestGui {
         Inventory GUI = guiConstructor.chestInventory(ChatColor.DARK_GRAY + "Quests", 27);
         p.openInventory(GUI);
     }
+
+    public Material getQuestMaterial(Player p, NamespacedKey quest){
+
+        // Get the material of the quest
+        QuestInitialize questInitialize = new QuestInitialize(this.plugin);
+        Map<Integer, List<String>> m = QuestInitialize.dailyQuestAttributes;
+        int questID = p.getPersistentDataContainer().get(quest, PersistentDataType.INTEGER);
+        return Material.valueOf(m.get(questID).get(3));
+    }
+
+    public String getQuestName(Player p, NamespacedKey quest){
+
+        // Get the name of the quest
+        QuestInitialize questInitialize = new QuestInitialize(this.plugin);
+        Map<Integer, List<String>> m = QuestInitialize.dailyQuestAttributes;
+        int questID = p.getPersistentDataContainer().get(quest, PersistentDataType.INTEGER);
+        return m.get(questID).get(0);
+    }
+
+    public String getQuestDescription(Player p, NamespacedKey quest){
+
+        // Get the description of the quest
+        QuestInitialize questInitialize = new QuestInitialize(this.plugin);
+        Map<Integer, List<String>> m = QuestInitialize.dailyQuestAttributes;
+        int questID = p.getPersistentDataContainer().get(quest, PersistentDataType.INTEGER);
+        return m.get(questID).get(1);
+    }
+
 }
