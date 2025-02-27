@@ -44,6 +44,8 @@ public final class server extends JavaPlugin {
         // Allows ListenerClass to receive events.
         getServer().getPluginManager().registerEvents(new Listener(this), this);
 
+        getServer().getPluginManager().registerEvents(new QuestListener(this), this);
+
         // Allows Command classes to register commands
         this.getCommand("getExp").setExecutor(new GetLevel(this));
         this.getCommand("setVoice").setExecutor(new setVoiceCommand(this));
