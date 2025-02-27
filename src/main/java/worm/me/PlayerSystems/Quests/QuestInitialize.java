@@ -30,7 +30,7 @@ public class QuestInitialize {
         dailyQuestAttributes.put(4, killmobs100);
         List<String> fishsaddle = List.of("How Hungry...", "Catch a saddle while fishing.", "1", Material.SADDLE.toString());
         dailyQuestAttributes.put(5, fishsaddle);
-        List<String> growtrees25 = List.of("Green Thumb", "Grow 25 trees.", "25");
+        List<String> growtrees25 = List.of("Green Thumb", "Grow 25 trees.", "25", Material.OAK_SAPLING.toString());
         dailyQuestAttributes.put(6, growtrees25);
         List<String> eatgapple = List.of("The Garden of Eden", "Eat a golden apple.", "1");
         dailyQuestAttributes.put(7, eatgapple);
