@@ -305,7 +305,7 @@ public class Listener implements org.bukkit.event.Listener {
     public void onInteract(PlayerInteractEvent e){
         Player p = e.getPlayer();
         if (Objects.requireNonNull(e.getClickedBlock()).getType().equals(Material.END_PORTAL_FRAME)){
-            QuestGui questGui = new QuestGui();
+            QuestGui questGui = new QuestGui(this.plugin);
             questGui.questGuiOpen(p);
         }
     }
