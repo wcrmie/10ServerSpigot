@@ -7,6 +7,12 @@ import worm.me.GuiConstructor;
 
 public class QuestGui {
 
+    private server plugin;
+
+    public QuestGui(server plugin) {
+        this.plugin = plugin;
+    }
+
     public void questGuiOpen(Player p){
         // Open the quest GUI for the player
         GuiConstructor guiConstructor = new GuiConstructor();
