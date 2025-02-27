@@ -12,7 +12,8 @@ import worm.me.PlayerSystems.Abilities.AbilitiesMain;
 import worm.me.PlayerSystems.Level;
 import worm.me.PlayerSystems.Quests.QuestInitialize;
 import worm.me.PlayerSystems.Quests.QuestListener;
-import worm.me.PlayerSystems.worldBorderClass;
+import worm.me.PlayerSystems.playerSpanwingClass;
+import worm.me.PlayerSystems.playerSpanwingClass;
 import worm.me.worldborderstuffs.worldBorderSizeClass;
 
 import java.util.*;
@@ -55,7 +56,7 @@ public final class server extends JavaPlugin {
 
         World world = Bukkit.getWorld("world");
         assert world != null;
-        worldBorderClass worldBorderHandler = new worldBorderClass(this, world);
+        playerSpanwingClass playerSpanwingHandler = new playerSpanwingClass(this, world);
         worldBorderSizeHandler = new worldBorderSizeClass(this, world);
 
         long savedBlockCount = config.getLong("blockCount", 0);

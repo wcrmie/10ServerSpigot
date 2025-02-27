@@ -6,15 +6,17 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.WorldBorder;
 
-public class worldBorderClass {
+
+public class playerSpanwingClass {
 
     private final JavaPlugin plugin;
     private final World world;
     private final WorldBorder worldBorder;
     private int xMoreThan, xLessThan, yMoreThan, yLessThan, zMoreThan, zLessThan;
 
-    public worldBorderClass(JavaPlugin plugin, World world) {
+    public playerSpanwingClass(JavaPlugin plugin, World world) {
         this.plugin = plugin;
         this.world = world;
         this.worldBorder = world.getWorldBorder();
@@ -140,15 +142,19 @@ public class worldBorderClass {
         new BukkitRunnable() {
             @Override
             public void run() {
-                location.subtract(0.5, 1, 0.5);
-                Block block = world.getBlockAt(location);
-                block.setType(Material.AIR);
+                if (player.getLocation().distance(location) >= 5) {
+                    location.subtract(0.5, 1, 0.5);
+                    Block block = world.getBlockAt(location);
+                    block.setType(Material.AIR);
+                    cancel();
+                }
             }
-        }.runTaskLater(plugin, 30 * 20L);
+        }.runTaskTimer(plugin, 10 * 20L, 10 * 20L);
     }
 
 
     //stress testing
+    /*
     public void ArmorStandSpawn(ArmorStand armorStand) {
         updateBorderValues();
         Location location = validSpawnLocation();
@@ -170,5 +176,7 @@ public class worldBorderClass {
             }
         }.runTaskLater(plugin, 30 * 20L);
     }
+
+     */
 
 }
