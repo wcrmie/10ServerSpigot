@@ -21,21 +21,21 @@ public class setPlayerCharLimCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (Bukkit.getOnlinePlayers().contains(args[0])) {
-            Player p = Bukkit.getPlayer(args[0]);
-            if (Integer.parseInt(args[1]) > 0) {
-                MessageHead messageHead = new MessageHead(this.plugin);
-                p.getPersistentDataContainer().set(messageHead.msgLength, PersistentDataType.INTEGER, Integer.parseInt(args[1]));
-                p.sendMessage(ChatColor.RED + "Your character limit for messages has been set to " + args[1]);
-                sender.sendMessage(ChatColor.GREEN + "Character limit for " + args[0] + " has been set to " + args[1]);
-                return true;
-            } else {
-                sender.sendMessage(ChatColor.RED + "Character limit must be greater than 0!");
-                return false;
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p.getName().equals(args[0])) {
+                if (Integer.parseInt(args[1]) > 0) {
+                    MessageHead messageHead = new MessageHead(this.plugin);
+                    p.getPersistentDataContainer().set(messageHead.msgLength, PersistentDataType.INTEGER, Integer.parseInt(args[1]));
+                    p.sendMessage(ChatColor.RED + "Your character limit for messages has been set to " + args[1]);
+                    sender.sendMessage(ChatColor.GREEN + "Character limit for " + args[0] + " has been set to " + args[1]);
+                    return true;
+                } else {
+                    sender.sendMessage(ChatColor.RED + "Character limit must be greater than 0!");
+                    return false;
+                }
             }
-        } else {
-            sender.sendMessage(ChatColor.RED + "Player not found!");
         }
+        sender.sendMessage(ChatColor.RED + "Player not found!");
         return false;
     }
 }

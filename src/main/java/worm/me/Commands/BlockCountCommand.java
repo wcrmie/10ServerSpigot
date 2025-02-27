@@ -17,7 +17,7 @@ public class BlockCountCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length > 0) {
             try {
-                long newBlockCount = Long.parseLong(args[0]);
+                int newBlockCount = Integer.parseInt(args[0]);
                 if (newBlockCount < 0) {
                     sender.sendMessage(ChatColor.RED + "Block count cannot be negative!");
                     return false;

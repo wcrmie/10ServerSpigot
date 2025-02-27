@@ -9,7 +9,7 @@ commands:
   getExp:
     description: Sends the user a player's associated level and exp values.
     usage: /<command> <player> <skill>
-    permission: Admin
+    permission: 10VS.getExp
   setVoice:
     description: Changes a player's voice and pitch for when their message is displayed above their head.
     usage: /<command> <integer> <double>
@@ -30,7 +30,7 @@ commands:
     usage: /<command>
   blockcount:
     description: Check or set the current block count
-    usage: /<command> <float>
+    usage: /<command> <integer>
     permission: 10VS.blockcount
   expansionpercentage:
     description: Set the percentage of blocks needed for world border expansion

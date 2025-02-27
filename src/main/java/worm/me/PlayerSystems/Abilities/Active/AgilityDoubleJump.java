@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems.Abilities;
+package worm.me.PlayerSystems.Abilities.Active;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
+import worm.me.PlayerSystems.Abilities.AbilitiesMain;
 
 
 public class AgilityDoubleJump {

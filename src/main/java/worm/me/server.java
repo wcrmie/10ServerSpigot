@@ -11,7 +11,6 @@ import worm.me.Commands.*;
 import worm.me.PlayerSystems.Abilities.AbilitiesMain;
 import worm.me.PlayerSystems.Level;
 import worm.me.PlayerSystems.Quests.QuestInitialize;
-import worm.me.PlayerSystems.Quests.QuestListener;
 import worm.me.PlayerSystems.PlayerSpawning;
 import worm.me.WorldBorder.worldBorderSizeHandler;
 
@@ -65,8 +64,6 @@ public final class server extends JavaPlugin {
 
         // Allows ListenerClass to receive events.
         getServer().getPluginManager().registerEvents(new Listener(this), this);
-
-        getServer().getPluginManager().registerEvents(new QuestListener(this), this);
 
         // Allows Command classes to register commands
         this.getCommand("getExp").setExecutor(new GetLevel(this));
