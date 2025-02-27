@@ -1,27 +1,27 @@
 package worm.me;
 
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import net.skinsrestorer.api.SkinsRestorer;
 import net.skinsrestorer.api.SkinsRestorerProvider;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import worm.me.Commands.*;
 import worm.me.PlayerSystems.Abilities.AbilitiesMain;
 import worm.me.PlayerSystems.Level;
 import worm.me.PlayerSystems.Quests.QuestInitialize;
 import worm.me.PlayerSystems.Quests.QuestListener;
+import worm.me.PlayerSystems.worldBorderClass;
+import worm.me.worldborderstuffs.worldBorderSizeClass;
 
 import java.util.*;
 
 public final class server extends JavaPlugin {
 
     public SkinsRestorer skinsRestorer;
+
+    private worldBorderSizeClass worldBorderSizeHandler;
 
     public Map<Material, Integer> miningBlocks = new HashMap<>();
 
@@ -41,6 +41,31 @@ public final class server extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+
+        saveDefaultConfig();
+        FileConfiguration config = getConfig();
+        config.set("pluginEnabled", true);
+
+        if (!config.contains("expansionPercentage")) {
+            config.set("expansionPercentage", 0.25);
+        }
+
+        saveConfig();
+        getLogger().info("Plugin enabled");
+
+        World world = Bukkit.getWorld("world");
+        assert world != null;
+        worldBorderClass worldBorderHandler = new worldBorderClass(this, world);
+        worldBorderSizeHandler = new worldBorderSizeClass(this, world);
+
+        long savedBlockCount = config.getLong("blockCount", 0);
+        worldBorderSizeHandler.setBlockCount(savedBlockCount);
+
+        getServer().getPluginManager().registerEvents(new listener(worldBorderHandler, worldBorderSizeHandler), this);
+
+        // Register commands
+        getCommand("blockcount").setExecutor(new BlockCountCommand(worldBorderSizeHandler));
+        getCommand("expansionpercentage").setExecutor(new ExpansionPercentageCommand(worldBorderSizeHandler));
 
         // Allows ListenerClass to receive events.
         getServer().getPluginManager().registerEvents(new Listener(this), this);
@@ -143,6 +168,15 @@ public final class server extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+
+        HandlerList.unregisterAll(this);
+
+        FileConfiguration config = getConfig();
+        config.set("blockCount", worldBorderSizeHandler.getBlockCount());
+        config.set("pluginEnabled", false);
+        saveConfig();
+
+        getLogger().info("Plugin disabled");
     }
 
     public void broadcast(String message){
