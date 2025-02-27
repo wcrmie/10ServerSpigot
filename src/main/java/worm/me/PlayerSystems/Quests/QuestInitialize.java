@@ -1,5 +1,6 @@
 package worm.me.PlayerSystems.Quests;
 
+import org.bukkit.Material;
 import worm.me.server;
 
 import java.util.HashMap;
