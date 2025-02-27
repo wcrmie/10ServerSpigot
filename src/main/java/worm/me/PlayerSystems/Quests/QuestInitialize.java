@@ -22,7 +22,7 @@ public class QuestInitialize {
         dailyQuestAttributes.put(0, minecobble);
         List<String> collectiron = List.of("Yeah... I use forge actually.", "Collect 32 iron ingots out of furnaces.", "32", Material.IRON_INGOT.toString());
         dailyQuestAttributes.put(1, collectiron);
-        List<String> fish64 = List.of("Go Fish!", "Catch 64 fish.", "64");
+        List<String> fish64 = List.of("Go Fish!", "Catch 64 fish.", "64", Material.COD.toString());
         dailyQuestAttributes.put(2, fish64);
         List<String> buildsnowmen = List.of("Do you wanna build a snowman?", "Build 10 snowmen.", "10");
         dailyQuestAttributes.put(3, buildsnowmen);
