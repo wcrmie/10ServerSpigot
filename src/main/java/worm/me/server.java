@@ -61,8 +61,6 @@ public final class server extends JavaPlugin {
         long savedBlockCount = config.getLong("blockCount", 0);
         worldBorderSizeHandler.setBlockCount(savedBlockCount);
 
-        getServer().getPluginManager().registerEvents(new listener(worldBorderHandler, worldBorderSizeHandler), this);
-
         // Register commands
         getCommand("blockcount").setExecutor(new BlockCountCommand(worldBorderSizeHandler));
         getCommand("expansionpercentage").setExecutor(new ExpansionPercentageCommand(worldBorderSizeHandler));
