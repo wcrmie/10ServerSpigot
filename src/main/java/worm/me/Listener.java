@@ -208,8 +208,11 @@ public class Listener implements org.bukkit.event.Listener {
         String m = event.getMessage();
 
         // message character limit
-        if (m.length() > 192){
-            p.sendMessage(ChatColor.RED + "Messages must be 192 characters or less.");
+
+        PersistentDataContainer c = p.getPersistentDataContainer();
+
+        if (m.length() > c.getOrDefault(messageHead.msgLength, PersistentDataType.INTEGER, 192)){
+            p.sendMessage(ChatColor.RED + String.format("Your messages must be %d characters or less.", c.getOrDefault(messageHead.msgLength, PersistentDataType.INTEGER, 192)));
             event.setCancelled(true);
             return;
         }
