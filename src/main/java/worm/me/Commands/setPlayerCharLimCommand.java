@@ -33,6 +33,8 @@ public class setPlayerCharLimCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "Character limit must be greater than 0!");
                 return false;
             }
+        } else {
+            sender.sendMessage(ChatColor.RED + "Player not found!");
         }
         return false;
     }
