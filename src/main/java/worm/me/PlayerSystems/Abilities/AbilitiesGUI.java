@@ -49,6 +49,11 @@ public class AbilitiesGUI {
                 break;
             }
 
+            if (Objects.requireNonNullElse(container.get(abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY)[i], 0) != 1){
+                // If the ability is not unlocked, add a red glass pane
+                gui.setItem(slotNum, guiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + abilityName, abilityDescription, Arrays.toString(abilityReqs.toArray(new String[0]))));
+            }
+
             // Construct item
             gui.setItem(slotNum, guiConstructor.createGuiItem(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription, Arrays.toString(abilityReqs.toArray(new String[0]))));
 
