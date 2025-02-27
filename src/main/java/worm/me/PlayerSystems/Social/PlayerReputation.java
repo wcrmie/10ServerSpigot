@@ -1,5 +1,7 @@
 package worm.me.PlayerSystems.Social;
 
+import org.bukkit.Statistic;
+import org.bukkit.entity.Player;
 import worm.me.server;
 
 public class PlayerReputation {
