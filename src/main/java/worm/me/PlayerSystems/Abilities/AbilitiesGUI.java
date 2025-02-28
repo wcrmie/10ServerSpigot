@@ -5,24 +5,84 @@ import org.bukkit.Material;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import worm.me.GuiConstructor;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class AbilitiesGUI {
 
-    public void abilitiesGuiOpen(Player p){
+    public void abilitiesActive(Player p){
+        GuiConstructor guiConstructor = new GuiConstructor();
+        PersistentDataContainer container = p.getPersistentDataContainer();
+        Inventory gui = guiConstructor.chestInventory(ChatColor.DARK_GRAY + "Your Active Abilities", 27);
+
+        AbilitiesMain abilities = new AbilitiesMain();
+
+        int[] active = Objects.requireNonNullElse(container.get(abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY), new int[3]);
+
+        try {
+            String abilityName = AbilitiesMain.abilityGuiComponents.keySet().toArray()[active[0]].toString();
+            String abilityMaterial = AbilitiesMain.abilityGuiComponents.get(abilityName).getFirst();
+            String abilityDescription = AbilitiesMain.abilityGuiComponents.get(abilityName).get(1);
+            gui.setItem(11, guiConstructor.createGuiItem(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
+        } catch (Exception e){
+            gui.setItem(11, guiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
+        }
+
+        try {
+            String abilityName = AbilitiesMain.abilityGuiComponents.keySet().toArray()[active[1]].toString();
+            String abilityMaterial = AbilitiesMain.abilityGuiComponents.get(abilityName).getFirst();
+            String abilityDescription = AbilitiesMain.abilityGuiComponents.get(abilityName).get(1);
+            gui.setItem(13, guiConstructor.createGuiItem(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
+        } catch (Exception e){
+            gui.setItem(13, guiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
+        }
+
+        try {
+            String abilityName = AbilitiesMain.abilityGuiComponents.keySet().toArray()[active[2]].toString();
+            String abilityMaterial = AbilitiesMain.abilityGuiComponents.get(abilityName).getFirst();
+            String abilityDescription = AbilitiesMain.abilityGuiComponents.get(abilityName).get(1);
+            gui.setItem(15, guiConstructor.createGuiItem(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
+        } catch (Exception e){
+            gui.setItem(15, guiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
+        }
+
+        p.openInventory(gui);
+    }
+
+    public void abilitiesSelect(Player p, int slot){
         GuiConstructor guiConstructor = new GuiConstructor();
 
+        PersistentDataContainer container = p.getPersistentDataContainer();
+
+        String title;
+
+        if (slot == 0) {
+            title = "First";
+        } else if (slot == 1){
+            title = "Second";
+        } else{
+            title = "Third";
+
+        }
+
         // Create the GUI
-        Inventory gui = guiConstructor.chestInventory( ChatColor.DARK_GRAY + "Abilities", 54);
+        Inventory gui = guiConstructor.chestInventory( ChatColor.DARK_GRAY + title + " Ability Slot", 54);
 
         // Create gui items methodically
         AbilitiesMain abilities = new AbilitiesMain();
+
+        // for each item
         for (int i = 0; i < AbilitiesMain.abilityGuiComponents.size(); i++){
+
+            // Get the ability name, material, and description
             String abilityName = AbilitiesMain.abilityGuiComponents.keySet().toArray()[i].toString();
             String abilityMaterial = AbilitiesMain.abilityGuiComponents.get(abilityName).getFirst();
             String abilityDescription = AbilitiesMain.abilityGuiComponents.get(abilityName).get(1);
@@ -45,29 +105,65 @@ public class AbilitiesGUI {
             }
 
             // Never have more than 28 items in the GUI
-            if (i > 28){
+            if (i > 28 || i > AbilitiesMain.abilityGuiComponents.size()){
                 break;
             }
 
-            if (Objects.requireNonNullElse(container.get(abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY)[i], 0) != 1){
+            if (Objects.requireNonNullElse(container.get(abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY), new int[500])[i] == 0){
                 // If the ability is not unlocked, add a red glass pane
                 gui.setItem(slotNum, guiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + abilityName, abilityDescription, Arrays.toString(abilityReqs.toArray(new String[0]))));
+            } else {
+
+                // Construct item
+                gui.setItem(slotNum, guiConstructor.createGuiItem(Material.valueOf(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription, Arrays.toString(abilityReqs.toArray(new String[0]))));
             }
 
-            // Construct item
-            gui.setItem(slotNum, guiConstructor.createGuiItem(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription, Arrays.toString(abilityReqs.toArray(new String[0]))));
-
             // Open inventory to player.
-            p.openInventory(gui);
         }
+        p.openInventory(gui);
     }
 
-    public void guiHandler(ItemStack item, Player p){
+    public void activateAbility(Player p, int slot, InventoryClickEvent e){
         // Handle the GUI events here
         AbilitiesMain abilities = new AbilitiesMain();
+        PersistentDataContainer container = p.getPersistentDataContainer();
 
-        if (item.getType().equals(Material.RED_STAINED_GLASS_PANE)){
+        int slotNum = slot - 10;
 
+        if (slotNum < 9 || slotNum > 44){
+            return;
+        }
+
+        if (slotNum % 9 == 0){
+            return;
+        } else if ((slotNum + 1) % 9 == 0){
+            return;
+        }
+
+        if (Objects.requireNonNullElse(container.get(abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY)[slotNum], 0) == 1){
+            int[] active = Objects.requireNonNullElse(container.get(abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY), new int[3]);
+            if (e.getView().getTitle().contains("First Ability Slot")){
+                active[0] = slotNum;
+                container.set(abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
+            }
+            if (e.getView().getTitle().contains("Second Ability Slot")){
+                active[1] = slotNum;
+                container.set(abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
+            }
+            if (e.getView().getTitle().contains("Third Ability Slot")){
+                active[2] = slotNum;
+                container.set(abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
+            }
         }
     }
+
+    public void initializeAbilitySelection(Player p, InventoryClickEvent e){
+
+        if (e.getSlot() == 11) abilitiesSelect(p, 0);
+        if (e.getSlot() == 13) abilitiesSelect(p, 1);
+        if (e.getSlot() == 15) abilitiesSelect(p, 2);
+        e.setCancelled(true);
+
+    }
+
 }

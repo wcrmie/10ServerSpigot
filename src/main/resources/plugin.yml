@@ -40,3 +40,6 @@ commands:
     description: Set the character limit for chat messages for a specific player
     usage: /<command> <Player> <integer>
     permission: 10VS.setCharLimit
+  abilities:
+    description: Opens the ability selection GUI for the player.
+    usage: /<command>

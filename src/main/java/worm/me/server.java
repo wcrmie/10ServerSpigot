@@ -73,6 +73,7 @@ public final class server extends JavaPlugin {
         this.getCommand("rules").setExecutor(new RulesCommand());
         this.getCommand("sit").setExecutor(new SitCommand());
         this.getCommand("setCharLimit").setExecutor(new setPlayerCharLimCommand(this));
+        this.getCommand("abilities").setExecutor(new openAbilitiesGUICommand());
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 

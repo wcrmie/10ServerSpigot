@@ -13,6 +13,7 @@ import net.skinsrestorer.api.storage.PlayerStorage;
 import net.skinsrestorer.api.storage.SkinStorage;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -32,6 +33,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import worm.me.PlayerSystems.*;
+import worm.me.PlayerSystems.Abilities.AbilitiesGUI;
 import worm.me.PlayerSystems.Abilities.AbilitiesMain;
 import worm.me.PlayerSystems.Abilities.Active.AgilityDash;
 import worm.me.PlayerSystems.Abilities.Active.AgilityDoubleJump;
@@ -346,6 +348,18 @@ public class Listener implements org.bukkit.event.Listener {
         InventoryView inv = e.getView();
         String invName = inv.getTitle();
 
+        if (invName.equals(ChatColor.DARK_GRAY + "Your Active Abilities")){
+            AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
+            abilitiesGUI.initializeAbilitySelection(p, e);
+            e.setCancelled(true);
+        }
+
+        if (invName.contains("Ability Slot")) {
+            e.setCancelled(true);
+            AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
+            abilitiesGUI.activateAbility(p, e.getSlot(), e);
+            abilitiesGUI.abilitiesActive(p);
+        }
 
         if (invName.equals(ChatColor.DARK_GRAY + "Skins")){
             e.setCancelled(true);
@@ -421,9 +435,5 @@ public class Listener implements org.bukkit.event.Listener {
             e.setCancelled(true);
 
         }
-
-
-
     }
-
 }
