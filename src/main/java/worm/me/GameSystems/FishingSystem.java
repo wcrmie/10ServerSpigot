@@ -20,7 +20,7 @@ public class FishingSystem {
         LootTable1.add(new ItemStack(Material.COD, 1));
         LootTable1.add(new ItemStack(Material.SALMON, 1));
 
-        LootTable2.add(new ItemStack(Material.DIAMOND_BLOCK, 5));
+        LootTable2.add(new ItemStack(Material.PUFFERFISH, 5));
     }
 
     public void handleFishing(PlayerFishEvent event) {
