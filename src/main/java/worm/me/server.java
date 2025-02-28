@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import worm.me.Commands.*;
+import worm.me.GameSystems.treasureChests;
 import worm.me.PlayerSystems.Abilities.AbilitiesMain;
 import worm.me.PlayerSystems.Level;
 import worm.me.PlayerSystems.Quests.QuestInitialize;
@@ -57,10 +58,12 @@ public final class server extends JavaPlugin {
 
         long savedBlockCount = config.getLong("blockCount", 0);
         worldBorderSizeHandler.setBlockCount(savedBlockCount);
+        treasureChests treasureChestHandler = new treasureChests(this);
 
         // Register commands
         getCommand("blockcount").setExecutor(new BlockCountCommand(worldBorderSizeHandler));
         getCommand("expansionpercentage").setExecutor(new ExpansionPercentageCommand(worldBorderSizeHandler));
+
 
         // Allows ListenerClass to receive events.
         getServer().getPluginManager().registerEvents(new Listener(this), this);
@@ -73,6 +76,7 @@ public final class server extends JavaPlugin {
         this.getCommand("rules").setExecutor(new RulesCommand());
         this.getCommand("sit").setExecutor(new SitCommand());
         this.getCommand("setCharLimit").setExecutor(new setPlayerCharLimCommand(this));
+        this.getCommand("spawnchest").setExecutor(new treasureChestSpawnCommand(this, treasureChestHandler));
         this.getCommand("abilities").setExecutor(new openAbilitiesGUICommand());
 
         this.skinsRestorer = SkinsRestorerProvider.get();
