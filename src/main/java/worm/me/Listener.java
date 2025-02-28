@@ -31,6 +31,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import worm.me.GameSystems.FishingSystem;
 import worm.me.PlayerSystems.*;
 import worm.me.PlayerSystems.Abilities.AbilitiesMain;
 import worm.me.PlayerSystems.Abilities.Active.AgilityDash;
@@ -61,13 +62,21 @@ public class Listener implements org.bukkit.event.Listener {
         this.plugin = plugin;
     }
 
+    @EventHandler
+    public void onPlayerFish(PlayerFishEvent event) {
+        FishingSystem handler = new FishingSystem(plugin);
+        handler.handleFishing(event);
+    }
 
-    @EventHandler public void onBlockPlace(BlockPlaceEvent event){
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event){
         worldBorderSizeHandler handler = new worldBorderSizeHandler(plugin);
         handler.incrementBlockCount();
     }
 
-    @EventHandler public void onBlockBreak(BlockBreakEvent event){
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event){
         worldBorderSizeHandler handler = new worldBorderSizeHandler(plugin);
         handler.decrementBlockCount();
     }
