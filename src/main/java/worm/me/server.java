@@ -58,7 +58,7 @@ public final class server extends JavaPlugin {
 
         long savedBlockCount = config.getLong("blockCount", 0);
         worldBorderSizeHandler.setBlockCount(savedBlockCount);
-        treasureChests treasureChestHandler = new treasureChests(this);
+        treasureChests treasureChestHandler = new treasureChests();
 
         // Register commands
         getCommand("blockcount").setExecutor(new BlockCountCommand(worldBorderSizeHandler));
@@ -76,7 +76,7 @@ public final class server extends JavaPlugin {
         this.getCommand("rules").setExecutor(new RulesCommand());
         this.getCommand("sit").setExecutor(new SitCommand());
         this.getCommand("setCharLimit").setExecutor(new setPlayerCharLimCommand(this));
-        this.getCommand("spawnchest").setExecutor(new treasureChestSpawnCommand(this, treasureChestHandler));
+        this.getCommand("spawnchest").setExecutor(new treasureChestSpawnCommand());
         this.getCommand("abilities").setExecutor(new openAbilitiesGUICommand());
 
         this.skinsRestorer = SkinsRestorerProvider.get();

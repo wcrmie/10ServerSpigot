@@ -13,13 +13,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class treasureChests {
 
-    private final JavaPlugin plugin;
     private final World world = Bukkit.getWorld("ul_Void");
     private final WorldBorder worldBorder = world.getWorldBorder();
     private int xMoreThan, xLessThan, yMoreThan, yLessThan, zMoreThan, zLessThan;
 
-    public treasureChests(server plugin) {
-        this.plugin = plugin;
+    public treasureChests() {
         updateBorderValues();
     }
 

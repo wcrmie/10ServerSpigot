@@ -8,13 +8,7 @@ import worm.me.server;
 
 public class treasureChestSpawnCommand implements CommandExecutor {
 
-    private final server plugin;
-    private final treasureChests treasureChestHandler;
-
-    public treasureChestSpawnCommand(server plugin, treasureChests treasureChestHandler) {
-        this.plugin = plugin;
-        this.treasureChestHandler = treasureChestHandler;
-    }
+    private final treasureChests treasureChestHandler = new treasureChests();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
