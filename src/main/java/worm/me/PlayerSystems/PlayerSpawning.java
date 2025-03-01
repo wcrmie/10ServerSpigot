@@ -8,6 +8,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.WorldBorder;
 import worm.me.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class PlayerSpawning {
 
@@ -15,6 +18,7 @@ public class PlayerSpawning {
     private final World world = Bukkit.getWorld("ul_Void");
     private final WorldBorder worldBorder = world.getWorldBorder();
     private int xMoreThan, xLessThan, yMoreThan, yLessThan, zMoreThan, zLessThan;
+    private final List<Location> blocksToRemove = new ArrayList<>();
 
     public PlayerSpawning(server plugin) {
         this.plugin = plugin;
@@ -129,25 +133,38 @@ public class PlayerSpawning {
         Location location = validSpawnLocation();
         Block block = world.getBlockAt(location);
         block.setType(Material.BEDROCK);
+        blocksToRemove.add(block.getLocation());
+
         new BukkitRunnable() {
             @Override
             public void run() {
-                location.add(0.5, 1, 0.5);
-                player.teleport(location);
+                player.teleport(location.clone().add(0.5, 1, 0.5));
             }
-        }.runTaskLater(plugin, 1L);
+        }.runTaskLater(plugin, 5L);
+
 
         new BukkitRunnable() {
             @Override
             public void run() {
                 if (player.getLocation().distance(location) >= 5) {
-                    location.subtract(0.5, 1, 0.5);
                     Block block = world.getBlockAt(location);
                     block.setType(Material.AIR);
                     cancel();
                 }
             }
         }.runTaskTimer(plugin, 10 * 20L, 10 * 20L);
+    }
+
+    public void removeAllBlocks() {
+        int size = blocksToRemove.size();
+        for (int i = 0; i <= size; i++) {
+            Location location = blocksToRemove.get(i);
+            Block block = world.getBlockAt(location);
+            if (block.getType() == Material.BEDROCK) {
+                block.setType(Material.AIR);
+            }
+        }
+        blocksToRemove.clear();
     }
 
 
