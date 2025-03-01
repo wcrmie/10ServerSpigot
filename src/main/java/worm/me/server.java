@@ -198,11 +198,6 @@ public final class server extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
-
-        if (playerspawning != null) {
-            playerspawning.removeAllBlocks();
-        }
 
         FileConfiguration config = getConfig();
         worm.me.WorldBorder.worldBorderSizeHandler worldBorderSizeHandler = new worldBorderSizeHandler(this);

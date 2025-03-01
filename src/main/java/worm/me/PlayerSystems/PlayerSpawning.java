@@ -1,30 +1,25 @@
 package worm.me.PlayerSystems;
-
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.WorldBorder;
+import org.enginehub.linbus.stream.token.LinToken;
 import worm.me.server;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-
+import java.util.Map;
 public class PlayerSpawning {
-
     private final JavaPlugin plugin;
     private final World world = Bukkit.getWorld("ul_Void");
     private final WorldBorder worldBorder = world.getWorldBorder();
     private int xMoreThan, xLessThan, yMoreThan, yLessThan, zMoreThan, zLessThan;
-    private final List<Location> blocksToRemove = new ArrayList<>();
-
     public PlayerSpawning(server plugin) {
         this.plugin = plugin;
         updateBorderValues();
     }
-
     private void updateBorderValues() {
         double borderSize = worldBorder.getSize();
         xMoreThan = (int) ((borderSize / 2) * -1);
@@ -34,14 +29,12 @@ public class PlayerSpawning {
         yMoreThan = 220;
         yLessThan = 280;
     }
-
     public Location worldBorderGetRandomBlock() {
         int xCord = (int) (Math.random() * (((xLessThan-1) - (xMoreThan+1)) + 1)) + (xMoreThan+1);
         int yCord = (int) (Math.random() * (((yLessThan-1) - (yMoreThan+1)) + 1)) + (yMoreThan+1);
         int zCord = (int) (Math.random() * (((zLessThan-1) - (zMoreThan+1)) + 1)) + (zMoreThan+1);
         return new Location(world, xCord, yCord, zCord);
     }
-
     public Location validSpawnLocation() {
         Location location =           findValidLocation(17, 17, 17, 45, 45, 45 ,3,    "Estra Extra big used");
         if (location == null) {
@@ -57,7 +50,6 @@ public class PlayerSpawning {
                         }}}}}
         return location;
     }
-
     private Location findValidLocation(int xSize, int ySize, int zSize, int xBSize, int yBSize, int zBSize, int maxAttempts, String successMessage) {
         int yOffSetUp = 1;
         int locationAttempts = 0;
@@ -122,18 +114,18 @@ public class PlayerSpawning {
         }
         return null;
     }
-
     private boolean isAir(int x, int y, int z) {
         Block block = world.getBlockAt(x, y, z);
         return block.getType() == Material.AIR;
     }
 
+
+
     public void playerSpawn(Player player) {
         updateBorderValues();
         Location location = validSpawnLocation();
         Block block = world.getBlockAt(location);
-        block.setType(Material.BEDROCK);
-        blocksToRemove.add(block.getLocation());
+        block.setType(Material.STONE);
 
         new BukkitRunnable() {
             @Override
@@ -141,8 +133,6 @@ public class PlayerSpawning {
                 player.teleport(location.clone().add(0.5, 1, 0.5));
             }
         }.runTaskLater(plugin, 5L);
-
-
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -153,18 +143,6 @@ public class PlayerSpawning {
                 }
             }
         }.runTaskTimer(plugin, 10 * 20L, 10 * 20L);
-    }
-
-    public void removeAllBlocks() {
-        int size = blocksToRemove.size();
-        for (int i = 0; i <= size; i++) {
-            Location location = blocksToRemove.get(i);
-            Block block = world.getBlockAt(location);
-            if (block.getType() == Material.BEDROCK) {
-                block.setType(Material.AIR);
-            }
-        }
-        blocksToRemove.clear();
     }
 
 
@@ -191,7 +169,5 @@ public class PlayerSpawning {
             }
         }.runTaskLater(plugin, 30 * 20L);
     }
-
      */
-
 }
