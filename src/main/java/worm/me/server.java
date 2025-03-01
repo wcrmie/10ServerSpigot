@@ -36,6 +36,8 @@ public final class server extends JavaPlugin {
     public List<Material> planks = new ArrayList<>();
     public List<Material> miscs = new ArrayList<>();
 
+    public static Map<String, List<Material>> tools = new HashMap<>();
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -53,12 +55,10 @@ public final class server extends JavaPlugin {
 
         World world = Bukkit.getWorld("world");
         assert world != null;
-        PlayerSpawning playerSpanwingHandler = new PlayerSpawning(this);
         worldBorderSizeHandler = new worldBorderSizeHandler(this);
 
         long savedBlockCount = config.getLong("blockCount", 0);
         worldBorderSizeHandler.setBlockCount(savedBlockCount);
-        treasureChests treasureChestHandler = new treasureChests();
 
         // Register commands
         getCommand("blockcount").setExecutor(new BlockCountCommand(worldBorderSizeHandler));
@@ -80,6 +80,36 @@ public final class server extends JavaPlugin {
         this.getCommand("abilities").setExecutor(new openAbilitiesGUICommand());
 
         this.skinsRestorer = SkinsRestorerProvider.get();
+
+        // Create Map for tools
+        List<Material> pickaxes = new ArrayList<>();
+        pickaxes.add(Material.WOODEN_PICKAXE);
+        pickaxes.add(Material.STONE_PICKAXE);
+        pickaxes.add(Material.IRON_PICKAXE);
+        pickaxes.add(Material.DIAMOND_PICKAXE);
+
+        List<Material> axes = new ArrayList<>();
+        axes.add(Material.WOODEN_AXE);
+        axes.add(Material.STONE_AXE);
+        axes.add(Material.IRON_AXE);
+        axes.add(Material.DIAMOND_AXE);
+
+        List<Material> shovels = new ArrayList<>();
+        shovels.add(Material.WOODEN_SHOVEL);
+        shovels.add(Material.STONE_SHOVEL);
+        shovels.add(Material.IRON_SHOVEL);
+        shovels.add(Material.DIAMOND_SHOVEL);
+
+        List<Material> swords = new ArrayList<>();
+        swords.add(Material.WOODEN_SWORD);
+        swords.add(Material.STONE_SWORD);
+        swords.add(Material.IRON_SWORD);
+        swords.add(Material.DIAMOND_SWORD);
+
+        tools.put("pickaxe", pickaxes);
+        tools.put("axe", axes);
+        tools.put("shovel", shovels);
+        tools.put("sword", swords);
 
         // Set exp to level keys
         expToLevel.put(level.mining, level.miningLevel);

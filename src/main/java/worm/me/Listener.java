@@ -45,6 +45,7 @@ import worm.me.PlayerSystems.Social.MessageHead;
 import worm.me.PlayerSystems.Social.PlayerReputation;
 import worm.me.PlayerSystems.Social.Skin.SkinGui;
 import org.bukkit.event.player.PlayerJoinEvent;
+import worm.me.PlayerSystems.Tools.ToolsEvents;
 import worm.me.WorldBorder.worldBorderSizeHandler;
 
 import java.util.HashMap;
@@ -257,18 +258,6 @@ public class Listener implements org.bukkit.event.Listener {
         }
     }
 
-    @EventHandler
-    public void onPlayerDamaged(EntityDamageByEntityEvent e){
-
-        // If both attacker and victim are players
-        if (e.getEntity().getType() != EntityType.PLAYER) return;
-        if (e.getDamager().getType() != EntityType.PLAYER) return;
-        Player attacker = (Player) e.getDamager();
-        Player victim = (Player) e.getEntity();
-
-        // Register aggro
-        PlayerReputation rep = new PlayerReputation(plugin);
-    }
 
     @EventHandler
     public void onPlayerCrouchEvent(PlayerToggleSneakEvent e){
@@ -333,7 +322,7 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e){
         Player p = e.getPlayer();
-        if (Objects.requireNonNull(e.getClickedBlock()).getType().equals(Material.END_PORTAL_FRAME)){
+        if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().equals(Material.END_PORTAL_FRAME)){
             QuestGui questGui = new QuestGui(this.plugin);
             questGui.questGuiOpen(p);
         }
@@ -351,7 +340,42 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
     @EventHandler
+    public void onToolBreak(PlayerItemBreakEvent e){
+
+        String tool = e.getBrokenItem().getType().toString().toLowerCase();
+
+        for (String s : server.tools.keySet()){
+            if (tool.contains(s)){
+                ToolsEvents toolsEvents = new ToolsEvents();
+                toolsEvents.toolBreak(e.getPlayer(), e);
+                break;
+            }
+        }
+    }
+
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent e){
+        String tool = e.getItemDrop().getItemStack().toString().toLowerCase();
+
+        for (String s : server.tools.keySet()){
+            if (tool.contains(s)){
+                e.setCancelled(true);
+                break;
+            }
+        }
+    }
+
+    @EventHandler
     public void onInventoryClick(InventoryClickEvent e){
+
+        String tool = e.getCursor().getType().toString().toLowerCase();
+        for (String s : server.tools.keySet()){
+            if (tool.contains(s)){
+                if (e.getClickedInventory().getType() != InventoryType.PLAYER) e.setCancelled(true);
+                break;
+            }
+        }
+
         GeneratorEdit genEdit = new GeneratorEdit();
         Player p = (Player) e.getWhoClicked();
         InventoryView inv = e.getView();
@@ -364,10 +388,10 @@ public class Listener implements org.bukkit.event.Listener {
         }
 
         if (invName.contains("Ability Slot")) {
-            e.setCancelled(true);
             AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
             abilitiesGUI.activateAbility(p, e.getSlot(), e);
             abilitiesGUI.abilitiesActive(p);
+            e.setCancelled(true);
         }
 
         if (invName.equals(ChatColor.DARK_GRAY + "Skins")){
