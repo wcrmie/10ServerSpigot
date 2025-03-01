@@ -29,11 +29,11 @@ public class FishingSystem {
             Double RNG = ThreadLocalRandom.current().nextDouble(0.0, 100.0);
             Item item = (Item) event.getCaught();
 
-            if (RNG < 30) {
+            if (RNG < 60) {
                 item.setItemStack(LootTable1.get(ThreadLocalRandom.current().nextInt(LootTable1.size())));
-            } else if (RNG < 50) {
+            } else if (RNG < 80) {
                 item.setItemStack(LootTable2.get(ThreadLocalRandom.current().nextInt(LootTable2.size())));
-            } else if (RNG < 90) {
+            } else if (RNG < 99) {
                 spawnEntityOnHook(event);
                 item.setItemStack(new ItemStack(Material.AIR));
             } else {
@@ -46,7 +46,7 @@ public class FishingSystem {
     private void spawnEntityOnHook(PlayerFishEvent event) {
         Location hookLocation = event.getHook().getLocation();
         Double RNG = ThreadLocalRandom.current().nextDouble(0.0, 100.0);
-        Double RNG2 = ThreadLocalRandom.current().nextDouble(3.0, 5.0);
+        Double RNG2 = ThreadLocalRandom.current().nextDouble(0.1, 0.2);
         Entity entity = null;
 
         if (RNG < 50) {
@@ -61,7 +61,7 @@ public class FishingSystem {
 
         if (entity != null && event.getPlayer() != null) {
             Location playerLocation = event.getPlayer().getLocation();
-            org.bukkit.util.Vector direction = playerLocation.subtract(hookLocation).toVector().normalize();
+            org.bukkit.util.Vector direction = playerLocation.subtract(hookLocation).toVector();
 
             entity.setVelocity(direction.multiply(RNG2));
         }
