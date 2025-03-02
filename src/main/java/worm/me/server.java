@@ -13,6 +13,7 @@ import worm.me.PlayerSystems.Abilities.AbilitiesMain;
 import worm.me.PlayerSystems.Level;
 import worm.me.PlayerSystems.Quests.QuestInitialize;
 import worm.me.PlayerSystems.PlayerSpawning;
+import worm.me.PlayerSystems.saddleRide;
 import worm.me.WorldBorder.worldBorderSizeHandler;
 
 import java.util.*;
@@ -23,6 +24,7 @@ public final class server extends JavaPlugin {
 
     private worm.me.WorldBorder.worldBorderSizeHandler worldBorderSizeHandler;
     private PlayerSpawning playerspawning;
+    private saddleRide saddleRide;
 
     public Map<Material, Integer> miningBlocks = new HashMap<>();
 
@@ -62,6 +64,7 @@ public final class server extends JavaPlugin {
         assert world != null;
         worldBorderSizeHandler = new worldBorderSizeHandler(this);
         playerspawning = new PlayerSpawning(this);
+        saddleRide = new saddleRide(this);
 
 
         // Register commands
