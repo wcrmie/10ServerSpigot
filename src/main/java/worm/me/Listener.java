@@ -24,6 +24,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -33,6 +34,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import worm.me.GameSystems.FishingSystem;
+import worm.me.GameSystems.artBlocks;
 import worm.me.PlayerSystems.*;
 import worm.me.PlayerSystems.Abilities.AbilitiesGUI;
 import worm.me.PlayerSystems.Abilities.AbilitiesMain;
@@ -91,14 +93,14 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onPlayerLeftClick(EntityDamageByEntityEvent event){
-        Bukkit.getServer().broadcastMessage("lis left click");
+
         saddleRide handler = new saddleRide(plugin);
         handler.leftClick(event);
     }
 
     @EventHandler
     public void onPlayerRightClick(PlayerInteractEntityEvent event){
-        Bukkit.getServer().broadcastMessage("lis right click");
+
         saddleRide handler = new saddleRide(plugin);
         handler.rightClick(event);
     }
@@ -295,6 +297,7 @@ public class Listener implements org.bukkit.event.Listener {
         }
     }
 
+
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent e){
 
@@ -334,10 +337,19 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e){
+
+        if (e.getHand() != EquipmentSlot.HAND) {
+            return;
+        }
+
         Player p = e.getPlayer();
         if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().equals(Material.END_PORTAL_FRAME)){
             QuestGui questGui = new QuestGui(this.plugin);
             questGui.questGuiOpen(p);
+        }
+        if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("WOOL")){
+            artBlocks handler = new artBlocks(plugin);
+            handler.rightClick(e);
         }
     }
 
