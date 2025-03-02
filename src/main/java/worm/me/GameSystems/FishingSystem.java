@@ -55,14 +55,14 @@ public class FishingSystem {
 
     public void spawnEntityOnHook(PlayerFishEvent event) {
         Location hookLocation = event.getHook().getLocation();
-        double RNG2 = ThreadLocalRandom.current().nextDouble(3.0, 5.0);
+        double RNG2 = ThreadLocalRandom.current().nextDouble(0.1, 0.2);
 
 
         Entity entity = generateSeaCreature(hookLocation);
 
         if (entity != null && event.getPlayer() != null) {
             Location playerLocation = event.getPlayer().getLocation();
-            org.bukkit.util.Vector direction = playerLocation.subtract(hookLocation).toVector().normalize();
+            org.bukkit.util.Vector direction = playerLocation.subtract(hookLocation).toVector();
 
             entity.setVelocity(direction.multiply(RNG2));
         }

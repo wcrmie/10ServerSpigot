@@ -16,6 +16,7 @@ import worm.me.PlayerSystems.Quests.QuestInitialize;
 import worm.me.PlayerSystems.PlayerSpawning;
 import worm.me.PlayerSystems.Social.Hats.Hats;
 import worm.me.PlayerSystems.Social.Hats.HatsList;
+import worm.me.PlayerSystems.saddleRide;
 import worm.me.WorldBorder.worldBorderSizeHandler;
 
 import java.util.*;
@@ -25,6 +26,8 @@ public final class server extends JavaPlugin {
     public SkinsRestorer skinsRestorer;
 
     private worm.me.WorldBorder.worldBorderSizeHandler worldBorderSizeHandler;
+    private PlayerSpawning playerspawning;
+    private saddleRide saddleRide;
 
     public Map<Material, Integer> miningBlocks = new HashMap<>();
 
@@ -53,15 +56,19 @@ public final class server extends JavaPlugin {
             config.set("expansionPercentage", 0.25);
         }
 
+        if (!config.contains("blockCount")) {
+            config.set("blockCount", 0);
+        }
+
         saveConfig();
         getLogger().info("Plugin enabled");
 
         World world = Bukkit.getWorld("world");
         assert world != null;
         worldBorderSizeHandler = new worldBorderSizeHandler(this);
+        playerspawning = new PlayerSpawning(this);
+        saddleRide = new saddleRide(this);
 
-        long savedBlockCount = config.getLong("blockCount", 0);
-        worldBorderSizeHandler.setBlockCount(savedBlockCount);
 
         // Register commands
         getCommand("blockcount").setExecutor(new BlockCountCommand(worldBorderSizeHandler));

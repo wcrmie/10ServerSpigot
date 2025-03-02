@@ -8,8 +8,8 @@ import worm.me.server;
 
 public class worldBorderSizeHandler {
     private final server plugin;
-    private final World world = Bukkit.getWorld("ul_Void");
-    private final WorldBorder worldBorder = world.getWorldBorder();
+    private World world;
+    private WorldBorder worldBorder;
     private long blockCount;
     private final int baseSize;
     private double expansionPercentage;
@@ -17,18 +17,17 @@ public class worldBorderSizeHandler {
     public worldBorderSizeHandler(server plugin) {
         this.plugin = plugin;
         this.baseSize = 20;
-        this.blockCount = 0;
+        this.world = Bukkit.getWorld("ul_Void");
+        this.worldBorder = world.getWorldBorder();
+        this.worldBorder.setCenter(0.0, 0.0);
 
-        // Load expansion percentage from config, default to 0.25%
         FileConfiguration config = plugin.getConfig();
         this.expansionPercentage = config.getDouble("expansionPercentage", 0.25);
-
-        worldBorder.setCenter(0.0, 0.0);
-        worldBorder.setSize(baseSize);
+        this.blockCount = config.getLong("blockCount", 0);
     }
 
     public void adjustWorldBorder() {
-        long worldBlockSize = (long) (worldBorder.getSize() * worldBorder.getSize() * 60); // 60 is world height
+        long worldBlockSize = (long) (worldBorder.getSize() * worldBorder.getSize() * 75); // 75 is world height
 
 
         int newSize = (int) (baseSize + (blockCount / (worldBlockSize * (expansionPercentage / 100.0))));
@@ -42,16 +41,12 @@ public class worldBorderSizeHandler {
     }
 
     public void incrementBlockCount() {
-        Bukkit.getScheduler().runTask(plugin, () -> {
-            blockCount++;
-            adjustWorldBorder();
-        });
+        blockCount++;
+        adjustWorldBorder();
     }
 
     public void decrementBlockCount() {
-        if (blockCount > 0) {
-            blockCount--;
-        }
+        blockCount--;
     }
 
     public long getBlockCount() {

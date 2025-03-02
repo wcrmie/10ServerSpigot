@@ -51,7 +51,6 @@ public class Listener implements org.bukkit.event.Listener {
 
     private final server plugin;
 
-
     private final Map<Player, Boolean> doubleJumpMap = new HashMap<>();
 
     public Listener(server plugin) {
@@ -81,6 +80,20 @@ public class Listener implements org.bukkit.event.Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event){
         PlayerSpawning handler = new PlayerSpawning(plugin);
         handler.playerSpawn(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerLeftClick(EntityDamageByEntityEvent event){
+        Bukkit.getServer().broadcastMessage("lis left click");
+        saddleRide handler = new saddleRide(plugin);
+        handler.leftClick(event);
+    }
+
+    @EventHandler
+    public void onPlayerRightClick(PlayerInteractEntityEvent event){
+        Bukkit.getServer().broadcastMessage("lis right click");
+        saddleRide handler = new saddleRide(plugin);
+        handler.rightClick(event);
     }
 
     @EventHandler
