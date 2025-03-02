@@ -39,14 +39,20 @@ public class saddleRide {
             Player thrower = (Player) event.getDamager();
             Player rider = (Player) event.getEntity();
             if (thrower.getPassengers().contains(rider)) {
-                getThrown(rider, thrower);
+                if (thrower.isSneaking()) {
+                    getThrown(rider, thrower);
+                }
             }
         }
     }
 
-    public void getOnPlayer(Player rider, Player clickedPlayer){
+    public void getOnPlayer(Player rider, Player clickedPlayer) {
         Bukkit.getServer().broadcastMessage("get on player");
-        clickedPlayer.addPassenger(rider);
+        Player topPlayer = clickedPlayer;
+        while (!topPlayer.getPassengers().isEmpty() && topPlayer.getPassengers().get(0) instanceof Player) {
+            topPlayer = (Player) topPlayer.getPassengers().get(0);
+        }
+        topPlayer.addPassenger(rider);
     }
 
     public void getThrown(Player rider, Player thrower){
@@ -56,7 +62,7 @@ public class saddleRide {
             @Override
             public void run() {
                 Location playerLocation = thrower.getLocation();
-                org.bukkit.util.Vector direction = thrower.getLocation().getDirection().multiply(2);
+                org.bukkit.util.Vector direction = thrower.getLocation().getDirection().multiply(1.5);
                 rider.setVelocity(direction);
             }
         }.runTaskLater(plugin, 2L);
