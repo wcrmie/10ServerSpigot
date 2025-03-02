@@ -51,6 +51,10 @@ public final class server extends JavaPlugin {
             config.set("expansionPercentage", 0.25);
         }
 
+        if (!config.contains("blockCount")) {
+            config.set("blockCount", 0);
+        }
+
         saveConfig();
         getLogger().info("Plugin enabled");
 
@@ -59,8 +63,6 @@ public final class server extends JavaPlugin {
         worldBorderSizeHandler = new worldBorderSizeHandler(this);
         playerspawning = new PlayerSpawning(this);
 
-        long savedBlockCount = config.getLong("blockCount", 0);
-        worldBorderSizeHandler.setBlockCount(savedBlockCount);
 
         // Register commands
         getCommand("blockcount").setExecutor(new BlockCountCommand(worldBorderSizeHandler));
