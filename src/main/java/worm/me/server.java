@@ -9,6 +9,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import worm.me.Commands.*;
+import worm.me.GameSystems.artBlocks;
 import worm.me.GameSystems.treasureChests;
 import worm.me.PlayerSystems.Abilities.AbilitiesMain;
 import worm.me.PlayerSystems.Level;
@@ -28,6 +29,7 @@ public final class server extends JavaPlugin {
     private worm.me.WorldBorder.worldBorderSizeHandler worldBorderSizeHandler;
     private PlayerSpawning playerspawning;
     private saddleRide saddleRide;
+    private artBlocks artBlocks;
 
     public Map<Material, Integer> miningBlocks = new HashMap<>();
 
@@ -68,6 +70,7 @@ public final class server extends JavaPlugin {
         worldBorderSizeHandler = new worldBorderSizeHandler(this);
         playerspawning = new PlayerSpawning(this);
         saddleRide = new saddleRide(this);
+        artBlocks = new artBlocks(this);
 
 
         // Register commands
