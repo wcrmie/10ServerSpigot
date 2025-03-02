@@ -20,7 +20,6 @@ public class saddleRide {
     }
 
     public void rightClick(PlayerInteractEntityEvent event){
-        Bukkit.getServer().broadcastMessage("right click");
         if (event.getRightClicked() instanceof Player) {
             Player clickedPlayer = (Player) event.getRightClicked();
             Player rider = event.getPlayer();
@@ -34,7 +33,6 @@ public class saddleRide {
     }
 
     public void leftClick(EntityDamageByEntityEvent event){
-        Bukkit.getServer().broadcastMessage("left click");
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player){
             Player thrower = (Player) event.getDamager();
             Player rider = (Player) event.getEntity();
@@ -47,7 +45,6 @@ public class saddleRide {
     }
 
     public void getOnPlayer(Player rider, Player clickedPlayer) {
-        Bukkit.getServer().broadcastMessage("get on player");
         Player topPlayer = clickedPlayer;
         while (!topPlayer.getPassengers().isEmpty() && topPlayer.getPassengers().get(0) instanceof Player) {
             topPlayer = (Player) topPlayer.getPassengers().get(0);
@@ -56,7 +53,6 @@ public class saddleRide {
     }
 
     public void getThrown(Player rider, Player thrower){
-        Bukkit.getServer().broadcastMessage("get thrown");
         thrower.removePassenger(rider);
         new BukkitRunnable() {
             @Override
@@ -66,8 +62,6 @@ public class saddleRide {
                 rider.setVelocity(direction);
             }
         }.runTaskLater(plugin, 2L);
-
     }
-
 
 }
