@@ -6,6 +6,7 @@ import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import worm.me.Commands.*;
 import worm.me.GameSystems.treasureChests;
@@ -13,6 +14,8 @@ import worm.me.PlayerSystems.Abilities.AbilitiesMain;
 import worm.me.PlayerSystems.Level;
 import worm.me.PlayerSystems.Quests.QuestInitialize;
 import worm.me.PlayerSystems.PlayerSpawning;
+import worm.me.PlayerSystems.Social.Hats.Hats;
+import worm.me.PlayerSystems.Social.Hats.HatsList;
 import worm.me.WorldBorder.worldBorderSizeHandler;
 
 import java.util.*;
@@ -105,6 +108,9 @@ public final class server extends JavaPlugin {
         swords.add(Material.STONE_SWORD);
         swords.add(Material.IRON_SWORD);
         swords.add(Material.DIAMOND_SWORD);
+
+        HatsList hats = new HatsList();
+        hats.createHats();
 
         tools.put("pickaxe", pickaxes);
         tools.put("axe", axes);

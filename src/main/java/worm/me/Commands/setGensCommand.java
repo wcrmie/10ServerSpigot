@@ -4,8 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import worm.me.PlayerSystems.GeneratorEdit;
+import worm.me.PlayerSystems.Generator.GeneratorEdit;
 import worm.me.server;
 
 public class setGensCommand implements CommandExecutor {

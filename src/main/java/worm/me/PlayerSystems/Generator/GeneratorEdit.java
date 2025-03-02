@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems;
+package worm.me.PlayerSystems.Generator;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;

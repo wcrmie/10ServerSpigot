@@ -6,30 +6,22 @@ import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import net.skinsrestorer.api.exception.DataRequestException;
-import net.skinsrestorer.api.exception.MineSkinException;
-import net.skinsrestorer.api.property.InputDataResult;
-import net.skinsrestorer.api.storage.PlayerStorage;
-import net.skinsrestorer.api.storage.SkinStorage;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDismountEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import worm.me.GameSystems.FishingSystem;
@@ -39,10 +31,13 @@ import worm.me.PlayerSystems.Abilities.AbilitiesMain;
 import worm.me.PlayerSystems.Abilities.Active.AgilityDash;
 import worm.me.PlayerSystems.Abilities.Active.AgilityDoubleJump;
 import worm.me.PlayerSystems.Abilities.Active.AgilityLeap;
+import worm.me.PlayerSystems.Generator.Generator;
+import worm.me.PlayerSystems.Generator.GeneratorEdit;
 import worm.me.PlayerSystems.Quests.QuestAssign;
 import worm.me.PlayerSystems.Quests.QuestGui;
+import worm.me.PlayerSystems.Social.Hats.Hats;
 import worm.me.PlayerSystems.Social.MessageHead;
-import worm.me.PlayerSystems.Social.PlayerReputation;
+import worm.me.PlayerSystems.Social.Skin.Skin;
 import worm.me.PlayerSystems.Social.Skin.SkinGui;
 import org.bukkit.event.player.PlayerJoinEvent;
 import worm.me.PlayerSystems.Tools.ToolsEvents;
@@ -51,8 +46,6 @@ import worm.me.WorldBorder.worldBorderSizeHandler;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Listener implements org.bukkit.event.Listener {
 
@@ -99,14 +92,8 @@ public class Listener implements org.bukkit.event.Listener {
         player.getPersistentDataContainer().set(messageHead.armorStandExists, PersistentDataType.BOOLEAN, false);
 
         // Give the player a random item every 10 seconds
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (player.isOnline()) {
-                    if (hasEmptySlot(player)) player.getInventory().addItem(randomItem(player));
-                } else cancel();
-            }
-        }.runTaskTimer(plugin, 200, 200);
+        Generator generator = new Generator(plugin);
+        generator.generateItem(player);
 
         // Initialize player's levels, if none.
         PersistentDataContainer c = player.getPersistentDataContainer();
@@ -116,35 +103,8 @@ public class Listener implements org.bukkit.event.Listener {
         }
 
         // Change player's skin
-        SkinStorage storage = plugin.skinsRestorer.getSkinStorage();
-        try {
-
-            int RNG = ThreadLocalRandom.current().nextInt(1, 4);
-
-            Optional<InputDataResult> result = storage.findOrCreateSkinData("worrm");
-
-            if (RNG == 1){
-                result = storage.findOrCreateSkinData("goobier");
-            } else if (RNG == 2){
-                result = storage.findOrCreateSkinData("snowmaam");
-            } else if (RNG == 3) {
-                result = storage.findOrCreateSkinData("worrm");
-            }
-
-
-            if (result.isEmpty()){
-                player.sendMessage("Skin could not be loaded.");
-                return;
-            }
-
-            PlayerStorage playerStorage = plugin.skinsRestorer.getPlayerStorage();
-
-            playerStorage.setSkinIdOfPlayer(player.getUniqueId(), result.get().getIdentifier());
-
-            plugin.skinsRestorer.getSkinApplier(Player.class).applySkin(player);
-        } catch (DataRequestException | MineSkinException e) {
-            throw new RuntimeException(e);
-        }
+        Skin skin = new Skin(plugin);
+        skin.setSkin(player);
 
         // Hide the player's nametag
         if (!player.isOp()) {
@@ -161,46 +121,10 @@ public class Listener implements org.bukkit.event.Listener {
         QuestAssign questAssign = new QuestAssign(plugin);
         questAssign.dailyCheck(player);
 
+        // Set default hat if nothing is equipped
+        Hats hats = new Hats();
+        hats.equipDefaultHat(player);
 
-    }
-
-
-    // Check if the player has an empty slot
-    public boolean hasEmptySlot(Player player) {
-        Inventory inventory = player.getInventory();
-        for (ItemStack item : inventory.getContents()) {
-            if (item == null || item.getType() == Material.AIR) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // Declares randomItem variable
-    private Material randomItem;
-
-    // Allows the setting of a random item.
-    private void setRandomItem(Material m){
-        randomItem = m;
-    }
-
-    // Generates the random item the player is given
-    public ItemStack randomItem(Player p){
-        PersistentDataContainer container = p.getPersistentDataContainer();
-        GeneratorEdit genEdit = new GeneratorEdit();
-        int RNG = ThreadLocalRandom.current().nextInt(0,100);
-        if (1 <= RNG && RNG <= 45) {
-            setRandomItem(plugin.stones.get(Objects.requireNonNullElse(container.get(genEdit.stoneBlock, PersistentDataType.INTEGER), 0)));
-        } else if (45 < RNG && RNG <= 60) {
-            setRandomItem(plugin.dirts.get(Objects.requireNonNullElse(container.get(genEdit.dirtBlock, PersistentDataType.INTEGER), 0)));
-        } else if (60 < RNG && RNG <= 75) {
-            setRandomItem(plugin.planks.get(Objects.requireNonNullElse(container.get(genEdit.woodBlock, PersistentDataType.INTEGER), 0)));
-        } else if (75 < RNG && RNG <= 90) {
-            setRandomItem(plugin.miscs.get(Objects.requireNonNullElse(container.get(genEdit.miscItem, PersistentDataType.INTEGER), 0)));
-        } else {
-            setRandomItem(Material.IRON_ORE);
-        }
-        return new ItemStack(randomItem, 1);
     }
 
     @EventHandler
@@ -361,6 +285,17 @@ public class Listener implements org.bukkit.event.Listener {
             if (tool.contains(s)){
                 e.setCancelled(true);
                 break;
+            }
+        }
+    }
+
+    @EventHandler
+    public void onItemPickup(EntityPickupItemEvent e){
+        if (e.getEntity() instanceof Player){
+            Player p = (Player) e.getEntity();
+            if (p.getItemOnCursor().getType().toString().contains("PICKAXE") || p.getItemOnCursor().getType().toString().contains("AXE") || p.getItemOnCursor().getType().toString().contains("SHOVEL") || p.getItemOnCursor().getType().toString().contains("SWORD")){
+                e.setCancelled(true);
+
             }
         }
     }

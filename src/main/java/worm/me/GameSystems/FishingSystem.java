@@ -6,21 +6,29 @@ import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerFishEvent;
 import worm.me.server;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class FishingSystem {
 
-    private final List<ItemStack> LootTable1 = new ArrayList<>();
-    private final List<ItemStack> LootTable2 = new ArrayList<>();
+    private final Map<Material, Integer> LootTable1 = new HashMap<>();
+    private final Map<Material, Integer> LootTable2 = new HashMap<>();
 
     public FishingSystem(server plugin) {
-        LootTable1.add(new ItemStack(Material.COD, 1));
-        LootTable1.add(new ItemStack(Material.SALMON, 1));
+        LootTable1.put(Material.COD, 1);
+        LootTable1.put(Material.SALMON, 1);
+        LootTable2.put(Material.DIAMOND_BLOCK, 5);
+        LootTable2.put(Material.EMERALD_BLOCK, 5);
+    }
 
-        LootTable2.add(new ItemStack(Material.DIAMOND_BLOCK, 5));
+    public int sumInt(Collection<Integer> list) {
+        int sum = 0;
+        for (int i : list) {
+            sum += i;
+        }
+        return sum;
     }
 
     public void handleFishing(PlayerFishEvent event) {
@@ -29,11 +37,13 @@ public class FishingSystem {
             Double RNG = ThreadLocalRandom.current().nextDouble(0.0, 100.0);
             Item item = (Item) event.getCaught();
 
-            if (RNG < 30) {
-                item.setItemStack(LootTable1.get(ThreadLocalRandom.current().nextInt(LootTable1.size())));
-            } else if (RNG < 50) {
-                item.setItemStack(LootTable2.get(ThreadLocalRandom.current().nextInt(LootTable2.size())));
-            } else if (RNG < 90) {
+            assert item != null;
+
+            if (RNG <= 40) {
+                item.setItemStack(generateFishingItem(LootTable1));
+            } else if (RNG <= 80) {
+                item.setItemStack(generateFishingItem(LootTable2));
+            } else if (RNG <= 100) {
                 spawnEntityOnHook(event);
                 item.setItemStack(new ItemStack(Material.AIR));
             } else {
@@ -43,21 +53,12 @@ public class FishingSystem {
     }
 
 
-    private void spawnEntityOnHook(PlayerFishEvent event) {
+    public void spawnEntityOnHook(PlayerFishEvent event) {
         Location hookLocation = event.getHook().getLocation();
-        Double RNG = ThreadLocalRandom.current().nextDouble(0.0, 100.0);
-        Double RNG2 = ThreadLocalRandom.current().nextDouble(3.0, 5.0);
-        Entity entity = null;
+        double RNG2 = ThreadLocalRandom.current().nextDouble(3.0, 5.0);
 
-        if (RNG < 50) {
-            entity = hookLocation.getWorld().spawn(hookLocation, Cod.class);
-        } else if (RNG < 90) {
-            entity = hookLocation.getWorld().spawn(hookLocation, Salmon.class);
-        } else if (RNG < 95) {
-            entity = hookLocation.getWorld().spawn(hookLocation, Zombie.class);
-        } else {
-            entity = hookLocation.getWorld().spawn(hookLocation, Zombie.class);
-        }
+
+        Entity entity = generateSeaCreature(hookLocation);
 
         if (entity != null && event.getPlayer() != null) {
             Location playerLocation = event.getPlayer().getLocation();
@@ -65,6 +66,45 @@ public class FishingSystem {
 
             entity.setVelocity(direction.multiply(RNG2));
         }
+
+    }
+
+    public ItemStack generateFishingItem(Map<Material, Integer> map){
+
+        int RNG = ThreadLocalRandom.current().nextInt(0, sumInt(map.values()));
+
+        int excess = 0;
+
+        for (Material m : map.keySet()){
+
+            int value = map.get(m) + excess;
+            if (map.get(m) >= RNG){
+                return new ItemStack(m);
+            }
+            excess = value;
+        }
+        return new ItemStack(Material.AIR);
+    }
+
+    public Entity generateSeaCreature(Location loc){
+        double RNG = ThreadLocalRandom.current().nextDouble(0.0, 100.0);
+        Entity entity;
+
+        // In the future, a Map could be created, linking the entity to the weight of spawning
+        // In that case, the lower bound would be zero and the upper bound would be the sum of all weights.
+        // The Keys would be the entities and the values would be the weights.
+
+        if (RNG < 50) {
+            entity = loc.getWorld().spawn(loc, Cod.class);
+        } else if (RNG < 90) {
+            entity = loc.getWorld().spawn(loc, Salmon.class);
+        } else if (RNG < 95) {
+            entity = loc.getWorld().spawn(loc, Zombie.class);
+        } else {
+            entity = loc.getWorld().spawn(loc, Zombie.class);
+        }
+        return entity;
+
 
     }
 }

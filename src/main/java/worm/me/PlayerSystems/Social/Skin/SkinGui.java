@@ -20,7 +20,7 @@ import java.util.Optional;
 public class SkinGui {
 
 
-    public void setSkin(Player p){
+    public void skinGuiOpen(Player p){
 
         GuiConstructor guiConstructor = new GuiConstructor();
         Inventory GUI = guiConstructor.chestInventory(ChatColor.DARK_GRAY + "Skins", 9*3);
@@ -35,14 +35,14 @@ public class SkinGui {
         ItemStack steve = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta skullMeta2 = (SkullMeta) steve.getItemMeta();
         skullMeta2.setOwner("worrm");
-        skullMeta2.setDisplayName(ChatColor.BLUE + "Icy Steve");
+        skullMeta2.setDisplayName(ChatColor.BLUE + "Alex Dino Onesie");
         steve.setItemMeta(skullMeta2);
         GUI.setItem(13, steve);
 
         ItemStack alex = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta skullMeta3 = (SkullMeta) alex.getItemMeta();
         skullMeta3.setOwner("goobier");
-        skullMeta3.setDisplayName(ChatColor.BLUE + "Icy Alex");
+        skullMeta3.setDisplayName(ChatColor.BLUE + "Farmer Steve");
         alex.setItemMeta(skullMeta3);
         GUI.setItem(15, alex);
 
