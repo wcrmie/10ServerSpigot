@@ -82,8 +82,11 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event){
-        PlayerSpawning handler = new PlayerSpawning(plugin);
-        handler.playerSpawn(event.getPlayer());
+
+        if (!event.isBedSpawn()) {
+            PlayerSpawning handler = new PlayerSpawning(plugin);
+            handler.playerSpawn(event.getPlayer());
+        }
     }
 
     @EventHandler
