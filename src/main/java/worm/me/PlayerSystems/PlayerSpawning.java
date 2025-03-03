@@ -16,6 +16,7 @@ public class PlayerSpawning {
     private final World world = Bukkit.getWorld("ul_Void");
     private final WorldBorder worldBorder = world.getWorldBorder();
     private int xMoreThan, xLessThan, yMoreThan, yLessThan, zMoreThan, zLessThan;
+    private static final Map<Location, Boolean> blocksToRemove = new HashMap<>();
     public PlayerSpawning(server plugin) {
         this.plugin = plugin;
         updateBorderValues();
@@ -125,7 +126,8 @@ public class PlayerSpawning {
         updateBorderValues();
         Location location = validSpawnLocation();
         Block block = world.getBlockAt(location);
-        block.setType(Material.STONE);
+        block.setType(Material.BEDROCK);
+        blocksToRemove.put(block.getLocation(), true);
 
         new BukkitRunnable() {
             @Override
@@ -139,11 +141,26 @@ public class PlayerSpawning {
                 if (player.getLocation().distance(location) >= 5) {
                     Block block = world.getBlockAt(location);
                     block.setType(Material.AIR);
+                    blocksToRemove.remove(location);
                     cancel();
                 }
             }
         }.runTaskTimer(plugin, 10 * 20L, 10 * 20L);
     }
+
+    public void removeAllBlocks() {
+        Bukkit.getServer().broadcastMessage("Removing " + blocksToRemove.size() + " blocks");
+
+        for (Location location : blocksToRemove.keySet()) {
+            Block block = world.getBlockAt(location);
+            if (block.getType() == Material.BEDROCK) {
+                block.setType(Material.AIR);
+            }
+        }
+        blocksToRemove.clear();
+    }
+
+}
 
 
     //stress testing
@@ -170,4 +187,4 @@ public class PlayerSpawning {
         }.runTaskLater(plugin, 30 * 20L);
     }
      */
-}
+
