@@ -8,8 +8,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import worm.me.server;
 
 public class SitCommand implements CommandExecutor {
+
+    private final server plugin;
+
+    public SitCommand(server plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player p){
@@ -24,7 +32,7 @@ public class SitCommand implements CommandExecutor {
                 a.setMarker(true);
                 a.addPassenger(p);
             } else {
-                p.sendMessage(ChatColor.RED + "You can't sit on air. :/");
+                plugin.pluginMessage(ChatColor.RED + "You can't sit on air. :/", p);
             }
             return true;
         } else {

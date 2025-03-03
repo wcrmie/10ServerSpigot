@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,8 +21,7 @@ public class saddleRide {
     }
 
     public void rightClick(PlayerInteractEntityEvent event){
-        if (event.getRightClicked() instanceof Player) {
-            Player clickedPlayer = (Player) event.getRightClicked();
+        if (event.getRightClicked() instanceof Player clickedPlayer) {
             Player rider = event.getPlayer();
             ItemStack helmet = clickedPlayer.getInventory().getHelmet();
 
@@ -32,27 +32,27 @@ public class saddleRide {
         }
     }
 
-    public void leftClick(EntityDamageByEntityEvent event){
-        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player){
-            Player thrower = (Player) event.getDamager();
-            Player rider = (Player) event.getEntity();
-            if (thrower.getPassengers().contains(rider)) {
-                if (thrower.isSneaking()) {
-                    getThrown(rider, thrower);
-                }
+    public void leftClick(PlayerAnimationEvent event){
+
+        Player p = event.getPlayer();
+
+        if (!p.getPassengers().isEmpty()){
+            Entity rider = p.getPassengers().getFirst();
+            if (p.isSneaking()) {
+                getThrown(rider, p);
             }
         }
     }
 
     public void getOnPlayer(Player rider, Player clickedPlayer) {
         Player topPlayer = clickedPlayer;
-        while (!topPlayer.getPassengers().isEmpty() && topPlayer.getPassengers().get(0) instanceof Player) {
-            topPlayer = (Player) topPlayer.getPassengers().get(0);
+        while (!topPlayer.getPassengers().isEmpty() && topPlayer.getPassengers().getFirst() instanceof Player) {
+            topPlayer = (Player) topPlayer.getPassengers().getFirst();
         }
         topPlayer.addPassenger(rider);
     }
 
-    public void getThrown(Player rider, Player thrower){
+    public void getThrown(Entity rider, Player thrower){
         thrower.removePassenger(rider);
         new BukkitRunnable() {
             @Override

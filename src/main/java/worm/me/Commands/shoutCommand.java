@@ -31,7 +31,7 @@ public class shoutCommand implements CommandExecutor {
             if (args != null){
                 PersistentDataContainer container = p.getPersistentDataContainer();
                 if (container.get(shoutCd, PersistentDataType.LONG) != null && container.get(shoutCd, PersistentDataType.LONG) > System.currentTimeMillis()/1000L && !p.isOp()) {
-                    p.sendMessage(String.format(ChatColor.RED + "Your /shout is on cooldown for %s seconds.", container.get(shoutCd, PersistentDataType.LONG) - System.currentTimeMillis()/1000L));
+                    plugin.pluginMessage(String.format(ChatColor.RED + "Your /shout is on cooldown for %s seconds.", container.get(shoutCd, PersistentDataType.LONG) - System.currentTimeMillis()/1000L), p);
                     return true;
                 } else {
                     container.set(shoutCd, PersistentDataType.LONG, System.currentTimeMillis()/1000L + 300);

@@ -20,7 +20,6 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -37,6 +36,7 @@ import worm.me.PlayerSystems.Abilities.Active.AgilityDoubleJump;
 import worm.me.PlayerSystems.Abilities.Active.AgilityLeap;
 import worm.me.PlayerSystems.Generator.Generator;
 import worm.me.PlayerSystems.Generator.GeneratorEdit;
+import worm.me.PlayerSystems.Levels.Level;
 import worm.me.PlayerSystems.Quests.QuestAssign;
 import worm.me.PlayerSystems.Quests.QuestGui;
 import worm.me.PlayerSystems.Social.Hats.Hats;
@@ -87,7 +87,9 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
     @EventHandler
-    public void onPlayerLeftClick(EntityDamageByEntityEvent event){
+    public void onPlayerLeftClick(PlayerAnimationEvent event){
+
+        if (event.getAnimationType() != PlayerAnimationType.ARM_SWING) return;
 
         saddleRide handler = new saddleRide(plugin);
         handler.leftClick(event);

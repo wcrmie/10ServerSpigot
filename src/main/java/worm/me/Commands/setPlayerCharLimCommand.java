@@ -26,16 +26,16 @@ public class setPlayerCharLimCommand implements CommandExecutor {
                 if (Integer.parseInt(args[1]) > 0) {
                     MessageHead messageHead = new MessageHead(this.plugin);
                     p.getPersistentDataContainer().set(messageHead.msgLength, PersistentDataType.INTEGER, Integer.parseInt(args[1]));
-                    p.sendMessage(ChatColor.RED + "Your character limit for messages has been set to " + args[1]);
-                    sender.sendMessage(ChatColor.GREEN + "Character limit for " + args[0] + " has been set to " + args[1]);
+                    plugin.pluginMessage(ChatColor.RED + "Your character limit for messages has been set to " + args[1], p);
+                    plugin.pluginMessage(ChatColor.GREEN + "Character limit for " + args[0] + " has been set to " + args[1], (Player) sender);
                     return true;
                 } else {
-                    sender.sendMessage(ChatColor.RED + "Character limit must be greater than 0!");
+                    plugin.pluginMessage(ChatColor.RED + "Character limit must be greater than 0!", (Player) sender);
                     return false;
                 }
             }
         }
-        sender.sendMessage(ChatColor.RED + "Player not found!");
+        plugin.pluginMessage(ChatColor.RED + "Player not found!", (Player) sender);
         return false;
     }
 }
