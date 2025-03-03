@@ -20,7 +20,7 @@ public class worldBorderSizeHandler {
         this.baseSize = 20;
         this.world = Bukkit.getWorld("ul_Void");
         this.worldBorder = world.getWorldBorder();
-        this.worldBorder.setCenter(0.0, 0.0);
+        this.worldBorder.setCenter(0.5, 0.5);
 
         FileConfiguration config = plugin.getConfig();
         this.expansionPercentage = config.getDouble("expansionPercentage", 0.25);
