@@ -25,7 +25,7 @@ public class hatsCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player p){
 
-            if (args[1] != null) {
+            if (args.length > 1) {
                 try {
                     int i = Integer.parseInt(args[1]);
                     List<ItemStack> hats = HatsList.hats;
@@ -44,13 +44,13 @@ public class hatsCommand implements CommandExecutor {
                 } catch (NumberFormatException e) {
                     Hats hats = new Hats();
                     hats.openHatsGUI(p);
+                    return true;
                 }
             } else {
                 Hats hats = new Hats();
                 hats.openHatsGUI(p);
+                return true;
             }
-
-            return true;
         } else {
             sender.sendMessage("are we fr?");
             return false;

@@ -36,6 +36,8 @@ public class Hats {
 
             hatsGUI.setItem(slot, hats.get(i));
 
+            p.openInventory(hatsGUI);
+
         }
 
 

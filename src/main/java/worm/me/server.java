@@ -89,7 +89,7 @@ public final class server extends JavaPlugin {
         this.getCommand("spawnchest").setExecutor(new treasureChestSpawnCommand());
         this.getCommand("abilities").setExecutor(new openAbilitiesGUICommand());
         this.getCommand("hat").setExecutor(new hatsCommand(this));
-        this.getCommand("level").setExecutor(new openLevelsGUICommand(this));
+        this.getCommand("levels").setExecutor(new openLevelsGUICommand(this));
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 
