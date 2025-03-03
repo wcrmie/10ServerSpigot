@@ -27,8 +27,8 @@ public class PlayerSpawning {
         xLessThan = (int) (borderSize / 2) - 1;
         zMoreThan = (int) ((borderSize / 2) * -1);
         zLessThan = (int) (borderSize / 2) - 1;
-        yMoreThan = 220;
-        yLessThan = 280;
+        yMoreThan = 230;
+        yLessThan = 260;
     }
     public Location worldBorderGetRandomBlock() {
         int xCord = (int) (Math.random() * (((xLessThan-1) - (xMoreThan+1)) + 1)) + (xMoreThan+1);
@@ -37,11 +37,11 @@ public class PlayerSpawning {
         return new Location(world, xCord, yCord, zCord);
     }
     public Location validSpawnLocation() {
-        Location location =           findValidLocation(17, 17, 17, 45, 45, 45 ,3,    "Estra Extra big used");
+        Location location =           findValidLocation(17, 27, 17, 45, 70, 45 ,10,    "Estra Extra big used");
         if (location == null) {
-            location =                findValidLocation(11,  11,  11,  15, 15, 15 ,10,   "Extra big used");
+            location =                findValidLocation(11,  17,  11,  19, 45, 19 ,20,   "Extra big used");
             if (location == null) {
-                location =            findValidLocation(7,  9,  7,  11, 9,  11, 20,   "big used");
+                location =            findValidLocation(7,  11,  7,  17, 27,  17, 30,   "big used");
                 if (location == null) {
                     location =        findValidLocation(3,  5,  3,  0,  1,  0 , 500,  "med used");
                     if (location == null) {

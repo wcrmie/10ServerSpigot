@@ -41,6 +41,12 @@ public class worldBorderSizeHandler {
 
     }
 
+    public void saveBlockCount() {
+        FileConfiguration config = plugin.getConfig();
+        config.set("blockCount", blockCount);
+        plugin.saveConfig();
+    }
+
     public void incrementBlockCount() {
         blockCount++;
         adjustWorldBorder();

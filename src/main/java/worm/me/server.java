@@ -43,6 +43,10 @@ public final class server extends JavaPlugin {
 
     public static Map<String, List<Material>> tools = new HashMap<>();
 
+    public worldBorderSizeHandler getWorldBorderHandler() {
+        return this.worldBorderSizeHandler;
+    }
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -68,6 +72,8 @@ public final class server extends JavaPlugin {
         playerspawning = new PlayerSpawning(this);
         saddleRide = new saddleRide(this);
         artBlocks = new artBlocks(this);
+
+
 
 
 
@@ -217,13 +223,14 @@ public final class server extends JavaPlugin {
             playerspawning.removeAllBlocks();
         }
 
+        // Use the existing handler instead of creating a new one
+        worldBorderSizeHandler.saveBlockCount();
+
         FileConfiguration config = getConfig();
-        worm.me.WorldBorder.worldBorderSizeHandler worldBorderSizeHandler = new worldBorderSizeHandler(this);
-        config.set("blockCount", worldBorderSizeHandler.getBlockCount());
         config.set("pluginEnabled", false);
         saveConfig();
-        HandlerList.unregisterAll(this);
 
+        HandlerList.unregisterAll(this);
         getLogger().info("Plugin disabled");
     }
 
