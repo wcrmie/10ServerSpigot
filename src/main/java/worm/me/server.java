@@ -28,6 +28,10 @@ public final class server extends JavaPlugin {
     private saddleRide saddleRide;
     private artBlocks artBlocks;
 
+    public worldBorderSizeHandler getWorldBorderHandler() {
+        return this.worldBorderSizeHandler;
+    }
+
     public Map<Material, Integer> miningBlocks = new HashMap<>();
 
     public static final Map<NamespacedKey, NamespacedKey> expToLevel = new HashMap<>();
@@ -69,6 +73,10 @@ public final class server extends JavaPlugin {
         saddleRide = new saddleRide(this);
         artBlocks = new artBlocks(this);
 
+
+        if (worldBorderSizeHandler != null) {
+            worldBorderSizeHandler.onenable();
+        }
 
 
         // Register commands
@@ -217,13 +225,14 @@ public final class server extends JavaPlugin {
             playerspawning.removeAllBlocks();
         }
 
+        // Use the existing handler instead of creating a new one
+        worldBorderSizeHandler.saveBlockCount();
+
         FileConfiguration config = getConfig();
-        worm.me.WorldBorder.worldBorderSizeHandler worldBorderSizeHandler = new worldBorderSizeHandler(this);
-        config.set("blockCount", worldBorderSizeHandler.getBlockCount());
         config.set("pluginEnabled", false);
         saveConfig();
-        HandlerList.unregisterAll(this);
 
+        HandlerList.unregisterAll(this);
         getLogger().info("Plugin disabled");
     }
 

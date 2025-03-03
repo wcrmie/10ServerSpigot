@@ -15,16 +15,18 @@ public class worldBorderSizeHandler {
     private final int baseSize;
     private double expansionPercentage;
 
+    public void onenable(){
+        FileConfiguration config = plugin.getConfig();
+        this.blockCount = config.getLong("blockCount", 0);
+        this.expansionPercentage = config.getDouble("expansionPercentage", 0.25);
+        this.worldBorder.setCenter(0.0, 0.0);
+    }
+
     public worldBorderSizeHandler(server plugin) {
         this.plugin = plugin;
         this.baseSize = 20;
         this.world = Bukkit.getWorld("ul_Void");
         this.worldBorder = world.getWorldBorder();
-        this.worldBorder.setCenter(0.0, 0.0);
-
-        FileConfiguration config = plugin.getConfig();
-        this.expansionPercentage = config.getDouble("expansionPercentage", 0.25);
-        this.blockCount = config.getLong("blockCount", 0);
     }
 
     public void adjustWorldBorder() {
@@ -43,11 +45,19 @@ public class worldBorderSizeHandler {
 
     public void incrementBlockCount() {
         blockCount++;
+        saveBlockCount();
         adjustWorldBorder();
     }
 
     public void decrementBlockCount() {
         blockCount--;
+        saveBlockCount();
+    }
+
+    public void saveBlockCount() {
+        FileConfiguration config = plugin.getConfig();
+        config.set("blockCount", blockCount);
+        plugin.saveConfig();
     }
 
     public long getBlockCount() {
@@ -73,6 +83,7 @@ public class worldBorderSizeHandler {
         }
 
         this.expansionPercentage = percentage;
+
 
         FileConfiguration config = plugin.getConfig();
         config.set("expansionPercentage", percentage);
