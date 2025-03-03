@@ -26,7 +26,7 @@ public class setVoiceCommand implements CommandExecutor {
             try {
                 int voiceVal = Integer.parseInt(voice);
                 if (voiceVal >= plugin.sounds.size()){
-                    p.sendMessage(String.format("Invalid Sound ID. Sound IDs range from 0-%d", plugin.sounds.size() - 1));
+                    plugin.pluginMessage(String.format("Invalid Sound ID. Sound IDs range from 0-%d", plugin.sounds.size() - 1), p);
                     return false;
                 }
                 MessageHead voiceHandler = new MessageHead(plugin);
@@ -36,10 +36,10 @@ public class setVoiceCommand implements CommandExecutor {
                     try {
                         float pitchVal = Float.parseFloat(pitch);
                         voiceHandler.setVoicePitch(p, pitchVal);
-                        p.sendMessage(String.format("Your voice has been changed to %s and your pitch has been changed to %f.", voiceHandler.VoiceTranslate(voiceVal), pitchVal));
+                        plugin.pluginMessage(String.format("Your voice has been changed to %s and your pitch has been changed to %f.", voiceHandler.VoiceTranslate(voiceVal), pitchVal), p);
                         return true;
                     } catch (NumberFormatException exception){
-                        p.sendMessage(ChatColor.RED + "The second argument must be a double. (anything between 0.0 and 2.0, i.e., 0.8 or 1.6)");
+                        plugin.pluginMessage(ChatColor.RED + "The second argument must be a double. (anything between 0.0 and 2.0, i.e., 0.8 or 1.6)", p);
                         return false;
                     }
                 } else{

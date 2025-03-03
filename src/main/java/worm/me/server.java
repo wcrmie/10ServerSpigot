@@ -6,16 +6,13 @@ import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import worm.me.Commands.*;
 import worm.me.GameSystems.artBlocks;
-import worm.me.GameSystems.treasureChests;
 import worm.me.PlayerSystems.Abilities.AbilitiesMain;
-import worm.me.PlayerSystems.Level;
+import worm.me.PlayerSystems.Levels.Level;
 import worm.me.PlayerSystems.Quests.QuestInitialize;
 import worm.me.PlayerSystems.PlayerSpawning;
-import worm.me.PlayerSystems.Social.Hats.Hats;
 import worm.me.PlayerSystems.Social.Hats.HatsList;
 import worm.me.PlayerSystems.saddleRide;
 import worm.me.WorldBorder.worldBorderSizeHandler;
@@ -87,10 +84,12 @@ public final class server extends JavaPlugin {
         this.getCommand("setGens").setExecutor(new setGensCommand(this));
         this.getCommand("shout").setExecutor(new shoutCommand(this));
         this.getCommand("rules").setExecutor(new RulesCommand());
-        this.getCommand("sit").setExecutor(new SitCommand());
+        this.getCommand("sit").setExecutor(new SitCommand(this));
         this.getCommand("setCharLimit").setExecutor(new setPlayerCharLimCommand(this));
         this.getCommand("spawnchest").setExecutor(new treasureChestSpawnCommand());
         this.getCommand("abilities").setExecutor(new openAbilitiesGUICommand());
+        this.getCommand("hat").setExecutor(new hatsCommand(this));
+        this.getCommand("level").setExecutor(new openLevelsGUICommand(this));
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 
@@ -228,6 +227,10 @@ public final class server extends JavaPlugin {
         for (Player p : Bukkit.getOnlinePlayers()) {
             p.sendMessage(message);
         }
+    }
+
+    public void pluginMessage(String message, Player p){
+        p.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "10" + ChatColor.DARK_GRAY + "] " + message);
     }
 
 }
