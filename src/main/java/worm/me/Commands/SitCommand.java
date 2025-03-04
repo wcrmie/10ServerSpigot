@@ -8,13 +8,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import worm.me.server;
+import worm.me.Server;
 
 public class SitCommand implements CommandExecutor {
 
-    private final server plugin;
+    private final Server plugin;
 
-    public SitCommand(server plugin) {
+    public SitCommand(Server plugin) {
         this.plugin = plugin;
     }
 

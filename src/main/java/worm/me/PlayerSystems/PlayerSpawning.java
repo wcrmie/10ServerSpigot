@@ -5,11 +5,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.WorldBorder;
-import org.enginehub.linbus.stream.token.LinToken;
-import worm.me.server;
-import java.util.ArrayList;
+import worm.me.Server;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 public class PlayerSpawning {
     private final JavaPlugin plugin;
@@ -17,7 +15,7 @@ public class PlayerSpawning {
     private final WorldBorder worldBorder = world.getWorldBorder();
     private int xMoreThan, xLessThan, yMoreThan, yLessThan, zMoreThan, zLessThan;
     private static final Map<Location, Boolean> blocksToRemove = new HashMap<>();
-    public PlayerSpawning(server plugin) {
+    public PlayerSpawning(Server plugin) {
         this.plugin = plugin;
         updateBorderValues();
     }

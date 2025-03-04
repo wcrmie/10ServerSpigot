@@ -22,7 +22,7 @@ public class GuideBook {
 
         List<BaseComponent[]> pages = new ArrayList<>();
 
-        pages.add(new ComponentBuilder("Welcome to 10!").underlined(true).append("\n\nThis book is meant to help you learn about some of the fun and unique features this server offers!\n\nMake sure to follow the rules (").reset().append("/rules").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/rules")).append(") and have a good time! ☺").reset().create());
+        pages.add(new ComponentBuilder("Welcome to 10!").underlined(true).append("\n\nThis book is meant to help you learn about some of the fun and unique features this Server offers!\n\nMake sure to follow the rules (").reset().append("/rules").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/rules")).append(") and have a good time! ☺").reset().create());
         pages.add(new ComponentBuilder("INTRODUCTION").underlined(true).append("\n\nWhenever you see the Table of Contents button at the bottom of a page, you can click it to return.\n\nIn the Table of Contents, you can click any section label to go there.").reset().create());
         pages.add(new ComponentBuilder("INTRODUCTION").underlined(true).append("\n\nAlso, you can click on any colored commands in the book to use them in chat.\n\n\n\n\n\n\n").reset().append(" [TABLE OF CONTENTS]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "4")).create());
         pages.add(new ComponentBuilder("\nTable of Contents").underlined(true).append("\n\n1. Generator settings").color(ChatColor.GOLD).underlined(true).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "5")
@@ -63,8 +63,8 @@ public class GuideBook {
                 "\n" +
                 "A player may not use a recipe until they have unlocked it, but they can use the item, though.").reset().create());
         pages.add(new ComponentBuilder("RECIPES").underlined(true).append("\n\nRecipes may be viewed with ").reset().append("/recipes").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/recipes")).append(".\n\n\n\n\n\n\n\n\n").reset().append(" [TABLE OF CONTENTS]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "4")).create());
-        pages.add(new ComponentBuilder("REPUTATION").underlined(true).append("\n\nReputation is what a player is known for doing. It will change a player's chat color accordingly. There are 3 different types of activities a player may take part in: Combat, Skill Leveling, and Survival.").reset().create());
-        pages.add(new ComponentBuilder("REPUTATION").underlined(true).append("\n\nCombat is associated with Red, Skill Leveling is associated with Blue, and Survival is associated with Green.\n" +
+        pages.add(new ComponentBuilder("REPUTATION").underlined(true).append("\n\nReputation is based on how often you kill other players. The more players you kill, the redder your text will become. However, over time, a player's text will become less red.").reset().create());
+        pages.add(new ComponentBuilder("REPUTATION").underlined(true).append("\n\nThe formula for this is 255 - (6000*(kills))/(time played in seconds).\n" +
                 "\n" +
                 "A player who spends most of their time grinding Skill Levels and Survival Activities will have a turquoise chat tint.").reset().create());
         pages.add(new ComponentBuilder("REPUTATION").underlined(true).append("\n\nHowever, a player who has a red chat tint is someone who practices combat often, and should be treated with caution.\n\n" +

@@ -7,14 +7,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
-import worm.me.PlayerSystems.Abilities.AbilitiesMain;
+import worm.me.PlayerSystems.Abilities.Abilities;
 
 import java.util.Objects;
 
 
 public class AgilityDash {
 
-    private final AbilitiesMain ability = new AbilitiesMain();
+    private final Abilities ability = new Abilities();
 
     public void dash(Player p){
         PersistentDataContainer container = p.getPersistentDataContainer();

@@ -8,16 +8,16 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.GuiConstructor;
-import worm.me.server;
+import worm.me.Server;
 
 import java.util.List;
 import java.util.Map;
 
 public class QuestGui {
 
-    private server plugin;
+    private Server plugin;
 
-    public QuestGui(server plugin) {
+    public QuestGui(Server plugin) {
         this.plugin = plugin;
     }
 

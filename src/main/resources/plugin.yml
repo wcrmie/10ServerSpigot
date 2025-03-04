@@ -1,15 +1,11 @@
 name: 10ServerSpigot
 version: '1.0-SNAPSHOT'
-main: worm.me.server
+main: worm.me.Server
 api-version: '1.21'
 authors: [ worm, clem ]
 depend: [WorldGuard]
 softdepend: [SkinsRestorer]
 commands:
-  getExp:
-    description: Sends the user a player's associated level and exp values.
-    usage: /<command> <player> <skill>
-    permission: 10VS.getExp
   setVoice:
     description: Changes a player's voice and pitch for when their message is displayed above their head.
     usage: /<command> <integer> <double>
@@ -17,7 +13,7 @@ commands:
     description: Allows the player to choose which blocks are generated for them every 10 seconds via a GUI.
     usage: /<command>
   shout:
-    description: Allows the player to send a message to everyone on the server once every 15 minutes
+    description: Allows the player to send a message to everyone on the Server once every 15 minutes
     usage: /<command> <message>
   rules:
     description: Displays the rules to the player.
@@ -52,4 +48,7 @@ commands:
     usage: /<command> [integer]
   levels:
     description: Opens the levels GUI for the player.
+    usage: /<command>
+  lostTools:
+    description: Returns the player's lost tools.
     usage: /<command>

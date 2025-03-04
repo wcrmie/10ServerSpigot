@@ -1,16 +1,16 @@
 package worm.me.PlayerSystems.Quests;
 
 import org.bukkit.Material;
-import worm.me.server;
+import worm.me.Server;
 
 import java.util.HashMap;
 import java.util.List;
 
 public class QuestInitialize {
 
-    private final server plugin;
+    private final Server plugin;
 
-    public QuestInitialize(server plugin) {
+    public QuestInitialize(Server plugin) {
         this.plugin = plugin;
     }
 

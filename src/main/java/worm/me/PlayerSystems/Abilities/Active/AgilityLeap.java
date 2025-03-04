@@ -7,14 +7,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
-import worm.me.PlayerSystems.Abilities.AbilitiesMain;
+import worm.me.PlayerSystems.Abilities.Abilities;
 
 import java.util.Objects;
 
 
 public class AgilityLeap {
 
-    public final AbilitiesMain ability = new AbilitiesMain();
+    public final Abilities ability = new Abilities();
 
     public void leap(Player p){
         PersistentDataContainer container = p.getPersistentDataContainer();

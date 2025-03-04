@@ -11,6 +11,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import worm.me.PlayerSystems.PlayerData.Unlocks;
+import worm.me.PlayerSystems.PlayerData.VoidPlayer;
+import worm.me.Server;
 
 import java.util.Arrays;
 
@@ -23,7 +26,7 @@ public class GeneratorEdit {
 
     public Inventory i;
 
-    public void genSet(Player p, NamespacedKey type, Block block){
+    public static void genSet(Player p, NamespacedKey type, Block block){
         PersistentDataContainer container = p.getPersistentDataContainer();
         container.set(type, PersistentDataType.STRING, block.getTranslationKey());
     }
@@ -65,6 +68,9 @@ public class GeneratorEdit {
         for (int j = 0; j < 36; j++){
             i.setItem(j, createGuiItem(Material.GRAY_STAINED_GLASS_PANE, " ", ""));
         }
+
+        Server pl = Server.getPlugin();
+
         i.setItem(10, createGuiItem(Material.COBBLESTONE, "", ""));
         i.setItem(11, createGuiItem(Material.TUFF, "", ""));
         i.setItem(12, createGuiItem(Material.ANDESITE, "", ""));
@@ -74,6 +80,12 @@ public class GeneratorEdit {
         i.setItem(16, createGuiItem(Material.PACKED_MUD, "", ""));
         i.setItem(20, createGuiItem(Material.COBBLED_DEEPSLATE, "", ""));
         i.setItem(24, createGuiItem(Material.SMOOTH_BASALT, "", ""));
+
+        for (int j = 10; j < 25; j++){
+            if (Server.getPlugin().stones.containsKey(i.getItem(j).getType()) && !VoidPlayer.getUnlockedGens(p).contains(i.getItem(j))){
+                i.setItem(j, createGuiItem(Material.RED_STAINED_GLASS_PANE, i.getItem(j).getType().getItemTranslationKey(), ChatColor.RED + "LOCKED", Unlocks.requirementsTranslation(pl.stones.get(i.getItem(j).getType()))));
+            }
+        }
 
         i.setItem(31, createGuiItem(Material.ARROW, ChatColor.GRAY + "Go Back"));
 
@@ -87,6 +99,9 @@ public class GeneratorEdit {
         for (int j = 0; j < 27; j++){
             i.setItem(j, createGuiItem(Material.GRAY_STAINED_GLASS_PANE, " ", ""));
         }
+
+        Server pl = Server.getPlugin();
+
         i.setItem(10, createGuiItem(Material.OAK_PLANKS, "", ""));
         i.setItem(11, createGuiItem(Material.SPRUCE_PLANKS, "", ""));
         i.setItem(12, createGuiItem(Material.DARK_OAK_PLANKS, "", ""));
@@ -94,6 +109,12 @@ public class GeneratorEdit {
         i.setItem(14, createGuiItem(Material.JUNGLE_PLANKS, "", ""));
         i.setItem(15, createGuiItem(Material.BIRCH_PLANKS, "", ""));
         i.setItem(16, createGuiItem(Material.ACACIA_PLANKS, "", ""));
+
+        for (int j = 10; j < 17; j++){
+            if (Server.getPlugin().planks.containsKey(i.getItem(j).getType()) && !VoidPlayer.getUnlockedGens(p).contains(i.getItem(j))){
+                i.setItem(j, createGuiItem(Material.RED_STAINED_GLASS_PANE, i.getItem(j).getTranslationKey(), ChatColor.RED + "LOCKED", Unlocks.requirementsTranslation(pl.planks.get(i.getItem(j).getType()))));
+            }
+        }
 
         i.setItem(22, createGuiItem(Material.ARROW, ChatColor.GRAY + "Go Back"));
 
@@ -107,6 +128,9 @@ public class GeneratorEdit {
         for (int j = 0; j < 27; j++){
             i.setItem(j, createGuiItem(Material.GRAY_STAINED_GLASS_PANE, " ", ""));
         }
+
+        Server pl = Server.getPlugin();
+
         i.setItem(10, createGuiItem(Material.DIRT, "", ""));
         i.setItem(11, createGuiItem(Material.COARSE_DIRT, "", ""));
         i.setItem(12, createGuiItem(Material.SAND, "", ""));
@@ -114,6 +138,12 @@ public class GeneratorEdit {
         i.setItem(14, createGuiItem(Material.CLAY, "", ""));
         i.setItem(15, createGuiItem(Material.MUD, "", ""));
         i.setItem(16, createGuiItem(Material.RED_SAND, "", ""));
+
+        for (int j = 10; j < 17; j++){
+            if (Server.getPlugin().dirts.containsKey(i.getItem(j).getType()) && !VoidPlayer.getUnlockedGens(p).contains(i.getItem(j))){
+                i.setItem(j, createGuiItem(Material.RED_STAINED_GLASS_PANE, i.getItem(j).getTranslationKey(), ChatColor.RED + "LOCKED", Unlocks.requirementsTranslation(pl.dirts.get(i.getItem(j).getType()))));
+            }
+        }
 
         i.setItem(22, createGuiItem(Material.ARROW, ChatColor.GRAY + "Go Back"));
 
@@ -125,10 +155,19 @@ public class GeneratorEdit {
         for (int j = 0; j < 27; j++){
             i.setItem(j, createGuiItem(Material.GRAY_STAINED_GLASS_PANE, " ", ""));
         }
+
+        Server pl = Server.getPlugin();
+
         i.setItem(11, createGuiItem(Material.COAL, "", ""));
         i.setItem(12, createGuiItem(Material.QUARTZ, "", ""));
-        i.setItem(14, createGuiItem(Material.GLOWSTONE, "", ""));
+        i.setItem(14, createGuiItem(Material.GLOWSTONE_DUST, "", ""));
         i.setItem(15, createGuiItem(Material.REDSTONE, "", ""));
+
+        for (int j = 10; j < 16; j++){
+            if (Server.getPlugin().miscs.containsKey(i.getItem(j).getType()) && !VoidPlayer.getUnlockedGens(p).contains(i.getItem(j))){
+                i.setItem(j, createGuiItem(Material.RED_STAINED_GLASS_PANE, i.getItem(j).getTranslationKey(), ChatColor.RED + "LOCKED", Unlocks.requirementsTranslation(pl.miscs.get(i.getItem(j).getType()))));
+            }
+        }
 
         i.setItem(22, createGuiItem(Material.ARROW, ChatColor.GRAY + "Go Back"));
 

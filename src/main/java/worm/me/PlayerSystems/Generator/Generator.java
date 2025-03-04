@@ -7,16 +7,16 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
-import worm.me.server;
+import worm.me.Server;
 
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Generator {
 
-    private final server plugin;
+    private final Server plugin;
 
-    public Generator(server plugin) {
+    public Generator(Server plugin) {
         this.plugin = plugin;
     }
 
@@ -57,13 +57,13 @@ public class Generator {
         GeneratorEdit genEdit = new GeneratorEdit();
         int RNG = ThreadLocalRandom.current().nextInt(0,100);
         if (1 <= RNG && RNG <= 45) {
-            setRandomItem(plugin.stones.get(Objects.requireNonNullElse(container.get(genEdit.stoneBlock, PersistentDataType.INTEGER), 0)));
+            setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.stoneBlock, PersistentDataType.STRING), Material.COBBLESTONE.toString())));
         } else if (45 < RNG && RNG <= 60) {
-            setRandomItem(plugin.dirts.get(Objects.requireNonNullElse(container.get(genEdit.dirtBlock, PersistentDataType.INTEGER), 0)));
+            setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.dirtBlock, PersistentDataType.STRING), Material.DIRT.toString())));
         } else if (60 < RNG && RNG <= 75) {
-            setRandomItem(plugin.planks.get(Objects.requireNonNullElse(container.get(genEdit.woodBlock, PersistentDataType.INTEGER), 0)));
+            setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.woodBlock, PersistentDataType.STRING), Material.OAK_PLANKS.toString())));
         } else if (75 < RNG && RNG <= 90) {
-            setRandomItem(plugin.miscs.get(Objects.requireNonNullElse(container.get(genEdit.miscItem, PersistentDataType.INTEGER), 0)));
+            setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.miscItem, PersistentDataType.STRING), Material.COAL.toString())));
         } else {
             setRandomItem(Material.IRON_ORE);
         }

@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerFishEvent;
-import worm.me.server;
+import worm.me.Server;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -16,7 +16,7 @@ public class FishingSystem {
     private final Map<Material, Integer> LootTable1 = new HashMap<>();
     private final Map<Material, Integer> LootTable2 = new HashMap<>();
 
-    public FishingSystem(server plugin) {
+    public FishingSystem(Server plugin) {
         LootTable1.put(Material.COD, 1);
         LootTable1.put(Material.SALMON, 1);
         LootTable2.put(Material.DIAMOND_BLOCK, 5);

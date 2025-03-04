@@ -12,10 +12,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDismountEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
@@ -24,40 +24,37 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 import worm.me.GameSystems.FishingSystem;
-import worm.me.GameSystems.artBlocks;
+import worm.me.GameSystems.ArtBlocks;
 import worm.me.PlayerSystems.*;
 import worm.me.PlayerSystems.Abilities.AbilitiesGUI;
-import worm.me.PlayerSystems.Abilities.AbilitiesMain;
+import worm.me.PlayerSystems.Abilities.Abilities;
 import worm.me.PlayerSystems.Abilities.Active.AgilityDash;
 import worm.me.PlayerSystems.Abilities.Active.AgilityDoubleJump;
 import worm.me.PlayerSystems.Abilities.Active.AgilityLeap;
 import worm.me.PlayerSystems.Generator.Generator;
 import worm.me.PlayerSystems.Generator.GeneratorEdit;
-import worm.me.PlayerSystems.Levels.Level;
-import worm.me.PlayerSystems.Quests.QuestAssign;
+import worm.me.PlayerSystems.PlayerData.Levels.GainExpEvent;
+import worm.me.PlayerSystems.PlayerData.Levels.LevelUpEvent;
+import worm.me.PlayerSystems.PlayerData.Levels.Levels;
+import worm.me.PlayerSystems.PlayerData.Vault;
+import worm.me.PlayerSystems.PlayerData.VoidPlayer;
 import worm.me.PlayerSystems.Quests.QuestGui;
-import worm.me.PlayerSystems.Social.Hats.Hats;
-import worm.me.PlayerSystems.Social.MessageHead;
-import worm.me.PlayerSystems.Social.Skin.Skin;
-import worm.me.PlayerSystems.Social.Skin.SkinGui;
+import worm.me.PlayerSystems.PlayerData.Social.MessageHead;
+import worm.me.PlayerSystems.PlayerData.Social.Skin.SkinGui;
 import org.bukkit.event.player.PlayerJoinEvent;
-import worm.me.PlayerSystems.Tools.ToolsEvents;
-import worm.me.WorldBorder.worldBorderSizeHandler;
+import worm.me.PlayerSystems.PlayerData.Tools.ToolsEvents;
+import worm.me.WorldBorder.WorldBorderSizeHandler;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class Listener implements org.bukkit.event.Listener {
 
-    private final server plugin;
+    private final Server plugin;
 
     private final Map<Player, Boolean> doubleJumpMap = new HashMap<>();
 
-    public Listener(server plugin) {
+    public Listener(Server plugin) {
         this.plugin = plugin;
     }
 
@@ -70,13 +67,13 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event){
-        worldBorderSizeHandler handler = new worldBorderSizeHandler(plugin);
+        WorldBorderSizeHandler handler = new WorldBorderSizeHandler(plugin);
         handler.incrementBlockCount();
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
-        worldBorderSizeHandler handler = new worldBorderSizeHandler(plugin);
+        WorldBorderSizeHandler handler = new WorldBorderSizeHandler(plugin);
         handler.decrementBlockCount();
     }
 
@@ -94,14 +91,14 @@ public class Listener implements org.bukkit.event.Listener {
 
         if (event.getAnimationType() != PlayerAnimationType.ARM_SWING) return;
 
-        saddleRide handler = new saddleRide(plugin);
+        SaddleRide handler = new SaddleRide(plugin);
         handler.leftClick(event);
     }
 
     @EventHandler
     public void onPlayerRightClick(PlayerInteractEntityEvent event){
 
-        saddleRide handler = new saddleRide(plugin);
+        SaddleRide handler = new SaddleRide(plugin);
         handler.rightClick(event);
     }
 
@@ -110,53 +107,23 @@ public class Listener implements org.bukkit.event.Listener {
 
         // Set player variable
         Player player = event.getPlayer();
-        MessageHead messageHead = new MessageHead(plugin);
-        player.getPersistentDataContainer().set(messageHead.armorStandExists, PersistentDataType.BOOLEAN, false);
 
         // Give the player a random item every 10 seconds
         Generator generator = new Generator(plugin);
         generator.generateItem(player);
 
-        // Initialize player's levels, if none.
-        PersistentDataContainer c = player.getPersistentDataContainer();
-        Level level = new Level(plugin);
-        if (!c.has(level.mining)){
-            level.initLevel(player);
-        }
-
-        // Change player's skin
-        Skin skin = new Skin(plugin);
-        skin.setSkin(player);
-
-        // Hide the player's nametag
-        if (!player.isOp()) {
-            Scoreboard score = Bukkit.getScoreboardManager().getMainScoreboard();
-            Team nHide = score.getTeam("hiddenName");
-            if (nHide == null) {
-                nHide = score.registerNewTeam("hiddenName");
-                nHide.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
-            }
-            nHide.addEntry(player.getName());
-        }
-
-        // Assign quests
-        QuestAssign questAssign = new QuestAssign(plugin);
-        questAssign.dailyCheck(player);
-
-        // Set default hat if nothing is equipped
-        Hats hats = new Hats();
-        hats.equipDefaultHat(player);
-
+        // Initialize player data
+        VoidPlayer.initializeData(player);
     }
 
     @EventHandler
     public void onPlayerBreak(BlockBreakEvent e){
         Player player = e.getPlayer();
-        Level level = new Level(plugin);
+        Levels level = new Levels();
 
         // Gives the player exp for mining certain blocks
         if (plugin.miningBlocks.containsKey(e.getBlock().getType())) {
-            level.addExp(plugin.miningBlocks.get(e.getBlock().getType()), level.mining, player);
+            level.addExp(plugin.miningBlocks.get(e.getBlock().getType()), Levels.skillTranslation("Mining"), player);
         }
     }
 
@@ -217,7 +184,7 @@ public class Listener implements org.bukkit.event.Listener {
         if (!loc.getBlock().getType().isAir()) return;
 
         // Check cooldown
-        AbilitiesMain ability = new AbilitiesMain();
+        Abilities ability = new Abilities();
         PersistentDataContainer container = p.getPersistentDataContainer();
         long cooldown = Objects.requireNonNullElse(container.get(ability.moveCooldown, PersistentDataType.LONG), 0L);
         if (cooldown <= System.currentTimeMillis()/1000L){
@@ -279,7 +246,7 @@ public class Listener implements org.bukkit.event.Listener {
             questGui.questGuiOpen(p);
         }
         if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("WOOL")){
-            artBlocks handler = new artBlocks(plugin);
+            ArtBlocks handler = new ArtBlocks(plugin);
             handler.rightClick(e);
         }
     }
@@ -300,7 +267,7 @@ public class Listener implements org.bukkit.event.Listener {
 
         String tool = e.getBrokenItem().getType().toString().toLowerCase();
 
-        for (String s : server.tools.keySet()){
+        for (String s : Server.tools.keySet()){
             if (tool.contains(s)){
                 ToolsEvents toolsEvents = new ToolsEvents();
                 toolsEvents.toolBreak(e.getPlayer(), e);
@@ -313,7 +280,7 @@ public class Listener implements org.bukkit.event.Listener {
     public void onItemDrop(PlayerDropItemEvent e){
         String tool = e.getItemDrop().getItemStack().toString().toLowerCase();
 
-        for (String s : server.tools.keySet()){
+        for (String s : Server.tools.keySet()){
             if (tool.contains(s)){
                 e.setCancelled(true);
                 break;
@@ -333,10 +300,52 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
     @EventHandler
+    public void onExpGain(GainExpEvent e){
+        if (Levels.getExp(Levels.skills.get(e.getSkillType()), e.getPlayer()) > Levels.expRequired(e.getSkillType() + 1)){
+            Levels.levelUp(Levels.skills.get(e.getSkillType()), e.getPlayer());
+        }
+    }
+
+    @EventHandler
+    public void onLevelUp(LevelUpEvent e){
+        Player p = e.getPlayer();
+
+    }
+
+    @EventHandler
+    public void onInventoryOpen(InventoryOpenEvent e){
+        if (e.getInventory().getType().equals(InventoryType.ENDER_CHEST)){
+            e.setCancelled(true);
+            Vault.openVault((Player) e.getPlayer());
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent e){
+
+        Player p = (Player) e.getPlayer();
+
+        if (e.getView().getTitle().equals(ChatColor.DARK_PURPLE + "Vault")){
+
+            ArrayList<ItemStack> prunedItems = new ArrayList<>();
+
+            Arrays.stream(p.getOpenInventory().getTopInventory().getContents())
+                            .filter(Objects::nonNull).forEach(prunedItems::add);
+
+            Vault.storeItems(prunedItems, p);
+        }
+
+    }
+
+    @EventHandler
     public void onInventoryClick(InventoryClickEvent e){
 
+        GuiConstructor guiConstructor = new GuiConstructor();
+
+        Player p = (Player) e.getWhoClicked();
+
         String tool = e.getCursor().getType().toString().toLowerCase();
-        for (String s : server.tools.keySet()){
+        for (String s : Server.tools.keySet()){
             if (tool.contains(s)){
                 if (e.getClickedInventory().getType() != InventoryType.PLAYER) e.setCancelled(true);
                 break;
@@ -344,7 +353,7 @@ public class Listener implements org.bukkit.event.Listener {
         }
 
         GeneratorEdit genEdit = new GeneratorEdit();
-        Player p = (Player) e.getWhoClicked();
+
         InventoryView inv = e.getView();
         String invName = inv.getTitle();
 
@@ -390,9 +399,9 @@ public class Listener implements org.bukkit.event.Listener {
 
             if (clickedItem == null || clickedItem.getType().isAir() || clickedItem.getType().equals(Material.GRAY_STAINED_GLASS_PANE)) return;
 
-            if (plugin.stones.contains(clickedItem.getType())) {
+            if (plugin.stones.containsKey(clickedItem.getType()) && VoidPlayer.getUnlockedGens(p).contains(clickedItem)) {
                 PersistentDataContainer container = p.getPersistentDataContainer();
-                container.set(genEdit.stoneBlock, PersistentDataType.INTEGER, plugin.stones.indexOf(clickedItem.getType()));
+                container.set(genEdit.stoneBlock, PersistentDataType.STRING, clickedItem.getType().toString());
                 p.sendMessage(ChatColor.GREEN + "Your stone block has been changed to " + clickedItem.getTranslationKey());
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(p);
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Wood Block")){
@@ -402,9 +411,9 @@ public class Listener implements org.bukkit.event.Listener {
 
             if (clickedItem == null || clickedItem.getType().isAir() || clickedItem.getType().equals(Material.GRAY_STAINED_GLASS_PANE)) return;
 
-            if (plugin.planks.contains(clickedItem.getType())) {
+            if (plugin.planks.containsKey(clickedItem.getType()) && VoidPlayer.getUnlockedGens(p).contains(clickedItem)) {
                 PersistentDataContainer container = p.getPersistentDataContainer();
-                container.set(genEdit.woodBlock, PersistentDataType.INTEGER, plugin.planks.indexOf(clickedItem.getType()));
+                container.set(genEdit.woodBlock, PersistentDataType.STRING, clickedItem.getType().toString());
                 p.sendMessage(ChatColor.GREEN + "Your wood block has been changed to " + clickedItem.getTranslationKey());
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(p);
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Loose Block")){
@@ -414,9 +423,9 @@ public class Listener implements org.bukkit.event.Listener {
 
             if (clickedItem == null || clickedItem.getType().isAir() || clickedItem.getType().equals(Material.GRAY_STAINED_GLASS_PANE)) return;
 
-            if (plugin.dirts.contains(clickedItem.getType())) {
+            if (plugin.dirts.containsKey(clickedItem.getType()) && VoidPlayer.getUnlockedGens(p).contains(clickedItem)) {
                 PersistentDataContainer container = p.getPersistentDataContainer();
-                container.set(genEdit.dirtBlock, PersistentDataType.INTEGER, plugin.dirts.indexOf(clickedItem.getType()));
+                container.set(genEdit.dirtBlock, PersistentDataType.STRING, clickedItem.getType().toString());
                 p.sendMessage(ChatColor.GREEN + "Your loose block has been changed to " + clickedItem.getTranslationKey());
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(p);
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Miscellaneous Item")){
@@ -426,9 +435,9 @@ public class Listener implements org.bukkit.event.Listener {
 
             if (clickedItem == null || clickedItem.getType().isAir() || clickedItem.getType().equals(Material.GRAY_STAINED_GLASS_PANE)) return;
 
-            if (plugin.miscs.contains(clickedItem.getType())) {
+            if (plugin.miscs.containsKey(clickedItem.getType()) && VoidPlayer.getUnlockedGens(p).contains(clickedItem)) {
                 PersistentDataContainer container = p.getPersistentDataContainer();
-                container.set(genEdit.miscItem, PersistentDataType.INTEGER, plugin.miscs.indexOf(clickedItem.getType()));
+                container.set(genEdit.miscItem, PersistentDataType.STRING, clickedItem.getType().toString());
                 p.sendMessage(ChatColor.GREEN + "Your misc. item has been changed to " + clickedItem.getTranslationKey());
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(p);
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Quests")){

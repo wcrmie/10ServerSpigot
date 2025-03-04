@@ -5,16 +5,16 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import worm.me.server;
+import worm.me.Server;
 
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class QuestAssign {
 
-    private final server plugin;
+    private final Server plugin;
 
-    public QuestAssign(server plugin) {
+    public QuestAssign(Server plugin) {
         this.plugin = plugin;
     }
 
