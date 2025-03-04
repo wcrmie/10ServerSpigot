@@ -19,7 +19,7 @@ public class OpenLevelsGUICommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player p){
-            LevelsGUI levelsGUI = new LevelsGUI(plugin);
+            LevelsGUI levelsGUI = new LevelsGUI();
             levelsGUI.openLevelsGUI(p);
             return true;
         } else sender.sendMessage("This command is for the player, silly!");

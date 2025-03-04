@@ -1,6 +1,7 @@
 package worm.me.PlayerSystems.PlayerData;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -22,17 +23,20 @@ public class Unlocks {
             Server.stones,
             Server.dirts,
             Server.planks,
-            Server.miscs,
-            Abilities.abilityRequirements
+            Server.miscs
     );
 
-    public static String requirementsTranslation(int[] requirements){
+    public static String[] requirementsTranslation(int[] requirements){
 
-        String translation = (ChatColor.GOLD + "" + ChatColor.BOLD + "Requirements: \n");
 
-        for (int i = 0; i < requirements.length; i++){
+        String[] translation = new String[10];
+        translation[0] = (ChatColor.GOLD + "" + ChatColor.BOLD + "Requirements: \n");
+        translation[1] = (" ");
+
+        for (int i = 0; i < 8; i++){
+
             if (requirements[i] != 0){
-                translation += (ChatColor.GOLD + Levels.skills.get(i) + requirements[i] + "\n" );
+                translation[i + 2] = (ChatColor.YELLOW + Levels.skills.get(i) + " " + requirements[i] + "\n" );
             }
         }
         return translation;
@@ -52,8 +56,8 @@ public class Unlocks {
         // Get rid of anything the player has already unlocked
         if (type < 4){
 
-            List<ItemStack> unlockedGens = VoidPlayer.getUnlockedGens(p);
-            Set<ItemStack> totalGens = (Set<ItemStack>) unlockTypes.get(type).keySet();
+            List<Material> unlockedGens = VoidPlayer.getUnlockedGens(p);
+            Set<Material> totalGens = (Set<Material>) unlockTypes.get(type).keySet();
 
             unlockedGens.forEach(totalGens::remove);
 
@@ -86,8 +90,8 @@ public class Unlocks {
 
                         // If the unlock is a generator, add it to the player's unlocked generators
                         if (type < 4) {
-                            List<ItemStack> gens = getUnlockedGens(p);
-                            gens.add((ItemStack)mapAsList[i]);
+                            List<Material> gens = getUnlockedGens(p);
+                            gens.add((Material)mapAsList[i]);
 
                             setUnlockedGens(p, gens);
 
