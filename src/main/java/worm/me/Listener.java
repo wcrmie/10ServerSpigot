@@ -7,6 +7,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import org.bukkit.*;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +15,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDismountEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -44,7 +46,6 @@ import worm.me.PlayerSystems.PlayerData.Social.MessageHead;
 import worm.me.PlayerSystems.PlayerData.Social.Skin.SkinGui;
 import org.bukkit.event.player.PlayerJoinEvent;
 import worm.me.PlayerSystems.PlayerData.Tools.ToolsEvents;
-import worm.me.WorldBorder.WorldBorderSizeHandler;
 
 import java.util.*;
 
@@ -230,7 +231,16 @@ public class Listener implements org.bukkit.event.Listener {
             }
         }
     }
-
+    /*
+    @EventHandler
+    public void onEntitySpawn(EntitySpawnEvent e) {
+        if (e.getEntity().getType() == EntityType.ARMOR_STAND) {
+            PlayerSpawning handler = new PlayerSpawning(plugin);
+            ArmorStand ar = (ArmorStand) e.getEntity() ;
+            handler.ArmorStandSpawn(ar);
+        }
+    }
+    */
     @EventHandler
     public void onInteract(PlayerInteractEvent e){
 
