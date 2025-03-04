@@ -43,11 +43,19 @@ public class WorldBorderSizeHandler {
 
     public void incrementBlockCount() {
         blockCount++;
+        saveBlockCount();
         adjustWorldBorder();
     }
 
     public void decrementBlockCount() {
         blockCount--;
+        saveBlockCount();
+    }
+
+    public void saveBlockCount() {
+        FileConfiguration config = plugin.getConfig();
+        config.set("blockCount", blockCount);
+        plugin.saveConfig();
     }
 
     public long getBlockCount() {

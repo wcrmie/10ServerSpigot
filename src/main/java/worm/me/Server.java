@@ -30,7 +30,7 @@ public final class Server extends JavaPlugin {
 
     public SkinsRestorer skinsRestorer;
 
-    private WorldBorderSizeHandler worldBorderSizeHandler;
+    private WorldBorderSizeHandler WorldBorderSizeHandler;
     private PlayerSpawning playerspawning;
     private SaddleRide saddleRide;
     private ArtBlocks artBlocks;
@@ -45,6 +45,10 @@ public final class Server extends JavaPlugin {
     public static Map<Material, int[]> miscs = new HashMap<>();
 
     public static Map<String, List<Material>> tools = new HashMap<>();
+
+    public WorldBorderSizeHandler getWorldBorderHandler() {
+        return this.WorldBorderSizeHandler;
+    }
 
     @Override
     public void onEnable() {
@@ -69,7 +73,7 @@ public final class Server extends JavaPlugin {
 
         World world = Bukkit.getWorld("world");
         assert world != null;
-        worldBorderSizeHandler = new WorldBorderSizeHandler(this);
+        WorldBorderSizeHandler = new WorldBorderSizeHandler(this);
         playerspawning = new PlayerSpawning(this);
         saddleRide = new SaddleRide(this);
         artBlocks = new ArtBlocks(this);
@@ -80,10 +84,11 @@ public final class Server extends JavaPlugin {
         // Add custom recipes
         Recipes.addRecipes();
 
-
         // Register commands
-        getCommand("blockcount").setExecutor(new BlockCountCommand(worldBorderSizeHandler));
-        getCommand("expansionpercentage").setExecutor(new ExpansionPercentageCommand(worldBorderSizeHandler));
+
+        getCommand("blockcount").setExecutor(new BlockCountCommand(WorldBorderSizeHandler));
+        getCommand("expansionpercentage").setExecutor(new ExpansionPercentageCommand(WorldBorderSizeHandler));
+
 
 
         // Allows ListenerClass to receive events.
@@ -220,8 +225,7 @@ public final class Server extends JavaPlugin {
         }
 
         FileConfiguration config = getConfig();
-        WorldBorderSizeHandler worldBorderSizeHandler = new WorldBorderSizeHandler(this);
-        config.set("blockCount", worldBorderSizeHandler.getBlockCount());
+        WorldBorderSizeHandler WorldBorderSizeHandler = new WorldBorderSizeHandler(this);
         config.set("pluginEnabled", false);
         saveConfig();
         HandlerList.unregisterAll(this);

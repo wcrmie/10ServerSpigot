@@ -67,14 +67,12 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event){
-        WorldBorderSizeHandler handler = new WorldBorderSizeHandler(plugin);
-        handler.incrementBlockCount();
+        plugin.getWorldBorderHandler().incrementBlockCount();
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
-        WorldBorderSizeHandler handler = new WorldBorderSizeHandler(plugin);
-        handler.decrementBlockCount();
+        plugin.getWorldBorderHandler().decrementBlockCount();
     }
 
     @EventHandler
