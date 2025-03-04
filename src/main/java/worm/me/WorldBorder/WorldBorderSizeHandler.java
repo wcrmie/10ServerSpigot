@@ -30,12 +30,11 @@ public class WorldBorderSizeHandler {
     public void adjustWorldBorder() {
         long worldBlockSize = (long) (worldBorder.getSize() * worldBorder.getSize() * 75); // 75 is world height
 
-
         int newSize = (int) (baseSize + (blockCount / (worldBlockSize * (expansionPercentage / 100.0))));
 
-        if (newSize > worldBorder.getSize() && newSize % 2 == 0) {
+        if (newSize > worldBorder.getSize() && (newSize+1) % 2 == 0) {
             worldBorder.setSize(newSize);
-        } else if (newSize > worldBorder.getSize() && newSize % 2 != 0) {
+        } else if (newSize > worldBorder.getSize() && (newSize+1) % 2 != 0) {
             worldBorder.setSize(newSize - 1);
         }
 
