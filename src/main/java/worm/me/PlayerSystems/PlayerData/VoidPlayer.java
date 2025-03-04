@@ -1,6 +1,7 @@
 package worm.me.PlayerSystems.PlayerData;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -88,13 +89,13 @@ public class VoidPlayer {
 
     }
 
-    public static List<ItemStack> getUnlockedGens(Player p){
+    public static List<Material> getUnlockedGens(Player p){
 
             PersistentDataContainer pdc = p.getPersistentDataContainer();
 
             String encodedData = pdc.get(new NamespacedKey(Server.getPlugin(), "unlockedgens"), PersistentDataType.STRING);
 
-            ArrayList<ItemStack> items = new ArrayList<>();
+            List<Material> items = new ArrayList<>();
 
             if (!encodedData.isEmpty()){
                 byte[] rawData = Base64.getDecoder().decode(encodedData);
@@ -107,7 +108,9 @@ public class VoidPlayer {
 
                     for (int i = 0; i < size; i++) {
 
-                        items.add((ItemStack) is.readObject());
+                        ItemStack item = (ItemStack) is.readObject();
+
+                        items.add(item.getType());
 
                     }
 
@@ -122,9 +125,15 @@ public class VoidPlayer {
             return items;
     }
 
-    public static void setUnlockedGens(Player p, List<ItemStack> gens){
+    public static void setUnlockedGens(Player p, List<Material> gens){
 
             PersistentDataContainer pdc = p.getPersistentDataContainer();
+
+            List<ItemStack> items = new ArrayList<>();
+
+            for (Material gen : gens){
+                items.add(new ItemStack(gen));
+            }
 
             try {
                 ByteArrayOutputStream io = new ByteArrayOutputStream();
@@ -132,7 +141,7 @@ public class VoidPlayer {
 
                 os.write(gens.size());
 
-                for (ItemStack item : gens) {
+                for (ItemStack item : items) {
                     os.writeObject(item);
                 }
 

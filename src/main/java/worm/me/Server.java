@@ -175,36 +175,36 @@ public final class Server extends JavaPlugin {
         sounds.add(Sound.ENTITY_WITCH_THROW);
 
         // CREATE BLOCK KEYS FOR GENERATOR
-        stones.add(Material.COBBLESTONE);
-        stones.add(Material.TUFF);
-        stones.add(Material.ANDESITE);
-        stones.add(Material.GRANITE);
-        stones.add(Material.DIORITE);
-        stones.add(Material.DRIPSTONE_BLOCK);
-        stones.add(Material.PACKED_MUD);
-        stones.add(Material.COBBLED_DEEPSLATE);
-        stones.add(Material.SMOOTH_BASALT);
+        stones.put(Material.COBBLESTONE, new int[]{0,0,0,0,0,0,0,0});
+        stones.put(Material.TUFF, new int[]{5,0,0,0,0,10,0,0});
+        stones.put(Material.ANDESITE, new int[]{0,0,0,0,0,7,0,0});
+        stones.put(Material.GRANITE, new int[]{0,0,0,0,0,7,0,0});
+        stones.put(Material.DIORITE, new int[]{0,0,0,0,0,7,0,0});
+        stones.put(Material.DRIPSTONE_BLOCK, new int[]{0,0,0,0,0,25,0,0});
+        stones.put(Material.PACKED_MUD, new int[]{0,15,0,0,0,15,0,10});
+        stones.put(Material.COBBLED_DEEPSLATE, new int[]{0,0,0,0,10,35,0,0});
+        stones.put(Material.SMOOTH_BASALT, new int[]{0,0,0,0,15,20,0,0});
 
-        dirts.add(Material.DIRT);
-        dirts.add(Material.COARSE_DIRT);
-        dirts.add(Material.SAND);
-        dirts.add(Material.GRAVEL);
-        dirts.add(Material.RED_SAND);
-        dirts.add(Material.CLAY);
-        dirts.add(Material.MUD);
+        dirts.put(Material.DIRT, new int[]{0,0,0,0,0,0,0,0});
+        dirts.put(Material.COARSE_DIRT, new int[]{0,0,0,0,0,0,0,0});
+        dirts.put(Material.SAND, new int[]{0,0,0,0,0,0,0,0});
+        dirts.put(Material.GRAVEL, new int[]{0,0,0,0,0,0,0,0});
+        dirts.put(Material.RED_SAND, new int[]{0,0,0,0,0,0,0,0});
+        dirts.put(Material.CLAY, new int[]{0,0,0,0,0,0,0,0});
+        dirts.put(Material.MUD, new int[]{0,0,0,0,0,0,0,0});
 
-        planks.add(Material.OAK_PLANKS);
-        planks.add(Material.SPRUCE_PLANKS);
-        planks.add(Material.DARK_OAK_PLANKS);
-        planks.add(Material.BIRCH_PLANKS);
-        planks.add(Material.JUNGLE_PLANKS);
-        planks.add(Material.MANGROVE_PLANKS);
-        planks.add(Material.ACACIA_PLANKS);
+        planks.put(Material.OAK_PLANKS, new int[]{0,0,0,0,0,0,0,0});
+        planks.put(Material.SPRUCE_PLANKS, new int[]{0,0,0,0,0,0,0,0});
+        planks.put(Material.DARK_OAK_PLANKS, new int[]{0,0,0,0,0,0,0,0});
+        planks.put(Material.BIRCH_PLANKS, new int[]{0,0,0,0,0,0,0,0});
+        planks.put(Material.JUNGLE_PLANKS, new int[]{0,0,0,0,0,0,0,0});
+        planks.put(Material.MANGROVE_PLANKS, new int[]{0,0,0,0,0,0,0,0});
+        planks.put(Material.ACACIA_PLANKS, new int[]{0,0,0,0,0,0,0,0});
 
-        miscs.add(Material.COAL);
-        miscs.add(Material.QUARTZ);
-        miscs.add(Material.REDSTONE);
-        miscs.add(Material.GLOWSTONE_DUST);
+        miscs.put(Material.COAL, new int[]{0,0,0,0,0,0,0,0});
+        miscs.put(Material.QUARTZ, new int[]{0,0,0,0,0,0,0,0});
+        miscs.put(Material.REDSTONE, new int[]{0,0,0,0,0,0,0,0});
+        miscs.put(Material.GLOWSTONE_DUST, new int[]{0,0,0,0,0,0,0,0});
 
         // CREATE QUESTS
         QuestInitialize questInitialize = new QuestInitialize(this);
