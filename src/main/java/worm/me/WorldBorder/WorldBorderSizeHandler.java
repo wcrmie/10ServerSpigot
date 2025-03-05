@@ -72,7 +72,8 @@ public class WorldBorderSizeHandler {
     }
 
     private int calculateNewSize(long worldBlockSize) {
-        return (int) (BASE_SIZE + (blockCount / (worldBlockSize * (expansionPercentage / 100.0))));
+
+        return (int) (blockCount / (worldBlockSize * (expansionPercentage / 100.0)));
     }
 
     private static final Set<Material> bannedBlocks = new HashSet<>(Arrays.asList(
