@@ -44,24 +44,18 @@ public class PlayerSpawning {
     }
 
     public Location worldBorderGetRandomBlock() {
-        int attempts = 0;
-        while (attempts < 50) {
-            int xCord = ThreadLocalRandom.current().nextInt(xMoreThan + 1, xLessThan);
-            int yCord = ThreadLocalRandom.current().nextInt(yMoreThan + 1, yLessThan);
-            int zCord = ThreadLocalRandom.current().nextInt(zMoreThan + 1, zLessThan);
+        Location spawnCenter = new Location(world, 0.5, 240, 0.5);
+        int excludeRadius = 20;
 
-            if (xCord > xMoreThan && xCord < xLessThan && yCord > yMoreThan && yCord < yLessThan && zCord > zMoreThan && zCord < zLessThan) {
-                //RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-                //RegionManager regions = container.get(BukkitAdapter.adapt(world));
-                //ProtectedRegion spawn = regions.getRegion("spawn");
-                //if (!spawn.contains(xCord, yCord, zCord)) {
-                    return new Location(world, xCord, yCord, zCord);
-                //}
-            }
-            attempts++;
-        }
+        Location randomLocation;
+        do {
+            int xCord = ThreadLocalRandom.current().nextInt(xMoreThan, xLessThan);
+            int yCord = ThreadLocalRandom.current().nextInt(yMoreThan, yLessThan);
+            int zCord = ThreadLocalRandom.current().nextInt(zMoreThan, zLessThan);
+            randomLocation = new Location(world, xCord, yCord, zCord);
+        } while (randomLocation.distance(spawnCenter) < excludeRadius);
 
-        return new Location(world, (xMoreThan + xLessThan) / 2, (yMoreThan + yLessThan) / 2, (zMoreThan + zLessThan) / 2);
+        return randomLocation;
     }
 
     private Location findValidLocation(int xSize, int ySize, int zSize, int xBSize, int yBSize, int zBSize, int randomBlocks, int maxAttempts, String successMessage, boolean vc) {
@@ -137,11 +131,11 @@ public class PlayerSpawning {
             }
 
             if (successMessage != null && !successMessage.isEmpty()) {
-                plugin.getLogger().info(successMessage + " at location: " + baseX + ", " + baseY + ", " + baseZ);
+                //plugin.getLogger().info(successMessage + " at location: " + baseX + ", " + baseY + ", " + baseZ);
 
-                Bukkit.getServer().broadcastMessage(ChatColor.GREEN + "Spawn location found using " +
-                        ChatColor.GOLD + successMessage +
-                        ChatColor.GREEN + " at: " + baseX + ", " + baseY + ", " + baseZ);
+                //Bukkit.getServer().broadcastMessage(ChatColor.GREEN + "Spawn location found using " +
+                //        ChatColor.GOLD + successMessage +
+                //        ChatColor.GREEN + " at: " + baseX + ", " + baseY + ", " + baseZ);
             }
 
             return new Location(world, baseX, baseY, baseZ);
@@ -183,7 +177,7 @@ public class PlayerSpawning {
             return location;
         }
 
-        Bukkit.getServer().broadcastMessage(ChatColor.RED + "No valid spawn area found! Using random location.");
+        //Bukkit.getServer().broadcastMessage(ChatColor.RED + "No valid spawn area found! Using random location.");
         return worldBorderGetRandomBlock();
     }
 

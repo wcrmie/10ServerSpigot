@@ -6,44 +6,57 @@ import org.bukkit.WorldBorder;
 import org.bukkit.configuration.file.FileConfiguration;
 import worm.me.Server;
 
-
 public class WorldBorderSizeHandler {
+    private static final int BASE_SIZE = 20;
+    private static final String WORLD_NAME = "ul_Void";
+    private static final String BLOCK_COUNT_CONFIG_KEY = "blockCount";
+    private static final String EXPANSION_PERCENTAGE_CONFIG_KEY = "expansionPercentage";
+
     private final Server plugin;
-    private World world;
-    private WorldBorder worldBorder;
-    private long blockCount;
-    private final int baseSize;
+    private final World world;
+    private final WorldBorder worldBorder;
+
+    private static long blockCount;
     private double expansionPercentage;
 
     public WorldBorderSizeHandler(Server plugin) {
         this.plugin = plugin;
-        this.baseSize = 20;
-        this.world = Bukkit.getWorld("ul_Void");
+
+        this.world = Bukkit.getWorld(WORLD_NAME);
+        if (this.world == null) {
+            throw new IllegalStateException("World '" + WORLD_NAME + "' not found");
+        }
+
         this.worldBorder = world.getWorldBorder();
         this.worldBorder.setCenter(0.5, 0.5);
 
         FileConfiguration config = plugin.getConfig();
-        this.expansionPercentage = config.getDouble("expansionPercentage", 0.25);
-        this.blockCount = config.getLong("blockCount", 0);
+        this.blockCount = config.getLong(BLOCK_COUNT_CONFIG_KEY, 0);
+        this.expansionPercentage = config.getDouble(EXPANSION_PERCENTAGE_CONFIG_KEY, 0.25);
     }
 
     public void adjustWorldBorder() {
-        long worldBlockSize = (long) (worldBorder.getSize() * worldBorder.getSize() * 75); // 75 is world height
+        long worldBlockSize = calculateWorldBlockSize();
+        int newSize = calculateNewSize(worldBlockSize);
 
-        int newSize = (int) (baseSize + (blockCount / (worldBlockSize * (expansionPercentage / 100.0))));
+        newSize = (newSize % 2 == 0) ? newSize : newSize - 1;
 
-        if (newSize > worldBorder.getSize() && (newSize+1) % 2 == 0) {
+        if (newSize > worldBorder.getSize()) {
             worldBorder.setSize(newSize);
-        } else if (newSize > worldBorder.getSize() && (newSize+1) % 2 != 0) {
-            worldBorder.setSize(newSize - 1);
         }
+    }
 
+    private long calculateWorldBlockSize() {
+        return (long) (worldBorder.getSize() * worldBorder.getSize() * 60);
+    }
+
+    private int calculateNewSize(long worldBlockSize) {
+        return (int) (BASE_SIZE + (blockCount / (worldBlockSize * (expansionPercentage / 100.0))));
     }
 
     public void incrementBlockCount() {
         blockCount++;
-        saveBlockCount();
-        adjustWorldBorder();
+        saveAndAdjustWorldBorder();
     }
 
     public void decrementBlockCount() {
@@ -51,9 +64,25 @@ public class WorldBorderSizeHandler {
         saveBlockCount();
     }
 
-    public void saveBlockCount() {
+    public void addBlockCount(int amount) {
+        blockCount += amount;
+        Bukkit.getLogger().info("Adding blocks: " + amount + ", New block count: " + blockCount);
+        saveAndAdjustWorldBorder();
+    }
+
+    public void removeBlockCount(int amount) {
+        blockCount -= amount;
+        saveBlockCount();
+    }
+
+    private void saveAndAdjustWorldBorder() {
+        saveBlockCount();
+        adjustWorldBorder();
+    }
+
+    private void saveBlockCount() {
         FileConfiguration config = plugin.getConfig();
-        config.set("blockCount", blockCount);
+        config.set(BLOCK_COUNT_CONFIG_KEY, blockCount);
         plugin.saveConfig();
     }
 
@@ -61,13 +90,13 @@ public class WorldBorderSizeHandler {
         return blockCount;
     }
 
-    public double getWorldBorderSize() {
-        return worldBorder.getSize();
-    }
-
     public void setBlockCount(long blockCount) {
         this.blockCount = blockCount;
-        adjustWorldBorder();
+        saveAndAdjustWorldBorder();
+    }
+
+    public double getWorldBorderSize() {
+        return worldBorder.getSize();
     }
 
     public double getExpansionPercentage() {
@@ -82,7 +111,7 @@ public class WorldBorderSizeHandler {
         this.expansionPercentage = percentage;
 
         FileConfiguration config = plugin.getConfig();
-        config.set("expansionPercentage", percentage);
+        config.set(EXPANSION_PERCENTAGE_CONFIG_KEY, percentage);
         plugin.saveConfig();
 
         adjustWorldBorder();

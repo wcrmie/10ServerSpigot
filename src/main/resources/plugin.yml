@@ -52,3 +52,6 @@ commands:
   lostTools:
     description: Returns the player's lost tools.
     usage: /<command>
+  islandspawn:
+    description: spawns an island, name of island.
+    usage: /<command> [string]
