@@ -22,8 +22,7 @@ public class WorldBorderSizeHandler {
     private static final String BLOCK_COUNT_CONFIG_KEY = "blockCount";
     private static final String EXPANSION_PERCENTAGE_CONFIG_KEY = "expansionPercentage";
 
-    private final Server plugin;
-    private final World world;
+    private final Server plugin = Server.getPlugin();
     private final WorldBorder worldBorder;
 
     private static long blockCount;
