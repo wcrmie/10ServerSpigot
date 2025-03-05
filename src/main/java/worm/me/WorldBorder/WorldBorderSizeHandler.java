@@ -1,13 +1,19 @@
 package worm.me.WorldBorder;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import worm.me.GameSystems.IslandSpawning;
 import worm.me.GameSystems.TreasureChests;
 import worm.me.Server;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WorldBorderSizeHandler {
@@ -71,14 +77,100 @@ public class WorldBorderSizeHandler {
         return (int) (BASE_SIZE + (blockCount / (worldBlockSize * (expansionPercentage / 100.0))));
     }
 
-    public void incrementBlockCount() {
-        blockCount++;
-        saveAndAdjustWorldBorder();
+    private static final Set<Material> bannedBlocks = new HashSet<>(Arrays.asList(
+            Material.OAK_LOG,
+            Material.SPRUCE_LOG,
+            Material.BIRCH_LOG,
+            Material.JUNGLE_LOG,
+            Material.ACACIA_LOG,
+            Material.DARK_OAK_LOG,
+            Material.MANGROVE_LOG,
+            Material.CHERRY_LOG,
+            Material.STRIPPED_OAK_LOG,
+            Material.STRIPPED_SPRUCE_LOG,
+            Material.STRIPPED_BIRCH_LOG,
+            Material.STRIPPED_JUNGLE_LOG,
+            Material.STRIPPED_ACACIA_LOG,
+            Material.STRIPPED_DARK_OAK_LOG,
+            Material.STRIPPED_MANGROVE_LOG,
+            Material.STRIPPED_CHERRY_LOG,
+
+            Material.OAK_LEAVES,
+            Material.SPRUCE_LEAVES,
+            Material.BIRCH_LEAVES,
+            Material.JUNGLE_LEAVES,
+            Material.ACACIA_LEAVES,
+            Material.DARK_OAK_LEAVES,
+            Material.MANGROVE_LEAVES,
+            Material.CHERRY_LEAVES,
+
+            Material.SEAGRASS,
+            Material.TALL_SEAGRASS,
+
+            Material.AZALEA,
+            Material.FLOWERING_AZALEA,
+            Material.MOSS_CARPET,
+
+            Material.BAMBOO,
+
+            Material.SUGAR_CANE,
+            Material.CACTUS,
+            Material.VINE,
+
+            Material.ICE,
+            Material.SNOW,
+
+            Material.DANDELION,
+            Material.POPPY,
+            Material.BLUE_ORCHID,
+            Material.ALLIUM,
+            Material.AZURE_BLUET,
+            Material.RED_TULIP,
+            Material.ORANGE_TULIP,
+            Material.WHITE_TULIP,
+            Material.PINK_TULIP,
+            Material.OXEYE_DAISY,
+            Material.CORNFLOWER,
+            Material.LILY_OF_THE_VALLEY,
+            Material.WITHER_ROSE,
+            Material.SUNFLOWER,
+            Material.LILAC,
+            Material.ROSE_BUSH,
+            Material.PEONY,
+
+            Material.SHORT_GRASS,
+            Material.TALL_GRASS,
+            Material.FERN,
+            Material.LARGE_FERN,
+
+            Material.BROWN_MUSHROOM_BLOCK,
+            Material.RED_MUSHROOM_BLOCK,
+            Material.MUSHROOM_STEM,
+
+            Material.POINTED_DRIPSTONE,
+
+            Material.BROWN_MUSHROOM,
+            Material.RED_MUSHROOM,
+
+            Material.TWISTING_VINES,
+            Material.TWISTING_VINES_PLANT,
+            Material.WEEPING_VINES,
+            Material.WEEPING_VINES_PLANT
+    ));
+
+
+    public void incrementBlockCount(BlockPlaceEvent event) {
+        if (!bannedBlocks.contains(event.getBlock().getType())) {
+            blockCount--;
+            saveBlockCount();
+        }
     }
 
-    public void decrementBlockCount() {
-        blockCount--;
-        saveBlockCount();
+    public void decrementBlockCount(BlockBreakEvent event) {
+        if (!bannedBlocks.contains(event.getBlock().getType())) {
+            blockCount--;
+            saveBlockCount();
+        }
     }
 
     public void addBlockCount(int amount) {
