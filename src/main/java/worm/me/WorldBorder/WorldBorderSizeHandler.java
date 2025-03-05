@@ -17,7 +17,7 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WorldBorderSizeHandler {
-    private static final int BASE_SIZE = 20;
+
     private static final String WORLD_NAME = "ul_Void";
     private static final String BLOCK_COUNT_CONFIG_KEY = "blockCount";
     private static final String EXPANSION_PERCENTAGE_CONFIG_KEY = "expansionPercentage";
