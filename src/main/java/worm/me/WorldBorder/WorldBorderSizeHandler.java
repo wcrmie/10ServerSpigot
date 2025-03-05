@@ -29,7 +29,6 @@ public class WorldBorderSizeHandler {
     private double expansionPercentage;
 
     public WorldBorderSizeHandler(Server plugin) {
-        this.plugin = plugin;
 
         World world = Bukkit.getWorld(WORLD_NAME);
         if (world == null) {
