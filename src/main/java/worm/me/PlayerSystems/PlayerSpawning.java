@@ -1,128 +1,209 @@
 package worm.me.PlayerSystems;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.WorldBorder;
 import worm.me.Server;
-
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class PlayerSpawning {
     private final JavaPlugin plugin;
-    private final World world = Bukkit.getWorld("ul_Void");
-    private final WorldBorder worldBorder = world.getWorldBorder();
+    private final World world;
+    private final WorldBorder worldBorder;
     private int xMoreThan, xLessThan, yMoreThan, yLessThan, zMoreThan, zLessThan;
     private static final Map<Location, Boolean> blocksToRemove = new HashMap<>();
+
     public PlayerSpawning(Server plugin) {
         this.plugin = plugin;
+        this.world = Bukkit.getWorld("ul_Void");
+        this.worldBorder = world.getWorldBorder();
         updateBorderValues();
     }
+
     private void updateBorderValues() {
         double borderSize = worldBorder.getSize();
-        xMoreThan = (int) ((borderSize / 2) * -1);
-        xLessThan = (int) (borderSize / 2) - 1;
-        zMoreThan = (int) ((borderSize / 2) * -1);
-        zLessThan = (int) (borderSize / 2) - 1;
-        yMoreThan = 220;
-        yLessThan = 280;
+        Location center = worldBorder.getCenter();
+
+        xMoreThan = (int) (center.getX() - (borderSize / 2));
+        xLessThan = (int) (center.getX() + (borderSize / 2)) - 1;
+        zMoreThan = (int) (center.getZ() - (borderSize / 2));
+        zLessThan = (int) (center.getZ() + (borderSize / 2)) - 1;
+
+        yMoreThan = Math.max(world.getMinHeight(), 220);
+        yLessThan = Math.min(world.getMaxHeight(), 280);
     }
+
     public Location worldBorderGetRandomBlock() {
-        int xCord = (int) (Math.random() * (((xLessThan-1) - (xMoreThan+1)) + 1)) + (xMoreThan+1);
-        int yCord = (int) (Math.random() * (((yLessThan-1) - (yMoreThan+1)) + 1)) + (yMoreThan+1);
-        int zCord = (int) (Math.random() * (((zLessThan-1) - (zMoreThan+1)) + 1)) + (zMoreThan+1);
-        return new Location(world, xCord, yCord, zCord);
-    }
-    public Location validSpawnLocation() {
-        Location location =           findValidLocation(17, 17, 17, 45, 45, 45 ,3,    "Estra Extra big used");
-        if (location == null) {
-            location =                findValidLocation(11,  11,  11,  15, 15, 15 ,10,   "Extra big used");
-            if (location == null) {
-                location =            findValidLocation(7,  9,  7,  11, 9,  11, 20,   "big used");
-                if (location == null) {
-                    location =        findValidLocation(3,  5,  3,  0,  1,  0 , 500,  "med used");
-                    if (location == null) {
-                        location =    findValidLocation(0,  3,  0,  0,  1,  0 , 2000, "small used");
-                        if (location == null) {
-                            location = worldBorderGetRandomBlock();
-                        }}}}}
-        return location;
-    }
-    private Location findValidLocation(int xSize, int ySize, int zSize, int xBSize, int yBSize, int zBSize, int maxAttempts, String successMessage) {
-        int yOffSetUp = 1;
-        int locationAttempts = 0;
-        Location location;
-        boolean validLocation;
+        Location spawnCenter = new Location(world, 0.5, 240, 0.5);
+        int excludeRadius = 20;
+
+        Location randomLocation;
         do {
-            locationAttempts++;
-            validLocation = true;
-            location = worldBorderGetRandomBlock();
-            int xStart = (int) (location.getX() - (xBSize / 2.0));
-            int xEnd = (int) (location.getX() + (xBSize / 2.0));
-            int yStart = (int) (location.getY() - (yBSize / 2.0)) + yOffSetUp;
-            int yEnd = (int) (location.getY() + (yBSize / 2.0)) + yOffSetUp;
-            int zStart = (int) (location.getZ() - (zBSize / 2.0));
-            int zEnd = (int) (location.getZ() + (zBSize / 2.0));
-            //full
-            for (int x = (int) (location.getX() - (xSize / 2.0)); x <= (int) (location.getX() + (xSize / 2.0)); x++) {
-                for (int y = (int) (location.getY() - (ySize / 2.0)) + yOffSetUp; y <= (int) (location.getY() + (ySize / 2.0)) + yOffSetUp; y++) {
-                    for (int z = (int) (location.getZ() - (zSize / 2.0)); z <= (int) (location.getZ() + (zSize / 2.0)); z++) {
+            int xCord = ThreadLocalRandom.current().nextInt(xMoreThan, xLessThan);
+            int yCord = ThreadLocalRandom.current().nextInt(yMoreThan, yLessThan);
+            int zCord = ThreadLocalRandom.current().nextInt(zMoreThan, zLessThan);
+            randomLocation = new Location(world, xCord, yCord, zCord);
+        } while (randomLocation.distance(spawnCenter) < excludeRadius);
+
+        return randomLocation;
+    }
+
+    private Location findValidLocation(int xSize, int ySize, int zSize, int xBSize, int yBSize, int zBSize, int randomBlocks, int maxAttempts, String successMessage, boolean vc) {
+        int attempts = 0;
+
+        while (attempts < maxAttempts) {
+            Location baseLocation = worldBorderGetRandomBlock();
+            int baseX = baseLocation.getBlockX();
+            int baseY = baseLocation.getBlockY();
+            int baseZ = baseLocation.getBlockZ();
+
+            boolean isValid = true;
+
+            for (int x = baseX - xSize; x <= baseX + xSize && isValid; x++) {
+                for (int y = baseY - ySize; y <= baseY + ySize && isValid; y++) {
+                    for (int z = baseZ - zSize; z <= baseZ + zSize && isValid; z++) {
+                        if (y < world.getMinHeight() || y > world.getMaxHeight()) {
+                            continue;
+                        }
+
                         if (!isAir(x, y, z)) {
-                            validLocation = false;
+                            isValid = false;
                             break;
                         }
                     }
-                    if (!validLocation) break;
                 }
-                if (!validLocation) break;
             }
-            //x sides
-            for (int y = yStart; y <= yEnd; y++) {
-                for (int z = zStart; z <= zEnd; z++) {
-                    if (!isAir(xStart, y, z) || !isAir(xEnd, y, z)) {
-                        validLocation = false;
+
+            if (!isValid) {
+                attempts++;
+                continue;
+            }
+
+            for (int i = 0; i < randomBlocks && isValid; i++) {
+                int x = ThreadLocalRandom.current().nextInt(baseX - xBSize, baseX + xBSize + 1);
+                int y = ThreadLocalRandom.current().nextInt(baseY - yBSize, baseY + yBSize + 1);
+                int z = ThreadLocalRandom.current().nextInt(baseZ - zBSize, baseZ + zBSize + 1);
+
+                if (y < world.getMinHeight() || y > world.getMaxHeight()) {
+                    continue;
+                }
+
+                if (!isAir(x, y, z)) {
+                    isValid = false;
+                    break;
+                }
+            }
+
+            if (!isValid) {
+                attempts++;
+                continue;
+            }
+
+            if (!vc) {
+                for (int y = baseY - 1; y >= Math.max(baseY - 100, world.getMinHeight()) && isValid; y--) {
+                    if (!isAir(baseX, y, baseZ)) {
+                        isValid = false;
                         break;
                     }
                 }
-                if (!validLocation) break;
-            }
-            //y sides
-            for (int x = xStart; x <= xEnd; x++) {
-                for (int z = zStart; z <= zEnd; z++) {
-                    if (!isAir(x, yStart, z) || !isAir(x, yEnd, z)) {
-                        validLocation = false;
+
+                for (int y = baseY + 1; y <= Math.min(baseY + 100, world.getMaxHeight()) && isValid; y++) {
+                    if (!isAir(baseX, y, baseZ)) {
+                        isValid = false;
                         break;
                     }
                 }
-                if (!validLocation) break;
-            }
-            //z sides
-            for (int x = xStart; x <= xEnd; x++) {
-                for (int y = yStart; y <= yEnd; y++) {
-                    if (!isAir(x, y, zStart) || !isAir(x, y, zEnd)) {
-                        validLocation = false;
-                        break;
-                    }
+
+                if (!isValid) {
+                    attempts++;
+                    continue;
                 }
-                if (!validLocation) break;
             }
-        } while (!validLocation && locationAttempts < maxAttempts);
-        if (validLocation) {
-            return location;
+
+            if (successMessage != null && !successMessage.isEmpty()) {
+                //plugin.getLogger().info(successMessage + " at location: " + baseX + ", " + baseY + ", " + baseZ);
+
+                //Bukkit.getServer().broadcastMessage(ChatColor.GREEN + "Spawn location found using " +
+                //        ChatColor.GOLD + successMessage +
+                //        ChatColor.GREEN + " at: " + baseX + ", " + baseY + ", " + baseZ);
+            }
+
+            return new Location(world, baseX, baseY, baseZ);
         }
+
         return null;
     }
-    private boolean isAir(int x, int y, int z) {
-        Block block = world.getBlockAt(x, y, z);
-        return block.getType() == Material.AIR;
+
+    public Location validSpawnLocation() {
+        Location location = null;
+
+        location = findValidLocation(17, 27, 17, 55, 75, 55, 2500, 10, "Estra Extra big", false);
+        if (location != null) {
+            return location;
+        }
+
+        location = findValidLocation(13, 17, 13, 35, 55, 35, 500, 20, "Extra big",false);
+        if (location != null) {
+            return location;
+        }
+
+        location = findValidLocation(9, 11, 9, 17, 33, 17, 50, 50, "Big",false);
+        if (location != null) {
+            return location;
+        }
+
+        location = findValidLocation(3, 5, 3, 11, 11, 11, 25, 100, "Medium",false);
+        if (location != null) {
+            return location;
+        }
+
+        location = findValidLocation(0, 3, 0, 5, 5, 5, 5, 1000, "Small",false);
+        if (location != null) {
+            return location;
+        }
+
+        location = findValidLocation(0, 3, 0, 1, 1, 1, 0, 2000, "enxtra Small",true);
+        if (location != null) {
+            return location;
+        }
+
+        //Bukkit.getServer().broadcastMessage(ChatColor.RED + "No valid spawn area found! Using random location.");
+        return worldBorderGetRandomBlock();
     }
 
+    private boolean isAir(int x, int y, int z) {
+        if (y < world.getMinHeight() || y > world.getMaxHeight()) {
+            return true;
+        }
+
+        Block block = world.getBlockAt(x, y, z);
+        Material type = block.getType();
+
+        return type == Material.AIR ||
+                type == Material.CAVE_AIR ||
+                type == Material.VOID_AIR;
+    }
 
 
     public void playerSpawn(Player player) {
         updateBorderValues();
         Location location = validSpawnLocation();
+
+        if (location == null) {
+            player.teleport(world.getSpawnLocation());
+            return;
+        }
+
         Block block = world.getBlockAt(location);
         block.setType(Material.BEDROCK);
         blocksToRemove.put(block.getLocation(), true);
@@ -133,13 +214,16 @@ public class PlayerSpawning {
                 player.teleport(location.clone().add(0.5, 1, 0.5));
             }
         }.runTaskLater(plugin, 5L);
+
         new BukkitRunnable() {
             @Override
             public void run() {
                 if (player.getLocation().distance(location) >= 5) {
                     Block block = world.getBlockAt(location);
-                    block.setType(Material.AIR);
-                    blocksToRemove.remove(location);
+                    if (block.getType() == Material.BEDROCK) {
+                        block.setType(Material.AIR);
+                        blocksToRemove.remove(location);
+                    }
                     cancel();
                 }
             }
@@ -148,41 +232,61 @@ public class PlayerSpawning {
 
     public void removeAllBlocks() {
         Bukkit.getServer().broadcastMessage("Removing " + blocksToRemove.size() + " blocks");
-
         for (Location location : blocksToRemove.keySet()) {
             Block block = world.getBlockAt(location);
             if (block.getType() == Material.BEDROCK) {
-                block.setType(Material.AIR);
+                block.setType(Material.VOID_AIR);
             }
         }
         blocksToRemove.clear();
     }
 
-}
-
-
     //stress testing
+
     /*
     public void ArmorStandSpawn(ArmorStand armorStand) {
+
         updateBorderValues();
+
         Location location = validSpawnLocation();
+
         Block block = world.getBlockAt(location);
+
         block.setType(Material.BEDROCK);
+
         new BukkitRunnable() {
+
             @Override
+
             public void run() {
+
                 location.add(0.5, 1, 0.5);
+
                 armorStand.teleport(location);
+
             }
+
         }.runTaskLater(plugin, 1L);
+
         new BukkitRunnable() {
+
             @Override
+
             public void run() {
+
                 location.subtract(0.5, 1, 0.5);
+
                 Block block = world.getBlockAt(location);
+
                 block.setType(Material.AIR);
+
             }
+
         }.runTaskLater(plugin, 30 * 20L);
+
     }
-     */
+    */
+
+}
+
 

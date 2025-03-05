@@ -13,6 +13,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import worm.me.Commands.*;
 import worm.me.Commands.AdminCommands.*;
 import worm.me.Commands.GUICommands.*;
+import worm.me.Commands.GUICommands.HatsCommand;
+import worm.me.Commands.GUICommands.OpenAbilitiesGUICommand;
+import worm.me.Commands.GUICommands.OpenLevelsGUICommand;
+import worm.me.Commands.GUICommands.OpenSkinGUICommand;
+import worm.me.GameSystems.IslandSpawning;
 import worm.me.GameSystems.Recipes;
 import worm.me.GameSystems.ArtBlocks;
 import worm.me.PlayerSystems.Abilities.Abilities;
@@ -52,6 +57,7 @@ public final class Server extends JavaPlugin {
         return this.WorldBorderSizeHandler;
     }
 
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -80,6 +86,7 @@ public final class Server extends JavaPlugin {
         saddleRide = new SaddleRide(this);
         artBlocks = new ArtBlocks(this);
 
+
         // Get rid of various vanilla recipes
         Recipes.removeRecipes();
 
@@ -97,6 +104,7 @@ public final class Server extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Listener(this), this);
 
         // Allows Command classes to register commands
+        this.getCommand("islandspawn").setExecutor(new IslandSpawnCommand(this));
         this.getCommand("setVoice").setExecutor(new SetVoiceCommand(this));
         this.getCommand("setGens").setExecutor(new SetGensCommand(this));
         this.getCommand("shout").setExecutor(new ShoutCommand(this));
@@ -269,6 +277,7 @@ public final class Server extends JavaPlugin {
         HandlerList.unregisterAll(this);
 
         getLogger().info("Plugin disabled");
+        getServer().getScheduler().cancelTasks(this);
     }
 
     public void broadcast(String message){

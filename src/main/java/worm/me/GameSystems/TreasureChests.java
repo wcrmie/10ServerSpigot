@@ -30,10 +30,18 @@ public class TreasureChests {
     }
 
     public Location worldBorderGetRandomBlock() {
-        int xCord = (int) (Math.random() * (((xLessThan-1) - (xMoreThan+1)) + 1)) + (xMoreThan+1);
-        int yCord = (int) (Math.random() * (((yLessThan-1) - (yMoreThan+1)) + 1)) + (yMoreThan+1);
-        int zCord = (int) (Math.random() * (((zLessThan-1) - (zMoreThan+1)) + 1)) + (zMoreThan+1);
-        return new Location(world, xCord, yCord, zCord);
+        Location spawnCenter = new Location(world, 0.5, 240, 0.5);
+        int excludeRadius = 20;
+
+        Location randomLocation;
+        do {
+            int xCord = ThreadLocalRandom.current().nextInt(xMoreThan, xLessThan);
+            int yCord = ThreadLocalRandom.current().nextInt(yMoreThan, yLessThan);
+            int zCord = ThreadLocalRandom.current().nextInt(zMoreThan, zLessThan);
+            randomLocation = new Location(world, xCord, yCord, zCord);
+        } while (randomLocation.distance(spawnCenter) < excludeRadius);
+
+        return randomLocation;
     }
 
 
