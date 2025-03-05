@@ -47,12 +47,11 @@ public class WorldBorderSizeHandler {
 
     public void adjustWorldBorder() {
         long worldBlockSize = calculateWorldBlockSize();
-        int newSize = calculateNewSize(worldBlockSize);
-
-        newSize = (newSize % 2 == 0) ? newSize : newSize - 1;
-
-        if (newSize > worldBorder.getSize()) {
-
+        if ((calculateNewSize(worldBlockSize) >= 1)) {
+            int newSize = (int) (worldBorder.getSize() + 1);
+            if (newSize % 2 == 0) {
+                newSize += 1;
+            }
             worldBorder.setSize(newSize);
         }
     }
