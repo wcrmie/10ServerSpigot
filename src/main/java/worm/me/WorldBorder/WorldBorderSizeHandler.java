@@ -161,8 +161,8 @@ public class WorldBorderSizeHandler {
 
     public void incrementBlockCount(BlockPlaceEvent event) {
         if (!bannedBlocks.contains(event.getBlock().getType())) {
-            blockCount--;
-            saveBlockCount();
+            blockCount++;
+            saveAndAdjustWorldBorder();
         }
     }
 
