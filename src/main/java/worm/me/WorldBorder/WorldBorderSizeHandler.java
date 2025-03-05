@@ -40,7 +40,7 @@ public class WorldBorderSizeHandler {
         worldBorder.setCenter(0.5, 0.5);
 
         FileConfiguration config = plugin.getConfig();
-        this.blockCount = config.getLong(BLOCK_COUNT_CONFIG_KEY, 0);
+        blockCount = config.getLong(BLOCK_COUNT_CONFIG_KEY, 0);
         this.expansionPercentage = config.getDouble(EXPANSION_PERCENTAGE_CONFIG_KEY, 0.25);
     }
 
