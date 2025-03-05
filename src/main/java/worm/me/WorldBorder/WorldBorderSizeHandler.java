@@ -37,8 +37,8 @@ public class WorldBorderSizeHandler {
             throw new IllegalStateException("World '" + WORLD_NAME + "' not found");
         }
 
-        this.worldBorder = world.getWorldBorder();
-        this.worldBorder.setCenter(0.5, 0.5);
+        worldBorder = world.getWorldBorder();
+        worldBorder.setCenter(0.5, 0.5);
 
         FileConfiguration config = plugin.getConfig();
         this.blockCount = config.getLong(BLOCK_COUNT_CONFIG_KEY, 0);
