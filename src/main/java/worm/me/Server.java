@@ -235,6 +235,7 @@ public final class Server extends JavaPlugin {
         HandlerList.unregisterAll(this);
 
         getLogger().info("Plugin disabled");
+        getServer().getScheduler().cancelTasks(this);
     }
 
     public void broadcast(String message){

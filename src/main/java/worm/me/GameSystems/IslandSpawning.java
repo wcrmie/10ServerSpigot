@@ -15,6 +15,7 @@ import com.sk89q.worldedit.session.ClipboardHolder;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import worm.me.Server;
 import worm.me.WorldBorder.WorldBorderSizeHandler;
 
@@ -253,6 +254,5 @@ public class IslandSpawning {
         add(new SchematicInfo("Island2", 9, 12, 9,206));
         add(new SchematicInfo("Island3", 18, 14, 18,632));
     }};
-
 
 }

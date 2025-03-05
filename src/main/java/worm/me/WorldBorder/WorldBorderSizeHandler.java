@@ -4,7 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.configuration.file.FileConfiguration;
+import worm.me.GameSystems.IslandSpawning;
+import worm.me.GameSystems.TreasureChests;
 import worm.me.Server;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class WorldBorderSizeHandler {
     private static final int BASE_SIZE = 20;
@@ -42,7 +46,20 @@ public class WorldBorderSizeHandler {
         newSize = (newSize % 2 == 0) ? newSize : newSize - 1;
 
         if (newSize > worldBorder.getSize()) {
+
             worldBorder.setSize(newSize);
+        }
+    }
+
+    int lastSpawnDone = 0;
+    public void spawnthings() {
+        if ((blockCount % 5000)==0 && blockCount != lastSpawnDone) {
+            lastSpawnDone = (int) blockCount;
+            TreasureChests TreasureChestsH = new TreasureChests();
+            TreasureChestsH.chestSpawn();
+
+            IslandSpawning IslandSpawningH = new IslandSpawning(plugin);
+            IslandSpawningH.IslandSpawn(null);
         }
     }
 
@@ -84,6 +101,7 @@ public class WorldBorderSizeHandler {
         FileConfiguration config = plugin.getConfig();
         config.set(BLOCK_COUNT_CONFIG_KEY, blockCount);
         plugin.saveConfig();
+        spawnthings();
     }
 
     public long getBlockCount() {
