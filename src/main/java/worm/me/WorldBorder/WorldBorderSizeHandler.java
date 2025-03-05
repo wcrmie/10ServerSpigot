@@ -32,8 +32,8 @@ public class WorldBorderSizeHandler {
     public WorldBorderSizeHandler(Server plugin) {
         this.plugin = plugin;
 
-        this.world = Bukkit.getWorld(WORLD_NAME);
-        if (this.world == null) {
+        World world = Bukkit.getWorld(WORLD_NAME);
+        if (world == null) {
             throw new IllegalStateException("World '" + WORLD_NAME + "' not found");
         }
 
