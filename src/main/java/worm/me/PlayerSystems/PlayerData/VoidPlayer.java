@@ -89,13 +89,13 @@ public class VoidPlayer {
 
     }
 
-    public static List<Material> getUnlockedGens(Player p){
+    public static List<ItemStack> getUnlockedGens(Player p){
 
             PersistentDataContainer pdc = p.getPersistentDataContainer();
 
             String encodedData = pdc.get(new NamespacedKey(Server.getPlugin(), "unlockedgens"), PersistentDataType.STRING);
 
-            List<Material> items = new ArrayList<>();
+            List<ItemStack> items = new ArrayList<>();
 
             if (!encodedData.isEmpty()){
                 byte[] rawData = Base64.getDecoder().decode(encodedData);
@@ -110,7 +110,9 @@ public class VoidPlayer {
 
                         ItemStack item = (ItemStack) is.readObject();
 
-                        items.add(item.getType());
+                        System.out.println(item.getType());
+
+                        items.add(item);
 
                     }
 
@@ -125,23 +127,17 @@ public class VoidPlayer {
             return items;
     }
 
-    public static void setUnlockedGens(Player p, List<Material> gens){
+    public static void setUnlockedGens(Player p, List<ItemStack> gens){
 
             PersistentDataContainer pdc = p.getPersistentDataContainer();
-
-            List<ItemStack> items = new ArrayList<>();
-
-            for (Material gen : gens){
-                items.add(new ItemStack(gen));
-            }
 
             try {
                 ByteArrayOutputStream io = new ByteArrayOutputStream();
                 BukkitObjectOutputStream os = new BukkitObjectOutputStream(io);
 
-                os.write(gens.size());
+                os.writeInt(gens.size());
 
-                for (ItemStack item : items) {
+                for (ItemStack item : gens) {
                     os.writeObject(item);
                 }
 
@@ -192,6 +188,10 @@ public class VoidPlayer {
 
         if (!container.has(new NamespacedKey(plugin, "activeabilities"), PersistentDataType.INTEGER_ARRAY)) {
             container.set(new NamespacedKey(plugin, "activeabilities"), PersistentDataType.INTEGER_ARRAY, new int[3]);
+        }
+
+        if (!container.has(new NamespacedKey(plugin, "movecooldown"), PersistentDataType.LONG)) {
+            container.set(new NamespacedKey(plugin, "movecooldown"), PersistentDataType.LONG, System.currentTimeMillis()/1000L);
         }
 
         MessageHead messageHead = new MessageHead(plugin);

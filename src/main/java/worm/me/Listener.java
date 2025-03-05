@@ -6,6 +6,8 @@ import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
+import net.coreprotect.CoreProtect;
+import net.coreprotect.CoreProtectAPI;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -37,6 +39,7 @@ import worm.me.PlayerSystems.Generator.GeneratorEdit;
 import worm.me.PlayerSystems.PlayerData.Levels.GainExpEvent;
 import worm.me.PlayerSystems.PlayerData.Levels.LevelUpEvent;
 import worm.me.PlayerSystems.PlayerData.Levels.Levels;
+import worm.me.PlayerSystems.PlayerData.Unlocks;
 import worm.me.PlayerSystems.PlayerData.Vault;
 import worm.me.PlayerSystems.PlayerData.VoidPlayer;
 import worm.me.PlayerSystems.Quests.QuestGui;
@@ -117,12 +120,31 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onPlayerBreak(BlockBreakEvent e){
         Player player = e.getPlayer();
-        Levels level = new Levels();
 
-        // Gives the player exp for mining certain blocks
-        if (plugin.miningBlocks.containsKey(e.getBlock().getType())) {
-            level.addExp(plugin.miningBlocks.get(e.getBlock().getType()), Levels.skillTranslation("Mining"), player);
-        }
+        CoreProtectAPI api = Server.getPlugin().getCoreProtect();
+
+        // If the block was placed by the player in the last 10 seconds, don't give exp
+
+        if (api != null) {
+
+            List<String[]> lookup = api.performLookup(10, null, null, null, null, null, 1, e.getBlock().getLocation());
+
+
+            boolean exp = true;
+
+                for (String[] value : lookup) {
+                    CoreProtectAPI.ParseResult result = api.parseResult(value);
+
+                    if (result.getType().equals(e.getBlock().getType()) && result.getActionString().equals("place") && result.getX() == e.getBlock().getX() && result.getY() == e.getBlock().getY() && result.getZ() == e.getBlock().getZ()) {
+                        exp = false;
+                        break;
+                    }
+
+            }
+
+
+            if (exp) Levels.expHandler(player, e);
+        } else player.sendMessage(ChatColor.RED + "CoreProtect is not enabled on this server.");
     }
 
     @EventHandler
@@ -171,26 +193,15 @@ public class Listener implements org.bukkit.event.Listener {
 
 
     @EventHandler
-    public void onPlayerCrouchEvent(PlayerToggleSneakEvent e){
+    public void onPlayerFlightEvent(PlayerToggleFlightEvent e){
         Player p = e.getPlayer();
-        Location loc = p.getLocation();
 
-        if (p.isFlying()) return;
+        if (p.getGameMode().equals(GameMode.CREATIVE)) return;
 
-        // If the block below the player is not air
-        loc.setY(loc.getY() - 1);
-        if (!loc.getBlock().getType().isAir()) return;
-
-        // Check cooldown
-        Abilities ability = new Abilities();
-        PersistentDataContainer container = p.getPersistentDataContainer();
-        long cooldown = Objects.requireNonNullElse(container.get(ability.moveCooldown, PersistentDataType.LONG), 0L);
-        if (cooldown <= System.currentTimeMillis()/1000L){
-
-            // Make the player double jump
-            AgilityDoubleJump doubleJump = new AgilityDoubleJump();
-            doubleJump.doubleJump(p);
-        }
+        // Make the player double jump
+        e.setCancelled(true);
+        AgilityDoubleJump doubleJump = new AgilityDoubleJump();
+        doubleJump.doubleJump(p);
     }
 
 
@@ -203,6 +214,12 @@ public class Listener implements org.bukkit.event.Listener {
         RegionManager regions = container.get(BukkitAdapter.adapt(e.getPlayer().getWorld()));
         ProtectedRegion deathBox = regions.getRegion("deathbox");
         if (deathBox.contains(e.getTo().getBlockX(), e.getTo().getBlockY(), e.getTo().getBlockZ())) e.getPlayer().damage(1000000);
+
+        if (e.getPlayer().getPersistentDataContainer().get(Abilities.moveCooldown, PersistentDataType.LONG) != null){
+            if (e.getPlayer().getPersistentDataContainer().get(Abilities.moveCooldown, PersistentDataType.LONG) <= System.currentTimeMillis()/1000L){
+                e.getPlayer().setAllowFlight(true);
+            }
+        }
     }
 
     @EventHandler
@@ -299,14 +316,20 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onExpGain(GainExpEvent e){
-        if (Levels.getExp(Levels.skills.get(e.getSkillType()), e.getPlayer()) > Levels.expRequired(e.getSkillType() + 1)){
-            Levels.levelUp(Levels.skills.get(e.getSkillType()), e.getPlayer());
+        if (Levels.getExp(Levels.skills.get(e.getSkillType()), e.getPlayer()) > Levels.expRequired(Levels.getLevel(e.getSkillType(), e.getPlayer()) + 1)){
+            Levels.levelUp(e.getSkillType(), e.getPlayer());
         }
     }
 
     @EventHandler
     public void onLevelUp(LevelUpEvent e){
         Player p = e.getPlayer();
+        Unlocks unlocks = new Unlocks();
+
+        for (int i = 0; i < 5; i++){
+            unlocks.attemptUnlock(i, p);
+        }
+
 
     }
 
@@ -397,34 +420,63 @@ public class Listener implements org.bukkit.event.Listener {
 
             if (clickedItem == null || clickedItem.getType().isAir() || clickedItem.getType().equals(Material.GRAY_STAINED_GLASS_PANE)) return;
 
-            if (plugin.stones.containsKey(clickedItem.getType()) && VoidPlayer.getUnlockedGens(p).contains(clickedItem)) {
-                PersistentDataContainer container = p.getPersistentDataContainer();
-                container.set(genEdit.stoneBlock, PersistentDataType.STRING, clickedItem.getType().toString());
-                p.sendMessage(ChatColor.GREEN + "Your stone block has been changed to " + clickedItem.getTranslationKey());
+            if (Server.stones.containsKey(clickedItem.getType())){
+
+                    boolean unlocked = false;
+
+                    for (ItemStack item : VoidPlayer.getUnlockedGens(p)){
+                        if (item.getType() == clickedItem.getType()){
+                            unlocked = true;
+                            break;
+                        }
+                    }
+                    if (unlocked){
+                        PersistentDataContainer container = p.getPersistentDataContainer();
+                        container.set(genEdit.stoneBlock, PersistentDataType.STRING, clickedItem.getType().toString());
+                        p.sendMessage(ChatColor.GREEN + "Your stone block has been changed to " + clickedItem.getTranslationKey());
+                    }
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(p);
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Wood Block")){
             e.setCancelled(true);
 
             ItemStack clickedItem = e.getCurrentItem();
 
-            if (clickedItem == null || clickedItem.getType().isAir() || clickedItem.getType().equals(Material.GRAY_STAINED_GLASS_PANE)) return;
+            if (Server.planks.containsKey(clickedItem.getType())){
 
-            if (plugin.planks.containsKey(clickedItem.getType()) && VoidPlayer.getUnlockedGens(p).contains(clickedItem)) {
-                PersistentDataContainer container = p.getPersistentDataContainer();
-                container.set(genEdit.woodBlock, PersistentDataType.STRING, clickedItem.getType().toString());
-                p.sendMessage(ChatColor.GREEN + "Your wood block has been changed to " + clickedItem.getTranslationKey());
+                boolean unlocked = false;
+
+                for (ItemStack item : VoidPlayer.getUnlockedGens(p)){
+                    if (item.getType() == clickedItem.getType()){
+                        unlocked = true;
+                        break;
+                    }
+                }
+                if (unlocked){
+                    PersistentDataContainer container = p.getPersistentDataContainer();
+                    container.set(genEdit.woodBlock, PersistentDataType.STRING, clickedItem.getType().toString());
+                    p.sendMessage(ChatColor.GREEN + "Your wood block has been changed to " + clickedItem.getTranslationKey());
+                }
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(p);
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Loose Block")){
             e.setCancelled(true);
 
             ItemStack clickedItem = e.getCurrentItem();
 
-            if (clickedItem == null || clickedItem.getType().isAir() || clickedItem.getType().equals(Material.GRAY_STAINED_GLASS_PANE)) return;
+            if (Server.dirts.containsKey(clickedItem.getType())){
 
-            if (plugin.dirts.containsKey(clickedItem.getType()) && VoidPlayer.getUnlockedGens(p).contains(clickedItem)) {
-                PersistentDataContainer container = p.getPersistentDataContainer();
-                container.set(genEdit.dirtBlock, PersistentDataType.STRING, clickedItem.getType().toString());
-                p.sendMessage(ChatColor.GREEN + "Your loose block has been changed to " + clickedItem.getTranslationKey());
+                boolean unlocked = false;
+
+                for (ItemStack item : VoidPlayer.getUnlockedGens(p)){
+                    if (item.getType() == clickedItem.getType()){
+                        unlocked = true;
+                        break;
+                    }
+                }
+                if (unlocked){
+                    PersistentDataContainer container = p.getPersistentDataContainer();
+                    container.set(genEdit.dirtBlock, PersistentDataType.STRING, clickedItem.getType().toString());
+                    p.sendMessage(ChatColor.GREEN + "Your loose block has been changed to " + clickedItem.getTranslationKey());
+                }
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(p);
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Miscellaneous Item")){
             e.setCancelled(true);
@@ -433,10 +485,21 @@ public class Listener implements org.bukkit.event.Listener {
 
             if (clickedItem == null || clickedItem.getType().isAir() || clickedItem.getType().equals(Material.GRAY_STAINED_GLASS_PANE)) return;
 
-            if (plugin.miscs.containsKey(clickedItem.getType()) && VoidPlayer.getUnlockedGens(p).contains(clickedItem)) {
-                PersistentDataContainer container = p.getPersistentDataContainer();
-                container.set(genEdit.miscItem, PersistentDataType.STRING, clickedItem.getType().toString());
-                p.sendMessage(ChatColor.GREEN + "Your misc. item has been changed to " + clickedItem.getTranslationKey());
+            if (Server.miscs.containsKey(clickedItem.getType())){
+
+                boolean unlocked = false;
+
+                for (ItemStack item : VoidPlayer.getUnlockedGens(p)){
+                    if (item.getType() == clickedItem.getType()){
+                        unlocked = true;
+                        break;
+                    }
+                }
+                if (unlocked){
+                    PersistentDataContainer container = p.getPersistentDataContainer();
+                    container.set(genEdit.miscItem, PersistentDataType.STRING, clickedItem.getType().toString());
+                    p.sendMessage(ChatColor.GREEN + "Your misc. item has been changed to " + clickedItem.getTranslationKey());
+                }
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(p);
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Quests")){
             e.setCancelled(true);

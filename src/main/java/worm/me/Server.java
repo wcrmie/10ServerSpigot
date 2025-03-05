@@ -1,18 +1,18 @@
 package worm.me;
 
+import net.coreprotect.CoreProtect;
+import net.coreprotect.CoreProtectAPI;
 import net.skinsrestorer.api.SkinsRestorer;
 import net.skinsrestorer.api.SkinsRestorerProvider;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import worm.me.Commands.*;
 import worm.me.Commands.AdminCommands.*;
-import worm.me.Commands.GUICommands.HatsCommand;
-import worm.me.Commands.GUICommands.OpenAbilitiesGUICommand;
-import worm.me.Commands.GUICommands.OpenLevelsGUICommand;
-import worm.me.Commands.GUICommands.OpenSkinGUICommand;
+import worm.me.Commands.GUICommands.*;
 import worm.me.GameSystems.Recipes;
 import worm.me.GameSystems.ArtBlocks;
 import worm.me.PlayerSystems.Abilities.Abilities;
@@ -35,7 +35,9 @@ public final class Server extends JavaPlugin {
     private SaddleRide saddleRide;
     private ArtBlocks artBlocks;
 
-    public Map<Material, Integer> miningBlocks = new HashMap<>();
+    public Map<Material, Long> miningBlocks = new HashMap<>();
+
+    public Map<Material, Long> foragingBlocks = new HashMap<>();
 
     public List<Sound> sounds = new ArrayList<>();
 
@@ -103,10 +105,11 @@ public final class Server extends JavaPlugin {
         this.getCommand("setCharLimit").setExecutor(new SetPlayerCharLimCommand(this));
         this.getCommand("spawnchest").setExecutor(new TreasureChestSpawnCommand());
         this.getCommand("abilities").setExecutor(new OpenAbilitiesGUICommand());
-        this.getCommand("hat").setExecutor(new HatsCommand(this));
+        this.getCommand("hats").setExecutor(new HatsCommand(this));
         this.getCommand("levels").setExecutor(new OpenLevelsGUICommand(this));
         this.getCommand("lostTools").setExecutor(new LostToolsCommand());
         this.getCommand("setSkin").setExecutor(new OpenSkinGUICommand());
+        this.getCommand("menu").setExecutor(new MenuCommand());
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 
@@ -144,8 +147,43 @@ public final class Server extends JavaPlugin {
         tools.put("sword", swords);
 
         // Set blocks and their given mining exp.
-        miningBlocks.put(Material.COBBLESTONE, 1);
-        miningBlocks.put(Material.STONE, 3);
+        miningBlocks.put(Material.COBBLESTONE, 1L);
+        miningBlocks.put(Material.STONE, 3L);
+        miningBlocks.put(Material.IRON_ORE, 10L);
+        miningBlocks.put(Material.COAL_ORE, 5L);
+
+        // Set blocks and their given foraging exp.
+        foragingBlocks.put(Material.OAK_LOG, 5L);
+        foragingBlocks.put(Material.BIRCH_LOG, 10L);
+        foragingBlocks.put(Material.SPRUCE_LOG, 5L);
+        foragingBlocks.put(Material.JUNGLE_LOG, 15L);
+        foragingBlocks.put(Material.ACACIA_LOG, 10L);
+        foragingBlocks.put(Material.DARK_OAK_LOG, 5L);
+        foragingBlocks.put(Material.SHORT_GRASS, 1L);
+        foragingBlocks.put(Material.TALL_GRASS, 2L);
+        foragingBlocks.put(Material.OAK_LEAVES, 1L);
+        foragingBlocks.put(Material.BIRCH_LEAVES, 1L);
+        foragingBlocks.put(Material.SPRUCE_LEAVES, 1L);
+        foragingBlocks.put(Material.JUNGLE_LEAVES, 1L);
+        foragingBlocks.put(Material.ACACIA_LEAVES, 1L);
+        foragingBlocks.put(Material.DARK_OAK_LEAVES, 1L);
+        foragingBlocks.put(Material.MOSS_BLOCK, 2L);
+        foragingBlocks.put(Material.DANDELION, 1L);
+        foragingBlocks.put(Material.POPPY, 1L);
+        foragingBlocks.put(Material.BLUE_ORCHID, 1L);
+        foragingBlocks.put(Material.ALLIUM, 1L);
+        foragingBlocks.put(Material.AZURE_BLUET, 1L);
+        foragingBlocks.put(Material.RED_TULIP, 1L);
+        foragingBlocks.put(Material.ORANGE_TULIP, 1L);
+        foragingBlocks.put(Material.WHITE_TULIP, 1L);
+        foragingBlocks.put(Material.PINK_TULIP, 1L);
+        foragingBlocks.put(Material.OXEYE_DAISY, 1L);
+        foragingBlocks.put(Material.CORNFLOWER, 1L);
+        foragingBlocks.put(Material.LILY_OF_THE_VALLEY, 1L);
+        foragingBlocks.put(Material.DIRT, 2L);
+
+
+
 
         // Set voices
         sounds.add(Sound.BLOCK_STONE_BUTTON_CLICK_OFF);
@@ -175,7 +213,7 @@ public final class Server extends JavaPlugin {
         sounds.add(Sound.ENTITY_WITCH_THROW);
 
         // CREATE BLOCK KEYS FOR GENERATOR
-        stones.put(Material.COBBLESTONE, new int[]{0,0,0,0,0,0,0,0});
+        stones.put(Material.COBBLESTONE, new int[]{0,0,0,0,0,1,0,0});
         stones.put(Material.TUFF, new int[]{5,0,0,0,0,10,0,0});
         stones.put(Material.ANDESITE, new int[]{0,0,0,0,0,7,0,0});
         stones.put(Material.GRANITE, new int[]{0,0,0,0,0,7,0,0});
@@ -185,24 +223,24 @@ public final class Server extends JavaPlugin {
         stones.put(Material.COBBLED_DEEPSLATE, new int[]{0,0,0,0,10,35,0,0});
         stones.put(Material.SMOOTH_BASALT, new int[]{0,0,0,0,15,20,0,0});
 
-        dirts.put(Material.DIRT, new int[]{0,0,0,0,0,0,0,0});
-        dirts.put(Material.COARSE_DIRT, new int[]{0,0,0,0,0,0,0,0});
-        dirts.put(Material.SAND, new int[]{0,0,0,0,0,0,0,0});
-        dirts.put(Material.GRAVEL, new int[]{0,0,0,0,0,0,0,0});
-        dirts.put(Material.RED_SAND, new int[]{0,0,0,0,0,0,0,0});
-        dirts.put(Material.CLAY, new int[]{0,0,0,0,0,0,0,0});
-        dirts.put(Material.MUD, new int[]{0,0,0,0,0,0,0,0});
+        dirts.put(Material.DIRT, new int[]{0,1,0,0,0,0,0,0});
+        dirts.put(Material.COARSE_DIRT, new int[]{0,5,0,0,0,5,0,5});
+        dirts.put(Material.SAND, new int[]{0,5,0,0,0,15,0,5});
+        dirts.put(Material.GRAVEL, new int[]{0,0,0,0,0,10,0,10});
+        dirts.put(Material.RED_SAND, new int[]{0,0,0,0,5,25,0,15});
+        dirts.put(Material.CLAY, new int[]{0,5,0,15,0,5,0,15});
+        dirts.put(Material.MUD, new int[]{0,15,0,5,0,0,0,10});
 
-        planks.put(Material.OAK_PLANKS, new int[]{0,0,0,0,0,0,0,0});
-        planks.put(Material.SPRUCE_PLANKS, new int[]{0,0,0,0,0,0,0,0});
-        planks.put(Material.DARK_OAK_PLANKS, new int[]{0,0,0,0,0,0,0,0});
-        planks.put(Material.BIRCH_PLANKS, new int[]{0,0,0,0,0,0,0,0});
-        planks.put(Material.JUNGLE_PLANKS, new int[]{0,0,0,0,0,0,0,0});
-        planks.put(Material.MANGROVE_PLANKS, new int[]{0,0,0,0,0,0,0,0});
-        planks.put(Material.ACACIA_PLANKS, new int[]{0,0,0,0,0,0,0,0});
+        planks.put(Material.OAK_PLANKS, new int[]{0,0,0,0,0,0,0,1});
+        planks.put(Material.SPRUCE_PLANKS, new int[]{10,0,0,0,0,0,0,10});
+        planks.put(Material.DARK_OAK_PLANKS, new int[]{0,0,0,15,0,0,0,15});
+        planks.put(Material.BIRCH_PLANKS, new int[]{0,0,0,5,0,0,0,5});
+        planks.put(Material.JUNGLE_PLANKS, new int[]{0,0,10,0,0,0,0,15});
+        planks.put(Material.MANGROVE_PLANKS, new int[]{0,5,0,5,0,0,0,20});
+        planks.put(Material.ACACIA_PLANKS, new int[]{0,0,0,5,5,0,0,15});
 
-        miscs.put(Material.COAL, new int[]{0,0,0,0,0,0,0,0});
-        miscs.put(Material.QUARTZ, new int[]{0,0,0,0,0,0,0,0});
+        miscs.put(Material.COAL, new int[]{0,0,0,0,1,0,0,0});
+        miscs.put(Material.QUARTZ, new int[]{0,0,0,0,25,25,0,0});
         miscs.put(Material.REDSTONE, new int[]{0,0,0,0,0,0,0,0});
         miscs.put(Material.GLOWSTONE_DUST, new int[]{0,0,0,0,0,0,0,0});
 
@@ -245,6 +283,25 @@ public final class Server extends JavaPlugin {
 
     public static Server getPlugin() {
         return plugin;
+    }
+
+    public CoreProtectAPI getCoreProtect() {
+        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
+
+        if (plugin == null || !(plugin instanceof CoreProtect)) {
+            return null;
+        }
+
+        CoreProtectAPI CoreProtect = ((CoreProtect) plugin).getAPI();
+        if (CoreProtect.isEnabled() == false) {
+            return null;
+        }
+
+        if (CoreProtect.APIVersion() < 10) {
+            return null;
+        }
+
+        return CoreProtect;
     }
 
 }

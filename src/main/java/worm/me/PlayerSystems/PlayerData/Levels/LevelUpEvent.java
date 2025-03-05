@@ -7,12 +7,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class LevelUpEvent extends Event {
 
-    private final String skill;
+    private static final HandlerList handlers = new HandlerList();
+    private final int skill;
     private final int level;
     private final Player player;
-    private final static HandlerList HANDLERS = new HandlerList();
 
-    public LevelUpEvent(String skill, int level, Player player) {
+    public LevelUpEvent(int skill, int level, Player player) {
         this.skill = skill;
         this.level = level;
         this.player = player;
@@ -26,17 +26,17 @@ public class LevelUpEvent extends Event {
         return player;
     }
 
-    public String getSkill() {
+    public int getSkill() {
         return skill;
     }
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
-
-
     @Override
     public @NotNull HandlerList getHandlers() {
-        return HANDLERS;
+        return handlers;
     }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
 }

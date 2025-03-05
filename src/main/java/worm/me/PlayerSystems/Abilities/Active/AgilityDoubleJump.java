@@ -18,6 +18,9 @@ public class AgilityDoubleJump {
     private final Abilities ability = new Abilities();
 
     public void doubleJump(Player p) {
+        p.setAllowFlight(false);
+        p.setFlying(false);
+
         PersistentDataContainer container = p.getPersistentDataContainer();
         Vector direction = p.getLocation().getDirection();
         World world = p.getWorld();

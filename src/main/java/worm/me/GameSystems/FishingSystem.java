@@ -41,13 +41,19 @@ public class FishingSystem {
 
             if (RNG <= 40) {
                 item.setItemStack(generateFishingItem(LootTable1));
+                event.getPlayer().sendMessage("1");
+
             } else if (RNG <= 80) {
                 item.setItemStack(generateFishingItem(LootTable2));
+                event.getPlayer().sendMessage("2");
             } else if (RNG <= 100) {
                 spawnEntityOnHook(event);
                 item.setItemStack(new ItemStack(Material.AIR));
+                event.getPlayer().sendMessage("mob");
+
             } else {
                 item.setItemStack(new ItemStack(Material.AIR));
+                event.getPlayer().sendMessage("nothing");
             }
         }
     }
@@ -72,6 +78,8 @@ public class FishingSystem {
     public ItemStack generateFishingItem(Map<Material, Integer> map){
 
         int RNG = ThreadLocalRandom.current().nextInt(0, sumInt(map.values()));
+
+        Server.getPlugin().broadcast("RNG: " + RNG);
 
         int excess = 0;
 

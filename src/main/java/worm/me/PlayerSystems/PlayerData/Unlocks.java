@@ -23,23 +23,24 @@ public class Unlocks {
             Server.stones,
             Server.dirts,
             Server.planks,
-            Server.miscs
+            Server.miscs,
+            Abilities.abilityRequirements
     );
 
     public static String[] requirementsTranslation(int[] requirements){
 
 
-        String[] translation = new String[10];
-        translation[0] = (ChatColor.GOLD + "" + ChatColor.BOLD + "Requirements: \n");
-        translation[1] = (" ");
+        List<String> translation = new ArrayList<>();
+        translation.add(ChatColor.GOLD + "" + ChatColor.BOLD + "Requirements: \n");
+        translation.add(" ");
 
         for (int i = 0; i < 8; i++){
 
             if (requirements[i] != 0){
-                translation[i + 2] = (ChatColor.YELLOW + Levels.skills.get(i) + " " + requirements[i] + "\n" );
+                translation.add(ChatColor.YELLOW + Levels.skills.get(i) + " " + requirements[i] + "\n" );
             }
         }
-        return translation;
+        return translation.toArray(new String[translation.size()]);
     }
 
     public void attemptUnlock(int type, Player p){
@@ -48,7 +49,7 @@ public class Unlocks {
         Map<? extends Constable, int[]> reqsMap = unlockTypes.get(type);
 
         // Push keys to array to use indices
-        Object[] mapAsList = unlockTypes.get(type).keySet().toArray();
+        Set<? extends Constable> mapAsList = unlockTypes.get(type).keySet();
 
         PersistentDataContainer pdc = p.getPersistentDataContainer();
         int[] playerLevels = pdc.get(Levels.Levels, PersistentDataType.INTEGER_ARRAY);
@@ -56,12 +57,26 @@ public class Unlocks {
         // Get rid of anything the player has already unlocked
         if (type < 4){
 
-            List<Material> unlockedGens = VoidPlayer.getUnlockedGens(p);
+            List<ItemStack> unlockedGens = getUnlockedGens(p);
+
+            for (ItemStack itemStack : unlockedGens) {
+                System.out.println("Unlocked gens: " + itemStack.getType());
+            }
+
             Set<Material> totalGens = (Set<Material>) unlockTypes.get(type).keySet();
 
-            unlockedGens.forEach(totalGens::remove);
+            System.out.println("Total gens: " + totalGens);
 
-            mapAsList = totalGens.toArray();
+            System.out.println("Previously Unlocked gens: " + unlockedGens);
+
+            for (int i = 0; i < unlockedGens.size(); i++){
+                if (totalGens.contains(unlockedGens.get(i))) totalGens.remove(unlockedGens.get(i));
+            }
+
+            mapAsList = totalGens;
+
+            System.out.println("Map as list: " + mapAsList);
+
         } else if (type == 4){
             List<Integer> skippedAbilities = new ArrayList<>();
             Set<Integer> totalAbilities = (Set<Integer>) unlockTypes.get(type).keySet();
@@ -75,27 +90,39 @@ public class Unlocks {
 
             skippedAbilities.forEach(totalAbilities::remove);
 
-            mapAsList = totalAbilities.toArray();
+            mapAsList = totalAbilities;
         }
 
         for (int i = 0; i < unlockTypes.get(type).size(); i++){
+            System.out.println(i);
             for (int j = 0; j < 8; j++){
-                int req = reqsMap.get(mapAsList[i])[j];
+                int req = reqsMap.get(mapAsList.toArray()[i])[j];
+                System.out.println("Req: " + req);
                 if (req != 0) {
                     if (playerLevels[j] < req) {
+                        System.out.println("You did not meet the requirements.");
                         break;
 
                     // If the player has the required levels, unlock the thing
-                    } else if (j == 7) {
+                    }
+                } else {
+
+                    System.out.println("between");
+
+                    if (j == 7) {
+
+                        System.out.println("reqs met");
 
                         // If the unlock is a generator, add it to the player's unlocked generators
                         if (type < 4) {
-                            List<Material> gens = getUnlockedGens(p);
-                            gens.add((Material)mapAsList[i]);
 
+                            List<ItemStack> gens = getUnlockedGens(p);
+
+                            gens.add(new ItemStack((Material) mapAsList.toArray()[i]));
+                            System.out.println("Unlocked gens: " + mapAsList.toArray()[i]);
                             setUnlockedGens(p, gens);
 
-                        // If the unlock is an ability, add it to the player's unlocked abilities
+                            // If the unlock is an ability, add it to the player's unlocked abilities
                         } else if (type == 4) {
                             int[] unlockedAbilities = pdc.get(Abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY);
                             unlockedAbilities[i] = 1;

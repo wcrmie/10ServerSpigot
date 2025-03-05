@@ -42,8 +42,8 @@ commands:
   spawnchest:
     description: Spawns a treasure chest at a random location within the world border
     usage: /<command>
-    permission: treasureChestSpawn
-  hat:
+    permission: 10VS.treasureChestSpawn
+  hats:
     description: Opens the hat selection GUI for the player, or sets their hat.
     usage: /<command> [integer]
   levels:
@@ -51,4 +51,7 @@ commands:
     usage: /<command>
   lostTools:
     description: Returns the player's lost tools.
+    usage: /<command>
+  menu:
+    description: Opens the main menu for the player.
     usage: /<command>

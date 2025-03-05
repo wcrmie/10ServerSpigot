@@ -7,6 +7,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
@@ -52,7 +54,7 @@ public class Levels {
     }
 
     // Creates a public exp-adding method
-    public static void addExp(int exp, int skill, Player player){
+    public static void addExp(long exp, int skill, Player player){
 
         PersistentDataContainer container = player.getPersistentDataContainer();
 
@@ -76,30 +78,45 @@ public class Levels {
         return container.get(Exp, PersistentDataType.LONG_ARRAY)[skillIndex];
     }
 
-    public static void levelUp(String skill, Player player ){
+    public static void levelUp(int skill, Player player ){
         PersistentDataContainer container = player.getPersistentDataContainer();
 
         int[] levels = container.get(Levels, PersistentDataType.INTEGER_ARRAY);
-        int level = levels[skillTranslation(skill)] += 1;
+        int level = levels[skill];
+        level++;
 
         LevelUpEvent event = new LevelUpEvent(skill, level, player);
         Bukkit.getServer().getPluginManager().callEvent(event);
 
 
         setLevel(skill, player, level);
-        Server.getPlugin().broadcast(ChatColor.AQUA + player.getName() + " has reached level " + level + " in " + skill + "!");
+        Server.getPlugin().broadcast(ChatColor.AQUA + player.getName() + " has reached level " + level + " in " + skills.get(skill) + "!");
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 0.8F);
     }
 
-    public static int getLevel(String skill, Player player){
-        return player.getPersistentDataContainer().get(Levels, PersistentDataType.INTEGER_ARRAY)[skillTranslation(skill)];
+    public static int getLevel(int skill, Player player){
+        return player.getPersistentDataContainer().get(Levels, PersistentDataType.INTEGER_ARRAY)[skill];
     }
 
-    public static void setLevel(String skill, Player player, Integer level){
+    public static void setLevel(int skill, Player player, Integer level){
         int[] levelArray = player.getPersistentDataContainer().get(Levels, PersistentDataType.INTEGER_ARRAY);
-        levelArray[skillTranslation(skill)] = level;
+        levelArray[skill] = level;
 
         player.getPersistentDataContainer().set(Levels, PersistentDataType.INTEGER_ARRAY, levelArray);
+    }
+
+    public static void expHandler(Player p, Event event){
+
+        if (event.getEventName().equals("BlockBreakEvent")) {
+
+            BlockBreakEvent e = (BlockBreakEvent) event;
+
+            if (Server.getPlugin().miningBlocks.containsKey(e.getBlock().getType())) {
+                addExp(Server.getPlugin().miningBlocks.get(e.getBlock().getType()), skillTranslation("Mining"), p);
+            } else if (Server.getPlugin().foragingBlocks.containsKey(e.getBlock().getType())) {
+                addExp(Server.getPlugin().foragingBlocks.get(e.getBlock().getType()), skillTranslation("Foraging"), p);
+            }
+        }
     }
 
 }

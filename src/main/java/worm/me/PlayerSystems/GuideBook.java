@@ -43,14 +43,12 @@ public class GuideBook {
                 "\n" +
                 "\n").reset().append(" [TABLE OF CONTENTS]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "4")).create());
         pages.add(new ComponentBuilder("QUESTS").underlined(true).append("\n\n" +
-                "There are two types of quests, Daily and Weekly.\n" +
-                "\n" +
                 "Quests are randomized, so you will not always have the same quest as someone else. They may grant various rewards, ranging from skill exp to items.").reset().create());
         pages.add(new ComponentBuilder("QUESTS").underlined(true).append("\n\n" +
-                "Daily quests reset at 12:00 AM EST, and Weekly quests at 12:00 AM EST on Sundays.\n" +
+                "Quests are asynchronous, meaning they do not reset at a specific time, instead resetting 24 hours after they were set.\n" +
                 "\n" +
                 "\n" +
-                "\n" +
+                "\n\n\n" +
                 "\n" +
                 "\n" +
                 "\n" +
@@ -64,14 +62,7 @@ public class GuideBook {
                 "A player may not use a recipe until they have unlocked it, but they can use the item, though.").reset().create());
         pages.add(new ComponentBuilder("RECIPES").underlined(true).append("\n\nRecipes may be viewed with ").reset().append("/recipes").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/recipes")).append(".\n\n\n\n\n\n\n\n\n").reset().append(" [TABLE OF CONTENTS]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "4")).create());
         pages.add(new ComponentBuilder("REPUTATION").underlined(true).append("\n\nReputation is based on how often you kill other players. The more players you kill, the redder your text will become. However, over time, a player's text will become less red.").reset().create());
-        pages.add(new ComponentBuilder("REPUTATION").underlined(true).append("\n\nThe formula for this is 255 - (6000*(kills))/(time played in seconds).\n" +
-                "\n" +
-                "A player who spends most of their time grinding Skill Levels and Survival Activities will have a turquoise chat tint.").reset().create());
-        pages.add(new ComponentBuilder("REPUTATION").underlined(true).append("\n\nHowever, a player who has a red chat tint is someone who practices combat often, and should be treated with caution.\n\n" +
-                "\n" +
-                "\n" +
-                "\n" +
-                "\n").reset().append(" [TABLE OF CONTENTS]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "4")).create());
+        pages.add(new ComponentBuilder("REPUTATION").underlined(true).append("\n\nThe formula for this is 255 - Math.round(6000*(kills))/(time played in seconds).\n\nTherefore, if you have played for 100 minutes and killed 1 player, the RGB value for your text will be (255, 254 254).").reset().create());
 
 
         for (BaseComponent[] page : pages) {
