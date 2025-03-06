@@ -6,6 +6,7 @@ import net.skinsrestorer.api.SkinsRestorer;
 import net.skinsrestorer.api.SkinsRestorerProvider;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
@@ -17,16 +18,15 @@ import worm.me.Commands.GUICommands.HatsCommand;
 import worm.me.Commands.GUICommands.OpenAbilitiesGUICommand;
 import worm.me.Commands.GUICommands.OpenLevelsGUICommand;
 import worm.me.Commands.GUICommands.OpenSkinGUICommand;
-import worm.me.GameSystems.IslandSpawning;
 import worm.me.GameSystems.Recipes;
 import worm.me.GameSystems.ArtBlocks;
 import worm.me.PlayerSystems.Abilities.Abilities;
 import worm.me.PlayerSystems.Quests.QuestInitialize;
 import worm.me.PlayerSystems.PlayerSpawning;
-import worm.me.PlayerSystems.PlayerData.Social.Hats.HatsList;
 import worm.me.PlayerSystems.SaddleRide;
 import worm.me.WorldBorder.WorldBorderSizeHandler;
 
+import java.io.File;
 import java.util.*;
 
 public final class Server extends JavaPlugin {
@@ -43,6 +43,8 @@ public final class Server extends JavaPlugin {
     public Map<Material, Long> miningBlocks = new HashMap<>();
 
     public Map<Material, Long> foragingBlocks = new HashMap<>();
+
+    public Map<Material, Long> farmingBlocks = new HashMap<>();
 
     public List<Sound> sounds = new ArrayList<>();
 
@@ -79,6 +81,7 @@ public final class Server extends JavaPlugin {
         saveConfig();
         getLogger().info("Plugin enabled");
 
+
         World world = Bukkit.getWorld("world");
         assert world != null;
         WorldBorderSizeHandler = new WorldBorderSizeHandler(this);
@@ -113,11 +116,13 @@ public final class Server extends JavaPlugin {
         this.getCommand("setCharLimit").setExecutor(new SetPlayerCharLimCommand(this));
         this.getCommand("spawnchest").setExecutor(new TreasureChestSpawnCommand());
         this.getCommand("abilities").setExecutor(new OpenAbilitiesGUICommand());
-        this.getCommand("hats").setExecutor(new HatsCommand(this));
+        this.getCommand("hats").setExecutor(new HatsCommand());
         this.getCommand("levels").setExecutor(new OpenLevelsGUICommand(this));
         this.getCommand("lostTools").setExecutor(new LostToolsCommand());
         this.getCommand("setSkin").setExecutor(new OpenSkinGUICommand());
         this.getCommand("menu").setExecutor(new MenuCommand());
+        this.getCommand("profile").setExecutor(new OpenProfileGUICommand());
+        this.getCommand("hatstorage").setExecutor(new EditHatsCommand());
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 
@@ -145,9 +150,6 @@ public final class Server extends JavaPlugin {
         swords.add(Material.STONE_SWORD);
         swords.add(Material.IRON_SWORD);
         swords.add(Material.DIAMOND_SWORD);
-
-        HatsList hats = new HatsList();
-        hats.createHats();
 
         tools.put("pickaxe", pickaxes);
         tools.put("axe", axes);
@@ -189,6 +191,24 @@ public final class Server extends JavaPlugin {
         foragingBlocks.put(Material.CORNFLOWER, 1L);
         foragingBlocks.put(Material.LILY_OF_THE_VALLEY, 1L);
         foragingBlocks.put(Material.DIRT, 2L);
+        foragingBlocks.put(Material.SEAGRASS, 1L);
+
+        // Set blocks and their given farming exp.
+        farmingBlocks.put(Material.WHEAT, 2L);
+        farmingBlocks.put(Material.CARROTS, 3L);
+        farmingBlocks.put(Material.POTATOES, 3L);
+        farmingBlocks.put(Material.BEETROOTS, 5L);
+        farmingBlocks.put(Material.MELON, 8L);
+        farmingBlocks.put(Material.PUMPKIN, 8L);
+        farmingBlocks.put(Material.SUGAR_CANE, 8L);
+        farmingBlocks.put(Material.COCOA, 10L);
+        farmingBlocks.put(Material.RED_MUSHROOM_BLOCK, 15L);
+        farmingBlocks.put(Material.BROWN_MUSHROOM_BLOCK, 15L);
+        farmingBlocks.put(Material.NETHER_WART, 15L);
+        farmingBlocks.put(Material.CACTUS, 8L);
+        farmingBlocks.put(Material.KELP, 1L);
+
+
 
 
 
@@ -313,4 +333,10 @@ public final class Server extends JavaPlugin {
         return CoreProtect;
     }
 
+    public FileConfiguration getHatsStorage() {
+
+        File hatStorage = new File(Server.getPlugin().getDataFolder(), "hatStorage.yml");
+
+        return YamlConfiguration.loadConfiguration(hatStorage);
+    }
 }

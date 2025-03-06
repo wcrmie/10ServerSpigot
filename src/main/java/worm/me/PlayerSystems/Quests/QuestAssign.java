@@ -24,6 +24,10 @@ public class QuestAssign {
     public NamespacedKey daily2 = new NamespacedKey("10server", "quest2");
     public NamespacedKey daily3 = new NamespacedKey("10server", "quest3");
 
+    public NamespacedKey daily1progress = new NamespacedKey(Server.getPlugin(), "daily1progress");
+    public NamespacedKey daily2progress = new NamespacedKey(Server.getPlugin(), "daily2progress");
+    public NamespacedKey daily3progress = new NamespacedKey(Server.getPlugin(), "daily3progress");
+
     public NamespacedKey weekly = new NamespacedKey("10server", "quest4");
 
 

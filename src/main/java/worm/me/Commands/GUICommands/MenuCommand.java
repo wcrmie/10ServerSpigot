@@ -13,6 +13,7 @@ public class MenuCommand implements CommandExecutor {
 
         if (sender instanceof Player p){
             MainGUIMenu.openMainMenu(p);
+            return true;
         } else sender.sendMessage("bruh");
 
         return false;

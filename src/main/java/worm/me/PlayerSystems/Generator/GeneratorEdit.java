@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import worm.me.GuiConstructor;
 import worm.me.PlayerSystems.PlayerData.Unlocks;
 import worm.me.PlayerSystems.PlayerData.VoidPlayer;
 import worm.me.Server;
@@ -26,13 +27,8 @@ public class GeneratorEdit {
 
     public Inventory i;
 
-    public static void genSet(Player p, NamespacedKey type, Block block){
-        PersistentDataContainer container = p.getPersistentDataContainer();
-        container.set(type, PersistentDataType.STRING, block.getTranslationKey());
-    }
-
     public void genOptions(Player p){
-        i = Bukkit.createInventory(null, 27, ChatColor.DARK_GRAY + "Select Generated Blocks");
+        i = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Select Generated Blocks", 27);
 
         // Add items to inventory
         for (int j = 0; j < 27; j++){
@@ -42,6 +38,8 @@ public class GeneratorEdit {
         i.setItem(12, createGuiItem(Material.DIRT, ChatColor.GRAY + "Loose Blocks", " ", ChatColor.DARK_GRAY + "Choose your generated loose block."));
         i.setItem(14, createGuiItem(Material.OAK_PLANKS, ChatColor.GRAY + "Woods", " ", ChatColor.DARK_GRAY + "Choose your generated wood block."));
         i.setItem(15, createGuiItem(Material.COAL, ChatColor.GRAY + "Misc. Items", " ", ChatColor.DARK_GRAY + "Choose your generated miscellaneous item."));
+
+        i.setItem(22, createGuiItem(Material.ARROW, ChatColor.GRAY + "Go Back"));
 
         // Open inventory to player
         p.openInventory(i);
@@ -68,8 +66,6 @@ public class GeneratorEdit {
         for (int j = 0; j < 36; j++){
             i.setItem(j, createGuiItem(Material.GRAY_STAINED_GLASS_PANE, " ", ""));
         }
-
-        Server pl = Server.getPlugin();
 
         i.setItem(10, createGuiItem(Material.COBBLESTONE, "", ""));
         i.setItem(11, createGuiItem(Material.TUFF, "", ""));

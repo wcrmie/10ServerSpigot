@@ -15,7 +15,7 @@ import java.util.List;
 
 public class GuideBook {
 
-    public void guideBook(Player p){
+    public static void guideBook(Player p){
 
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta meta = (BookMeta) book.getItemMeta();

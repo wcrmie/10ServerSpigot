@@ -194,6 +194,14 @@ public class VoidPlayer {
             container.set(new NamespacedKey(plugin, "movecooldown"), PersistentDataType.LONG, System.currentTimeMillis()/1000L);
         }
 
+        if (!container.has(new NamespacedKey(plugin, "10stats"), PersistentDataType.INTEGER_ARRAY)) {
+            container.set(new NamespacedKey(plugin, "10stats"), PersistentDataType.INTEGER_ARRAY, new int[50]);
+        }
+
+        if (!container.has(new NamespacedKey(plugin, "hatsUnlocked"), PersistentDataType.INTEGER_ARRAY)) {
+            container.set(new NamespacedKey(plugin, "hatsUnlocked"), PersistentDataType.INTEGER_ARRAY, new int[2700]);
+        }
+
         MessageHead messageHead = new MessageHead(plugin);
         player.getPersistentDataContainer().set(messageHead.armorStandExists, PersistentDataType.BOOLEAN, false);
 
@@ -216,10 +224,19 @@ public class VoidPlayer {
         QuestAssign questAssign = new QuestAssign(plugin);
         questAssign.dailyCheck(player);
 
-        // Set default hat if nothing is equipped
-        Hats hats = new Hats();
-        hats.equipDefaultHat(player);
+    }
 
+    public static void registerStats(Player p, int statID) {
+        PersistentDataContainer pdc = p.getPersistentDataContainer();
+        int[] stats = pdc.get(new NamespacedKey(Server.getPlugin(), "10stats"), PersistentDataType.INTEGER_ARRAY);
+        stats[statID]++;
+        pdc.set(new NamespacedKey(Server.getPlugin(), "10stats"), PersistentDataType.INTEGER_ARRAY, stats);
+    }
+
+    public static int getStat(Player p, int statID) {
+        PersistentDataContainer pdc = p.getPersistentDataContainer();
+        int[] stats = pdc.get(new NamespacedKey(Server.getPlugin(), "10stats"), PersistentDataType.INTEGER_ARRAY);
+        return stats[statID];
     }
 
 }

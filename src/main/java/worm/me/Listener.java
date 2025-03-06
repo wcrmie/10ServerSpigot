@@ -15,9 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDismountEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -41,6 +39,10 @@ import worm.me.PlayerSystems.Generator.GeneratorEdit;
 import worm.me.PlayerSystems.PlayerData.Levels.GainExpEvent;
 import worm.me.PlayerSystems.PlayerData.Levels.LevelUpEvent;
 import worm.me.PlayerSystems.PlayerData.Levels.Levels;
+import worm.me.PlayerSystems.PlayerData.Levels.LevelsGUI;
+import worm.me.PlayerSystems.PlayerData.PlayerProfileGUI;
+import worm.me.PlayerSystems.PlayerData.Social.Hats.Hats;
+import worm.me.PlayerSystems.PlayerData.Social.Hats.HatsStorage;
 import worm.me.PlayerSystems.PlayerData.Unlocks;
 import worm.me.PlayerSystems.PlayerData.Vault;
 import worm.me.PlayerSystems.PlayerData.VoidPlayer;
@@ -72,11 +74,33 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event){
         plugin.getWorldBorderHandler().incrementBlockCount(event);
+        if (event.getPlayer() != null) {
+            VoidPlayer.registerStats(event.getPlayer(), 0);
+        }
     }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
         plugin.getWorldBorderHandler().decrementBlockCount(event);
+        if (event.getPlayer() != null) {
+            VoidPlayer.registerStats(event.getPlayer(), 1);
+        }
+    }
+
+    @EventHandler
+    public void onArrowShot(EntityShootBowEvent e){
+        if (e.getEntity() instanceof Player shooter) {
+            e.getProjectile().getPersistentDataContainer().set(new NamespacedKey(plugin, "arrow"), PersistentDataType.STRING, "arrow");
+            VoidPlayer.registerStats(shooter, 3);
+        }
+    }
+
+    @EventHandler
+    public void onArrowHit(ProjectileHitEvent e){
+        if (e.getEntity().getShooter() instanceof Player shooter && e.getHitEntity() != null && e.getEntity().getPersistentDataContainer().get(new NamespacedKey(plugin, "arrow"), PersistentDataType.STRING) != null){
+            Server.pluginMessage(ChatColor.GRAY + "" + VoidPlayer.getStat(shooter, 2), shooter);
+            VoidPlayer.registerStats(shooter, 2);
+        }
     }
 
     @EventHandler
@@ -366,12 +390,20 @@ public class Listener implements org.bukkit.event.Listener {
             Vault.storeItems(prunedItems, p);
         }
 
+        if (e.getView().getTitle().contains(ChatColor.RED + "Hat Storage ")){
+
+            Server.pluginMessage(ChatColor.RED + "Hat storage closed", p);
+
+            HatsStorage hatsStorage = new HatsStorage();
+            hatsStorage.eventHandler(e);
+
+
+        }
+
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e){
-
-        GuiConstructor guiConstructor = new GuiConstructor();
 
         Player p = (Player) e.getWhoClicked();
 
@@ -387,6 +419,21 @@ public class Listener implements org.bukkit.event.Listener {
 
         InventoryView inv = e.getView();
         String invName = inv.getTitle();
+
+        if (e.getSlotType() == InventoryType.SlotType.ARMOR){
+        }
+
+        if (e.getCurrentItem().isSimilar(GuiConstructor.createGuiItem(Material.BARRIER, ChatColor.RED + "Close Menu", " ", ChatColor.GRAY + "Close this menu."))) p.closeInventory();
+
+        if (e.getCurrentItem().getType() == Material.ARROW && e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Go Back")){
+            GuiConstructor guiConstructor = new GuiConstructor();
+            guiConstructor.goBack(e);
+        }
+
+        if (invName.equals(ChatColor.DARK_GRAY + "Main Menu")){
+            MainGUIMenu mainGUIMenu = new MainGUIMenu();
+            mainGUIMenu.eventHandler(e);
+        }
 
         if (invName.equals(ChatColor.DARK_GRAY + "Your Active Abilities")){
             AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
@@ -405,6 +452,27 @@ public class Listener implements org.bukkit.event.Listener {
             e.setCancelled(true);
             SkinGui.skinGuiDo(e, plugin);
         }
+
+        if (invName.contains("Profile")){
+            PlayerProfileGUI playerProfileGUI = new PlayerProfileGUI();
+            playerProfileGUI.eventHandler(e);
+        }
+
+        if (invName.contains("Skill Levels")){
+            LevelsGUI levels = new LevelsGUI();
+            levels.eventHandler(e);
+        }
+
+        if (invName.contains(ChatColor.DARK_GRAY + "Hats Page ")) {
+
+            Server.pluginMessage("Attempted hat storage click", p);
+
+            Hats hat = new Hats();
+
+            hat.hatGuiEventHandler(e);
+
+        }
+
         // needs to be moved \/ \/ \/
         else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Generated Blocks")) {
             e.setCancelled(true);
@@ -515,5 +583,8 @@ public class Listener implements org.bukkit.event.Listener {
             e.setCancelled(true);
 
         }
+
+        if (e.isCancelled()) ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.UI_BUTTON_CLICK, 0.5F, 1.2F);
+
     }
 }

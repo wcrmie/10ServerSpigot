@@ -59,3 +59,10 @@ commands:
     description: spawns an island, name of island.
     usage: /<command> [string]
     permission: 10VS.islandspawn
+  profile:
+    description: Opens the player's profile.
+    usage: /<command> [Player]
+  hatStorage:
+    description: Opens the hat storage GUI for the player.
+    usage: /<command> <page>
+    permission: 10VS.hatStorageModify

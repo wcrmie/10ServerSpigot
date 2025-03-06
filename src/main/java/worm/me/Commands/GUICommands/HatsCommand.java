@@ -5,55 +5,59 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import worm.me.PlayerSystems.PlayerData.Social.Hats.Hats;
-import worm.me.PlayerSystems.PlayerData.Social.Hats.HatsList;
+import worm.me.PlayerSystems.PlayerData.Social.Hats.HatsStorage;
 import worm.me.Server;
 
-import java.util.List;
-
 public class HatsCommand implements CommandExecutor {
-
-    private final Server plugin;
-
-    public HatsCommand(Server plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player p){
 
-            if (args.length > 1) {
+            if (args.length >= 1) {
                 try {
-                    int i = Integer.parseInt(args[1]);
-                    List<ItemStack> hats = HatsList.hats;
-                    if (i > hats.size()) {
-                        plugin.pluginMessage(ChatColor.RED + "That hat doesn't exist.", p);
+                    int i = Integer.parseInt(args[0]);
+                    if (i > 50*54/27) {
+                        Server.pluginMessage(ChatColor.RED + "That page doesn't exist.", p);
                         return true;
                     }
 
                     else {
-                        p.getInventory().setHelmet(hats.get(i));
-                        plugin.pluginMessage(ChatColor.GREEN + "Hat set!", p);
+                        Hats hats = new Hats();
+                        hats.openHatsGUI(p, i);
                         return true;
                     }
 
 
                 } catch (NumberFormatException e) {
-                    Hats hats = new Hats();
-                    hats.openHatsGUI(p);
-                    return true;
+                    if (args[0].equals("set") && args.length >= 2) {
+
+                        int i = Integer.parseInt(args[1]);
+                        if (i > 2700) {
+                            Server.pluginMessage(ChatColor.RED + "That hat doesn't exist.", p);
+                            return true;
+                        }
+
+                        else {
+                            Hats hats = new Hats();
+                            hats.equipHat(p, i);
+                            return true;
+
+                        }
+                    }
                 }
             } else {
                 Hats hats = new Hats();
-                hats.openHatsGUI(p);
+                hats.openHatsGUI(p, 1);
                 return true;
             }
         } else {
             sender.sendMessage("are we fr?");
             return false;
         }
+        return false;
     }
 }
