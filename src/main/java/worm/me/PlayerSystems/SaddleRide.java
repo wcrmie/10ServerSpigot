@@ -44,9 +44,17 @@ public class SaddleRide {
 
     public void getOnPlayer(Player rider, Player clickedPlayer) {
         Player topPlayer = clickedPlayer;
+        ItemStack helmet;
+
         while (!topPlayer.getPassengers().isEmpty() && topPlayer.getPassengers().getFirst() instanceof Player) {
             topPlayer = (Player) topPlayer.getPassengers().getFirst();
+
+            helmet = topPlayer.getInventory().getHelmet();
+            if (helmet == null || helmet.getType() != Material.SADDLE) {
+                return;
+            }
         }
+
         topPlayer.addPassenger(rider);
     }
 
