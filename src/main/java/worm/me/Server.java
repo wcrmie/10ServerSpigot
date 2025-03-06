@@ -7,6 +7,7 @@ import net.skinsrestorer.api.SkinsRestorerProvider;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
@@ -45,6 +46,8 @@ public final class Server extends JavaPlugin {
     public Map<Material, Long> foragingBlocks = new HashMap<>();
 
     public Map<Material, Long> farmingBlocks = new HashMap<>();
+
+    public Map<EntityType, Long> combatMobs = new HashMap<>();
 
     public List<Sound> sounds = new ArrayList<>();
 
@@ -208,6 +211,68 @@ public final class Server extends JavaPlugin {
         farmingBlocks.put(Material.CACTUS, 8L);
         farmingBlocks.put(Material.KELP, 1L);
 
+        // Set mobs and their given combat exp.
+        combatMobs.put(EntityType.ZOMBIE, 3L);
+        combatMobs.put(EntityType.SKELETON, 3L);
+        combatMobs.put(EntityType.CREEPER, 5L);
+        combatMobs.put(EntityType.SPIDER, 3L);
+        combatMobs.put(EntityType.CAVE_SPIDER, 5L);
+        combatMobs.put(EntityType.ENDERMAN, 10L);
+        combatMobs.put(EntityType.WITCH, 10L);
+        combatMobs.put(EntityType.ZOMBIFIED_PIGLIN, 5L);
+        combatMobs.put(EntityType.PIGLIN, 5L);
+        combatMobs.put(EntityType.PIGLIN_BRUTE, 30L);
+        combatMobs.put(EntityType.BLAZE, 15L);
+        combatMobs.put(EntityType.GHAST, 10L);
+        combatMobs.put(EntityType.MAGMA_CUBE, 5L);
+        combatMobs.put(EntityType.ENDER_DRAGON, 100L);
+        combatMobs.put(EntityType.WITHER, 150L);
+        combatMobs.put(EntityType.BOGGED, 5L);
+        combatMobs.put(EntityType.COW, 1L);
+        combatMobs.put(EntityType.SHEEP, 1L);
+        combatMobs.put(EntityType.PIG, 1L);
+        combatMobs.put(EntityType.CHICKEN, 1L);
+        combatMobs.put(EntityType.RABBIT, 3L);
+        combatMobs.put(EntityType.WOLF, 5L);
+        combatMobs.put(EntityType.OCELOT, 5L);
+        combatMobs.put(EntityType.FOX, 1L);
+        combatMobs.put(EntityType.PANDA, 5L);
+        combatMobs.put(EntityType.POLAR_BEAR, 10L);
+        combatMobs.put(EntityType.LLAMA, 5L);
+        combatMobs.put(EntityType.PARROT, 1L);
+        combatMobs.put(EntityType.DOLPHIN, 2L);
+        combatMobs.put(EntityType.TURTLE, 2L);
+        combatMobs.put(EntityType.BAT, 1L);
+        combatMobs.put(EntityType.SQUID, 1L);
+        combatMobs.put(EntityType.PUFFERFISH, 3L);
+        combatMobs.put(EntityType.SALMON, 1L);
+        combatMobs.put(EntityType.COD, 1L);
+        combatMobs.put(EntityType.TROPICAL_FISH, 1L);
+        combatMobs.put(EntityType.DROWNED, 5L);
+        combatMobs.put(EntityType.STRAY, 5L);
+        combatMobs.put(EntityType.HUSK, 5L);
+        combatMobs.put(EntityType.PHANTOM, 5L);
+        combatMobs.put(EntityType.PILLAGER, 10L);
+        combatMobs.put(EntityType.VINDICATOR, 15L);
+        combatMobs.put(EntityType.EVOKER, 20L);
+        combatMobs.put(EntityType.ILLUSIONER, 25L);
+        combatMobs.put(EntityType.RAVAGER, 50L);
+        combatMobs.put(EntityType.VEX, 10L);
+        combatMobs.put(EntityType.WITHER_SKELETON, 10L);
+        combatMobs.put(EntityType.ENDERMITE, 5L);
+        combatMobs.put(EntityType.GUARDIAN, 10L);
+        combatMobs.put(EntityType.ELDER_GUARDIAN, 20L);
+        combatMobs.put(EntityType.SHULKER, 10L);
+        combatMobs.put(EntityType.STRIDER, 5L);
+        combatMobs.put(EntityType.ZOGLIN, 5L);
+        combatMobs.put(EntityType.HOGLIN, 5L);
+        combatMobs.put(EntityType.PLAYER, 3L);
+        combatMobs.put(EntityType.IRON_GOLEM, 7L);
+        combatMobs.put(EntityType.SNOW_GOLEM, 1L);
+        combatMobs.put(EntityType.BREEZE, 5L);
+        combatMobs.put(EntityType.SILVERFISH, 3L);
+        combatMobs.put(EntityType.ZOMBIE_VILLAGER, 3L);
+        combatMobs.put(EntityType.ZOMBIE_HORSE, 3L);
 
 
 

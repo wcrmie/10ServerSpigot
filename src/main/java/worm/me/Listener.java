@@ -173,6 +173,13 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
     @EventHandler
+    public void onEntityKilled(EntityDeathEvent e){
+        if (e.getEntity().getKiller() != null && e.getEntity().getKiller() instanceof Player p){
+            Levels.expHandler(p, e);
+        }
+    }
+
+    @EventHandler
     public void onPlayerPlace(BlockPlaceEvent e){
         Player p = e.getPlayer();
 

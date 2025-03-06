@@ -9,6 +9,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
@@ -116,6 +117,13 @@ public class Levels {
             } else if (Server.getPlugin().foragingBlocks.containsKey(e.getBlock().getType())) {
                 addExp(Server.getPlugin().foragingBlocks.get(e.getBlock().getType()), skillTranslation("Foraging"), p);
             }
+            
+        } else if (event.getEventName().equals("EntityDeathEvent")) {
+
+            EntityDeathEvent e = (EntityDeathEvent) event;
+
+            addExp(Server.getPlugin().combatMobs.get(e.getEntityType()), skillTranslation("Combat"), p);
+
         }
     }
 

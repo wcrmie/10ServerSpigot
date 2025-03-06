@@ -106,7 +106,7 @@ public class AbilitiesGUI {
                 break;
             }
 
-            if (Objects.requireNonNullElse(container.get(Abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY), new int[50])[i] == 0){
+            if (Objects.requireNonNullElse(container.get(Abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY), new int[50])[i] == 0 || !p.isOp()){
                 // If the ability is not unlocked, add a red glass pane
                 gui.setItem(slotNum, GuiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + abilityName, abilityDescription, Arrays.toString(abilityReqs.toArray(new String[0]))));
             } else {
@@ -137,7 +137,7 @@ public class AbilitiesGUI {
             return;
         }
 
-        if (Objects.requireNonNullElse(container.get(abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY)[slotNum], 0) == 1){
+        if (Objects.requireNonNullElse(container.get(abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY)[slotNum], 0) == 1 || p.isOp()){
             int[] active = Objects.requireNonNullElse(container.get(abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY), new int[3]);
             if (e.getView().getTitle().contains("First Ability Slot")){
                 active[0] = slotNum;

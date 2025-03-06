@@ -67,7 +67,7 @@ public class Abilities {
     public void initializeRequirements(){
 
         // Format: abilityRequirements.put(abilityID, new int[]{combat, farming, crafting, fishing, smithing, mining, agility, foraging});
-        abilityRequirements.put(0, new int[]{0, 0, 0, 0, 0, 0, 0, 0});
+        abilityRequirements.put(0, new int[]{1, 0, 0, 0, 0, 0, 0, 0});
         abilityRequirements.put(1, new int[]{5, 0, 0, 0, 0, 0, 10, 0});
         abilityRequirements.put(2, new int[]{10, 0, 0, 0, 0, 0, 5, 0});
         abilityRequirements.put(3, new int[]{0, 0, 0, 0, 0, 0, 15, 0});

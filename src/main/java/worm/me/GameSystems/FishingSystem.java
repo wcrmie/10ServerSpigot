@@ -79,7 +79,7 @@ public class FishingSystem {
 
         int RNG = ThreadLocalRandom.current().nextInt(0, sumInt(map.values()));
 
-        Server.getPlugin().broadcast("RNG: " + RNG);
+        Server.getPlugin().broadcast("RNG: " + RNG + ", " + sumInt(map.values()));
 
         int excess = 0;
 
