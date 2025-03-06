@@ -10,12 +10,10 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.math.transform.AffineTransform;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import worm.me.Server;
 import worm.me.WorldBorder.WorldBorderSizeHandler;
 
@@ -138,6 +136,8 @@ public class IslandSpawning {
         return null;
     }
 
+
+
     public Location validSpawnLocation(int xsize, int ysize, int zsize) {
         Location location = null;
         location = findValidLocation(6*xsize, 6*ysize, 6*zsize, 10, "Estra Extra big", false);
@@ -178,7 +178,26 @@ public class IslandSpawning {
                 type == Material.VOID_AIR;
     }
 
+
+
     public boolean pasteSchematic(String schematicName, Location pasteLocation) {
+        int randomRotation = ThreadLocalRandom.current().nextInt(4);
+        String nameAdd = "";
+        switch (randomRotation){
+            case 0:
+                nameAdd = "";
+                break;
+            case 1:
+                nameAdd = "_2";
+                break;
+            case 2:
+                nameAdd = "_3";
+                break;
+            case 3:
+                nameAdd = "_4";
+                break;
+        }
+        //File schematicFile = new File(plugin.getDataFolder(), "schematics/" + schematicName + nameAdd + ".schem");
         File schematicFile = new File(plugin.getDataFolder(), "schematics/" + schematicName + ".schem");
         if (!schematicFile.exists()) {
             return false;
@@ -186,8 +205,10 @@ public class IslandSpawning {
         try {
             ClipboardFormat format = ClipboardFormats.findByFile(schematicFile);
             if (format == null) {
+                Bukkit.broadcastMessage("null format");
                 return false;
             }
+            Bukkit.broadcastMessage("not null format");
             try (ClipboardReader reader = format.getReader(new FileInputStream(schematicFile));
                  EditSession editSession = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(world))) {
                 Clipboard clipboard = reader.read();
@@ -197,15 +218,12 @@ public class IslandSpawning {
                         pasteLocation.getBlockZ()
                 );
 
-                int randomRotation = ThreadLocalRandom.current().nextInt(4) * 90;
-
                 ClipboardHolder clipboardHolder = new ClipboardHolder(clipboard);
-                clipboardHolder.setTransform(new AffineTransform().rotateY(randomRotation));
 
                 Operation operation = clipboardHolder
                         .createPaste(editSession)
                         .to(pasteLocation3)
-                        .ignoreAirBlocks(false)
+                        .ignoreAirBlocks(true)
                         .build();
 
                 Operations.complete(operation);

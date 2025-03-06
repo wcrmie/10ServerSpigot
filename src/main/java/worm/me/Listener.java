@@ -143,6 +143,17 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
     @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+
+        if (player.getGameMode() == GameMode.SURVIVAL && player.getAllowFlight()) {
+            if (!player.isFlying() && player.getFallDistance() > 3) {
+                player.damage(player.getFallDistance() - 3);
+            }
+        }
+    }
+
+    @EventHandler
     public void onPlayerBreak(BlockBreakEvent e){
         Player player = e.getPlayer();
 
