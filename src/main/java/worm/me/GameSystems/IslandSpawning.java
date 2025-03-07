@@ -29,6 +29,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class IslandSpawning {
 
+
+
     public static class SchematicInfo {
         String name;
         int xSize;
@@ -57,25 +59,22 @@ public class IslandSpawning {
         this.world = Bukkit.getWorld("ul_Void");
         this.worldBorder = world.getWorldBorder();
         this.worldBorderSizeHandler = new WorldBorderSizeHandler(plugin);
-        updateBorderValues();
     }
 
-    private void updateBorderValues() {
+    private void updateBorderValues(int edgeBufferX, int edgeBufferY, int edgeBufferZ) {
         double borderSize = worldBorder.getSize();
         Location center = worldBorder.getCenter();
-        int edgeBuffer = 10;
-        int upDownBuffer = 8;
-        xMoreThan = (int) (center.getX() - (borderSize / 2)+edgeBuffer);
-        xLessThan = (int) (center.getX() + (borderSize / 2)-edgeBuffer);
-        zMoreThan = (int) (center.getZ() - (borderSize / 2)+edgeBuffer);
-        zLessThan = (int) (center.getZ() + (borderSize / 2)-edgeBuffer);
-        yMoreThan = Math.max(world.getMinHeight(), 220+upDownBuffer);
-        yLessThan = Math.min(world.getMaxHeight(), 280-upDownBuffer);
+        xMoreThan = (int) (center.getX() - (borderSize / 2)+edgeBufferX);
+        xLessThan = (int) (center.getX() + (borderSize / 2)-edgeBufferX);
+        zMoreThan = (int) (center.getZ() - (borderSize / 2)+edgeBufferZ);
+        zLessThan = (int) (center.getZ() + (borderSize / 2)-edgeBufferZ);
+        yMoreThan = Math.max(world.getMinHeight(), 220+edgeBufferY);
+        yLessThan = Math.min(world.getMaxHeight(), 280-edgeBufferY);
     }
 
-    public Location worldBorderGetRandomBlock() {
+    public Location worldBorderGetRandomBlock(int maxSizeNum) {
         Location spawnCenter = new Location(world, 0.5, 240, 0.5);
-        int excludeRadius = 20;
+        int excludeRadius = maxSizeNum + 20;
 
         Location randomLocation;
         do {
@@ -88,10 +87,10 @@ public class IslandSpawning {
         return randomLocation;
     }
 
-    private Location findValidLocation(int xSize, int ySize, int zSize, int maxAttempts, String successMessage, boolean vc) {
+    private Location findValidLocation(int xSize, int ySize, int zSize, int maxAttempts, String successMessage, boolean vc, int maxSizeNum) {
         int attempts = 0;
         while (attempts < maxAttempts) {
-            Location baseLocation = worldBorderGetRandomBlock();
+            Location baseLocation = worldBorderGetRandomBlock(maxSizeNum);
             int baseX = baseLocation.getBlockX();
             int baseY = baseLocation.getBlockY();
             int baseZ = baseLocation.getBlockZ();
@@ -138,29 +137,29 @@ public class IslandSpawning {
 
 
 
-    public Location validSpawnLocation(int xsize, int ysize, int zsize) {
+    public Location validSpawnLocation(int xsize, int ysize, int zsize, int maxSizeNum) {
         Location location = null;
-        location = findValidLocation(6*xsize, 6*ysize, 6*zsize, 10, "Estra Extra big", false);
+        location = findValidLocation(6*xsize, 6*ysize, 6*zsize, 10, "Estra Extra big", false, maxSizeNum);
         if (location != null) {
             return location;
         }
-        location = findValidLocation(5*xsize, 5*ysize, 5*zsize,  20, "Extra big",false);
+        location = findValidLocation(5*xsize, 5*ysize, 5*zsize,  20, "Extra big",false, maxSizeNum);
         if (location != null) {
             return location;
         }
-        location = findValidLocation(4*xsize, 4*ysize, 4*zsize,  30, "Big",false);
+        location = findValidLocation(4*xsize, 4*ysize, 4*zsize,  30, "Big",false, maxSizeNum);
         if (location != null) {
             return location;
         }
-        location = findValidLocation(3*xsize, 3*ysize, 3*zsize,  100, "Medium",false);
+        location = findValidLocation(3*xsize, 3*ysize, 3*zsize,  100, "Medium",false, maxSizeNum);
         if (location != null) {
             return location;
         }
-        location = findValidLocation(2*xsize, 2*ysize, 2*zsize,  500, "Small",false);
+        location = findValidLocation(2*xsize, 2*ysize, 2*zsize,  500, "Small",false, maxSizeNum);
         if (location != null) {
             return location;
         }
-        location = findValidLocation((int) (1.5*xsize), (int) (1.5*ysize), (int) (1.5*zsize),   2000, "enxtra Small",true);
+        location = findValidLocation((int) (1.5*xsize), (int) (1.5*ysize), (int) (1.5*zsize),   2000, "enxtra Small",true, maxSizeNum);
         if (location != null) {
             return location;
         }
@@ -188,13 +187,13 @@ public class IslandSpawning {
                 nameAdd = "";
                 break;
             case 1:
-                nameAdd = "_2";
+                nameAdd = "_90";
                 break;
             case 2:
-                nameAdd = "_3";
+                nameAdd = "_180";
                 break;
             case 3:
-                nameAdd = "_4";
+                nameAdd = "_270";
                 break;
         }
         //File schematicFile = new File(plugin.getDataFolder(), "schematics/" + schematicName + nameAdd + ".schem");
@@ -236,8 +235,6 @@ public class IslandSpawning {
     }
 
     public void IslandSpawn(String islandName) {
-        updateBorderValues();
-
         SchematicInfo selectedSchematic = null;
 
         if (islandName != null) {
@@ -255,11 +252,20 @@ public class IslandSpawning {
             );
         }
 
-        Location location = validSpawnLocation(
-                selectedSchematic.xSize,
-                selectedSchematic.ySize,
-                selectedSchematic.zSize
-        );
+
+
+        int maxSizeNum;
+        if (selectedSchematic.xSize >= selectedSchematic.ySize && selectedSchematic.xSize >= selectedSchematic.zSize){
+            maxSizeNum = selectedSchematic.xSize/2;
+        } else if (selectedSchematic.ySize >= selectedSchematic.xSize && selectedSchematic.ySize >= selectedSchematic.zSize) {
+            maxSizeNum = selectedSchematic.ySize/2;
+        }else {
+            maxSizeNum = selectedSchematic.zSize/2;
+        }
+
+        updateBorderValues((selectedSchematic.xSize/2), (selectedSchematic.ySize/2), (selectedSchematic.zSize/2));
+
+        Location location = validSpawnLocation(selectedSchematic.xSize, selectedSchematic.ySize, selectedSchematic.zSize, maxSizeNum);
 
         if (location != null) {
             pasteSchematic(selectedSchematic.name, location);
