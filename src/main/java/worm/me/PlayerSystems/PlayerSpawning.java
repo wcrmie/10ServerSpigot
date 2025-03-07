@@ -1,12 +1,6 @@
 package worm.me.PlayerSystems;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import com.sk89q.worldguard.protection.regions.RegionContainer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -131,11 +125,6 @@ public class PlayerSpawning {
             }
 
             if (successMessage != null && !successMessage.isEmpty()) {
-                //plugin.getLogger().info(successMessage + " at location: " + baseX + ", " + baseY + ", " + baseZ);
-
-                //Bukkit.getServer().broadcastMessage(ChatColor.GREEN + "Spawn location found using " +
-                //        ChatColor.GOLD + successMessage +
-                //        ChatColor.GREEN + " at: " + baseX + ", " + baseY + ", " + baseZ);
             }
 
             return new Location(world, baseX, baseY, baseZ);
@@ -147,27 +136,27 @@ public class PlayerSpawning {
     public Location validSpawnLocation() {
         Location location = null;
 
-        location = findValidLocation(17, 27, 17, 55, 75, 55, 2500, 10, "Estra Extra big", false);
+        location = findValidLocation(23, 27, 23, 65, 65, 65, 5000, 10, "Estra Extra big", false);
         if (location != null) {
             return location;
         }
 
-        location = findValidLocation(13, 17, 13, 35, 55, 35, 500, 20, "Extra big",false);
+        location = findValidLocation(17, 23, 17, 35, 60, 35, 2500, 20, "Extra big",false);
         if (location != null) {
             return location;
         }
 
-        location = findValidLocation(9, 11, 9, 17, 33, 17, 50, 50, "Big",false);
+        location = findValidLocation(13, 15, 13, 25, 45, 25, 500, 50, "Big",false);
         if (location != null) {
             return location;
         }
 
-        location = findValidLocation(3, 5, 3, 11, 11, 11, 25, 100, "Medium",false);
+        location = findValidLocation(9, 11, 9, 17, 35, 17, 500, 100, "Medium",false);
         if (location != null) {
             return location;
         }
 
-        location = findValidLocation(0, 3, 0, 5, 5, 5, 5, 1000, "Small",false);
+        location = findValidLocation(3, 5, 3, 7, 15, 7, 250, 1000, "Small",false);
         if (location != null) {
             return location;
         }
@@ -240,52 +229,6 @@ public class PlayerSpawning {
         }
         blocksToRemove.clear();
     }
-
-    //stress testing
-
-    /*
-    public void ArmorStandSpawn(ArmorStand armorStand) {
-
-        updateBorderValues();
-
-        Location location = validSpawnLocation();
-
-        Block block = world.getBlockAt(location);
-
-        block.setType(Material.BEDROCK);
-
-        new BukkitRunnable() {
-
-            @Override
-
-            public void run() {
-
-                location.add(0.5, 1, 0.5);
-
-                armorStand.teleport(location);
-
-            }
-
-        }.runTaskLater(plugin, 1L);
-
-        new BukkitRunnable() {
-
-            @Override
-
-            public void run() {
-
-                location.subtract(0.5, 1, 0.5);
-
-                Block block = world.getBlockAt(location);
-
-                block.setType(Material.AIR);
-
-            }
-
-        }.runTaskLater(plugin, 30 * 20L);
-
-    }
-    */
 
 }
 

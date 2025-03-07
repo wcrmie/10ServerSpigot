@@ -11,6 +11,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import worm.me.Server;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class SaddleRide {
 
     private final JavaPlugin plugin;
@@ -71,7 +73,8 @@ public class SaddleRide {
             @Override
             public void run() {
                 Location playerLocation = thrower.getLocation();
-                org.bukkit.util.Vector direction = thrower.getLocation().getDirection().multiply(1.5);
+                double rng = ThreadLocalRandom.current().nextDouble(1.6, 1.8);
+                org.bukkit.util.Vector direction = thrower.getLocation().getDirection().multiply(rng);
                 rider.setVelocity(direction);
             }
         }.runTaskLater(plugin, 2L);

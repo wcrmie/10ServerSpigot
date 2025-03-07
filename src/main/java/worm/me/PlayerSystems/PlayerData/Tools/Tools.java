@@ -69,6 +69,7 @@ public class Tools {
 
             ItemStack newToolItem = new ItemStack(downgrade);
             newToolItem.setItemMeta(toolMeta);
+            newToolItem.setDurability((short) 0);
             return newToolItem;
         }
 
