@@ -1,4 +1,4 @@
-package worm.me.GameSystems;
+package worm.me.GameSystems.Fishing;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -95,7 +95,7 @@ public class FishingSystem {
 
         Entity entity = generateSeaCreature(hookLocation);
 
-        if (entity != null && event.getPlayer() != null) {
+        if (entity != null) {
             Location playerLocation = event.getPlayer().getLocation().clone();
             org.bukkit.util.Vector direction = playerLocation.subtract(hookLocation).toVector().normalize();
 

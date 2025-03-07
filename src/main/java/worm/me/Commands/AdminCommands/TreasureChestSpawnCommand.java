@@ -3,7 +3,7 @@ package worm.me.Commands.AdminCommands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import worm.me.GameSystems.TreasureChests;
+import worm.me.GameSystems.StructureGeneration.TreasureChests;
 
 public class TreasureChestSpawnCommand implements CommandExecutor {
 

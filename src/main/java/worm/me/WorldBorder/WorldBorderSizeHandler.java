@@ -7,14 +7,13 @@ import org.bukkit.WorldBorder;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import worm.me.GameSystems.IslandSpawning;
-import worm.me.GameSystems.TreasureChests;
+import worm.me.GameSystems.StructureGeneration.IslandSpawning;
+import worm.me.GameSystems.StructureGeneration.TreasureChests;
 import worm.me.Server;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class WorldBorderSizeHandler {
 

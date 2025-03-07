@@ -8,10 +8,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import worm.me.Server;
 
 import java.lang.constant.Constable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Recipes {
 
@@ -19,7 +16,10 @@ public class Recipes {
 
     public void addRecipes(){
 
-        shapedRecipeMap.put(new ItemStack(Material.SKELETON_SKULL, 1), List.of("Skull_of_unprepared_player", Material.BONE, Material.BONE, Material.BONE, Material.BONE, Material.BONE, Material.BONE, Material.BONE, Material.BONE, Material.BONE));
+        // ID 0
+        shapedRecipeMap.put(new ItemStack(Material.RAIL, 4), List.of("CHEAP_RAILS", Material.STICK, Material.AIR, Material.STICK, Material.STICK, Material.IRON_NUGGET, Material.STICK, Material.STICK, Material.AIR, Material.STICK));
+        shapedRecipeMap.put(new ItemStack(Material.POWERED_RAIL, 2), List.of("CHEAP_POWERED_RAILS", Material.STICK, Material.REDSTONE, Material.STICK, Material.STICK, Material.GOLD_NUGGET, Material.STICK, Material.STICK, Material.AIR, Material.STICK));
+
 
         shapedRecipes(shapedRecipeMap);
 
@@ -36,19 +36,43 @@ public class Recipes {
             if (Bukkit.getRecipe(new NamespacedKey(Server.getPlugin(), values.getFirst().toString())) == null){
                 ShapedRecipe shapedRecipe = new ShapedRecipe(new NamespacedKey(Server.getPlugin(), values.getFirst().toString()), key);
 
-                shapedRecipe.shape("ABC", "DEF", "GHI");
+                String shape = "";
 
-                shapedRecipe.setIngredient('A', (Material) values.get(1));
-                shapedRecipe.setIngredient('B', (Material) values.get(2));
-                shapedRecipe.setIngredient('C', (Material) values.get(3));
-                shapedRecipe.setIngredient('D', (Material) values.get(4));
-                shapedRecipe.setIngredient('E', (Material) values.get(5));
-                shapedRecipe.setIngredient('F', (Material) values.get(6));
-                shapedRecipe.setIngredient('G', (Material) values.get(7));
-                shapedRecipe.setIngredient('H', (Material) values.get(8));
-                shapedRecipe.setIngredient('I', (Material) values.get(9));
+                for (int i = 1; i < 10; i++) {
+                    if (values.get(i) == Material.AIR){
+                        shape =  shape + " ";
+                    } else {
+
+                        char c = (char) (i + 64);
+
+                        shape = shape + c;
+                    }
+
+                    if (i % 3 == 0){
+                        shape = shape + ",";
+                    }
+                }
+
+                shapedRecipe.shape(shape.split(","));
+
+                System.out.println(Arrays.toString(shape.split(",")));
+
+                for (int i = 1; i < 10; i++) {
+                    if (values.get(i) == Material.AIR){
+                        continue;
+                    } else {
+
+                        char c = (char) (i + 64);
+
+                        shapedRecipe.setIngredient(c, (Material) values.get(i));
+                    }
+
+                    if ((i - 1) % 3 == 0 && i != 1){
+                    }
+                }
 
                 Bukkit.addRecipe(shapedRecipe);
+
             }
         }
     }

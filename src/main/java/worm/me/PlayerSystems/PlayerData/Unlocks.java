@@ -1,5 +1,6 @@
 package worm.me.PlayerSystems.PlayerData;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -122,11 +123,21 @@ public class Unlocks {
                             System.out.println("Unlocked gens: " + mapAsList.toArray()[i]);
                             setUnlockedGens(p, gens);
 
+                            UnlockEvent unlockEvent = new UnlockEvent(p, mapAsList.toArray()[i].toString(), "Generator");
+                            Bukkit.getServer().getPluginManager().callEvent(unlockEvent);
+
                             // If the unlock is an ability, add it to the player's unlocked abilities
                         } else if (type == 4) {
                             int[] unlockedAbilities = pdc.get(Abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY);
                             unlockedAbilities[i] = 1;
                             pdc.set(Abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY, unlockedAbilities);
+
+                            UnlockEvent unlockEvent = new UnlockEvent(p, mapAsList.toArray()[i].toString(), "Ability");
+                            Bukkit.getServer().getPluginManager().callEvent(unlockEvent);
+
+                            // -----------------If unlock is recipe VVV
+                        } else if (type == 5) {
+
                         }
                     }
                 }

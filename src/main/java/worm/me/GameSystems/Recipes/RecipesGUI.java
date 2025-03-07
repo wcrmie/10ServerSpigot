@@ -60,16 +60,24 @@ public class RecipesGUI {
 
         gui.setItem(23, GuiConstructor.createGuiItem(Material.CRAFTING_TABLE, " "));
 
+        int slot = 9;
 
-        gui.setItem(10, GuiConstructor.createGuiItem((Material) Recipes.shapedRecipeMap.get(recipe).get(1), ""));
-        gui.setItem(11, GuiConstructor.createGuiItem((Material) Recipes.shapedRecipeMap.get(recipe).get(1), ""));
-        gui.setItem(12, GuiConstructor.createGuiItem((Material) Recipes.shapedRecipeMap.get(recipe).get(1), ""));
-        gui.setItem(19, GuiConstructor.createGuiItem((Material) Recipes.shapedRecipeMap.get(recipe).get(1), ""));
-        gui.setItem(20, GuiConstructor.createGuiItem((Material) Recipes.shapedRecipeMap.get(recipe).get(1), ""));
-        gui.setItem(21, GuiConstructor.createGuiItem((Material) Recipes.shapedRecipeMap.get(recipe).get(1), ""));
-        gui.setItem(28, GuiConstructor.createGuiItem((Material) Recipes.shapedRecipeMap.get(recipe).get(1), ""));
-        gui.setItem(29, GuiConstructor.createGuiItem((Material) Recipes.shapedRecipeMap.get(recipe).get(1), ""));
-        gui.setItem(30, GuiConstructor.createGuiItem((Material) Recipes.shapedRecipeMap.get(recipe).get(1), ""));
+        for (int i = 1; i < 10; i++){
+
+            slot ++;
+
+            if (!Recipes.shapedRecipeMap.get(recipe).get(i).equals(Material.AIR)) {
+                gui.setItem(slot, GuiConstructor.createGuiItem((Material) Recipes.shapedRecipeMap.get(recipe).get(i), ""));
+            } else {
+                gui.setItem(slot, new ItemStack(Material.AIR));
+            }
+
+            if ((slot - 3) % 9 == 0) {
+                slot += 6;
+            }
+
+
+        }
 
         gui.setItem(25, recipe);
 

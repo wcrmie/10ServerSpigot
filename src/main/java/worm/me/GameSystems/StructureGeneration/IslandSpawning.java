@@ -1,4 +1,4 @@
-package worm.me.GameSystems;
+package worm.me.GameSystems.StructureGeneration;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
