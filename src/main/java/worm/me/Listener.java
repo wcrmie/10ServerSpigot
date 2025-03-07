@@ -264,6 +264,15 @@ public class Listener implements org.bukkit.event.Listener {
 
         // Kill the player if they walk into a deathbox (so they don't fall for a whole minute)
         if (e.getFrom() == e.getTo()) return;
+
+        Player player = e.getPlayer();
+
+        if (player.getGameMode() == GameMode.SURVIVAL && player.getAllowFlight()) {
+            if (!player.isFlying() && player.getFallDistance() > 3) {
+                player.damage(player.getFallDistance() - 3);
+            }
+        }
+
         if (Objects.requireNonNull(e.getTo()).getY() < 200) e.getPlayer().damage(1000000);
 
         if (e.getPlayer().getPersistentDataContainer().get(Abilities.moveCooldown, PersistentDataType.LONG) != null){

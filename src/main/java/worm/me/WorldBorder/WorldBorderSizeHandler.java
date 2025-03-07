@@ -56,7 +56,7 @@ public class WorldBorderSizeHandler {
 
     int lastSpawnDone = 0;
     public void spawnthings() {
-        if ((blockCount % 5000)==0 && blockCount != lastSpawnDone) {
+        if ((blockCount % 20000)==0 && blockCount != lastSpawnDone) {
             lastSpawnDone = (int) blockCount;
             TreasureChests TreasureChestsH = new TreasureChests();
             TreasureChestsH.chestSpawn();

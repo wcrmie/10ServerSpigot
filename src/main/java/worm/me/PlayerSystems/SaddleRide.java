@@ -11,6 +11,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import worm.me.Server;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class SaddleRide {
 
     private final JavaPlugin plugin;
@@ -44,10 +46,25 @@ public class SaddleRide {
 
     public void getOnPlayer(Player rider, Player clickedPlayer) {
         Player topPlayer = clickedPlayer;
+        Player secondToTopPlayer = null;
+
         while (!topPlayer.getPassengers().isEmpty() && topPlayer.getPassengers().getFirst() instanceof Player) {
+            secondToTopPlayer = topPlayer;
             topPlayer = (Player) topPlayer.getPassengers().getFirst();
         }
-        topPlayer.addPassenger(rider);
+
+        ItemStack helmet = topPlayer.getInventory().getHelmet();
+        if (helmet == null || helmet.getType() != Material.SADDLE) {
+            if (secondToTopPlayer != null) {
+                secondToTopPlayer.removePassenger(topPlayer);
+                secondToTopPlayer.addPassenger(rider);
+            } else {
+                clickedPlayer.removePassenger(topPlayer);
+                clickedPlayer.addPassenger(rider);
+            }
+        } else {
+            topPlayer.addPassenger(rider);
+        }
     }
 
     public void getThrown(Entity rider, Player thrower){
@@ -56,7 +73,8 @@ public class SaddleRide {
             @Override
             public void run() {
                 Location playerLocation = thrower.getLocation();
-                org.bukkit.util.Vector direction = thrower.getLocation().getDirection().multiply(1.5);
+                double rng = ThreadLocalRandom.current().nextDouble(1.6, 1.8);
+                org.bukkit.util.Vector direction = thrower.getLocation().getDirection().multiply(rng);
                 rider.setVelocity(direction);
             }
         }.runTaskLater(plugin, 2L);
