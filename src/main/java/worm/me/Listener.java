@@ -9,6 +9,7 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -262,14 +263,15 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent e){
 
-        // Kill the player if they walk into a deathbox (so they don't fall for a whole minute)
+
         if (e.getFrom() == e.getTo()) return;
 
         Player player = e.getPlayer();
-
         if (player.getGameMode() == GameMode.SURVIVAL && player.getAllowFlight()) {
             if (!player.isFlying() && player.getFallDistance() > 3) {
-                player.damage(player.getFallDistance() - 3);
+                if (player.isOnGround()) {
+                    player.damage(player.getFallDistance() - 3);
+                }
             }
         }
 
@@ -307,16 +309,7 @@ public class Listener implements org.bukkit.event.Listener {
             }
         }
     }
-    /*
-    @EventHandler
-    public void onEntitySpawn(EntitySpawnEvent e) {
-        if (e.getEntity().getType() == EntityType.ARMOR_STAND) {
-            PlayerSpawning handler = new PlayerSpawning(plugin);
-            ArmorStand ar = (ArmorStand) e.getEntity() ;
-            handler.ArmorStandSpawn(ar);
-        }
-    }
-    */
+
     @EventHandler
     public void onInteract(PlayerInteractEvent e){
 
