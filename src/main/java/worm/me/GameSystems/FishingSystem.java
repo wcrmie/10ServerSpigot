@@ -10,17 +10,125 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-
 public class FishingSystem {
 
-    private final Map<Material, Integer> LootTable1 = new HashMap<>();
-    private final Map<Material, Integer> LootTable2 = new HashMap<>();
+    private final Map<Material, Integer> lootTable1 = new HashMap<>();
+    private final Map<Material, Integer> lootTable2 = new HashMap<>();
+    private final Map<Class<? extends Entity>, Integer> seaCreatureTable = new HashMap<>();
+    private final Map<String, FishingConfiguration> fishingConfigurations = new HashMap<>();
 
     public FishingSystem(Server plugin) {
-        LootTable1.put(Material.COD, 1);
-        LootTable1.put(Material.SALMON, 1);
-        LootTable2.put(Material.DIAMOND_BLOCK, 5);
-        LootTable2.put(Material.EMERALD_BLOCK, 5);
+        lootTable1.put(Material.COD, 1);
+        lootTable1.put(Material.SALMON, 1);
+
+        lootTable2.put(Material.PUFFERFISH, 5);
+        lootTable2.put(Material.SADDLE, 5);
+
+        seaCreatureTable.put(Cod.class, 5);
+        seaCreatureTable.put(Salmon.class, 4);
+        seaCreatureTable.put(Zombie.class, 1);
+
+        fishingConfigurations.put("0", new FishingConfiguration(40,40,20));
+        fishingConfigurations.put("1", new FishingConfiguration(0,0,0));
+        fishingConfigurations.put("2", new FishingConfiguration(0,0,0));
+    }
+
+    private static class FishingConfiguration {
+        private final int lootTable1Weight;
+        private final int lootTable2Weight;
+        private final int seaCreatureWeight;
+
+        public FishingConfiguration(int lootTable1Weight, int lootTable2Weight, int seaCreatureWeight) {
+            this.lootTable1Weight = lootTable1Weight;
+            this.lootTable2Weight = lootTable2Weight;
+            this.seaCreatureWeight = seaCreatureWeight;
+        }
+
+        public int getLootTable1Weight() {
+            return lootTable1Weight;
+        }
+
+        public int getLootTable2Weight() {
+            return lootTable2Weight;
+        }
+
+        public int getSeaCreatureWeight() {
+            return seaCreatureWeight;
+        }
+
+        public int getTotalWeight() {
+            return lootTable1Weight + lootTable2Weight + seaCreatureWeight;
+        }
+    }
+
+    public void handleFishing(PlayerFishEvent event) {
+        if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
+
+            String configName = "0";
+
+            FishingConfiguration config = fishingConfigurations.get(configName);
+            int totalWeight = config.getTotalWeight();
+
+            double rng = ThreadLocalRandom.current().nextDouble(0.0, totalWeight);
+            Item item = (Item) event.getCaught();
+
+            if (item != null) {
+                if (rng < config.getLootTable1Weight()) {
+                    item.setItemStack(generateFishingItem(lootTable1));
+                } else if (rng < config.getLootTable1Weight() + config.getLootTable2Weight()) {
+                    item.setItemStack(generateFishingItem(lootTable2));
+                } else if (rng < config.getLootTable1Weight() + config.getLootTable2Weight() + config.getSeaCreatureWeight() ) {
+                    spawnEntityOnHook(event);
+                    item.setItemStack(new ItemStack(Material.AIR));
+                }
+                else {
+                    item.setItemStack(new ItemStack(Material.AIR));
+                }
+            }
+        }
+    }
+
+    public void spawnEntityOnHook(PlayerFishEvent event) {
+        Location hookLocation = event.getHook().getLocation();
+        double strength = ThreadLocalRandom.current().nextDouble(0.1, 0.3);
+
+        Entity entity = generateSeaCreature(hookLocation);
+
+        if (entity != null && event.getPlayer() != null) {
+            Location playerLocation = event.getPlayer().getLocation().clone();
+            org.bukkit.util.Vector direction = playerLocation.subtract(hookLocation).toVector().normalize();
+
+            entity.setVelocity(direction.multiply(strength));
+        }
+    }
+
+    public ItemStack generateFishingItem(Map<Material, Integer> lootTable) {
+        int totalWeight = sumInt(lootTable.values());
+        int randomWeight = ThreadLocalRandom.current().nextInt(totalWeight);
+
+        int currentWeight = 0;
+        for (Map.Entry<Material, Integer> entry : lootTable.entrySet()) {
+            currentWeight += entry.getValue();
+            if (randomWeight < currentWeight) {
+                return new ItemStack(entry.getKey());
+            }
+        }
+        return new ItemStack(Material.AIR);
+    }
+
+    public Entity generateSeaCreature(Location loc) {
+        int totalWeight = sumInt(seaCreatureTable.values());
+        int randomWeight = ThreadLocalRandom.current().nextInt(totalWeight);
+
+        int currentWeight = 0;
+        for (Map.Entry<Class<? extends Entity>, Integer> entry : seaCreatureTable.entrySet()) {
+            currentWeight += entry.getValue();
+            if (randomWeight < currentWeight) {
+                return loc.getWorld().spawn(loc, entry.getKey());
+            }
+        }
+
+        return loc.getWorld().spawn(loc, Cod.class);
     }
 
     public int sumInt(Collection<Integer> list) {
@@ -29,90 +137,5 @@ public class FishingSystem {
             sum += i;
         }
         return sum;
-    }
-
-    public void handleFishing(PlayerFishEvent event) {
-
-        if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
-            Double RNG = ThreadLocalRandom.current().nextDouble(0.0, 100.0);
-            Item item = (Item) event.getCaught();
-
-            assert item != null;
-
-            if (RNG <= 40) {
-                item.setItemStack(generateFishingItem(LootTable1));
-                event.getPlayer().sendMessage("1");
-
-            } else if (RNG <= 80) {
-                item.setItemStack(generateFishingItem(LootTable2));
-                event.getPlayer().sendMessage("2");
-            } else if (RNG <= 100) {
-                spawnEntityOnHook(event);
-                item.setItemStack(new ItemStack(Material.AIR));
-                event.getPlayer().sendMessage("mob");
-
-            } else {
-                item.setItemStack(new ItemStack(Material.AIR));
-                event.getPlayer().sendMessage("nothing");
-            }
-        }
-    }
-
-
-    public void spawnEntityOnHook(PlayerFishEvent event) {
-        Location hookLocation = event.getHook().getLocation();
-        double RNG2 = ThreadLocalRandom.current().nextDouble(0.1, 0.2);
-
-
-        Entity entity = generateSeaCreature(hookLocation);
-
-        if (entity != null && event.getPlayer() != null) {
-            Location playerLocation = event.getPlayer().getLocation();
-            org.bukkit.util.Vector direction = playerLocation.subtract(hookLocation).toVector();
-
-            entity.setVelocity(direction.multiply(RNG2));
-        }
-
-    }
-
-    public ItemStack generateFishingItem(Map<Material, Integer> map){
-
-        int RNG = ThreadLocalRandom.current().nextInt(0, sumInt(map.values()));
-
-        Server.getPlugin().broadcast("RNG: " + RNG + ", " + sumInt(map.values()));
-
-        int excess = 0;
-
-        for (Material m : map.keySet()){
-
-            int value = map.get(m) + excess;
-            if (map.get(m) >= RNG){
-                return new ItemStack(m);
-            }
-            excess = value;
-        }
-        return new ItemStack(Material.AIR);
-    }
-
-    public Entity generateSeaCreature(Location loc){
-        double RNG = ThreadLocalRandom.current().nextDouble(0.0, 100.0);
-        Entity entity;
-
-        // In the future, a Map could be created, linking the entity to the weight of spawning
-        // In that case, the lower bound would be zero and the upper bound would be the sum of all weights.
-        // The Keys would be the entities and the values would be the weights.
-
-        if (RNG < 50) {
-            entity = loc.getWorld().spawn(loc, Cod.class);
-        } else if (RNG < 90) {
-            entity = loc.getWorld().spawn(loc, Salmon.class);
-        } else if (RNG < 95) {
-            entity = loc.getWorld().spawn(loc, Zombie.class);
-        } else {
-            entity = loc.getWorld().spawn(loc, Zombie.class);
-        }
-        return entity;
-
-
     }
 }
