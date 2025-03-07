@@ -11,10 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.InventoryView;
@@ -32,16 +29,13 @@ import worm.me.PlayerSystems.Abilities.Active.AgilityDoubleJump;
 import worm.me.PlayerSystems.Abilities.Active.AgilityLeap;
 import worm.me.PlayerSystems.Generator.Generator;
 import worm.me.PlayerSystems.Generator.GeneratorEdit;
+import worm.me.PlayerSystems.PlayerData.*;
 import worm.me.PlayerSystems.PlayerData.Levels.GainExpEvent;
 import worm.me.PlayerSystems.PlayerData.Levels.LevelUpEvent;
 import worm.me.PlayerSystems.PlayerData.Levels.Levels;
 import worm.me.PlayerSystems.PlayerData.Levels.LevelsGUI;
-import worm.me.PlayerSystems.PlayerData.PlayerProfileGUI;
 import worm.me.PlayerSystems.PlayerData.Social.Hats.Hats;
 import worm.me.PlayerSystems.PlayerData.Social.Hats.HatsStorage;
-import worm.me.PlayerSystems.PlayerData.Unlocks;
-import worm.me.PlayerSystems.PlayerData.Vault;
-import worm.me.PlayerSystems.PlayerData.VoidPlayer;
 import worm.me.PlayerSystems.Quests.QuestGui;
 import worm.me.PlayerSystems.PlayerData.Social.MessageHead;
 import worm.me.PlayerSystems.PlayerData.Social.Skin.SkinGui;
@@ -195,6 +189,16 @@ public class Listener implements org.bukkit.event.Listener {
 
         }
     }
+
+    @EventHandler
+    public void onFurnaceCollect(FurnaceExtractEvent e){
+
+        Levels.expHandler(e.getPlayer(), e);
+
+
+    }
+
+
 
     @EventHandler
     public void onPlayerPlace(BlockPlaceEvent e){
@@ -372,7 +376,7 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onExpGain(GainExpEvent e){
-        if (Levels.getExp(Levels.skills.get(e.getSkillType()), e.getPlayer()) > Levels.expRequired(Levels.getLevel(e.getSkillType(), e.getPlayer()) + 1)){
+        if (Levels.getExp(Levels.skills.get(e.getSkillType()), e.getPlayer()) + e.getExpValue() > Levels.expRequired(Levels.getLevel(e.getSkillType(), e.getPlayer()) + 1)){
             Levels.levelUp(e.getSkillType(), e.getPlayer());
         }
     }
@@ -387,6 +391,13 @@ public class Listener implements org.bukkit.event.Listener {
         }
 
 
+    }
+
+    @EventHandler
+    public void onUnlock(UnlockEvent e){
+        Player p = e.getPlayer();
+
+        Server.pluginMessage(ChatColor.GREEN + "You have unlocked a(n) " + e.getUnlock() + " " + e.getUnlockType(), p);
     }
 
     @EventHandler
@@ -468,7 +479,6 @@ public class Listener implements org.bukkit.event.Listener {
         if (invName.contains("Ability Slot")) {
             AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
             abilitiesGUI.activateAbility(p, e.getSlot(), e);
-            abilitiesGUI.abilitiesActive(p);
             e.setCancelled(true);
         }
 

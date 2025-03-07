@@ -210,6 +210,10 @@ public class VoidPlayer {
             Server.pluginMessage(ChatColor.RED + "Your reputation session has reset!", player);
         }
 
+        if (!container.has(new NamespacedKey(Server.getPlugin(), "10stats"), PersistentDataType.INTEGER_ARRAY)) {
+            container.set(new NamespacedKey(Server.getPlugin(), "10stats"), PersistentDataType.INTEGER_ARRAY, new int[50]);
+        }
+
         MessageHead messageHead = new MessageHead(plugin);
         player.getPersistentDataContainer().set(messageHead.armorStandExists, PersistentDataType.BOOLEAN, false);
 

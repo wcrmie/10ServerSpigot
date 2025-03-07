@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.GuiConstructor;
+import worm.me.Server;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +25,8 @@ public class AbilitiesGUI {
 
         int[] active = Objects.requireNonNullElse(container.get(abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY), new int[3]);
 
+        Server.pluginMessage("Active: " + Arrays.toString(active), p);
+
         try {
             String abilityName = Abilities.abilityGuiComponents.keySet().toArray()[active[0]].toString();
             String abilityMaterial = Abilities.abilityGuiComponents.get(abilityName).getFirst();
@@ -39,6 +42,9 @@ public class AbilitiesGUI {
             String abilityDescription = Abilities.abilityGuiComponents.get(abilityName).get(1);
             gui.setItem(13, guiConstructor.createGuiItem(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
         } catch (Exception e){
+
+            Server.pluginMessage("Error: " + e, p);
+
             gui.setItem(13, guiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
         }
 
@@ -72,9 +78,6 @@ public class AbilitiesGUI {
 
         // Create the GUI
         Inventory gui = guiConstructor.chestInventory( ChatColor.DARK_GRAY + title + " Ability Slot", 54);
-
-        // Create gui items methodically
-        Abilities abilities = new Abilities();
 
         // for each item
         for (int i = 0; i < Abilities.abilityGuiComponents.size(); i++){
@@ -125,12 +128,16 @@ public class AbilitiesGUI {
 
     public void activateAbility(Player p, int slot, InventoryClickEvent e){
         // Handle the GUI events here
-        Abilities abilities = new Abilities();
         PersistentDataContainer container = p.getPersistentDataContainer();
 
         int slotNum = slot - 10;
 
-        if (slotNum < 9 || slotNum > 44){
+        if (slot < 9 || slot > 44){
+
+            if (slot == 49){
+                abilitiesActive(p);
+            }
+
             return;
         }
 
@@ -140,21 +147,25 @@ public class AbilitiesGUI {
             return;
         }
 
-        if (Objects.requireNonNullElse(container.get(abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY)[slotNum], 0) == 1 || p.isOp()){
-            int[] active = Objects.requireNonNullElse(container.get(abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY), new int[3]);
-            if (e.getView().getTitle().contains("First Ability Slot")){
+        if (Objects.requireNonNullElse(container.get(Abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY)[slotNum], 0) == 1 || p.isOp()){
+            int[] active = Objects.requireNonNullElse(container.get(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY), new int[3]);
+            if (e.getView().getTitle().contains("First")){
+                Server.pluginMessage("First " + slotNum, p);
                 active[0] = slotNum;
-                container.set(abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
+                container.set(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
             }
-            if (e.getView().getTitle().contains("Second Ability Slot")){
+            if (e.getView().getTitle().contains("Second")){
                 active[1] = slotNum;
-                container.set(abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
+                container.set(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
             }
-            if (e.getView().getTitle().contains("Third Ability Slot")){
+            if (e.getView().getTitle().contains("Third")){
                 active[2] = slotNum;
-                container.set(abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
+                container.set(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
             }
         }
+
+        abilitiesActive(p);
+
     }
 
     public void initializeAbilitySelection(Player p, InventoryClickEvent e){

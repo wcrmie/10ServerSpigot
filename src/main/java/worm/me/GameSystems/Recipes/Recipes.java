@@ -108,5 +108,13 @@ public class Recipes {
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "golden_axe"));
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "golden_shovel"));
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "golden_sword"));
+
+
+        Bukkit.removeRecipe(new NamespacedKey("minecraft", "leather_helmet"));
+        Bukkit.removeRecipe(new NamespacedKey("minecraft", "iron_helmet"));
+        Bukkit.removeRecipe(new NamespacedKey("minecraft", "gold_helmet"));
+        Bukkit.removeRecipe(new NamespacedKey("minecraft", "diamond_helmet"));
+
+
     }
 }

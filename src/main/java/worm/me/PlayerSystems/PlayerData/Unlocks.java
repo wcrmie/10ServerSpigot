@@ -70,8 +70,8 @@ public class Unlocks {
 
             System.out.println("Previously Unlocked gens: " + unlockedGens);
 
-            for (int i = 0; i < unlockedGens.size(); i++){
-                if (totalGens.contains(unlockedGens.get(i))) totalGens.remove(unlockedGens.get(i));
+            for (ItemStack unlockedGen : unlockedGens) {
+                totalGens.remove(unlockedGen.getType());
             }
 
             mapAsList = totalGens;

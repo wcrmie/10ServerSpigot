@@ -11,7 +11,7 @@ public class UnlockEvent extends Event {
     String unlock;
     String unlockType;
 
-    HandlerList handlers = new HandlerList();
+    static HandlerList handlers = new HandlerList();
 
     public UnlockEvent(Player player, String unlock, String unlockType){
         this.player = player;
@@ -29,6 +29,10 @@ public class UnlockEvent extends Event {
 
     public String getUnlockType(){
         return unlockType;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     @Override

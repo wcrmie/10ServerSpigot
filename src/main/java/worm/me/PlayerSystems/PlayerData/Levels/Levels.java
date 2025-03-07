@@ -10,12 +10,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.inventory.FurnaceExtractEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Levels {
 
@@ -69,7 +71,8 @@ public class Levels {
 
         container.set(Exp, PersistentDataType.LONG_ARRAY, expArray);
 
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacy(ChatColor.AQUA + "+ " + exp + " " + skills.get(skill) + " exp"));
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacy(ChatColor.AQUA + "+ " + exp + " " + skills.get(skill) + " EXP"));
+        player.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.3F, ThreadLocalRandom.current().nextFloat(1.6F, 1.8F));
     }
 
     public static long getExp(String skill, Player player){
@@ -122,6 +125,12 @@ public class Levels {
             EntityDeathEvent e = (EntityDeathEvent) event;
 
             addExp(Server.getPlugin().combatMobs.get(e.getEntityType()), skillTranslation("Combat"), p);
+
+        } else if (event.getEventName().equals("FurnaceExtractEvent")) {
+
+            FurnaceExtractEvent e = (FurnaceExtractEvent) event;
+
+            addExp(Server.getPlugin().smithingItems.get(e.getItemType()) * e.getItemAmount(), skillTranslation("Smithing"), p);
 
         }
     }

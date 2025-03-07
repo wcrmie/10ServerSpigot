@@ -49,6 +49,8 @@ public final class Server extends JavaPlugin {
 
     public Map<EntityType, Long> combatMobs = new HashMap<>();
 
+    public Map<Material, Long> smithingItems = new HashMap<>();
+
     public List<Sound> sounds = new ArrayList<>();
 
     public static Map<Material, int[]> stones = new HashMap<>();
@@ -276,7 +278,12 @@ public final class Server extends JavaPlugin {
         combatMobs.put(EntityType.ZOMBIE_VILLAGER, 3L);
         combatMobs.put(EntityType.ZOMBIE_HORSE, 3L);
 
-
+        // Set the exp things give when taken from a furnace
+        smithingItems.put(Material.IRON_INGOT, 3L);
+        smithingItems.put(Material.GOLD_NUGGET, 2L);
+        smithingItems.put(Material.GOLD_INGOT, 5L);
+        smithingItems.put(Material.IRON_NUGGET, 1L);
+        smithingItems.put(Material.COAL, 1L);
 
 
 
