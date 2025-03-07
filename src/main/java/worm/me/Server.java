@@ -19,7 +19,7 @@ import worm.me.Commands.GUICommands.HatsCommand;
 import worm.me.Commands.GUICommands.OpenAbilitiesGUICommand;
 import worm.me.Commands.GUICommands.OpenLevelsGUICommand;
 import worm.me.Commands.GUICommands.OpenSkinGUICommand;
-import worm.me.GameSystems.Recipes;
+import worm.me.GameSystems.Recipes.Recipes;
 import worm.me.GameSystems.ArtBlocks;
 import worm.me.PlayerSystems.Abilities.Abilities;
 import worm.me.PlayerSystems.Quests.QuestInitialize;
@@ -92,12 +92,13 @@ public final class Server extends JavaPlugin {
         saddleRide = new SaddleRide(this);
         artBlocks = new ArtBlocks(this);
 
-
-        // Get rid of various vanilla recipes
-        Recipes.removeRecipes();
-
         // Add custom recipes
-        Recipes.addRecipes();
+
+        Recipes recipes = new Recipes();
+
+        recipes.removeRecipes();
+        recipes.addRecipes();
+
 
         // Register commands
 
@@ -126,6 +127,7 @@ public final class Server extends JavaPlugin {
         this.getCommand("menu").setExecutor(new MenuCommand());
         this.getCommand("profile").setExecutor(new OpenProfileGUICommand());
         this.getCommand("hatstorage").setExecutor(new EditHatsCommand());
+        this.getCommand("rename").setExecutor(new RenameCommand());
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 
@@ -279,31 +281,31 @@ public final class Server extends JavaPlugin {
 
 
         // Set voices
-        sounds.add(Sound.BLOCK_STONE_BUTTON_CLICK_OFF);
-        sounds.add(Sound.BLOCK_WOODEN_BUTTON_CLICK_OFF);
-        sounds.add(Sound.BLOCK_DISPENSER_DISPENSE);
-        sounds.add(Sound.BLOCK_STONE_BREAK);
-        sounds.add(Sound.BLOCK_BONE_BLOCK_BREAK);
-        sounds.add(Sound.ENTITY_ARMOR_STAND_HIT);
-        sounds.add(Sound.BLOCK_WOOL_HIT);
-        sounds.add(Sound.BLOCK_BAMBOO_HIT);
-        sounds.add(Sound.BLOCK_AMETHYST_BLOCK_BREAK);
-        sounds.add(Sound.ENTITY_ENDER_EYE_DEATH);
-        sounds.add(Sound.ENTITY_PLAYER_BURP);
-        sounds.add(Sound.ENTITY_CAT_AMBIENT);
-        sounds.add(Sound.ENTITY_WOLF_AMBIENT);
-        sounds.add(Sound.ENTITY_SHEEP_DEATH);
-        sounds.add(Sound.ENTITY_BEE_HURT);
-        sounds.add(Sound.ENTITY_ARMADILLO_BRUSH);
-        sounds.add(Sound.ENTITY_CAMEL_DASH);
-        sounds.add(Sound.ENTITY_VILLAGER_TRADE);
-        sounds.add(Sound.ENTITY_VILLAGER_NO);
-        sounds.add(Sound.ENTITY_CREEPER_HURT);
-        sounds.add(Sound.ENTITY_ZOMBIE_HURT);
-        sounds.add(Sound.ENTITY_SKELETON_HURT);
-        sounds.add(Sound.ENTITY_ENDERMAN_HURT);
-        sounds.add(Sound.ENTITY_ENDER_DRAGON_HURT);
-        sounds.add(Sound.ENTITY_WITCH_THROW);
+        sounds.add(Sound.BLOCK_STONE_BUTTON_CLICK_OFF); // 0
+        sounds.add(Sound.BLOCK_WOODEN_BUTTON_CLICK_OFF); // 1
+        sounds.add(Sound.BLOCK_DISPENSER_DISPENSE); // 2
+        sounds.add(Sound.BLOCK_STONE_BREAK); // 3
+        sounds.add(Sound.BLOCK_BONE_BLOCK_BREAK); // 4
+        sounds.add(Sound.ENTITY_ARMOR_STAND_HIT); // 5
+        sounds.add(Sound.BLOCK_WOOL_HIT); // 6
+        sounds.add(Sound.BLOCK_BAMBOO_HIT); // 7
+        sounds.add(Sound.BLOCK_AMETHYST_BLOCK_BREAK); // 8
+        sounds.add(Sound.ENTITY_ENDER_EYE_DEATH); // 9
+        sounds.add(Sound.ENTITY_PLAYER_BURP); // 10
+        sounds.add(Sound.ENTITY_CAT_AMBIENT); // 11
+        sounds.add(Sound.ENTITY_WOLF_AMBIENT); // 12
+        sounds.add(Sound.ENTITY_SHEEP_DEATH); // 13
+        sounds.add(Sound.ENTITY_BEE_HURT); // 14
+        sounds.add(Sound.ENTITY_ARMADILLO_BRUSH); // 15
+        sounds.add(Sound.ENTITY_CAMEL_DASH); // 16
+        sounds.add(Sound.ENTITY_VILLAGER_TRADE); // 17
+        sounds.add(Sound.ENTITY_VILLAGER_NO); // 18
+        sounds.add(Sound.ENTITY_CREEPER_HURT); // 19
+        sounds.add(Sound.ENTITY_ZOMBIE_HURT); // 20
+        sounds.add(Sound.ENTITY_SKELETON_HURT); // 21
+        sounds.add(Sound.ENTITY_ENDERMAN_HURT); // 22
+        sounds.add(Sound.ENTITY_ENDER_DRAGON_HURT); // 23
+        sounds.add(Sound.ENTITY_WITCH_THROW); // 24
 
         // CREATE BLOCK KEYS FOR GENERATOR
         stones.put(Material.COBBLESTONE, new int[]{0,0,0,0,0,1,0,0});

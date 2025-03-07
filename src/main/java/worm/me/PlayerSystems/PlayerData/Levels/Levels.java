@@ -89,7 +89,6 @@ public class Levels {
         LevelUpEvent event = new LevelUpEvent(skill, level, player);
         Bukkit.getServer().getPluginManager().callEvent(event);
 
-
         setLevel(skill, player, level);
         Server.getPlugin().broadcast(ChatColor.AQUA + player.getName() + " has reached level " + level + " in " + skills.get(skill) + "!");
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 0.8F);

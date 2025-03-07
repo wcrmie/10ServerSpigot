@@ -1,6 +1,7 @@
 package worm.me.PlayerSystems.PlayerData;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -200,6 +201,13 @@ public class VoidPlayer {
 
         if (!container.has(new NamespacedKey(plugin, "hatsUnlocked"), PersistentDataType.INTEGER_ARRAY)) {
             container.set(new NamespacedKey(plugin, "hatsUnlocked"), PersistentDataType.INTEGER_ARRAY, new int[2700]);
+        }
+
+        if (!container.has(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY)) {
+            container.set(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY, new long[]{System.currentTimeMillis()/1000L, 0});
+        } else if (container.get(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY)[0] <= ((System.currentTimeMillis()/1000L) - 3600)) {
+            container.set(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY, new long[]{System.currentTimeMillis()/1000L, 0});
+            Server.pluginMessage(ChatColor.RED + "Your reputation session has reset!", player);
         }
 
         MessageHead messageHead = new MessageHead(plugin);

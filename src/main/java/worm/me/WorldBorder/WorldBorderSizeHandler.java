@@ -66,7 +66,7 @@ public class WorldBorderSizeHandler {
         }
     }
 
-    private long calculateWorldBlockSize() {
+    public long calculateWorldBlockSize() {
         return (long) (worldBorder.getSize() * worldBorder.getSize() * 60);
     }
 

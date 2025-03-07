@@ -66,3 +66,6 @@ commands:
     description: Opens the hat storage GUI for the player.
     usage: /<command> <page>
     permission: 10VS.hatStorageModify
+  rename:
+    description: Rename held item.
+    usage: /<command> <string>

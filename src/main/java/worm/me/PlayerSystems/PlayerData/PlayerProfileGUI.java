@@ -31,6 +31,9 @@ public class PlayerProfileGUI {
             whose = p.getName() + "'s ";
 
         }
+
+        gui.setItem(0, GuiConstructor.createGuiItem(Material.KNOWLEDGE_BOOK, ChatColor.BLUE + "\uD83D\uDEC8", " ", ChatColor.GRAY + "You are currently viewing " + whose + "profile."));
+
         ItemStack skull = GuiConstructor.createGuiItem(Material.PLAYER_HEAD, ChatColor.AQUA + whose + "Profile");
 
 

@@ -43,7 +43,7 @@ public class HatsStorage {
 
     public ItemStack getHat(int ID) {
         for (int i = 0; i < 50; i++){
-            if (ID - 54 * i < 54) {
+            if (ID - (54 * i) < 54) {
                 List<ItemStack> hats = getHats(i + 1);
                 return hats.get(ID - 54 * i);
             }

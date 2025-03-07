@@ -7,6 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import worm.me.GameSystems.Recipes.RecipesGUI;
 import worm.me.GuiConstructor;
 import worm.me.PlayerSystems.Abilities.Abilities;
 import worm.me.PlayerSystems.Abilities.AbilitiesGUI;
@@ -71,7 +72,9 @@ public class MainGUIMenu {
             AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
             abilitiesGUI.abilitiesActive(p);
         } else if (e.getSlot() == 23){
-            Server.pluginMessage(ChatColor.RED + "This feature is not yet available.", p);
+
+            RecipesGUI recipesGUI = new RecipesGUI();
+            recipesGUI.openMainGUI(p, 1);
         }
 
     }

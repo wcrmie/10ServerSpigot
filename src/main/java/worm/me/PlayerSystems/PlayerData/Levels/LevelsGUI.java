@@ -30,7 +30,7 @@ public class LevelsGUI {
 
         Inventory gui = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + whose + "Skill Levels", 36);
 
-        gui.setItem(0, GuiConstructor.createGuiItem(Material.KNOWLEDGE_BOOK, ChatColor.BLUE + "\uD83D\uDEC8", " ", ChatColor.GRAY + "Your skill levels are a representation of the activities your partake in when you play on the server", ChatColor.GRAY + "As you play, you will level up and unlock abilities, recipes, and more!", ChatColor.GRAY + "Keep an eye on chat and your recipe book to see what you have unlocked. "));
+        gui.setItem(0, GuiConstructor.createGuiItem(Material.KNOWLEDGE_BOOK, ChatColor.BLUE + "\uD83D\uDEC8", " ", ChatColor.GRAY + "Your skill levels are a representation of the activities",  ChatColor.GRAY + "you partake in when you play on the server.", " " , ChatColor.GRAY + "As you play, you will level up and unlock abilities,", ChatColor.GRAY + "recipes, and more!", " ", ChatColor.GRAY + "Keep an eye on chat and your recipe book to see", ChatColor.GRAY + "what you have unlocked. "));
 
         gui.setItem(11, GuiConstructor.createGuiItem(Material.FISHING_ROD, ChatColor.DARK_AQUA + "\uD83C\uDFA3 Fishing Level " + Levels.getLevel(3, p), " ", ChatColor.GRAY + "EXP: " + Levels.getExp("Fishing", p) + " / " + Levels.expRequired(Levels.getLevel(3, p) + 1)));
 

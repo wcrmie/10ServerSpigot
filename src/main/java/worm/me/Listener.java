@@ -28,6 +28,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.GameSystems.FishingSystem;
 import worm.me.GameSystems.ArtBlocks;
+import worm.me.GameSystems.Recipes.RecipesGUI;
 import worm.me.PlayerSystems.*;
 import worm.me.PlayerSystems.Abilities.AbilitiesGUI;
 import worm.me.PlayerSystems.Abilities.Abilities;
@@ -143,6 +144,15 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
     @EventHandler
+    public void onPlayerLeave(PlayerQuitEvent e){
+        Player p = e.getPlayer();
+
+        PersistentDataContainer container = p.getPersistentDataContainer();
+
+        container.set(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY, new long[]{System.currentTimeMillis()/1000L, container.get(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY)[1]});
+    }
+
+    @EventHandler
     public void onPlayerBreak(BlockBreakEvent e){
         Player player = e.getPlayer();
 
@@ -176,6 +186,18 @@ public class Listener implements org.bukkit.event.Listener {
     public void onEntityKilled(EntityDeathEvent e){
         if (e.getEntity().getKiller() != null && e.getEntity().getKiller() instanceof Player p){
             Levels.expHandler(p, e);
+
+            if (e.getEntity().getType() == EntityType.PLAYER) {
+
+                PersistentDataContainer c = p.getPersistentDataContainer();
+
+                long[] repsess = c.get(new NamespacedKey(Server.getPlugin(), "repsess"), PersistentDataType.LONG_ARRAY);
+
+                repsess[1] = repsess[1] + 1;
+
+                c.set(new NamespacedKey(Server.getPlugin(), "repsess"), PersistentDataType.LONG_ARRAY, repsess);
+            }
+
         }
     }
 
@@ -242,10 +264,7 @@ public class Listener implements org.bukkit.event.Listener {
 
         // Kill the player if they walk into a deathbox (so they don't fall for a whole minute)
         if (e.getFrom() == e.getTo()) return;
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionManager regions = container.get(BukkitAdapter.adapt(e.getPlayer().getWorld()));
-        ProtectedRegion deathBox = regions.getRegion("deathbox");
-        if (deathBox.contains(e.getTo().getBlockX(), e.getTo().getBlockY(), e.getTo().getBlockZ())) e.getPlayer().damage(1000000);
+        if (Objects.requireNonNull(e.getTo()).getY() < 200) e.getPlayer().damage(1000000);
 
         if (e.getPlayer().getPersistentDataContainer().get(Abilities.moveCooldown, PersistentDataType.LONG) != null){
             if (e.getPlayer().getPersistentDataContainer().get(Abilities.moveCooldown, PersistentDataType.LONG) <= System.currentTimeMillis()/1000L){
@@ -412,6 +431,8 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e){
 
+        if (Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.AIR)).getType().isAir()) return;
+
         Player p = (Player) e.getWhoClicked();
 
         String tool = e.getCursor().getType().toString().toLowerCase();
@@ -432,7 +453,7 @@ public class Listener implements org.bukkit.event.Listener {
 
         if (e.getCurrentItem().isSimilar(GuiConstructor.createGuiItem(Material.BARRIER, ChatColor.RED + "Close Menu", " ", ChatColor.GRAY + "Close this menu."))) p.closeInventory();
 
-        if (e.getCurrentItem().getType() == Material.ARROW && e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Go Back")){
+        if (e.getCurrentItem().getType() == Material.SPECTRAL_ARROW && e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Go Back")){
             GuiConstructor guiConstructor = new GuiConstructor();
             guiConstructor.goBack(e);
         }
@@ -453,6 +474,20 @@ public class Listener implements org.bukkit.event.Listener {
             abilitiesGUI.activateAbility(p, e.getSlot(), e);
             abilitiesGUI.abilitiesActive(p);
             e.setCancelled(true);
+        }
+
+        if (invName.contains("Recipes Page ")) {
+            e.setCancelled(true);
+            RecipesGUI recipeGui = new RecipesGUI();
+
+            recipeGui.eventHandlerMain(e);
+        }
+
+        if (invName.contains("Recipe of ")) {
+            e.setCancelled(true);
+            RecipesGUI recipeGui = new RecipesGUI();
+
+            recipeGui.eventHandlerRecipe(e);
         }
 
         if (invName.equals(ChatColor.DARK_GRAY + "Skins")){

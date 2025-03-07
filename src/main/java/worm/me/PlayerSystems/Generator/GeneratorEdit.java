@@ -39,7 +39,7 @@ public class GeneratorEdit {
         i.setItem(14, createGuiItem(Material.OAK_PLANKS, ChatColor.GRAY + "Woods", " ", ChatColor.DARK_GRAY + "Choose your generated wood block."));
         i.setItem(15, createGuiItem(Material.COAL, ChatColor.GRAY + "Misc. Items", " ", ChatColor.DARK_GRAY + "Choose your generated miscellaneous item."));
 
-        i.setItem(22, createGuiItem(Material.ARROW, ChatColor.GRAY + "Go Back"));
+        i.setItem(22, createGuiItem(Material.SPECTRAL_ARROW, ChatColor.GRAY + "Go Back"));
 
         // Open inventory to player
         p.openInventory(i);

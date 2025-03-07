@@ -86,7 +86,7 @@ public class FishingSystem {
         for (Material m : map.keySet()){
 
             int value = map.get(m) + excess;
-            if (map.get(m) >= RNG){
+            if (value >= RNG){
                 return new ItemStack(m);
             }
             excess = value;

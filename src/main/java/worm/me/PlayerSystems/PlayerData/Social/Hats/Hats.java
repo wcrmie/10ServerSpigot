@@ -22,21 +22,25 @@ public class Hats {
 
         Inventory hatsGUI = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Hats Page " + page, 54);
 
+        hatsGUI.setItem(0, GuiConstructor.createGuiItem(Material.KNOWLEDGE_BOOK, ChatColor.BLUE + "\uD83D\uDEC8", " ", ChatColor.GRAY + "You may select any of your unlocked hats here."));
+
+        HatsStorage hatsStorage = new HatsStorage();
+
+        int slot = 10;
+
         for (int i = 0; i < 34; i++){
 
-            int slot = i + 10;
+            Server.pluginMessage(ChatColor.RED + "" + slot + ", " + i, p);
 
-            if (slot % 9 == 0) slot++;
-
-            if ((slot + 1) % 9 == 0) slot += 2;
-
-            HatsStorage hatsStorage = new HatsStorage();
+            if ((slot + 1) % 9 == 0) {
+                slot += 2;
+            }
 
             hatsGUI.setItem(slot, hatsStorage.getHat(i + 54 * (page - 1)));
 
-            p.openInventory(hatsGUI);
-
         }
+
+        p.openInventory(hatsGUI);
 
 
     }
@@ -81,13 +85,13 @@ public class Hats {
 
             Server.pluginMessage(ChatColor.RED + "" + slot, (Player) e.getWhoClicked());
 
-            if ((slot - 1) % 9 == 0) slot--;
-
-            if ((slot - 2) % 9 == 0) slot -= 2;
+            if ((slot - 1) % 9 == 0 && slot != 10){
+                slot--;
+            } else if ((slot - 2) % 9 == 0 && slot != 11) slot -= 2;
 
             int page = Integer.parseInt(e.getView().getTitle().split("Hats Page ")[1]);
 
-            equipHat((Player) e.getWhoClicked(), slot - 9 + 54 * (page - 1));
+            equipHat((Player) e.getWhoClicked(), slot - 10 + 54 * (page - 1));
         }
 
 

@@ -25,6 +25,8 @@ public class SkinGui {
 
         Inventory GUI = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Skins", 9*3);
 
+        GUI.setItem(0, GuiConstructor.createGuiItem(Material.KNOWLEDGE_BOOK, ChatColor.BLUE + "\uD83D\uDEC8", " ", ChatColor.GRAY + "You can set your skin in this menu.", ChatColor.GRAY + "More skins may come in the future!"));
+
         ItemStack snowman = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta skullMeta = (SkullMeta) snowman.getItemMeta();
         skullMeta.setOwner("snowmaam");

@@ -23,7 +23,7 @@ public class GuiConstructor {
             i.setItem(j, createGuiItem(Material.GRAY_STAINED_GLASS_PANE, " "));
         }
 
-        i.setItem(size - 5, createGuiItem(Material.ARROW, ChatColor.GRAY + "Go Back"));
+        i.setItem(size - 5, createGuiItem(Material.SPECTRAL_ARROW, ChatColor.GRAY + "Go Back"));
         return i;
     }
 

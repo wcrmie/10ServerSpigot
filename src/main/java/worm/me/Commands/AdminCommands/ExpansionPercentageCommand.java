@@ -1,6 +1,7 @@
 package worm.me.Commands.AdminCommands;
 
 import org.bukkit.ChatColor;
+import org.bukkit.WorldBorder;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,9 +27,10 @@ public class ExpansionPercentageCommand implements CommandExecutor {
                 }
 
                 worldBorderSizeHandler.setExpansionPercentage(newPercentage);
-                sender.sendMessage(ChatColor.GREEN + "Expansion percentage set to: " +
+                sender.sendMessage(ChatColor.YELLOW + "Expansion percentage set to: " +
                         ChatColor.GOLD + newPercentage + "%" +
-                        ChatColor.GREEN + " of world blocks needed for border expansion");
+                        ChatColor.YELLOW + " of world blocks needed for border expansion." +
+                        ChatColor.GOLD + " (" + Math.round(worldBorderSizeHandler.calculateWorldBlockSize() * (newPercentage / 100.0)) + ")");
 
                 // Show current stats after change
                 long blockCount = worldBorderSizeHandler.getBlockCount();
@@ -46,9 +48,9 @@ public class ExpansionPercentageCommand implements CommandExecutor {
         } else {
             // Display current percentage
             double currentPercentage = worldBorderSizeHandler.getExpansionPercentage();
-            sender.sendMessage(ChatColor.GREEN + "Current expansion percentage: " +
+            sender.sendMessage(ChatColor.YELLOW + "Current expansion percentage: " +
                     ChatColor.GOLD + currentPercentage + "%" +
-                    ChatColor.GREEN + " of world blocks needed for border expansion");
+                    ChatColor.YELLOW + " of world blocks needed for border expansion." + ChatColor.GOLD + " (" + Math.round(worldBorderSizeHandler.calculateWorldBlockSize() * (currentPercentage / 100.0)) + ")");
         }
 
         return true;
