@@ -177,8 +177,6 @@ public class IslandSpawning {
                 type == Material.VOID_AIR;
     }
 
-
-
     public boolean pasteSchematic(String schematicName, Location pasteLocation) {
         int randomRotation = ThreadLocalRandom.current().nextInt(4);
         String nameAdd = "";
