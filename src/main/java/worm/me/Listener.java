@@ -3,6 +3,7 @@ package worm.me;
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -366,7 +367,9 @@ public class Listener implements org.bukkit.event.Listener {
             Player p = (Player) e.getEntity();
             if (p.getItemOnCursor().getType().toString().contains("PICKAXE") || p.getItemOnCursor().getType().toString().contains("AXE") || p.getItemOnCursor().getType().toString().contains("SHOVEL") || p.getItemOnCursor().getType().toString().contains("SWORD")){
                 e.setCancelled(true);
-
+            }
+            if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
+                e.setCancelled(true);
             }
         }
     }
@@ -433,11 +436,32 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
     @EventHandler
+    public void onInventoryClick(PlayerSwapHandItemsEvent e){
+        Player p = (Player) e.getPlayer();
+        if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(PlayerItemHeldEvent e){
+        Player p = (Player) e.getPlayer();
+        if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     public void onInventoryClick(InventoryClickEvent e){
+
 
         if (Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.AIR)).getType().isAir()) return;
 
         Player p = (Player) e.getWhoClicked();
+
+        if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
+            e.setCancelled(true);
+        }
 
         String tool = e.getCursor().getType().toString().toLowerCase();
         for (String s : Server.tools.keySet()){

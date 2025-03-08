@@ -66,8 +66,8 @@ public class SaddleSystem {
                 EntityType.BAT,
                 EntityType.CHICKEN,
                 EntityType.CREEPER,
-                EntityType.FROG,
-                EntityType.RABBIT
+                EntityType.RABBIT,
+                EntityType.TURTLE
         );
     }
 
@@ -103,9 +103,14 @@ public class SaddleSystem {
                 }
             }
 
-            if (specialEffectEntities.contains(player.getPassengers().getFirst().getType())) {
-                applySpecialEffects(player.getPassengers().getFirst(), player, true);
-            }
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (specialEffectEntities.contains(player.getPassengers().getFirst().getType())) {
+                        applySpecialEffects(player.getPassengers().getFirst(), player, true);
+                    }
+                }
+            }.runTaskLater(plugin, 2L);
         }
     }
 
@@ -122,7 +127,7 @@ public class SaddleSystem {
         switch (entity.getType()) {
             case BAT:
                 if (apply) {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, PotionEffect.INFINITE_DURATION, 1, false, false, true));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, PotionEffect.INFINITE_DURATION, 0, false, false, true));
                 } else {
                     player.removePotionEffect(PotionEffectType.LEVITATION);
                 }
@@ -130,7 +135,7 @@ public class SaddleSystem {
 
             case CHICKEN:
                 if (apply) {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, PotionEffect.INFINITE_DURATION, 1, false, false, true));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, PotionEffect.INFINITE_DURATION, 0, false, false, true));
                 } else {
                     player.removePotionEffect(PotionEffectType.SLOW_FALLING);
                 }
@@ -142,19 +147,27 @@ public class SaddleSystem {
                         creeper.setTarget(null);
                         creeper.setAI(false);
                     } else {
-
-                        creeper.setMaxFuseTicks(2 * 20);
+                        creeper.setMaxFuseTicks(20);
                         creeper.setAI(true);
                         creeper.ignite();
                     }
-
                 }
                 break;
 
-            case FROG:
+            case RABBIT:
+                if (apply) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, PotionEffect.INFINITE_DURATION, 1, false, false, true));
+                } else {
+                    player.removePotionEffect(PotionEffectType.JUMP_BOOST);
+                }
                 break;
 
-            case RABBIT:
+            case TURTLE:
+                if (apply) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, PotionEffect.INFINITE_DURATION, 0, false, false, true));
+                } else {
+                    player.removePotionEffect(PotionEffectType.WATER_BREATHING);
+                }
                 break;
         }
     }
@@ -190,7 +203,6 @@ public class SaddleSystem {
     }
 
     private void throwEntity(Entity passenger, Player thrower) {
-        Bukkit.broadcastMessage("throw");
         thrower.removePassenger(passenger);
 
         new BukkitRunnable() {
