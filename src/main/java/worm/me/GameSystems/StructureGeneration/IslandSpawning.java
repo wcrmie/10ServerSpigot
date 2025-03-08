@@ -202,10 +202,8 @@ public class IslandSpawning {
         try {
             ClipboardFormat format = ClipboardFormats.findByFile(schematicFile);
             if (format == null) {
-                Bukkit.broadcastMessage("null format");
                 return false;
             }
-            Bukkit.broadcastMessage("not null format");
             try (ClipboardReader reader = format.getReader(new FileInputStream(schematicFile));
                  EditSession editSession = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(world))) {
                 Clipboard clipboard = reader.read();

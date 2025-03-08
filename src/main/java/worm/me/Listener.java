@@ -3,8 +3,6 @@ package worm.me;
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -41,6 +39,7 @@ import worm.me.PlayerSystems.PlayerData.Social.MessageHead;
 import worm.me.PlayerSystems.PlayerData.Social.Skin.SkinGui;
 import org.bukkit.event.player.PlayerJoinEvent;
 import worm.me.PlayerSystems.PlayerData.Tools.ToolsEvents;
+import worm.me.PlayerSystems.Saddle.SaddleSystem;
 
 import java.util.*;
 
@@ -106,15 +105,13 @@ public class Listener implements org.bukkit.event.Listener {
     public void onPlayerLeftClick(PlayerAnimationEvent event){
 
         if (event.getAnimationType() != PlayerAnimationType.ARM_SWING) return;
-
-        SaddleRide handler = new SaddleRide(plugin);
+        SaddleSystem handler = new SaddleSystem(plugin);
         handler.leftClick(event);
     }
 
     @EventHandler
     public void onPlayerRightClick(PlayerInteractEntityEvent event){
-
-        SaddleRide handler = new SaddleRide(plugin);
+        SaddleSystem handler = new SaddleSystem(plugin);
         handler.rightClick(event);
     }
 
