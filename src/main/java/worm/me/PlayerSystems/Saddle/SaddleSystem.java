@@ -146,10 +146,11 @@ public class SaddleSystem {
                     if (apply) {
                         creeper.setTarget(null);
                         creeper.setAI(false);
+                        creeper.setMaxFuseTicks(1000*1000*1000);
                     } else {
+                        creeper.ignite();
                         creeper.setMaxFuseTicks(20);
                         creeper.setAI(true);
-                        creeper.ignite();
                     }
                 }
                 break;
