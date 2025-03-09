@@ -44,6 +44,9 @@ public class Abilities {
 
         // ID 4
         abilityGuiComponents.put("Wall Jump", List.of("IRON_BARS", "Clutch onto walls by pressing " + ChatColor.GRAY + "[SNEAK]"));
+
+        // ID 5
+        abilityGuiComponents.put("Frog grab", List.of("PINK_CONCRETE_POWDER", "Grab things with your tongue using a tongue item " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK]"));
     }
 
     public void unlockAbility(Integer ability, Player p){
@@ -72,5 +75,6 @@ public class Abilities {
         abilityRequirements.put(2, new int[]{10, 0, 0, 0, 0, 0, 5, 0});
         abilityRequirements.put(3, new int[]{0, 0, 0, 0, 0, 0, 15, 0});
         abilityRequirements.put(4, new int[]{0, 0, 0, 0, 0, 0, 20, 0});
+        abilityRequirements.put(5, new int[]{10, 40, 0, 50, 0, 0, 20, 0});
     }
 }

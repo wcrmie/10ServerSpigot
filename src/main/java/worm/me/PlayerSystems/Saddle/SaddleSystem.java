@@ -1,8 +1,6 @@
 package worm.me.PlayerSystems.Saddle;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -110,7 +108,7 @@ public class SaddleSystem {
                         applySpecialEffects(player.getPassengers().getFirst(), player, true);
                     }
                 }
-            }.runTaskLater(plugin, 2L);
+            }.runTaskLater(plugin, 1L);
         }
     }
 

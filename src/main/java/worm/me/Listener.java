@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
@@ -26,6 +27,7 @@ import worm.me.PlayerSystems.Abilities.Abilities;
 import worm.me.PlayerSystems.Abilities.Active.AgilityDash;
 import worm.me.PlayerSystems.Abilities.Active.AgilityDoubleJump;
 import worm.me.PlayerSystems.Abilities.Active.AgilityLeap;
+import worm.me.PlayerSystems.Abilities.Active.FrogGrab;
 import worm.me.PlayerSystems.Generator.Generator;
 import worm.me.PlayerSystems.Generator.GeneratorEdit;
 import worm.me.PlayerSystems.PlayerData.*;
@@ -105,9 +107,12 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onPlayerLeftClick(PlayerAnimationEvent event){
 
-        if (event.getAnimationType() != PlayerAnimationType.ARM_SWING) return;
-        SaddleSystem handler = new SaddleSystem(plugin);
-        handler.leftClick(event);
+        if (event.getAnimationType() == PlayerAnimationType.ARM_SWING) {
+
+            SaddleSystem ss = new SaddleSystem(plugin);
+            ss.leftClick(event);
+
+        }
     }
 
     @EventHandler
@@ -271,6 +276,26 @@ public class Listener implements org.bukkit.event.Listener {
             }
         }
 
+        if (FrogGrab.isPlayerMovementRestricted(player.getUniqueId())) {
+            Location from = e.getFrom();
+            Location to = e.getTo();
+
+            if (to != null) {
+                if (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ()) {
+                    Location newLocation = new Location(
+                            from.getWorld(),
+                            from.getX(),
+                            from.getY(),
+                            from.getZ(),
+                            to.getYaw(),
+                            to.getPitch()
+                    );
+
+                    e.setTo(newLocation);
+                }
+            }
+        }
+
         if (Objects.requireNonNull(e.getTo()).getY() < 200) e.getPlayer().damage(1000000);
 
         if (e.getPlayer().getPersistentDataContainer().get(Abilities.moveCooldown, PersistentDataType.LONG) != null){
@@ -308,6 +333,13 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e){
+
+        if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.PINK_CONCRETE_POWDER) {
+                FrogGrab fg = new FrogGrab(plugin);
+                fg.frogGrab(e.getPlayer());
+            }
+        }
 
         if (e.getHand() != EquipmentSlot.HAND) {
             return;

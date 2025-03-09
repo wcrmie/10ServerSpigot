@@ -22,6 +22,7 @@ import worm.me.Commands.GUICommands.OpenSkinGUICommand;
 import worm.me.GameSystems.Recipes.Recipes;
 import worm.me.GameSystems.ArtBlocks;
 import worm.me.PlayerSystems.Abilities.Abilities;
+import worm.me.PlayerSystems.Abilities.Active.FrogGrab;
 import worm.me.PlayerSystems.Quests.QuestInitialize;
 import worm.me.PlayerSystems.PlayerSpawning;
 import worm.me.PlayerSystems.Saddle.SaddleSystem;
@@ -372,6 +373,11 @@ public final class Server extends JavaPlugin {
 
         getLogger().info("Plugin disabled");
         getServer().getScheduler().cancelTasks(this);
+
+        FrogGrab.cancelAllGrabs();
+        FrogGrab.clearAllMovementRestrictions();
+
+
     }
 
     public void broadcast(String message){
