@@ -3,8 +3,6 @@ package worm.me;
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,6 +26,7 @@ import worm.me.PlayerSystems.Abilities.Abilities;
 import worm.me.PlayerSystems.Abilities.Active.AgilityDash;
 import worm.me.PlayerSystems.Abilities.Active.AgilityDoubleJump;
 import worm.me.PlayerSystems.Abilities.Active.AgilityLeap;
+import worm.me.PlayerSystems.Abilities.Active.FrogGrab;
 import worm.me.PlayerSystems.Generator.Generator;
 import worm.me.PlayerSystems.Generator.GeneratorEdit;
 import worm.me.PlayerSystems.PlayerData.*;
@@ -42,6 +41,7 @@ import worm.me.PlayerSystems.PlayerData.Social.MessageHead;
 import worm.me.PlayerSystems.PlayerData.Social.Skin.SkinGui;
 import org.bukkit.event.player.PlayerJoinEvent;
 import worm.me.PlayerSystems.PlayerData.Tools.ToolsEvents;
+import worm.me.PlayerSystems.Saddle.SaddleSystem;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -110,16 +110,17 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onPlayerLeftClick(PlayerAnimationEvent event){
 
-        if (event.getAnimationType() != PlayerAnimationType.ARM_SWING) return;
+        if (event.getAnimationType() == PlayerAnimationType.ARM_SWING) {
 
-        SaddleRide handler = new SaddleRide(plugin);
-        handler.leftClick(event);
+            SaddleSystem ss = new SaddleSystem(plugin);
+            ss.leftClick(event);
+
+        }
     }
 
     @EventHandler
     public void onPlayerRightClick(PlayerInteractEntityEvent event){
-
-        SaddleRide handler = new SaddleRide(plugin);
+        SaddleSystem handler = new SaddleSystem(plugin);
         handler.rightClick(event);
     }
 
@@ -287,6 +288,26 @@ public class Listener implements org.bukkit.event.Listener {
             }
         }
 
+        if (FrogGrab.isPlayerMovementRestricted(player.getUniqueId())) {
+            Location from = e.getFrom();
+            Location to = e.getTo();
+
+            if (to != null) {
+                if (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ()) {
+                    Location newLocation = new Location(
+                            from.getWorld(),
+                            from.getX(),
+                            from.getY(),
+                            from.getZ(),
+                            to.getYaw(),
+                            to.getPitch()
+                    );
+
+                    e.setTo(newLocation);
+                }
+            }
+        }
+
         if (Objects.requireNonNull(e.getTo()).getY() < 200) e.getPlayer().damage(1000000);
 
         if (e.getPlayer().getPersistentDataContainer().get(Abilities.moveCooldown, PersistentDataType.LONG) != null){
@@ -329,6 +350,13 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e){
+
+        if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.PINK_CONCRETE_POWDER) {
+                FrogGrab fg = new FrogGrab(plugin);
+                fg.frogGrab(e.getPlayer());
+            }
+        }
 
         if (e.getHand() != EquipmentSlot.HAND) {
             return;
@@ -388,7 +416,9 @@ public class Listener implements org.bukkit.event.Listener {
             Player p = (Player) e.getEntity();
             if (p.getItemOnCursor().getType().toString().contains("PICKAXE") || p.getItemOnCursor().getType().toString().contains("AXE") || p.getItemOnCursor().getType().toString().contains("SHOVEL") || p.getItemOnCursor().getType().toString().contains("SWORD")){
                 e.setCancelled(true);
-
+            }
+            if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
+                e.setCancelled(true);
             }
         }
     }
@@ -456,11 +486,32 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
     @EventHandler
+    public void onInventoryClick(PlayerSwapHandItemsEvent e){
+        Player p = (Player) e.getPlayer();
+        if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(PlayerItemHeldEvent e){
+        Player p = (Player) e.getPlayer();
+        if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     public void onInventoryClick(InventoryClickEvent e){
+
 
         if (Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.AIR)).getType().isAir()) return;
 
         Player p = (Player) e.getWhoClicked();
+
+        if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
+            e.setCancelled(true);
+        }
 
         String tool = e.getCursor().getType().toString().toLowerCase();
         for (String s : Server.tools.keySet()){

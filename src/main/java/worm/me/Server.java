@@ -22,9 +22,10 @@ import worm.me.Commands.GUICommands.OpenSkinGUICommand;
 import worm.me.GameSystems.Recipes.Recipes;
 import worm.me.GameSystems.ArtBlocks;
 import worm.me.PlayerSystems.Abilities.Abilities;
+import worm.me.PlayerSystems.Abilities.Active.FrogGrab;
 import worm.me.PlayerSystems.Quests.QuestInitialize;
 import worm.me.PlayerSystems.PlayerSpawning;
-import worm.me.PlayerSystems.SaddleRide;
+import worm.me.PlayerSystems.Saddle.SaddleSystem;
 import worm.me.WorldBorder.WorldBorderSizeHandler;
 
 import java.io.File;
@@ -38,7 +39,7 @@ public final class Server extends JavaPlugin {
 
     private WorldBorderSizeHandler WorldBorderSizeHandler;
     private PlayerSpawning playerspawning;
-    private SaddleRide saddleRide;
+    private SaddleSystem saddleSystem;
     private ArtBlocks artBlocks;
 
     public Map<Material, Long> miningBlocks = new HashMap<>();
@@ -91,7 +92,7 @@ public final class Server extends JavaPlugin {
         assert world != null;
         WorldBorderSizeHandler = new WorldBorderSizeHandler(this);
         playerspawning = new PlayerSpawning(this);
-        saddleRide = new SaddleRide(this);
+        saddleSystem = new SaddleSystem(this);
         artBlocks = new ArtBlocks(this);
 
         // Add custom recipes
@@ -374,6 +375,11 @@ public final class Server extends JavaPlugin {
 
         getLogger().info("Plugin disabled");
         getServer().getScheduler().cancelTasks(this);
+
+        FrogGrab.cancelAllGrabs();
+        FrogGrab.clearAllMovementRestrictions();
+
+
     }
 
     public void broadcast(String message){
