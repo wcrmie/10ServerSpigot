@@ -28,7 +28,11 @@ public class Hats {
 
         int slot = 10;
 
-        for (int i = 0; i < 34; i++){
+        for (int i = 0; i < 28; i++){
+
+            if (i > 0){
+                slot++;
+            }
 
             Server.pluginMessage(ChatColor.RED + "" + slot + ", " + i, p);
 

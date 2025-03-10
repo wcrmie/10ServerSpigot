@@ -46,24 +46,6 @@ public class Abilities {
         abilityGuiComponents.put("Wall Jump", List.of("IRON_BARS", "Clutch onto walls by pressing " + ChatColor.GRAY + "[SNEAK]"));
     }
 
-    public void unlockAbility(Integer ability, Player p){
-        // Does player have any other abilities unlocked? (Check for variable)
-        PersistentDataContainer container = p.getPersistentDataContainer();
-        int[] unlocked = container.get(abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY);
-
-        // Set the ability to unlocked
-        unlocked[ability] = 1;
-    }
-
-    public void activateAbility(Integer ability, Integer slot, Player p){
-
-        PersistentDataContainer container = p.getPersistentDataContainer();
-        int[] active = Objects.requireNonNullElse(container.get(abilitiesActive, PersistentDataType.INTEGER_ARRAY), new int[3]);
-
-        // Add the ability to an active slot
-        active[slot] = ability;
-    }
-
     public void initializeRequirements(){
 
         // Format: abilityRequirements.put(abilityID, new int[]{combat, farming, crafting, fishing, smithing, mining, agility, foraging});

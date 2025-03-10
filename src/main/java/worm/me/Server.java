@@ -343,8 +343,8 @@ public final class Server extends JavaPlugin {
 
         miscs.put(Material.COAL, new int[]{0,0,0,0,1,0,0,0});
         miscs.put(Material.QUARTZ, new int[]{0,0,0,0,25,25,0,0});
-        miscs.put(Material.REDSTONE, new int[]{0,0,0,0,0,0,0,0});
-        miscs.put(Material.GLOWSTONE_DUST, new int[]{0,0,0,0,0,0,0,0});
+        miscs.put(Material.REDSTONE, new int[]{0,0,10,0,25,10,0,0});
+        miscs.put(Material.GLOWSTONE_DUST, new int[]{0,0,0,0,15,0,0,0});
 
         // CREATE QUESTS
         QuestInitialize questInitialize = new QuestInitialize(this);
@@ -353,6 +353,8 @@ public final class Server extends JavaPlugin {
         // Initialize Ability GUI Components
         Abilities abilities = new Abilities();
         abilities.abilitiesInit();
+
+        abilities.initializeRequirements();
 
 
     }

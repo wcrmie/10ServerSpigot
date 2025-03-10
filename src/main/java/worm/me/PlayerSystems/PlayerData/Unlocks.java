@@ -98,21 +98,16 @@ public class Unlocks {
             System.out.println(i);
             for (int j = 0; j < 8; j++){
                 int req = reqsMap.get(mapAsList.toArray()[i])[j];
-                System.out.println("Req: " + req);
                 if (req != 0) {
                     if (playerLevels[j] < req) {
-                        System.out.println("You did not meet the requirements.");
                         break;
 
                     // If the player has the required levels, unlock the thing
                     }
                 } else {
 
-                    System.out.println("between");
+                    if (j >= 6) {
 
-                    if (j == 7) {
-
-                        System.out.println("reqs met");
 
                         // If the unlock is a generator, add it to the player's unlocked generators
                         if (type < 4) {
@@ -120,7 +115,6 @@ public class Unlocks {
                             List<ItemStack> gens = getUnlockedGens(p);
 
                             gens.add(new ItemStack((Material) mapAsList.toArray()[i]));
-                            System.out.println("Unlocked gens: " + mapAsList.toArray()[i]);
                             setUnlockedGens(p, gens);
 
                             UnlockEvent unlockEvent = new UnlockEvent(p, mapAsList.toArray()[i].toString(), "Generator");

@@ -8,6 +8,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
@@ -43,6 +44,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import worm.me.PlayerSystems.PlayerData.Tools.ToolsEvents;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Listener implements org.bukkit.event.Listener {
 
@@ -56,8 +58,11 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
-        FishingSystem handler = new FishingSystem(plugin);
+        FishingSystem handler = new FishingSystem();
         handler.handleFishing(event);
+
+        Levels.expHandler(event.getPlayer(), event);
+
     }
 
 
@@ -188,6 +193,9 @@ public class Listener implements org.bukkit.event.Listener {
             }
 
         }
+
+        if (e.getEntity().getType() == EntityType.PLAYER) e.getDrops().add(GuiConstructor.createGuiItem(Material.ROTTEN_FLESH, ChatColor.WHITE + "Player Flesh", ChatColor.GRAY + "A Player's flesh."));
+        
     }
 
     @EventHandler
@@ -195,6 +203,12 @@ public class Listener implements org.bukkit.event.Listener {
 
         Levels.expHandler(e.getPlayer(), e);
 
+    }
+
+    @EventHandler
+    public void onHarvest(PlayerHarvestBlockEvent e){
+
+        Levels.expHandler(e.getPlayer(), e);
 
     }
 
@@ -295,15 +309,20 @@ public class Listener implements org.bukkit.event.Listener {
     public void onPlayerRightClick(UseItemEvent e){
         Player p = e.getCause().getFirstPlayer();
 
-        if (p.getInventory().getItemInMainHand().toString().toLowerCase().contains("sword")) {
-            if (p.isSneaking()){
-                AgilityDash dash = new AgilityDash();
-                dash.dash(p);
-            }
-        } else if (p.getInventory().getItemInMainHand().toString().toLowerCase().contains("_axe")) {
-            if (p.isSneaking()){
-                AgilityLeap leap = new AgilityLeap();
-                leap.leap(p);
+        if (e.getOriginalEvent() instanceof PlayerInteractEvent) {
+
+            if (((PlayerInteractEvent) e.getOriginalEvent()).getAction().equals(Action.RIGHT_CLICK_AIR) || ((PlayerInteractEvent) e.getOriginalEvent()).getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+                if (p.getInventory().getItemInMainHand().toString().toLowerCase().contains("sword")) {
+                    if (p.isSneaking()){
+                        AgilityDash dash = new AgilityDash();
+                        dash.dash(p);
+                    }
+                } else if (p.getInventory().getItemInMainHand().toString().toLowerCase().contains("_axe")) {
+                    if (p.isSneaking()){
+                        AgilityLeap leap = new AgilityLeap();
+                        leap.leap(p);
+                    }
+                }
             }
         }
     }
@@ -388,6 +407,7 @@ public class Listener implements org.bukkit.event.Listener {
 
         for (int i = 0; i < 5; i++){
             unlocks.attemptUnlock(i, p);
+            Server.pluginMessage("" + i, p);
         }
 
 
@@ -632,7 +652,7 @@ public class Listener implements org.bukkit.event.Listener {
 
         }
 
-        if (e.isCancelled()) ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.UI_BUTTON_CLICK, 0.5F, 1.2F);
+        if (e.isCancelled()) ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, ThreadLocalRandom.current().nextFloat(1.0F, 1.2F));
 
     }
 }

@@ -4,30 +4,36 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerFishEvent;
+import worm.me.PlayerSystems.PlayerData.Levels.Levels;
 import worm.me.Server;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.google.common.collect.Iterables.getFirst;
+
 
 public class FishingSystem {
 
-    private final Map<Material, Integer> lootTable1 = new HashMap<>();
-    private final Map<Material, Integer> lootTable2 = new HashMap<>();
-    private final Map<Class<? extends Entity>, Integer> seaCreatureTable = new HashMap<>();
+    private final Map<Class<? extends Entity>, List<Integer>> lootTable1 = new HashMap<>();
+    private final Map<Material, List<Integer>> lootTable2 = new HashMap<>();
+    private final Map<Class<? extends Entity>, List<Integer>> seaCreatureTable = new HashMap<>();
     private final Map<String, FishingConfiguration> fishingConfigurations = new HashMap<>();
 
-    public FishingSystem(Server plugin) {
-        lootTable1.put(Material.COD, 1);
-        lootTable1.put(Material.SALMON, 1);
+    public FishingSystem() {
+        lootTable1.put(Cod.class, List.of(60, 2));
+        lootTable1.put(Salmon.class, List.of(25, 2));
+        lootTable1.put(TropicalFish.class, List.of(2, 10));
+        lootTable1.put(PufferFish.class, List.of(13, 5));
 
-        lootTable2.put(Material.PUFFERFISH, 5);
-        lootTable2.put(Material.SADDLE, 5);
 
-        seaCreatureTable.put(Cod.class, 5);
-        seaCreatureTable.put(Salmon.class, 4);
-        seaCreatureTable.put(Zombie.class, 1);
+        lootTable2.put(Material.NAME_TAG, List.of(167, 5));
+        lootTable2.put(Material.SADDLE, List.of(167, 10));
+
+        seaCreatureTable.put(ElderGuardian.class, List.of(1, 25));
+        seaCreatureTable.put(Guardian.class, List.of(9, 15));
+        seaCreatureTable.put(Zombie.class, List.of(25, 5));
 
         fishingConfigurations.put("0", new FishingConfiguration(40,40,20));
         fishingConfigurations.put("1", new FishingConfiguration(0,0,0));
@@ -75,12 +81,24 @@ public class FishingSystem {
 
             if (item != null) {
                 if (rng < config.getLootTable1Weight()) {
-                    item.setItemStack(generateFishingItem(lootTable1));
-                } else if (rng < config.getLootTable1Weight() + config.getLootTable2Weight()) {
-                    item.setItemStack(generateFishingItem(lootTable2));
-                } else if (rng < config.getLootTable1Weight() + config.getLootTable2Weight() + config.getSeaCreatureWeight() ) {
-                    spawnEntityOnHook(event);
+
+                    spawnEntityOnHook(event, lootTable1);
                     item.setItemStack(new ItemStack(Material.AIR));
+
+                } else if (rng < config.getLootTable1Weight() + config.getLootTable2Weight()) {
+
+                    ItemStack itemStack = generateFishingItem(lootTable2);
+
+                    item.setItemStack(itemStack);
+
+                    Levels.addExp(lootTable2.get(itemStack.getType()).get(1), 3, event.getPlayer());
+
+                } else if (rng < config.getLootTable1Weight() + config.getLootTable2Weight() + config.getSeaCreatureWeight() ) {
+
+                    spawnEntityOnHook(event, seaCreatureTable);
+
+                    item.setItemStack(new ItemStack(Material.AIR));
+
                 }
                 else {
                     item.setItemStack(new ItemStack(Material.AIR));
@@ -89,27 +107,40 @@ public class FishingSystem {
         }
     }
 
-    public void spawnEntityOnHook(PlayerFishEvent event) {
+    public void spawnEntityOnHook(PlayerFishEvent event, Map<Class<? extends Entity>, List<Integer>> table) {
         Location hookLocation = event.getHook().getLocation();
         double strength = ThreadLocalRandom.current().nextDouble(0.1, 0.3);
 
-        Entity entity = generateSeaCreature(hookLocation);
+        Class<? extends Entity> entity = generateSeaCreature(table);
 
         if (entity != null) {
+
+            Levels.addExp(table.get(entity).get(1), 3, event.getPlayer());
+
+            Entity creature = hookLocation.getWorld().spawn(hookLocation, entity);
+
             Location playerLocation = event.getPlayer().getLocation().clone();
             org.bukkit.util.Vector direction = playerLocation.subtract(hookLocation).toVector().normalize();
 
-            entity.setVelocity(direction.multiply(strength));
+            creature.setVelocity(direction.multiply(strength));
         }
     }
 
-    public ItemStack generateFishingItem(Map<Material, Integer> lootTable) {
-        int totalWeight = sumInt(lootTable.values());
+    public ItemStack generateFishingItem(Map<Material, List<Integer>> lootTable) {
+
+
+        int totalWeight = 0;
+
+        for (int i = 0; i < lootTable.size(); i++){
+
+            totalWeight += lootTable.get(lootTable.keySet().toArray(new Material[2])[i]).getFirst();
+
+        }
         int randomWeight = ThreadLocalRandom.current().nextInt(totalWeight);
 
         int currentWeight = 0;
-        for (Map.Entry<Material, Integer> entry : lootTable.entrySet()) {
-            currentWeight += entry.getValue();
+        for (Map.Entry<Material, List<Integer>> entry : lootTable.entrySet()) {
+            currentWeight += entry.getValue().getFirst();
             if (randomWeight < currentWeight) {
                 return new ItemStack(entry.getKey());
             }
@@ -117,26 +148,26 @@ public class FishingSystem {
         return new ItemStack(Material.AIR);
     }
 
-    public Entity generateSeaCreature(Location loc) {
-        int totalWeight = sumInt(seaCreatureTable.values());
+    public Class<? extends Entity> generateSeaCreature(Map<Class<? extends Entity>, List<Integer>> table) {
+
+        int totalWeight = 0;
+
+        for (int i = 0; i < table.size(); i++){
+
+            totalWeight += table.get(table.keySet().toArray(new Class[2])[i]).getFirst();
+
+        }
+
         int randomWeight = ThreadLocalRandom.current().nextInt(totalWeight);
 
         int currentWeight = 0;
-        for (Map.Entry<Class<? extends Entity>, Integer> entry : seaCreatureTable.entrySet()) {
-            currentWeight += entry.getValue();
+        for (Map.Entry<Class<? extends Entity>, List<Integer>> entry : table.entrySet()) {
+            currentWeight += entry.getValue().getFirst();
             if (randomWeight < currentWeight) {
-                return loc.getWorld().spawn(loc, entry.getKey());
+                return entry.getKey();
             }
         }
 
-        return loc.getWorld().spawn(loc, Cod.class);
-    }
-
-    public int sumInt(Collection<Integer> list) {
-        int sum = 0;
-        for (int i : list) {
-            sum += i;
-        }
-        return sum;
+        return Cod.class;
     }
 }

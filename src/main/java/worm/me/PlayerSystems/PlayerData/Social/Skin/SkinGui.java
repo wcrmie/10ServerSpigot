@@ -48,7 +48,7 @@ public class SkinGui {
         alex.setItemMeta(skullMeta3);
         GUI.setItem(15, alex);
 
-        ItemStack back =  new ItemStack(Material.ARROW, 1);
+        ItemStack back =  new ItemStack(Material.SPECTRAL_ARROW, 1);
         ItemMeta meta = back.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Go Back");
         back.setItemMeta(meta);

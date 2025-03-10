@@ -56,13 +56,13 @@ public class Generator {
         PersistentDataContainer container = p.getPersistentDataContainer();
         GeneratorEdit genEdit = new GeneratorEdit();
         int RNG = ThreadLocalRandom.current().nextInt(0,100);
-        if (1 <= RNG && RNG <= 45) {
+        if (1 <= RNG && RNG <= 55) {
             setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.stoneBlock, PersistentDataType.STRING), Material.COBBLESTONE.toString())));
-        } else if (45 < RNG && RNG <= 60) {
+        } else if (55 < RNG && RNG <= 80) {
             setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.dirtBlock, PersistentDataType.STRING), Material.DIRT.toString())));
-        } else if (60 < RNG && RNG <= 75) {
+        } else if (80 < RNG && RNG <= 90) {
             setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.woodBlock, PersistentDataType.STRING), Material.OAK_PLANKS.toString())));
-        } else if (75 < RNG && RNG <= 90) {
+        } else if (90 < RNG && RNG <= 95) {
             setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.miscItem, PersistentDataType.STRING), Material.COAL.toString())));
         } else {
             setRandomItem(Material.IRON_ORE);

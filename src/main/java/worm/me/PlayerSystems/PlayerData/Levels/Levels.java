@@ -2,17 +2,19 @@ package worm.me.PlayerSystems.PlayerData.Levels;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
+import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerHarvestBlockEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import worm.me.GameSystems.Fishing.FishingSystem;
 import worm.me.Server;
 
 import java.util.Arrays;
@@ -118,19 +120,47 @@ public class Levels {
                 addExp(Server.getPlugin().miningBlocks.get(e.getBlock().getType()), skillTranslation("Mining"), p);
             } else if (Server.getPlugin().foragingBlocks.containsKey(e.getBlock().getType())) {
                 addExp(Server.getPlugin().foragingBlocks.get(e.getBlock().getType()), skillTranslation("Foraging"), p);
+            } else if (Server.getPlugin().farmingBlocks.containsKey(e.getBlock().getType())) {
+
+                if (e.getBlock().getBlockData() instanceof Ageable crop) {
+                    if (crop.getAge() != crop.getMaximumAge()) {
+                        return;
+                    }
+
+                    addExp(Server.getPlugin().farmingBlocks.get(e.getBlock().getType()), skillTranslation("Farming"), p);
+
+                } else {
+                    addExp(Server.getPlugin().farmingBlocks.get(e.getBlock().getType()), skillTranslation("Farming"), p);
+                }
             }
             
         } else if (event.getEventName().equals("EntityDeathEvent")) {
 
             EntityDeathEvent e = (EntityDeathEvent) event;
 
-            addExp(Server.getPlugin().combatMobs.get(e.getEntityType()), skillTranslation("Combat"), p);
+            if (Server.getPlugin().combatMobs.containsKey(e.getEntityType())) {
+
+                addExp(Server.getPlugin().combatMobs.get(e.getEntityType()), skillTranslation("Combat"), p);
+            }
 
         } else if (event.getEventName().equals("FurnaceExtractEvent")) {
 
             FurnaceExtractEvent e = (FurnaceExtractEvent) event;
 
-            addExp(Server.getPlugin().smithingItems.get(e.getItemType()) * e.getItemAmount(), skillTranslation("Smithing"), p);
+            if (Server.getPlugin().smithingItems.containsKey(e.getItemType())) {
+
+                addExp(Server.getPlugin().smithingItems.get(e.getItemType()) * e.getItemAmount(), skillTranslation("Smithing"), p);
+            }
+
+        } else if (event.getEventName().equals("PlayerHarvestEvent")) {
+
+            PlayerHarvestBlockEvent e = (PlayerHarvestBlockEvent) event;
+
+            if (Server.getPlugin().farmingBlocks.containsKey(e.getHarvestedBlock().getType())){
+                addExp(Server.getPlugin().farmingBlocks.get(e.getHarvestedBlock().getType()), skillTranslation("Farming"), p);
+            }
+        } else if (event.getEventName().equals("PlayerFishEvent")) {
+
 
         }
     }
