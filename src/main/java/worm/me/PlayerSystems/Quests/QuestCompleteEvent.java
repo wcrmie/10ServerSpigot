@@ -7,6 +7,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class QuestCompleteEvent extends Event {
 
+    private static final HandlerList handlers = new HandlerList();
+
     private final int quest;
     private final Player player;
 
@@ -23,8 +25,8 @@ public class QuestCompleteEvent extends Event {
         return player;
     }
 
-    @Override
+
     public @NotNull HandlerList getHandlers() {
-        return null;
+        return handlers;
     }
 }

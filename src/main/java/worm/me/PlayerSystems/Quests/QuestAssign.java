@@ -12,47 +12,42 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class QuestAssign {
 
-    private final Server plugin;
+    public NamespacedKey questAssigned = new NamespacedKey(Server.getPlugin(), "questassigned");
 
-    public QuestAssign(Server plugin) {
-        this.plugin = plugin;
-    }
+    public NamespacedKey dailies = new NamespacedKey(Server.getPlugin(), "quests");
 
-    public NamespacedKey questAssigned = new NamespacedKey("10server", "questassigned");
-
-    public NamespacedKey daily1 = new NamespacedKey("10server", "quest1");
-    public NamespacedKey daily2 = new NamespacedKey("10server", "quest2");
-    public NamespacedKey daily3 = new NamespacedKey("10server", "quest3");
-
-    public NamespacedKey daily1progress = new NamespacedKey(Server.getPlugin(), "daily1progress");
-    public NamespacedKey daily2progress = new NamespacedKey(Server.getPlugin(), "daily2progress");
-    public NamespacedKey daily3progress = new NamespacedKey(Server.getPlugin(), "daily3progress");
-
-    public NamespacedKey weekly = new NamespacedKey("10server", "quest4");
+    public NamespacedKey dailyprogress = new NamespacedKey(Server.getPlugin(), "questprogress");
 
 
-    public void playerQuestAssign(Player p, NamespacedKey questSlot){
+    public void playerQuestAssign(Player p, Integer questSlot){
         PersistentDataContainer container = p.getPersistentDataContainer();
         int RNG = ThreadLocalRandom.current().nextInt(0, QuestInitialize.dailyQuestAttributes.size() - 1);
-        container.set(questSlot, PersistentDataType.INTEGER, RNG);
+
+        int[] quests = container.getOrDefault(dailies, PersistentDataType.INTEGER_ARRAY, new int[3]);
+
+        quests[questSlot] = RNG;
+
+        container.set(dailies, PersistentDataType.INTEGER_ARRAY, quests);
     }
 
     public void dailyReset(Player p){
         PersistentDataContainer container = p.getPersistentDataContainer();
-        playerQuestAssign(p, daily1);
-        playerQuestAssign(p, daily2);
+
+        container.set(dailyprogress, PersistentDataType.INTEGER_ARRAY, new int[3]);
+
+        playerQuestAssign(p, 0);
 
         // If the second quest is the same as the first, reassign it.
-        while (Objects.equals(container.get(daily2, PersistentDataType.INTEGER), container.get(daily1, PersistentDataType.INTEGER))){
-            playerQuestAssign(p, daily2);
-        }
-
-        playerQuestAssign(p, daily3);
+        do {
+            playerQuestAssign(p, 1);
+        } while (Objects.equals(container.getOrDefault(dailies, PersistentDataType.INTEGER_ARRAY, new int[3])[0], container.getOrDefault(dailies, PersistentDataType.INTEGER_ARRAY, new int[3])[1]));
 
         // And the same here
-        while (Objects.equals(container.get(daily3, PersistentDataType.INTEGER), container.get(daily1, PersistentDataType.INTEGER)) || Objects.equals(container.get(daily3, PersistentDataType.INTEGER), container.get(daily2, PersistentDataType.INTEGER))){
-            playerQuestAssign(p, daily3);
-        }
+        do {
+            playerQuestAssign(p, 2);
+        } while (Objects.equals(container.getOrDefault(dailies, PersistentDataType.INTEGER_ARRAY, new int[3])[2], container.getOrDefault(dailies, PersistentDataType.INTEGER_ARRAY, new int[3])[1]) ||
+                Objects.equals(container.getOrDefault(dailies, PersistentDataType.INTEGER_ARRAY, new int[3])[2], container.getOrDefault(dailies, PersistentDataType.INTEGER_ARRAY, new int[3])[0]));
+
         container.set(questAssigned, PersistentDataType.LONG, System.currentTimeMillis()/1000L);
     }
 

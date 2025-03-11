@@ -69,3 +69,6 @@ commands:
   rename:
     description: Rename held item.
     usage: /<command> <string>
+  recipes:
+    description: Opens the recipes GUI for the player.
+    usage: /<command>

@@ -17,16 +17,9 @@ public class AgilityDash {
     private final Abilities ability = new Abilities();
 
     public void dash(Player p){
-        PersistentDataContainer container = p.getPersistentDataContainer();
-        long cd = Objects.requireNonNullElse(container.get(ability.moveCooldown, PersistentDataType.LONG), 0L);
-        if (cd > System.currentTimeMillis()/1000L){
-            p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacy(String.format(ChatColor.RED + "Your Dash is on cooldown for %s seconds", cd - System.currentTimeMillis()/1000L)));
-            return;
-        }
         Vector direction = p.getLocation().getDirection();
         direction.multiply(1.5);
         direction.setY(0.5);
         p.setVelocity(direction);
-        container.set(ability.moveCooldown, PersistentDataType.LONG, System.currentTimeMillis()/1000L + 10);
     }
 }

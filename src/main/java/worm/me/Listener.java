@@ -23,6 +23,7 @@ import worm.me.GameSystems.Recipes.RecipesGUI;
 import worm.me.PlayerSystems.*;
 import worm.me.PlayerSystems.Abilities.AbilitiesGUI;
 import worm.me.PlayerSystems.Abilities.Abilities;
+import worm.me.PlayerSystems.Abilities.AbilityAttemptEvent;
 import worm.me.PlayerSystems.Abilities.Active.AgilityDash;
 import worm.me.PlayerSystems.Abilities.Active.AgilityDoubleJump;
 import worm.me.PlayerSystems.Abilities.Active.AgilityLeap;
@@ -124,6 +125,9 @@ public class Listener implements org.bukkit.event.Listener {
         handler.rightClick(event);
     }
 
+
+    // ----------------------------------------- INITIALIZATION EVENTS -----------------------------------------
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
 
@@ -146,6 +150,12 @@ public class Listener implements org.bukkit.event.Listener {
 
         container.set(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY, new long[]{System.currentTimeMillis()/1000L, container.get(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY)[1]});
     }
+
+
+
+
+
+    // --------------------------EXPERIENCE GAIN EVENTS--------------------------
 
     @EventHandler
     public void onPlayerBreak(BlockBreakEvent e){
@@ -228,6 +238,10 @@ public class Listener implements org.bukkit.event.Listener {
         }
     }
 
+
+
+    // --------------------------MESSAGEHEAD--------------------------
+
     @EventHandler
     public void onChat(PlayerChatEvent event){
 
@@ -259,6 +273,28 @@ public class Listener implements org.bukkit.event.Listener {
         }
     }
 
+    // --------------------------ABILITY EVENTS--------------------------
+
+    @EventHandler
+    public void onAbilityAttempt(AbilityAttemptEvent e){
+
+        Abilities ability = new Abilities();
+
+        PersistentDataContainer container = e.getPlayer().getPersistentDataContainer();
+
+        if (ability.isActive(e.getPlayer(), e.getAbilityID())){
+            if (Objects.requireNonNullElse(container.get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])[ability.getAbilitySlot(e.getPlayer(), e.getAbilityID())] <= System.currentTimeMillis()/1000L) {
+                ability.handleAbility(e.getPlayer(), e.getAbilityID());
+            } else {
+
+                Server.pluginMessage(ChatColor.RED + "Your " + Abilities.abilityGuiComponents.get(e.getAbilityID()).getFirst() + " is on cooldown for " + (container.get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY)[ability.getAbilitySlot(e.getPlayer(), e.getAbilityID())] - (System.currentTimeMillis()/1000)) + " seconds.", e.getPlayer());
+                e.setCancelled(true);
+            }
+        }
+        else e.setCancelled(true);
+
+    }
+
 
     @EventHandler
     public void onPlayerFlightEvent(PlayerToggleFlightEvent e){
@@ -268,8 +304,9 @@ public class Listener implements org.bukkit.event.Listener {
 
         // Make the player double jump
         e.setCancelled(true);
-        AgilityDoubleJump doubleJump = new AgilityDoubleJump();
-        doubleJump.doubleJump(p);
+
+        Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(2, p));
+
     }
 
 
@@ -277,7 +314,13 @@ public class Listener implements org.bukkit.event.Listener {
     public void onPlayerMoveEvent(PlayerMoveEvent e){
 
 
+        Abilities ability = new Abilities();
+
         if (e.getFrom() == e.getTo()) return;
+
+        if (!ability.isActive(e.getPlayer(), 2) && e.getPlayer().getGameMode() != GameMode.CREATIVE) {
+            e.getPlayer().setAllowFlight(false);
+        }
 
         Player player = e.getPlayer();
         if (player.getGameMode() == GameMode.SURVIVAL && player.getAllowFlight()) {
@@ -310,8 +353,8 @@ public class Listener implements org.bukkit.event.Listener {
 
         if (Objects.requireNonNull(e.getTo()).getY() < 200) e.getPlayer().damage(1000000);
 
-        if (e.getPlayer().getPersistentDataContainer().get(Abilities.moveCooldown, PersistentDataType.LONG) != null){
-            if (e.getPlayer().getPersistentDataContainer().get(Abilities.moveCooldown, PersistentDataType.LONG) <= System.currentTimeMillis()/1000L){
+        if (Objects.requireNonNullElse(e.getPlayer().getPersistentDataContainer().get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])[ability.getAbilitySlot(e.getPlayer(), 2)] != -1){
+            if (Objects.requireNonNullElse(e.getPlayer().getPersistentDataContainer().get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])[ability.getAbilitySlot(e.getPlayer(), 2)] <= System.currentTimeMillis()/1000L && ability.isActive(e.getPlayer(), 2)){
                 e.getPlayer().setAllowFlight(true);
             }
         }
@@ -335,13 +378,11 @@ public class Listener implements org.bukkit.event.Listener {
             if (((PlayerInteractEvent) e.getOriginalEvent()).getAction().equals(Action.RIGHT_CLICK_AIR) || ((PlayerInteractEvent) e.getOriginalEvent()).getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
                 if (p.getInventory().getItemInMainHand().toString().toLowerCase().contains("sword")) {
                     if (p.isSneaking()){
-                        AgilityDash dash = new AgilityDash();
-                        dash.dash(p);
+                        Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(1, p));
                     }
                 } else if (p.getInventory().getItemInMainHand().toString().toLowerCase().contains("_axe")) {
                     if (p.isSneaking()){
-                        AgilityLeap leap = new AgilityLeap();
-                        leap.leap(p);
+                        Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(3, p));
                     }
                 }
             }
@@ -353,8 +394,7 @@ public class Listener implements org.bukkit.event.Listener {
 
         if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
             if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.PINK_CONCRETE_POWDER) {
-                FrogGrab fg = new FrogGrab(plugin);
-                fg.frogGrab(e.getPlayer());
+                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(5, e.getPlayer()));
             }
         }
 
@@ -364,7 +404,7 @@ public class Listener implements org.bukkit.event.Listener {
 
         Player p = e.getPlayer();
         if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().equals(Material.END_PORTAL_FRAME)){
-            QuestGui questGui = new QuestGui(this.plugin);
+            QuestGui questGui = new QuestGui();
             questGui.questGuiOpen(p);
         }
         if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("WOOL")){

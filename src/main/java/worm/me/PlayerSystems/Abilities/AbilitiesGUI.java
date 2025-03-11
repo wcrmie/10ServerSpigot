@@ -17,51 +17,49 @@ import java.util.Objects;
 public class AbilitiesGUI {
 
     public void abilitiesActive(Player p){
-        GuiConstructor guiConstructor = new GuiConstructor();
         PersistentDataContainer container = p.getPersistentDataContainer();
-        Inventory gui = guiConstructor.chestInventory(ChatColor.DARK_GRAY + "Your Active Abilities", 27);
+        Inventory gui = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Your Active Abilities", 27);
 
         Abilities abilities = new Abilities();
 
-        int[] active = Objects.requireNonNullElse(container.get(abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY), new int[3]);
+        int[] active = Objects.requireNonNullElse(container.get(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY), new int[3]);
 
         Server.pluginMessage("Active: " + Arrays.toString(active), p);
 
         try {
-            String abilityName = Abilities.abilityGuiComponents.keySet().toArray()[active[0]].toString();
-            String abilityMaterial = Abilities.abilityGuiComponents.get(abilityName).getFirst();
-            String abilityDescription = Abilities.abilityGuiComponents.get(abilityName).get(1);
-            gui.setItem(11, guiConstructor.createGuiItem(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
+            String abilityName = Abilities.abilityGuiComponents.get(active[0]).getFirst();
+            String abilityMaterial = Abilities.abilityGuiComponents.get(active[0]).get(1);
+            String abilityDescription = Abilities.abilityGuiComponents.get(active[0]).get(2);
+            gui.setItem(11, GuiConstructor.createGuiItem(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
         } catch (Exception e){
-            gui.setItem(11, guiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
+            gui.setItem(11, GuiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
         }
 
         try {
-            String abilityName = Abilities.abilityGuiComponents.keySet().toArray()[active[1]].toString();
-            String abilityMaterial = Abilities.abilityGuiComponents.get(abilityName).getFirst();
-            String abilityDescription = Abilities.abilityGuiComponents.get(abilityName).get(1);
-            gui.setItem(13, guiConstructor.createGuiItem(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
+            String abilityName = Abilities.abilityGuiComponents.get(active[1]).getFirst();
+            String abilityMaterial = Abilities.abilityGuiComponents.get(active[1]).get(1);
+            String abilityDescription = Abilities.abilityGuiComponents.get(active[1]).get(2);
+            gui.setItem(13, GuiConstructor.createGuiItem(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
         } catch (Exception e){
 
             Server.pluginMessage("Error: " + e, p);
 
-            gui.setItem(13, guiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
+            gui.setItem(13, GuiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
         }
 
         try {
-            String abilityName = Abilities.abilityGuiComponents.keySet().toArray()[active[2]].toString();
-            String abilityMaterial = Abilities.abilityGuiComponents.get(abilityName).getFirst();
-            String abilityDescription = Abilities.abilityGuiComponents.get(abilityName).get(1);
-            gui.setItem(15, guiConstructor.createGuiItem(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
+            String abilityName = Abilities.abilityGuiComponents.get(active[2]).getFirst();
+            String abilityMaterial = Abilities.abilityGuiComponents.get(active[2]).get(1);
+            String abilityDescription = Abilities.abilityGuiComponents.get(active[2]).get(2);
+            gui.setItem(15, GuiConstructor.createGuiItem(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
         } catch (Exception e){
-            gui.setItem(15, guiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
+            gui.setItem(15, GuiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
         }
 
         p.openInventory(gui);
     }
 
     public void abilitiesSelect(Player p, int slot){
-        GuiConstructor guiConstructor = new GuiConstructor();
 
         PersistentDataContainer container = p.getPersistentDataContainer();
 
@@ -77,22 +75,22 @@ public class AbilitiesGUI {
         }
 
         // Create the GUI
-        Inventory gui = guiConstructor.chestInventory( ChatColor.DARK_GRAY + title + " Ability Slot", 54);
+        Inventory gui = GuiConstructor.chestInventory( ChatColor.DARK_GRAY + title + " Ability Slot", 54);
 
         // for each item
         for (int i = 0; i < Abilities.abilityGuiComponents.size(); i++){
 
             // Get the ability name, material, and description
-            String abilityName = Abilities.abilityGuiComponents.keySet().toArray()[i].toString();
-            String abilityMaterial = Abilities.abilityGuiComponents.get(abilityName).getFirst();
-            String abilityDescription = Abilities.abilityGuiComponents.get(abilityName).get(1);
+            String abilityName = Abilities.abilityGuiComponents.get(i).get(0);
+            String abilityMaterial = Abilities.abilityGuiComponents.get(i).get(1);
+            String abilityDescription = Abilities.abilityGuiComponents.get(i).get(2);
 
             List<String> abilityReqs = new java.util.ArrayList<>(List.of(""));
 
             // For each extra requirement, add a lore line. Not all abilities have the same
             // amount of requirements, so we need to loop through the list and add them.
-            for (int j = 2; j < Abilities.abilityGuiComponents.get(abilityName).size(); j++){
-                abilityReqs.add(Abilities.abilityGuiComponents.get(abilityName).get(j));
+            for (int j = 3; j < Abilities.abilityGuiComponents.get(i).size(); j++){
+                abilityReqs.add(Abilities.abilityGuiComponents.get(i).get(j));
             }
 
             // Make sure the slot, or the slot + 1 is not divisible by 9. (we don't want stuff on the edges of the gui)

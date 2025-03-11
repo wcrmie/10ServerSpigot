@@ -12,6 +12,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
+import worm.me.PlayerSystems.Abilities.Abilities;
 import worm.me.PlayerSystems.PlayerData.Social.Hats.Hats;
 import worm.me.PlayerSystems.PlayerData.Social.MessageHead;
 import worm.me.PlayerSystems.PlayerData.Social.Skin.Skin;
@@ -191,6 +192,10 @@ public class VoidPlayer {
             container.set(new NamespacedKey(plugin, "activeabilities"), PersistentDataType.INTEGER_ARRAY, new int[3]);
         }
 
+        if (!container.has(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY)) {
+            container.set(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY, new long[3]);
+        }
+
         if (!container.has(new NamespacedKey(plugin, "movecooldown"), PersistentDataType.LONG)) {
             container.set(new NamespacedKey(plugin, "movecooldown"), PersistentDataType.LONG, System.currentTimeMillis()/1000L);
         }
@@ -214,6 +219,10 @@ public class VoidPlayer {
             container.set(new NamespacedKey(Server.getPlugin(), "10stats"), PersistentDataType.INTEGER_ARRAY, new int[50]);
         }
 
+        if (!container.has(new NamespacedKey(Server.getPlugin(), "dailyprogress"), PersistentDataType.INTEGER_ARRAY)) {
+            container.set(new NamespacedKey(Server.getPlugin(), "dailyprogress"), PersistentDataType.INTEGER_ARRAY, new int[3]);
+        }
+
         MessageHead messageHead = new MessageHead(plugin);
         player.getPersistentDataContainer().set(messageHead.armorStandExists, PersistentDataType.BOOLEAN, false);
 
@@ -233,7 +242,7 @@ public class VoidPlayer {
         }
 
         // Assign quests
-        QuestAssign questAssign = new QuestAssign(plugin);
+        QuestAssign questAssign = new QuestAssign();
         questAssign.dailyCheck(player);
 
     }

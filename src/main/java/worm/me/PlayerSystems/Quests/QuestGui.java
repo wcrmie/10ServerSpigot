@@ -15,58 +15,53 @@ import java.util.Map;
 
 public class QuestGui {
 
-    private Server plugin;
-
-    public QuestGui(Server plugin) {
-        this.plugin = plugin;
-    }
+    private QuestAssign questAssign = new QuestAssign();
 
     public void questGuiOpen(Player p){
         // Open the quest GUI for the player
-        QuestAssign questAssign = new QuestAssign(this.plugin);
         PersistentDataContainer container = p.getPersistentDataContainer();
 
-        GuiConstructor guiConstructor = new GuiConstructor();
-        Inventory GUI = guiConstructor.chestInventory(ChatColor.DARK_GRAY + "Quests", 27);
-        GUI.setItem(11, guiConstructor.createGuiItem(getQuestMaterial(p, questAssign.daily1), ChatColor.GRAY + getQuestName(p, questAssign.daily1)," ", ChatColor.DARK_GRAY + getQuestDescription(p, questAssign.daily1), ChatColor.LIGHT_PURPLE + "Progress: " + container.getOrDefault(questAssign.daily1progress, PersistentDataType.INTEGER, 0) + "/" + getQuestRequiredProgress(p, questAssign.daily1)));
-        GUI.setItem(13, guiConstructor.createGuiItem(getQuestMaterial(p, questAssign.daily2), ChatColor.GRAY + getQuestName(p, questAssign.daily2)," ", ChatColor.DARK_GRAY + getQuestDescription(p, questAssign.daily2), ChatColor.LIGHT_PURPLE + "Progress: " + container.getOrDefault(questAssign.daily2progress, PersistentDataType.INTEGER, 0) + "/" + getQuestRequiredProgress(p, questAssign.daily2)));
-        GUI.setItem(15, guiConstructor.createGuiItem(getQuestMaterial(p, questAssign.daily3), ChatColor.GRAY + getQuestName(p, questAssign.daily3)," ", ChatColor.DARK_GRAY + getQuestDescription(p, questAssign.daily3), ChatColor.LIGHT_PURPLE + "Progress: " + container.getOrDefault(questAssign.daily3progress, PersistentDataType.INTEGER, 0) + "/" + getQuestRequiredProgress(p, questAssign.daily3)));
+        Inventory GUI = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Quests", 27);
+
+        for (int i = 0; i < 3; i++){
+            GUI.setItem(2*i + 9, GuiConstructor.createGuiItem(getQuestMaterial(p, i), ChatColor.GRAY + getQuestName(p, i)," ",
+                    ChatColor.DARK_GRAY + getQuestDescription(p, i),
+                    ChatColor.LIGHT_PURPLE + "Progress: " + container.getOrDefault(questAssign.dailyprogress, PersistentDataType.INTEGER_ARRAY, new int[3])[i] + "/" + getQuestRequiredProgress(p, i)));
+        }
+
         p.openInventory(GUI);
+
     }
 
-    public Material getQuestMaterial(Player p, NamespacedKey quest){
+    public Material getQuestMaterial(Player p, Integer quest){
 
         // Get the material of the quest
-        QuestInitialize questInitialize = new QuestInitialize(this.plugin);
-        Map<Integer, List<String>> m = QuestInitialize.dailyQuestAttributes;
-        int questID = p.getPersistentDataContainer().get(quest, PersistentDataType.INTEGER);
+        List<List<String>> m = QuestInitialize.dailyQuestAttributes;
+        int questID = p.getPersistentDataContainer().getOrDefault(questAssign.dailies, PersistentDataType.INTEGER_ARRAY, new int[3])[quest];
         return Material.valueOf(m.get(questID).get(3));
     }
 
-    public String getQuestName(Player p, NamespacedKey quest){
+    public String getQuestName(Player p, Integer quest){
 
         // Get the name of the quest
-        QuestInitialize questInitialize = new QuestInitialize(this.plugin);
-        Map<Integer, List<String>> m = QuestInitialize.dailyQuestAttributes;
-        int questID = p.getPersistentDataContainer().get(quest, PersistentDataType.INTEGER);
-        return m.get(questID).get(0);
+        List<List<String>> m = QuestInitialize.dailyQuestAttributes;
+        int questID = p.getPersistentDataContainer().getOrDefault(questAssign.dailies, PersistentDataType.INTEGER_ARRAY, new int[3])[quest];
+        return m.get(questID).getFirst();
     }
 
-    public String getQuestDescription(Player p, NamespacedKey quest){
+    public String getQuestDescription(Player p, Integer quest){
 
         // Get the description of the quest
-        QuestInitialize questInitialize = new QuestInitialize(this.plugin);
-        Map<Integer, List<String>> m = QuestInitialize.dailyQuestAttributes;
-        int questID = p.getPersistentDataContainer().get(quest, PersistentDataType.INTEGER);
+        List<List<String>> m = QuestInitialize.dailyQuestAttributes;
+        int questID = p.getPersistentDataContainer().getOrDefault(questAssign.dailies, PersistentDataType.INTEGER_ARRAY, new int[3])[quest];
         return m.get(questID).get(1);
     }
 
-    public String getQuestRequiredProgress(Player p, NamespacedKey quest){
+    public String getQuestRequiredProgress(Player p, Integer quest){
 
         // Get the progress of the quest
-        QuestInitialize questInitialize = new QuestInitialize(this.plugin);
-        Map<Integer, List<String>> m = QuestInitialize.dailyQuestAttributes;
-        int questID = p.getPersistentDataContainer().get(quest, PersistentDataType.INTEGER);
+        List<List<String>> m = QuestInitialize.dailyQuestAttributes;
+        int questID = p.getPersistentDataContainer().getOrDefault(questAssign.dailies, PersistentDataType.INTEGER_ARRAY, new int[3])[quest];
         return m.get(questID).get(2);
     }
 

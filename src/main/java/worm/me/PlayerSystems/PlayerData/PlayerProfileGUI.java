@@ -51,6 +51,8 @@ public class PlayerProfileGUI {
         gui.setItem(14, GuiConstructor.createGuiItem(Material.IRON_PICKAXE, ChatColor.DARK_AQUA + "⛏ Blocks Broken: ", " ", ChatColor.GRAY + "" + VoidPlayer.getStat(p, 1)));
         gui.setItem(15, GuiConstructor.createGuiItem(Material.COBBLESTONE, ChatColor.DARK_AQUA + "☐ Blocks Placed: ", " ", ChatColor.GRAY + "" + VoidPlayer.getStat(p, 0)));
 
+        try {
+
             gui.setItem(21, GuiConstructor.createGuiItem(Material.BOW, ChatColor.DARK_AQUA + "\uD83C\uDFF9 Bow Accuracy: ", " ", ChatColor.GRAY + "" + (VoidPlayer.getStat(p, 2) * 100 / VoidPlayer.getStat(p, 3)) + "%"));
         } catch (Exception e){
             gui.setItem(21, GuiConstructor.createGuiItem(Material.BOW, ChatColor.DARK_AQUA + "\uD83C\uDFF9 Bow Accuracy: ", " ", ChatColor.GRAY + "0%"));

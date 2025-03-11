@@ -131,6 +131,7 @@ public final class Server extends JavaPlugin {
         this.getCommand("profile").setExecutor(new OpenProfileGUICommand());
         this.getCommand("hatstorage").setExecutor(new EditHatsCommand());
         this.getCommand("rename").setExecutor(new RenameCommand());
+        this.getCommand("recipes").setExecutor(new OpenRecipesGUICommand());
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 

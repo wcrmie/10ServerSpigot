@@ -15,13 +15,9 @@ import worm.me.PlayerSystems.Abilities.Abilities;
 
 public class AgilityDoubleJump {
 
-    private final Abilities ability = new Abilities();
-
     public void doubleJump(Player p) {
         p.setAllowFlight(false);
         p.setFlying(false);
-
-        PersistentDataContainer container = p.getPersistentDataContainer();
         Vector direction = p.getLocation().getDirection();
         World world = p.getWorld();
         direction.multiply(0.5);
@@ -29,7 +25,5 @@ public class AgilityDoubleJump {
         p.setVelocity(direction);
         world.spawnParticle(Particle.CLOUD, p.getLocation(), 10, 0.00001, 0.00001, 0.00001);
         world.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, .8f, 1.5f);
-        container.set(ability.moveCooldown, PersistentDataType.LONG, System.currentTimeMillis()/1000L + 15);
-        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacy(String.format(ChatColor.RED + "Your Double Jump is now on cooldown for 15 seconds")));
     }
 }

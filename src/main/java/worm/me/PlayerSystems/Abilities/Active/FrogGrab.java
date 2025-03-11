@@ -15,6 +15,8 @@ import org.bukkit.util.Vector;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import worm.me.PlayerSystems.Abilities.Abilities;
+import worm.me.Server;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,15 +26,13 @@ import java.util.Set;
 import java.util.UUID;
 
 public class FrogGrab {
-    private final JavaPlugin plugin;
     public final Abilities ability = new Abilities();
     private final int MAX_DISTANCE = 15;
     private final List<EntityType> pickUpAbleEntities;
     private static final Map<UUID, GrabInfo> activeGrabs = new HashMap<>();
     private static final Set<UUID> restrictedPlayers = new HashSet<>();
 
-    public FrogGrab(JavaPlugin plugin) {
-        this.plugin = plugin;
+    public FrogGrab() {
         this.pickUpAbleEntities = Arrays.asList(
                 EntityType.BAT,
                 EntityType.CHICKEN,
@@ -173,7 +173,7 @@ public class FrogGrab {
                         Vector velocity = pullDirection.normalize().multiply(pullSpeed);
                         entity.setVelocity(velocity);
                     }
-                }.runTaskTimer(plugin, 0L, 1L);
+                }.runTaskTimer(Server.getPlugin(), 0L, 1L);
                 activeGrabs.put(player.getUniqueId(), new GrabInfo(entity, tongue, task));
             }
         }
