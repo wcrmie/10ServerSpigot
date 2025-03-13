@@ -207,7 +207,7 @@ public class PlayerSpawning {
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (player.getLocation().distance(location) >= 5) {
+                if (player.getLocation().distance(location) >= 5 || !player.isOnline()) {
                     Block block = world.getBlockAt(location);
                     if (block.getType() == Material.BEDROCK) {
                         block.setType(Material.AIR);

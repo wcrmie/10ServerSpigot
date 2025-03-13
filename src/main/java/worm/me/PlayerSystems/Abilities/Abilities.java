@@ -5,10 +5,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import worm.me.PlayerSystems.Abilities.Active.AgilityDash;
-import worm.me.PlayerSystems.Abilities.Active.AgilityDoubleJump;
-import worm.me.PlayerSystems.Abilities.Active.AgilityLeap;
-import worm.me.PlayerSystems.Abilities.Active.FrogGrab;
+import worm.me.PlayerSystems.Abilities.Active.*;
 import worm.me.Server;
 
 import java.util.*;
@@ -47,7 +44,10 @@ public class Abilities {
         abilityGuiComponents.put(4, List.of("Wall Jump", "IRON_BARS", "Clutch onto walls using " + ChatColor.GRAY + "[SNEAK]"));
 
         // ID 5
-        abilityGuiComponents.put(5, List.of("Frog Grab", "PINK_CONCRETE_POWDER", "Grab things with your tongue using a tongue item " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK]"));
+        abilityGuiComponents.put(5, List.of("Frog Grab", "PINK_CONCRETE_POWDER", "Grab things with your tongue using a tongue item " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK]"));
+
+        // ID 6
+        abilityGuiComponents.put(6, List.of("SCREAM", "GOAT_HORN", "Scream while holding a note block " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK]"));
     }
 
     public void initializeRequirements(){
@@ -59,6 +59,7 @@ public class Abilities {
         abilityRequirements.put(3, new int[]{0, 0, 0, 0, 0, 0, 15, 0});
         abilityRequirements.put(4, new int[]{0, 0, 0, 0, 0, 0, 20, 0});
         abilityRequirements.put(5, new int[]{10, 40, 0, 50, 0, 0, 20, 0});
+        abilityRequirements.put(6, new int[]{20, 10, 5, 15, 0, 0, 10, 20});
     }
 
     public List<Integer> getActiveAbilities(Player p){
@@ -144,7 +145,15 @@ public class Abilities {
 
             cooldowns[getAbilitySlot(p, 5)] = System.currentTimeMillis()/1000L + 10;
 
+        } else if (abilityID == 6){
+
+            AbliityScream AbliityScream = new AbliityScream();
+            AbliityScream.scream(p);
+
+            cooldowns[getAbilitySlot(p, 6)] = System.currentTimeMillis()/1000L + 30;
+
         }
+
 
         container.set(abilityCooldown, PersistentDataType.LONG_ARRAY, cooldowns);
 

@@ -60,8 +60,8 @@ public class Quests {
 
             if (reward[0].equals("0")) {
 
-                ItemStack item = ItemStack.deserialize(reward[1]);
-                P.getInventory().addItem(item);
+                //ItemStack item = ItemStack.deserialize(reward[1]);
+                //P.getInventory().addItem(item);
 
 
             }

@@ -394,6 +394,13 @@ public class Listener implements org.bukkit.event.Listener {
     public void onInteract(PlayerInteractEvent e){
 
         if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.NOTE_BLOCK && e.getPlayer().isSneaking()) {
+                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(6, e.getPlayer()));
+            }
+
+
+
             if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.PINK_CONCRETE_POWDER && e.getPlayer().isSneaking()) {
                 ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
                 if (item.hasItemMeta()) {
@@ -408,6 +415,8 @@ public class Listener implements org.bukkit.event.Listener {
                     }
                 }
             }
+
+
         }
 
         if (e.getHand() != EquipmentSlot.HAND) {
