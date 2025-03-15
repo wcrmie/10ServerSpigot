@@ -15,6 +15,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.GameSystems.Fishing.FishingSystem;
@@ -393,9 +394,29 @@ public class Listener implements org.bukkit.event.Listener {
     public void onInteract(PlayerInteractEvent e){
 
         if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
-            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.PINK_CONCRETE_POWDER) {
-                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(5, e.getPlayer()));
+
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.NOTE_BLOCK && e.getPlayer().isSneaking()) {
+                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(6, e.getPlayer()));
             }
+
+
+
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.PINK_CONCRETE_POWDER && e.getPlayer().isSneaking()) {
+                ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
+                if (item.hasItemMeta()) {
+                    ItemMeta meta = item.getItemMeta();
+                    if (meta != null) {
+                        PersistentDataContainer data = meta.getPersistentDataContainer();
+                        NamespacedKey key = new NamespacedKey(plugin, "tongue");
+                        if (data.has(key, PersistentDataType.STRING)) {
+                            String tagValue = data.get(key, PersistentDataType.STRING);
+                            Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(5, e.getPlayer()));
+                        }
+                    }
+                }
+            }
+
+
         }
 
         if (e.getHand() != EquipmentSlot.HAND) {
