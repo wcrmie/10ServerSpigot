@@ -1,4 +1,4 @@
-package worm.me.Commands.AdminCommands;
+package worm.me.commands.AdminCommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

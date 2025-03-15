@@ -1,21 +1,20 @@
-package worm.me.Commands.GUICommands;
+package worm.me.commands.GUICommands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import worm.me.PlayerSystems.MainGUIMenu;
+import worm.me.PlayerSystems.Abilities.AbilitiesGUI;
 
-public class MenuCommand implements CommandExecutor {
+public class OpenAbilitiesGUICommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-
         if (sender instanceof Player p){
-            MainGUIMenu.openMainMenu(p);
+            AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
+            abilitiesGUI.abilitiesActive(p);
             return true;
-        } else sender.sendMessage("bruh");
-
+        } else sender.sendMessage("This command is for the player, silly!");
         return false;
     }
 }

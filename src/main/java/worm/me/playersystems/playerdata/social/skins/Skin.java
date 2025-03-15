@@ -28,7 +28,7 @@ public class Skin {
             Optional<InputDataResult> result = storage.findOrCreateSkinData("worrm");
 
             if (RNG == 1){
-                result = storage.findOrCreateSkinData("goobier");
+                result = storage.findOrCreateSkinData("expirada");
             } else if (RNG == 2){
                 result = storage.findOrCreateSkinData("snowmaam");
             } else if (RNG == 3) {

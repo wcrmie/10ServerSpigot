@@ -1,14 +1,12 @@
-package worm.me.Commands.GUICommands;
+package worm.me.commands.GUICommands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import worm.me.PlayerSystems.PlayerData.Social.Hats.Hats;
-import worm.me.PlayerSystems.PlayerData.Social.Hats.HatsStorage;
 import worm.me.Server;
 
 public class HatsCommand implements CommandExecutor {
