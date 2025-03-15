@@ -11,6 +11,7 @@ import worm.me.playersystems.abilities.active.AgilityLeap;
 import worm.me.playersystems.abilities.active.FrogGrab;
 import worm.me.playersystems.abilities.active.*;
 import worm.me.Server;
+import worm.me.playersystems.abilities.passive.SlimeBoots;
 
 import java.util.*;
 
@@ -52,6 +53,9 @@ public class Abilities {
 
         // ID 6
         abilityGuiComponents.put(6, List.of("SCREAM", "GOAT_HORN", "Scream while holding a note block " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK]"));
+
+        // ID 7
+        abilityGuiComponents.put(7, List.of("Slime Boots", "SLIME_BALL", "Bounce while wearing slime boots " + ChatColor.GRAY + "[SNEAK] to Deactivate "));
     }
 
     public void initializeRequirements(){
@@ -64,6 +68,7 @@ public class Abilities {
         abilityRequirements.put(4, new int[]{0, 0, 0, 0, 0, 0, 20, 0});
         abilityRequirements.put(5, new int[]{10, 40, 0, 50, 0, 0, 20, 0});
         abilityRequirements.put(6, new int[]{20, 10, 5, 15, 0, 0, 10, 20});
+        abilityRequirements.put(7, new int[]{10, 0, 5, 10, 10, 0, 10, 0});
     }
 
     public List<Integer> getActiveAbilities(Player p){
@@ -155,6 +160,13 @@ public class Abilities {
             AbliityScream.scream(p);
 
             cooldowns[getAbilitySlot(p, 6)] = System.currentTimeMillis()/1000L + 30;
+
+        } else if (abilityID == 7){
+
+            SlimeBoots SlimeBoots = new SlimeBoots();
+            SlimeBoots.bounce(p);
+
+            cooldowns[getAbilitySlot(p, 7)] = System.currentTimeMillis()/1000L + 0;
 
         }
 

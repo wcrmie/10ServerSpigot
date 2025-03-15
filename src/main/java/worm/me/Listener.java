@@ -337,15 +337,32 @@ public class Listener implements org.bukkit.event.Listener {
         }
 
         Player player = e.getPlayer();
-        if (player.getGameMode() == GameMode.SURVIVAL && player.getAllowFlight()) {
-            if (!player.isFlying() && player.getFallDistance() > 3) {
-                if (player.isOnGround()) {
-                    player.damage(player.getFallDistance() - 3);
+
+        if (
+                ability.isActive(e.getPlayer(), 7)
+                && !player.isSneaking()
+                && player.getInventory().getBoots() != null
+                && player.getInventory().getBoots().hasItemMeta()
+                && player.getInventory().getBoots().getItemMeta() != null
+                && player.getInventory().getBoots().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "slimeboots"), PersistentDataType.STRING)
+            )
+        {
+                if (!player.isFlying()) {
+                    if (player.isOnGround()) {
+                        Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(7, player));
+                    }
+                }
+        } else {
+
+            if (player.getGameMode() == GameMode.SURVIVAL && player.getAllowFlight()) {
+                if (!player.isFlying() && player.getFallDistance() > 3) {
+                    if (player.isOnGround()) {
+                        player.damage(player.getFallDistance() - 3);
 
 
-
-                    if (player.getHealth() > (player.getFallDistance() - 3)) {
-                        Levels.addExp((Math.round(player.getFallDistance() - 3)/2), Levels.skillTranslation("Agility"), player);
+                        if (player.getHealth() > (player.getFallDistance() - 3)) {
+                            Levels.addExp((Math.round(player.getFallDistance() - 3) / 2), Levels.skillTranslation("Agility"), player);
+                        }
                     }
                 }
             }
@@ -376,6 +393,32 @@ public class Listener implements org.bukkit.event.Listener {
         if (ability.getAbilitySlot(e.getPlayer(), 2) != -1){
             if (Objects.requireNonNullElse(e.getPlayer().getPersistentDataContainer().get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])[ability.getAbilitySlot(e.getPlayer(), 2)] <= System.currentTimeMillis()/1000L && ability.isActive(e.getPlayer(), 2)){
                 e.getPlayer().setAllowFlight(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent e){
+        if (e.getEntity() instanceof Player && e.getCause() == EntityDamageEvent.DamageCause.FALL){
+            Player player = (Player) e.getEntity();
+            Abilities ability = new Abilities();
+            if (ability.isActive(player,7) && !player.isSneaking()){
+
+                if (player.getInventory().getBoots() != null) {
+                    ItemStack item = player.getInventory().getBoots();
+                    if (player.getInventory().getBoots().hasItemMeta()) {
+                        ItemMeta meta = item.getItemMeta();
+                        if (meta != null) {
+                            PersistentDataContainer data = meta.getPersistentDataContainer();
+                            NamespacedKey key = new NamespacedKey(plugin, "slimeboots");
+                            if (data.has(key, PersistentDataType.STRING)) {
+                                String tagValue = data.get(key, PersistentDataType.STRING);
+
+                                e.setCancelled(true);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
