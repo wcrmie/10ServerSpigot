@@ -1,19 +1,11 @@
-package worm.me.PlayerSystems.Quests;
+package worm.me.playersystems.quests;
 
 import org.bukkit.Material;
-import worm.me.Server;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class QuestInitialize {
-
-    private final Server plugin;
-
-    public QuestInitialize(Server plugin) {
-        this.plugin = plugin;
-    }
 
     public static final List<List<String>> dailyQuestAttributes = new ArrayList<>();
 
@@ -36,8 +28,6 @@ public class QuestInitialize {
         dailyQuestAttributes.add(6, growtrees25);
         List<String> eatgapple = List.of("The Garden of Eden", "Eat a golden apple.", "1", Material.GOLDEN_APPLE.toString());
         dailyQuestAttributes.add(7, eatgapple);
-        List<String> donthurt10 = List.of("Peaceful", "Don't take damage for 10 minutes. (OUTSIDE OF SPAWN)", "600", Material.FEATHER.toString());
-        dailyQuestAttributes.add(8, donthurt10);
 
     }
 }

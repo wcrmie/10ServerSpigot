@@ -1,11 +1,11 @@
-package worm.me.commands.GUICommands;
+package worm.me.commands.gui;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import worm.me.PlayerSystems.PlayerData.Levels.LevelsGUI;
+import worm.me.playersystems.playerdata.levels.LevelsGUI;
 import worm.me.Server;
 
 public class OpenLevelsGUICommand implements CommandExecutor {

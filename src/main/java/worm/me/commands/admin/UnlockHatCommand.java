@@ -1,4 +1,4 @@
-package worm.me.commands.AdminCommands;
+package worm.me.commands.admin;
 
 public class UnlockHatCommand {
 }

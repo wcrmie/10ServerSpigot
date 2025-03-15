@@ -1,6 +1,5 @@
-package worm.me.PlayerSystems.Abilities;
+package worm.me.playersystems.abilities;
 
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

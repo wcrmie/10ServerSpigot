@@ -1,17 +1,14 @@
-package worm.me.GameSystems.Fishing;
+package worm.me.gamesystems.fishing;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerFishEvent;
-import worm.me.PlayerSystems.PlayerData.Levels.Levels;
-import worm.me.Server;
+import worm.me.playersystems.playerdata.levels.Levels;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static com.google.common.collect.Iterables.getFirst;
 
 
 public class FishingSystem {

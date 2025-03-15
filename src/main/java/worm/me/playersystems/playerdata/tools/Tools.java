@@ -1,10 +1,10 @@
-package worm.me.PlayerSystems.PlayerData.Tools;
+package worm.me.playersystems.playerdata.tools;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import worm.me.PlayerSystems.PlayerData.VoidPlayer;
+import worm.me.playersystems.playerdata.VoidPlayer;
 import worm.me.Server;
 
 import java.util.ArrayList;

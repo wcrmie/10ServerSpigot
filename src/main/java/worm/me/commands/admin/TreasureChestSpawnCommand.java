@@ -1,9 +1,9 @@
-package worm.me.commands.AdminCommands;
+package worm.me.commands.admin;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import worm.me.GameSystems.StructureGeneration.TreasureChests;
+import worm.me.gamesystems.structure.generation.TreasureChests;
 
 public class TreasureChestSpawnCommand implements CommandExecutor {
 

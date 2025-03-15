@@ -1,10 +1,10 @@
-package worm.me.Commands;
+package worm.me.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import worm.me.PlayerSystems.Generator.GeneratorEdit;
+import worm.me.playersystems.generator.GeneratorEdit;
 import worm.me.Server;
 
 public class SetGensCommand implements CommandExecutor {

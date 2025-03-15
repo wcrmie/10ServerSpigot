@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems;
+package worm.me.playersystems;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

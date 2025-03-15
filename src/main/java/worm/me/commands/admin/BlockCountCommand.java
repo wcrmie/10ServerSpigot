@@ -1,10 +1,10 @@
-package worm.me.commands.AdminCommands;
+package worm.me.commands.admin;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import worm.me.WorldBorder.WorldBorderSizeHandler;
+import worm.me.gamesystems.border.WorldBorderSizeHandler;
 
 public class BlockCountCommand implements CommandExecutor {
     private final WorldBorderSizeHandler borderHandler;

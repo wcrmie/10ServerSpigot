@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems.Abilities;
+package worm.me.playersystems.abilities;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

@@ -1,4 +1,4 @@
-package worm.me.Commands;
+package worm.me.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

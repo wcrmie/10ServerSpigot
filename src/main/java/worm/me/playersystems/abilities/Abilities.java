@@ -1,10 +1,14 @@
-package worm.me.PlayerSystems.Abilities;
+package worm.me.playersystems.abilities;
 
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import worm.me.playersystems.abilities.Active.AgilityDash;
+import worm.me.playersystems.abilities.Active.AgilityDoubleJump;
+import worm.me.playersystems.abilities.Active.AgilityLeap;
+import worm.me.playersystems.abilities.Active.FrogGrab;
 import worm.me.PlayerSystems.Abilities.Active.*;
 import worm.me.Server;
 

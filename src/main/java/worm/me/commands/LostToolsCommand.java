@@ -1,4 +1,4 @@
-package worm.me.Commands;
+package worm.me.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import worm.me.PlayerSystems.PlayerData.VoidPlayer;
+import worm.me.playersystems.playerdata.VoidPlayer;
 import worm.me.Server;
 
 public class LostToolsCommand implements CommandExecutor {

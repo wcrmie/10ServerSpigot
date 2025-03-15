@@ -12,21 +12,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import worm.me.Commands.*;
-import worm.me.Commands.AdminCommands.*;
-import worm.me.Commands.GUICommands.*;
-import worm.me.Commands.GUICommands.HatsCommand;
-import worm.me.Commands.GUICommands.OpenAbilitiesGUICommand;
-import worm.me.Commands.GUICommands.OpenLevelsGUICommand;
-import worm.me.Commands.GUICommands.OpenSkinGUICommand;
-import worm.me.GameSystems.Recipes.Recipes;
-import worm.me.GameSystems.ArtBlocks;
-import worm.me.PlayerSystems.Abilities.Abilities;
-import worm.me.PlayerSystems.Abilities.Active.FrogGrab;
-import worm.me.PlayerSystems.Quests.QuestInitialize;
-import worm.me.PlayerSystems.PlayerSpawning;
-import worm.me.PlayerSystems.Saddle.SaddleSystem;
-import worm.me.WorldBorder.WorldBorderSizeHandler;
+import worm.me.commands.*;
+import worm.me.commands.admin.*;
+import worm.me.commands.gui.*;
+import worm.me.commands.gui.HatsCommand;
+import worm.me.commands.gui.OpenAbilitiesGUICommand;
+import worm.me.commands.gui.OpenLevelsGUICommand;
+import worm.me.commands.gui.OpenSkinGUICommand;
+import worm.me.gamesystems.recipes.Recipes;
+import worm.me.gamesystems.ArtBlocks;
+import worm.me.playersystems.abilities.Abilities;
+import worm.me.playersystems.abilities.Active.FrogGrab;
+import worm.me.playersystems.quests.QuestInitialize;
+import worm.me.playersystems.PlayerSpawning;
+import worm.me.playersystems.saddle.SaddleSystem;
+import worm.me.gamesystems.border.WorldBorderSizeHandler;
 
 import java.io.File;
 import java.util.*;
@@ -73,18 +73,6 @@ public final class Server extends JavaPlugin {
         plugin = this;
 
         saveDefaultConfig();
-        FileConfiguration config = getConfig();
-        config.set("pluginEnabled", true);
-
-        if (!config.contains("expansionPercentage")) {
-            config.set("expansionPercentage", 0.25);
-        }
-
-        if (!config.contains("blockCount")) {
-            config.set("blockCount", 0);
-        }
-
-        saveConfig();
         getLogger().info("Plugin enabled");
 
 
@@ -180,12 +168,6 @@ public final class Server extends JavaPlugin {
         foragingBlocks.put(Material.DARK_OAK_LOG, 5L);
         foragingBlocks.put(Material.SHORT_GRASS, 1L);
         foragingBlocks.put(Material.TALL_GRASS, 2L);
-        foragingBlocks.put(Material.OAK_LEAVES, 1L);
-        foragingBlocks.put(Material.BIRCH_LEAVES, 1L);
-        foragingBlocks.put(Material.SPRUCE_LEAVES, 1L);
-        foragingBlocks.put(Material.JUNGLE_LEAVES, 1L);
-        foragingBlocks.put(Material.ACACIA_LEAVES, 1L);
-        foragingBlocks.put(Material.DARK_OAK_LEAVES, 1L);
         foragingBlocks.put(Material.MOSS_BLOCK, 2L);
         foragingBlocks.put(Material.DANDELION, 1L);
         foragingBlocks.put(Material.POPPY, 1L);
@@ -349,7 +331,7 @@ public final class Server extends JavaPlugin {
         miscs.put(Material.GLOWSTONE_DUST, new int[]{0,0,0,0,15,0,0,0});
 
         // CREATE QUESTS
-        QuestInitialize questInitialize = new QuestInitialize(this);
+        QuestInitialize questInitialize = new QuestInitialize();
         questInitialize.questInitialize();
 
         // Initialize Ability GUI Components

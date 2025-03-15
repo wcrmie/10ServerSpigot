@@ -1,4 +1,4 @@
-package worm.me.GameSystems.StructureGeneration;
+package worm.me.gamesystems.structure.generation;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;

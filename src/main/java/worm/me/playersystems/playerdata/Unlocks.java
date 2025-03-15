@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems.PlayerData;
+package worm.me.playersystems.playerdata;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -7,15 +7,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import worm.me.PlayerSystems.Abilities.Abilities;
-import worm.me.PlayerSystems.PlayerData.Levels.Levels;
+import worm.me.playersystems.abilities.Abilities;
+import worm.me.playersystems.playerdata.levels.Levels;
 import worm.me.Server;
 
 import java.lang.constant.Constable;
 import java.util.*;
 
-import static worm.me.PlayerSystems.PlayerData.VoidPlayer.getUnlockedGens;
-import static worm.me.PlayerSystems.PlayerData.VoidPlayer.setUnlockedGens;
+import static worm.me.playersystems.playerdata.VoidPlayer.getUnlockedGens;
+import static worm.me.playersystems.playerdata.VoidPlayer.setUnlockedGens;
 
 public class Unlocks {
 

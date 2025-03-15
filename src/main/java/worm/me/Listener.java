@@ -18,32 +18,31 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import worm.me.GameSystems.Fishing.FishingSystem;
-import worm.me.GameSystems.ArtBlocks;
-import worm.me.GameSystems.Recipes.RecipesGUI;
-import worm.me.PlayerSystems.*;
-import worm.me.PlayerSystems.Abilities.AbilitiesGUI;
-import worm.me.PlayerSystems.Abilities.Abilities;
-import worm.me.PlayerSystems.Abilities.AbilityAttemptEvent;
-import worm.me.PlayerSystems.Abilities.Active.AgilityDash;
-import worm.me.PlayerSystems.Abilities.Active.AgilityDoubleJump;
-import worm.me.PlayerSystems.Abilities.Active.AgilityLeap;
-import worm.me.PlayerSystems.Abilities.Active.FrogGrab;
-import worm.me.PlayerSystems.Generator.Generator;
-import worm.me.PlayerSystems.Generator.GeneratorEdit;
-import worm.me.PlayerSystems.PlayerData.*;
-import worm.me.PlayerSystems.PlayerData.Levels.GainExpEvent;
-import worm.me.PlayerSystems.PlayerData.Levels.LevelUpEvent;
-import worm.me.PlayerSystems.PlayerData.Levels.Levels;
-import worm.me.PlayerSystems.PlayerData.Levels.LevelsGUI;
-import worm.me.PlayerSystems.PlayerData.Social.Hats.Hats;
-import worm.me.PlayerSystems.PlayerData.Social.Hats.HatsStorage;
-import worm.me.PlayerSystems.Quests.QuestGui;
-import worm.me.PlayerSystems.PlayerData.Social.MessageHead;
-import worm.me.PlayerSystems.PlayerData.Social.Skin.SkinGui;
+import worm.me.gamesystems.fishing.FishingSystem;
+import worm.me.gamesystems.ArtBlocks;
+import worm.me.gamesystems.recipes.RecipesGUI;
+import worm.me.playersystems.*;
+import worm.me.playersystems.abilities.AbilitiesGUI;
+import worm.me.playersystems.abilities.Abilities;
+import worm.me.playersystems.abilities.AbilityAttemptEvent;
+import worm.me.playersystems.abilities.Active.FrogGrab;
+import worm.me.playersystems.generator.Generator;
+import worm.me.playersystems.generator.GeneratorEdit;
+import worm.me.playersystems.playerdata.*;
+import worm.me.playersystems.playerdata.levels.GainExpEvent;
+import worm.me.playersystems.playerdata.levels.LevelUpEvent;
+import worm.me.playersystems.playerdata.levels.Levels;
+import worm.me.playersystems.playerdata.levels.LevelsGUI;
+import worm.me.playersystems.playerdata.social.hats.Hats;
+import worm.me.playersystems.playerdata.social.hats.HatsStorage;
+import worm.me.playersystems.quests.QuestGui;
+import worm.me.playersystems.playerdata.social.MessageHead;
+import worm.me.playersystems.playerdata.social.skins.SkinGui;
 import org.bukkit.event.player.PlayerJoinEvent;
-import worm.me.PlayerSystems.PlayerData.Tools.ToolsEvents;
-import worm.me.PlayerSystems.Saddle.SaddleSystem;
+import worm.me.playersystems.playerdata.tools.ToolsEvents;
+import worm.me.playersystems.quests.QuestProgressEvent;
+import worm.me.playersystems.quests.Quests;
+import worm.me.playersystems.saddle.SaddleSystem;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -173,13 +172,13 @@ public class Listener implements org.bukkit.event.Listener {
 
             boolean exp = true;
 
-                for (String[] value : lookup) {
-                    CoreProtectAPI.ParseResult result = api.parseResult(value);
+            for (String[] value : lookup) {
+                CoreProtectAPI.ParseResult result = api.parseResult(value);
 
-                    if (result.getType().equals(e.getBlock().getType()) && result.getActionString().equals("place") && result.getX() == e.getBlock().getX() && result.getY() == e.getBlock().getY() && result.getZ() == e.getBlock().getZ()) {
-                        exp = false;
-                        break;
-                    }
+                if (result.getType().equals(e.getBlock().getType()) && result.getActionString().equals("place") && result.getX() == e.getBlock().getX() && result.getY() == e.getBlock().getY() && result.getZ() == e.getBlock().getZ()) {
+                    exp = false;
+                    break;
+                }
 
             }
 
@@ -199,7 +198,9 @@ public class Listener implements org.bukkit.event.Listener {
 
                 long[] repsess = c.get(new NamespacedKey(Server.getPlugin(), "repsess"), PersistentDataType.LONG_ARRAY);
 
-                repsess[1] = repsess[1] + 1;
+                Server.pluginMessage("" + repsess[1], p);
+
+                repsess[1]++;
 
                 c.set(new NamespacedKey(Server.getPlugin(), "repsess"), PersistentDataType.LONG_ARRAY, repsess);
             }
@@ -207,6 +208,9 @@ public class Listener implements org.bukkit.event.Listener {
         }
 
         if (e.getEntity().getType() == EntityType.PLAYER) e.getDrops().add(GuiConstructor.createGuiItem(Material.ROTTEN_FLESH, ChatColor.WHITE + "Player Flesh", ChatColor.GRAY + "A Player's flesh."));
+
+        e.getDrops().removeIf(item -> item.getType().getTranslationKey().contains("sword") || item.getType().getTranslationKey().contains("axe") ||
+                item.getType().getTranslationKey().contains("shovel") || item.getType().getTranslationKey().contains("pickaxe"));
         
     }
 
@@ -236,6 +240,15 @@ public class Listener implements org.bukkit.event.Listener {
         if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < 220){
             e.setCancelled(true);
             p.sendMessage(ChatColor.RED + "The build area is between y = 220 and y = 280.");
+        }
+    }
+
+    @EventHandler
+    public void onQuestProgress(QuestProgressEvent e) {
+
+        if (e.getProgress() == e.getMaxProgress()) {
+            Quests quests = new Quests();
+            quests.completeQuest(e.getQuestID(), e.getPlayer());
         }
     }
 
@@ -328,6 +341,12 @@ public class Listener implements org.bukkit.event.Listener {
             if (!player.isFlying() && player.getFallDistance() > 3) {
                 if (player.isOnGround()) {
                     player.damage(player.getFallDistance() - 3);
+
+
+
+                    if (player.getHealth() > (player.getFallDistance() - 3)) {
+                        Levels.addExp((Math.round(player.getFallDistance() - 3)/2), Levels.skillTranslation("Agility"), player);
+                    }
                 }
             }
         }
@@ -354,7 +373,7 @@ public class Listener implements org.bukkit.event.Listener {
 
         if (Objects.requireNonNull(e.getTo()).getY() < 200) e.getPlayer().damage(1000000);
 
-        if (Objects.requireNonNullElse(e.getPlayer().getPersistentDataContainer().get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])[ability.getAbilitySlot(e.getPlayer(), 2)] != -1){
+        if (ability.getAbilitySlot(e.getPlayer(), 2) != -1){
             if (Objects.requireNonNullElse(e.getPlayer().getPersistentDataContainer().get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])[ability.getAbilitySlot(e.getPlayer(), 2)] <= System.currentTimeMillis()/1000L && ability.isActive(e.getPlayer(), 2)){
                 e.getPlayer().setAllowFlight(true);
             }

@@ -1,16 +1,11 @@
-package worm.me.PlayerSystems.Abilities.Active;
+package worm.me.playersystems.abilities.Active;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.ChatColor;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
-import worm.me.PlayerSystems.Abilities.Abilities;
+import worm.me.playersystems.playerdata.levels.Levels;
 
 
 public class AgilityDoubleJump {
@@ -25,5 +20,6 @@ public class AgilityDoubleJump {
         p.setVelocity(direction);
         world.spawnParticle(Particle.CLOUD, p.getLocation(), 10, 0.00001, 0.00001, 0.00001);
         world.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, .8f, 1.5f);
+        Levels.addExp(5L, Levels.skillTranslation("Agility"), p);
     }
 }

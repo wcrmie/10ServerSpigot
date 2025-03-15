@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems.PlayerData;
+package worm.me.playersystems.playerdata;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

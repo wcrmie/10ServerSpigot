@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems.Quests;
+package worm.me.playersystems.quests;
 
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
@@ -17,6 +17,8 @@ public class QuestAssign {
     public NamespacedKey dailies = new NamespacedKey(Server.getPlugin(), "quests");
 
     public NamespacedKey dailyprogress = new NamespacedKey(Server.getPlugin(), "questprogress");
+
+    public NamespacedKey questClaimed = new NamespacedKey(Server.getPlugin(), "questclaimed");
 
 
     public void playerQuestAssign(Player p, Integer questSlot){

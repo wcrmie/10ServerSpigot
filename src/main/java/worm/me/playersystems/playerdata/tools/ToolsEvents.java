@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems.PlayerData.Tools;
+package worm.me.playersystems.playerdata.tools;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerItemBreakEvent;

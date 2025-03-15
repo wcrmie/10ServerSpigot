@@ -1,5 +1,4 @@
-package worm.me.PlayerSystems.Abilities.Active;
-
+package worm.me.playersystems.abilities.Active;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -7,7 +6,6 @@ import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
@@ -15,7 +13,7 @@ import org.bukkit.util.Transformation;
 import org.bukkit.util.Vector;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import worm.me.PlayerSystems.Abilities.Abilities;
+import worm.me.playersystems.abilities.Abilities;
 import worm.me.Server;
 
 import java.util.Arrays;

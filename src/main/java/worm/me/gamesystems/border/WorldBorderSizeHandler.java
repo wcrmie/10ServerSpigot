@@ -1,4 +1,4 @@
-package worm.me.WorldBorder;
+package worm.me.gamesystems.border;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -7,8 +7,8 @@ import org.bukkit.WorldBorder;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import worm.me.GameSystems.StructureGeneration.IslandSpawning;
-import worm.me.GameSystems.StructureGeneration.TreasureChests;
+import worm.me.gamesystems.structure.generation.IslandSpawning;
+import worm.me.gamesystems.structure.generation.TreasureChests;
 import worm.me.Server;
 
 import java.util.Arrays;

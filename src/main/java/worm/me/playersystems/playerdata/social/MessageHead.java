@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems.PlayerData.Social;
+package worm.me.playersystems.playerdata.social;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
@@ -67,7 +67,7 @@ public class MessageHead {
             public void run() {
 
                 // Display message character by character
-                PlayerReputation playerReputation = new PlayerReputation(plugin);
+                PlayerReputation playerReputation = new PlayerReputation();
                 char character = m.charAt(finalI[0]);
                 chatMessage[0] = chatMessage[0] + character;
                 chat.setCustomName(ChatColor.of(playerReputation.calcRep(p)) + chatMessage[0]);

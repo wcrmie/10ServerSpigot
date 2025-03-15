@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems.Saddle;
+package worm.me.playersystems.saddle;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Creeper;

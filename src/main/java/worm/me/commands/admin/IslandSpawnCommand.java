@@ -1,9 +1,9 @@
-package worm.me.commands.AdminCommands;
+package worm.me.commands.admin;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import worm.me.GameSystems.StructureGeneration.IslandSpawning;
+import worm.me.gamesystems.structure.generation.IslandSpawning;
 import worm.me.Server;
 
 public class IslandSpawnCommand implements CommandExecutor {

@@ -1,16 +1,11 @@
-package worm.me.PlayerSystems.PlayerData.Levels;
+package worm.me.playersystems.playerdata.levels;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 import worm.me.GuiConstructor;
-import worm.me.Server;
-
-import java.util.List;
 
 public class LevelsGUI {
 

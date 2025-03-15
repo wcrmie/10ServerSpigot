@@ -1,4 +1,4 @@
-package worm.me.Commands;
+package worm.me.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import worm.me.PlayerSystems.PlayerData.Social.MessageHead;
+import worm.me.playersystems.playerdata.social.MessageHead;
 import worm.me.Server;
 
 public class SetVoiceCommand implements CommandExecutor {

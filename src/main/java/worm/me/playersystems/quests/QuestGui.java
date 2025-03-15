@@ -1,17 +1,16 @@
-package worm.me.PlayerSystems.Quests;
+package worm.me.playersystems.quests;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.GuiConstructor;
-import worm.me.Server;
 
 import java.util.List;
-import java.util.Map;
 
 public class QuestGui {
 
@@ -24,9 +23,27 @@ public class QuestGui {
         Inventory GUI = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Quests", 27);
 
         for (int i = 0; i < 3; i++){
-            GUI.setItem(2*i + 9, GuiConstructor.createGuiItem(getQuestMaterial(p, i), ChatColor.GRAY + getQuestName(p, i)," ",
+
+            ItemStack item = GuiConstructor.createGuiItem(getQuestMaterial(p, i), ChatColor.GRAY + getQuestName(p, i)," ",
                     ChatColor.DARK_GRAY + getQuestDescription(p, i),
-                    ChatColor.LIGHT_PURPLE + "Progress: " + container.getOrDefault(questAssign.dailyprogress, PersistentDataType.INTEGER_ARRAY, new int[3])[i] + "/" + getQuestRequiredProgress(p, i)));
+                    ChatColor.LIGHT_PURPLE + "Progress: " +
+                            (container.getOrDefault(questAssign.dailyprogress, PersistentDataType.INTEGER_ARRAY, new int[3])[i] == -1 ? getQuestRequiredProgress(p, i) : container.getOrDefault(questAssign.dailyprogress, PersistentDataType.INTEGER_ARRAY, new int[3])[i]) +
+                            "/" + getQuestRequiredProgress(p, i));
+
+            if (container.getOrDefault(questAssign.dailyprogress, PersistentDataType.INTEGER_ARRAY, new int[3])[i] == -1){
+
+                ItemMeta meta = item.getItemMeta();
+
+                 List<String> lore = meta.getLore();
+
+                 lore.add(ChatColor.BOLD + "" + ChatColor.GREEN + "COMPLETE");
+
+
+                 lore.add(ChatColor.GRAY + "Click to claim rewards!");
+
+            }
+
+            GUI.setItem(2*i + 11, item);
         }
 
         p.openInventory(GUI);

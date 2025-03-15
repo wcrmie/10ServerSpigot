@@ -1,4 +1,4 @@
-package worm.me.GameSystems.StructureGeneration;
+package worm.me.gamesystems.structure.generation;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
@@ -15,7 +15,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
 import worm.me.Server;
-import worm.me.WorldBorder.WorldBorderSizeHandler;
+import worm.me.gamesystems.border.WorldBorderSizeHandler;
 
 import java.io.File;
 import java.io.FileInputStream;

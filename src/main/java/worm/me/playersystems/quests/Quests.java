@@ -1,6 +1,6 @@
-package worm.me.PlayerSystems.Quests;
+package worm.me.playersystems.quests;
 
-import org.bukkit.Material;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -8,12 +8,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Quests {
-
-    public static List<List<String>> questRewards = new ArrayList<>();
 
     public int getQuestSlot(Integer ID, Player p){
 
@@ -39,10 +34,15 @@ public class Quests {
 
         int[] questProgress = container.getOrDefault(new NamespacedKey(Server.getPlugin(), "questprogress"), PersistentDataType.INTEGER_ARRAY, new int[3]);
 
+        // If quest is completed
         if (slot == -1){
             return;
+
         } else {
             questProgress[slot]++;
+
+            Bukkit.getServer().getPluginManager().callEvent(new QuestProgressEvent(QuestID, questProgress[slot], slot, Integer.parseInt(QuestInitialize.dailyQuestAttributes.get(QuestID).get(2)), p));
+
         }
     }
 
@@ -50,23 +50,55 @@ public class Quests {
 
             PersistentDataContainer container = p.getPersistentDataContainer();
 
+            int slot = getQuestSlot(QuestID, p);
+
+            int[] questProgress = container.getOrDefault(new NamespacedKey(Server.getPlugin(), "questprogress"), PersistentDataType.INTEGER_ARRAY, new int[3]);
+
+            questProgress[slot] = -1;
+
+            Bukkit.getServer().getPluginManager().callEvent(new QuestCompleteEvent(QuestID, p, slot));
+
+            container.set(new NamespacedKey(Server.getPlugin(), "questprogress"), PersistentDataType.INTEGER_ARRAY, questProgress);
+
     }
 
-    public void claimQuestRewards(Integer QuestID, Player P) {
+    public void claimQuestRewards(Integer QuestID, Player player) {
 
-        for (int i = 0; i < questRewards.get(QuestID).size(); i++) {
-
-            String[] reward = questRewards.get(QuestID).get(i).split("_");
-
-            if (reward[0].equals("0")) {
-
-                //ItemStack item = ItemStack.deserialize(reward[1]);
-                //P.getInventory().addItem(item);
-
-
-            }
+        if (QuestID == 0) {
+            handleQuestRewards(QuestRewards.MINE_STONE_REWARD, player);
+        } else if (QuestID == 1) {
+            handleQuestRewards(QuestRewards.COLLECT_IRON_REWARD, player);
+        } else if (QuestID == 2) {
+            handleQuestRewards(QuestRewards.GO_FISH_REWARD, player);
+        } else if (QuestID == 3) {
+            handleQuestRewards(QuestRewards.BUILD_SNOWMEN_REWARD, player);
+        } else if (QuestID == 4) {
+            handleQuestRewards(QuestRewards.KILL_MOBS_REWARD, player);
+        } else if (QuestID == 5) {
+            handleQuestRewards(QuestRewards.FISH_SADDLE_REWARD, player);
+        } else if (QuestID == 6) {
+            handleQuestRewards(QuestRewards.GROW_TREES_REWARD, player);
+        } else if (QuestID == 7) {
+            handleQuestRewards(QuestRewards.EAT_GAPPLE_REWARD, player);
         }
+
     }
 
+    public void handleQuestRewards(QuestRewards rewards, Player player) {
+
+        int slots = 0;
+
+        for (ItemStack item : player.getInventory().getContents()) {
+
+            if (item.getType().isAir()) slots++;
+
+        }
+
+        for (ItemStack item : rewards.getItems()) {
+            player.getInventory().addItem(item);
+        }
+
+
+    }
 
 }

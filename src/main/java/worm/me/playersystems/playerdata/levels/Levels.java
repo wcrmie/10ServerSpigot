@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems.PlayerData.Levels;
+package worm.me.playersystems.playerdata.levels;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -9,18 +9,18 @@ import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
-import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerHarvestBlockEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import worm.me.GameSystems.Fishing.FishingSystem;
 import worm.me.Server;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * @author worm
+ */
 public class Levels {
 
     private final Server plugin = Server.getPlugin();
@@ -59,6 +59,13 @@ public class Levels {
     }
 
     // Creates a public exp-adding method
+
+    /**
+     * Adds experience to a player's skill
+     * @param exp The amount of experience to add
+     * @param skill The skill to add experience to
+     * @param player The player to add experience to
+     */
     public static void addExp(long exp, int skill, Player player){
 
         PersistentDataContainer container = player.getPersistentDataContainer();
@@ -81,10 +88,10 @@ public class Levels {
         PersistentDataContainer container = player.getPersistentDataContainer();
         int skillIndex = skillTranslation(skill);
 
-        return container.get(Exp, PersistentDataType.LONG_ARRAY)[skillIndex];
+        return container.getOrDefault(Exp, PersistentDataType.LONG_ARRAY, new long[0])[skillIndex];
     }
 
-    public static void levelUp(int skill, Player player ){
+    public static void levelUp(int skill, Player player){
         PersistentDataContainer container = player.getPersistentDataContainer();
 
         int[] levels = container.get(Levels, PersistentDataType.INTEGER_ARRAY);
@@ -100,7 +107,7 @@ public class Levels {
     }
 
     public static int getLevel(int skill, Player player){
-        return player.getPersistentDataContainer().get(Levels, PersistentDataType.INTEGER_ARRAY)[skill];
+        return player.getPersistentDataContainer().getOrDefault(Levels, PersistentDataType.INTEGER_ARRAY, new int[0])[skill];
     }
 
     public static void setLevel(int skill, Player player, Integer level){
@@ -110,56 +117,75 @@ public class Levels {
         player.getPersistentDataContainer().set(Levels, PersistentDataType.INTEGER_ARRAY, levelArray);
     }
 
-    public static void expHandler(Player p, Event event){
+    public static void expHandler(Player p, Event e){
 
-        if (event.getEventName().equals("BlockBreakEvent")) {
+        if (e.getEventName().equals("BlockBreakEvent")) {
 
-            BlockBreakEvent e = (BlockBreakEvent) event;
+            BlockBreakEvent event = (BlockBreakEvent) e;
 
-            if (Server.getPlugin().miningBlocks.containsKey(e.getBlock().getType())) {
-                addExp(Server.getPlugin().miningBlocks.get(e.getBlock().getType()), skillTranslation("Mining"), p);
-            } else if (Server.getPlugin().foragingBlocks.containsKey(e.getBlock().getType())) {
-                addExp(Server.getPlugin().foragingBlocks.get(e.getBlock().getType()), skillTranslation("Foraging"), p);
-            } else if (Server.getPlugin().farmingBlocks.containsKey(e.getBlock().getType())) {
+            if (Server.getPlugin().miningBlocks.containsKey(event.getBlock().getType())) {
+                addExp(Server.getPlugin().miningBlocks.get(event.getBlock().getType()), skillTranslation("Mining"), p);
 
-                if (e.getBlock().getBlockData() instanceof Ageable crop) {
+
+
+            } else if (Server.getPlugin().foragingBlocks.containsKey(event.getBlock().getType())) {
+                addExp(Server.getPlugin().foragingBlocks.get(event.getBlock().getType()), skillTranslation("Foraging"), p);
+
+
+
+            } else if (Server.getPlugin().farmingBlocks.containsKey(event.getBlock().getType())) {
+
+                if (event.getBlock().getBlockData() instanceof Ageable crop) {
                     if (crop.getAge() != crop.getMaximumAge()) {
                         return;
                     }
 
-                    addExp(Server.getPlugin().farmingBlocks.get(e.getBlock().getType()), skillTranslation("Farming"), p);
+                    addExp(Server.getPlugin().farmingBlocks.get(event.getBlock().getType()), skillTranslation("Farming"), p);
 
                 } else {
-                    addExp(Server.getPlugin().farmingBlocks.get(e.getBlock().getType()), skillTranslation("Farming"), p);
+                    addExp(Server.getPlugin().farmingBlocks.get(event.getBlock().getType()), skillTranslation("Farming"), p);
                 }
             }
-            
-        } else if (event.getEventName().equals("EntityDeathEvent")) {
 
-            EntityDeathEvent e = (EntityDeathEvent) event;
 
-            if (Server.getPlugin().combatMobs.containsKey(e.getEntityType())) {
 
-                addExp(Server.getPlugin().combatMobs.get(e.getEntityType()), skillTranslation("Combat"), p);
+
+        } else if (e.getEventName().equals("EntityDeathEvent")) {
+
+            EntityDeathEvent event = (EntityDeathEvent) e;
+
+            if (Server.getPlugin().combatMobs.containsKey(event.getEntityType())) {
+
+                addExp(Server.getPlugin().combatMobs.get(event.getEntityType()), skillTranslation("Combat"), p);
             }
 
-        } else if (event.getEventName().equals("FurnaceExtractEvent")) {
 
-            FurnaceExtractEvent e = (FurnaceExtractEvent) event;
 
-            if (Server.getPlugin().smithingItems.containsKey(e.getItemType())) {
 
-                addExp(Server.getPlugin().smithingItems.get(e.getItemType()) * e.getItemAmount(), skillTranslation("Smithing"), p);
+        } else if (e.getEventName().equals("FurnaceExtractEvent")) {
+
+            FurnaceExtractEvent event = (FurnaceExtractEvent) e;
+
+            if (Server.getPlugin().smithingItems.containsKey(event.getItemType())) {
+
+                addExp(Server.getPlugin().smithingItems.get(event.getItemType()) * event.getItemAmount(), skillTranslation("Smithing"), p);
             }
 
-        } else if (event.getEventName().equals("PlayerHarvestEvent")) {
 
-            PlayerHarvestBlockEvent e = (PlayerHarvestBlockEvent) event;
 
-            if (Server.getPlugin().farmingBlocks.containsKey(e.getHarvestedBlock().getType())){
-                addExp(Server.getPlugin().farmingBlocks.get(e.getHarvestedBlock().getType()), skillTranslation("Farming"), p);
+
+        } else if (e.getEventName().equals("PlayerHarvestEvent")) {
+
+            PlayerHarvestBlockEvent event = (PlayerHarvestBlockEvent) e;
+
+            if (Server.getPlugin().farmingBlocks.containsKey(event.getHarvestedBlock().getType())){
+                addExp(Server.getPlugin().farmingBlocks.get(event.getHarvestedBlock().getType()), skillTranslation("Farming"), p);
             }
-        } else if (event.getEventName().equals("PlayerFishEvent")) {
+
+
+
+
+        } else if (e.getEventName().equals("PlayerFishEvent")) {
 
 
         }

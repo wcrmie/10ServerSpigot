@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems;
+package worm.me.playersystems;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -7,14 +7,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import worm.me.GameSystems.Recipes.RecipesGUI;
+import worm.me.gamesystems.recipes.RecipesGUI;
 import worm.me.GuiConstructor;
-import worm.me.PlayerSystems.Abilities.Abilities;
-import worm.me.PlayerSystems.Abilities.AbilitiesGUI;
-import worm.me.PlayerSystems.Generator.GeneratorEdit;
-import worm.me.PlayerSystems.PlayerData.PlayerProfileGUI;
-import worm.me.PlayerSystems.PlayerData.Social.Hats.Hats;
-import worm.me.PlayerSystems.PlayerData.Social.Skin.SkinGui;
+import worm.me.playersystems.abilities.AbilitiesGUI;
+import worm.me.playersystems.generator.GeneratorEdit;
+import worm.me.playersystems.playerdata.PlayerProfileGUI;
+import worm.me.playersystems.playerdata.social.hats.Hats;
+import worm.me.playersystems.playerdata.social.skins.SkinGui;
 import worm.me.Server;
 
 public class MainGUIMenu {

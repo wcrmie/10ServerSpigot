@@ -1,45 +1,48 @@
-package worm.me.GameSystems.Recipes;
+package worm.me.gamesystems.recipes;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
+import worm.me.GuiConstructor;
 import worm.me.Server;
 
-import java.lang.constant.Constable;
 import java.util.*;
 
 public class Recipes {
 
-    public static Map<ItemStack, List<? extends Constable>> shapedRecipeMap = new HashMap<>();
+    public static Map<ItemStack, List<List<ItemStack>>> shapedRecipeMap = new HashMap<>();
 
     public void addRecipes(){
 
         // ID 0
-        shapedRecipeMap.put(new ItemStack(Material.RAIL, 4), List.of("CHEAP_RAILS", Material.STICK, Material.AIR, Material.STICK, Material.STICK, Material.IRON_NUGGET, Material.STICK, Material.STICK, Material.AIR, Material.STICK));
-        shapedRecipeMap.put(new ItemStack(Material.POWERED_RAIL, 2), List.of("CHEAP_POWERED_RAILS", Material.STICK, Material.REDSTONE, Material.STICK, Material.STICK, Material.GOLD_NUGGET, Material.STICK, Material.STICK, Material.AIR, Material.STICK));
+        shapedRecipeMap.put(new ItemStack(Material.RAIL, 4), List.of(List.of(new ItemStack(Material.STICK), new ItemStack(Material.AIR), new ItemStack(Material.STICK), new ItemStack(Material.STICK), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.STICK),
+                new ItemStack(Material.STICK), new ItemStack(Material.AIR), new ItemStack(Material.STICK)), List.of(GuiConstructor.createGuiItem(Material.STONE, "CHEAP_RAILS"))));
+        shapedRecipeMap.put(new ItemStack(Material.POWERED_RAIL, 2), List.of(List.of(new ItemStack(Material.STICK), new ItemStack(Material.REDSTONE), new ItemStack(Material.STICK), new ItemStack(Material.STICK), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.STICK),
+               new ItemStack(Material.STICK), new ItemStack(Material.AIR), new ItemStack(Material.STICK)), List.of(GuiConstructor.createGuiItem(Material.STONE, "CHEAP_POWERED_RAILS"))));
 
 
         shapedRecipes(shapedRecipeMap);
 
     }
 
-    public void shapedRecipes(Map<ItemStack, List<? extends Constable>> recipe) {
+    public void shapedRecipes(Map<ItemStack, List<List<ItemStack>>> recipe) {
 
         Set<ItemStack> keys = recipe.keySet();
 
         for (ItemStack key : keys) {
 
-            List<? extends Constable> values = recipe.get(key);
+            List<List<ItemStack>> values = recipe.get(key);
 
-            if (Bukkit.getRecipe(new NamespacedKey(Server.getPlugin(), values.getFirst().toString())) == null){
-                ShapedRecipe shapedRecipe = new ShapedRecipe(new NamespacedKey(Server.getPlugin(), values.getFirst().toString()), key);
+            if (Bukkit.getRecipe(new NamespacedKey(Server.getPlugin(), values.get(1).getFirst().getItemMeta().getDisplayName())) == null){
+                ShapedRecipe shapedRecipe = new ShapedRecipe(new NamespacedKey(Server.getPlugin(), values.get(1).getFirst().getItemMeta().getDisplayName()), key);
 
                 String shape = "";
 
-                for (int i = 1; i < 10; i++) {
-                    if (values.get(i) == Material.AIR){
+                for (int i = 0; i < 9; i++) {
+                    if (values.getFirst().get(i).getType() == Material.AIR){
                         shape =  shape + " ";
                     } else {
 
@@ -48,7 +51,7 @@ public class Recipes {
                         shape = shape + c;
                     }
 
-                    if (i % 3 == 0){
+                    if ((i + 1) % 3 == 0){
                         shape = shape + ",";
                     }
                 }
@@ -57,18 +60,15 @@ public class Recipes {
 
                 System.out.println(Arrays.toString(shape.split(",")));
 
-                for (int i = 1; i < 10; i++) {
-                    if (values.get(i) == Material.AIR){
-                        continue;
-                    } else {
+                for (int i = 0; i < 9; i++) {
+                    if (values.getFirst().get(i).getType() != Material.AIR){
 
                         char c = (char) (i + 64);
 
-                        shapedRecipe.setIngredient(c, (Material) values.get(i));
+                        shapedRecipe.setIngredient(c, new RecipeChoice.ExactChoice(values.getFirst().get(i)));
+
                     }
 
-                    if ((i - 1) % 3 == 0 && i != 1){
-                    }
                 }
 
                 Bukkit.addRecipe(shapedRecipe);

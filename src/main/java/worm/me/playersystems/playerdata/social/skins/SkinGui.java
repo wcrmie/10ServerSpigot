@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems.PlayerData.Social.Skin;
+package worm.me.playersystems.playerdata.social.skins;
 
 import net.skinsrestorer.api.storage.SkinStorage;
 import org.bukkit.ChatColor;

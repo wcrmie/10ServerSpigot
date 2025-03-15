@@ -1,4 +1,4 @@
-package worm.me.commands.AdminCommands;
+package worm.me.commands.admin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import worm.me.PlayerSystems.PlayerData.Social.MessageHead;
+import worm.me.playersystems.playerdata.social.MessageHead;
 import worm.me.Server;
 
 public class SetPlayerCharLimCommand implements CommandExecutor {

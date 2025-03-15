@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems.Generator;
+package worm.me.playersystems.generator;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

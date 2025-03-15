@@ -1,8 +1,7 @@
-package worm.me.PlayerSystems.PlayerData;
+package worm.me.playersystems.playerdata;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,12 +11,11 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
-import worm.me.PlayerSystems.Abilities.Abilities;
-import worm.me.PlayerSystems.PlayerData.Social.Hats.Hats;
-import worm.me.PlayerSystems.PlayerData.Social.MessageHead;
-import worm.me.PlayerSystems.PlayerData.Social.Skin.Skin;
-import worm.me.PlayerSystems.PlayerData.Tools.Tools;
-import worm.me.PlayerSystems.Quests.QuestAssign;
+import worm.me.playersystems.abilities.Abilities;
+import worm.me.playersystems.playerdata.social.MessageHead;
+import worm.me.playersystems.playerdata.social.skins.Skin;
+import worm.me.playersystems.playerdata.tools.Tools;
+import worm.me.playersystems.quests.QuestAssign;
 import worm.me.Server;
 
 import java.io.ByteArrayInputStream;
@@ -221,6 +219,10 @@ public class VoidPlayer {
 
         if (!container.has(new NamespacedKey(Server.getPlugin(), "dailyprogress"), PersistentDataType.INTEGER_ARRAY)) {
             container.set(new NamespacedKey(Server.getPlugin(), "dailyprogress"), PersistentDataType.INTEGER_ARRAY, new int[3]);
+        }
+
+        if (!container.has(new NamespacedKey(Server.getPlugin(), "questclaimed"), PersistentDataType.INTEGER_ARRAY)) {
+            container.set(new NamespacedKey(Server.getPlugin(), "questclaimed"), PersistentDataType.INTEGER_ARRAY, new int[3]);
         }
 
         MessageHead messageHead = new MessageHead(plugin);

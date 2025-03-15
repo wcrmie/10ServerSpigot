@@ -1,4 +1,4 @@
-package worm.me.PlayerSystems.PlayerData.Social.Hats;
+package worm.me.playersystems.playerdata.social.hats;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -7,12 +7,9 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.GuiConstructor;
 import worm.me.Server;
-
-import java.util.List;
 
 public class Hats {
 

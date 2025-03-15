@@ -1,4 +1,4 @@
-package worm.me.GameSystems.Recipes;
+package worm.me.gamesystems.recipes;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -7,7 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import worm.me.GuiConstructor;
-import worm.me.PlayerSystems.MainGUIMenu;
+import worm.me.playersystems.MainGUIMenu;
 import worm.me.Server;
 
 public class RecipesGUI {
@@ -62,12 +62,12 @@ public class RecipesGUI {
 
         int slot = 9;
 
-        for (int i = 1; i < 10; i++){
+        for (int i = 0; i < 9; i++){
 
             slot ++;
 
-            if (!Recipes.shapedRecipeMap.get(recipe).get(i).equals(Material.AIR)) {
-                gui.setItem(slot, GuiConstructor.createGuiItem((Material) Recipes.shapedRecipeMap.get(recipe).get(i), ""));
+            if (!Recipes.shapedRecipeMap.get(recipe).getFirst().get(i).getType().isAir()) {
+                gui.setItem(slot, Recipes.shapedRecipeMap.get(recipe).getFirst().get(i));
             } else {
                 gui.setItem(slot, new ItemStack(Material.AIR));
             }

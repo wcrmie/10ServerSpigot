@@ -1,19 +1,16 @@
-package worm.me.PlayerSystems.Generator;
+package worm.me.playersystems.generator;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import worm.me.GuiConstructor;
-import worm.me.PlayerSystems.PlayerData.Unlocks;
-import worm.me.PlayerSystems.PlayerData.VoidPlayer;
+import worm.me.playersystems.playerdata.Unlocks;
+import worm.me.playersystems.playerdata.VoidPlayer;
 import worm.me.Server;
 
 import java.util.Arrays;
