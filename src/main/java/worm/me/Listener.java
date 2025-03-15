@@ -25,7 +25,7 @@ import worm.me.playersystems.*;
 import worm.me.playersystems.abilities.AbilitiesGUI;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
-import worm.me.playersystems.abilities.Active.FrogGrab;
+import worm.me.playersystems.abilities.active.FrogGrab;
 import worm.me.playersystems.generator.Generator;
 import worm.me.playersystems.generator.GeneratorEdit;
 import worm.me.playersystems.playerdata.*;

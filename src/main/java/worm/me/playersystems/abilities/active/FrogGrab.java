@@ -1,4 +1,4 @@
-package worm.me.playersystems.abilities.Active;
+package worm.me.playersystems.abilities.active;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class FrogGrab {
     public final Abilities ability = new Abilities();

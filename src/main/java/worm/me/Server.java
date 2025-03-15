@@ -22,7 +22,7 @@ import worm.me.commands.gui.OpenSkinGUICommand;
 import worm.me.gamesystems.recipes.Recipes;
 import worm.me.gamesystems.ArtBlocks;
 import worm.me.playersystems.abilities.Abilities;
-import worm.me.playersystems.abilities.Active.FrogGrab;
+import worm.me.playersystems.abilities.active.FrogGrab;
 import worm.me.playersystems.quests.QuestInitialize;
 import worm.me.playersystems.PlayerSpawning;
 import worm.me.playersystems.saddle.SaddleSystem;

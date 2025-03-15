@@ -1,9 +1,9 @@
-package worm.me.PlayerSystems.Abilities.Active;
+package worm.me.playersystems.abilities.active;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import worm.me.PlayerSystems.Abilities.Abilities;
+import worm.me.playersystems.abilities.Abilities;
 
 public class AbliityScream {
 

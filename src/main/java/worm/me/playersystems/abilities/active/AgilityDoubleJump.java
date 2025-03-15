@@ -1,4 +1,4 @@
-package worm.me.playersystems.abilities.Active;
+package worm.me.playersystems.abilities.active;
 
 import org.bukkit.Particle;
 import org.bukkit.Sound;

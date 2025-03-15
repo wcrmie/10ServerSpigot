@@ -1,19 +1,16 @@
-package worm.me.playersystems.abilities.Active;
+package worm.me.playersystems.abilities.active;
 
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.playerdata.levels.Levels;
 
 
-public class AgilityDash {
+public class AgilityLeap {
 
-    private final Abilities ability = new Abilities();
-
-    public void dash(Player p){
+    public void leap(Player p){
         Vector direction = p.getLocation().getDirection();
-        direction.multiply(1.5);
-        direction.setY(0.5);
+        direction.multiply(0.1);
+        direction.setY(1.25);
         p.setVelocity(direction);
         Levels.addExp(5L, Levels.skillTranslation("Agility"), p);
     }
