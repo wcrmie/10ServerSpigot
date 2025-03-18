@@ -128,7 +128,7 @@ public class Abilities {
             AgilityDoubleJump doubleJump = new AgilityDoubleJump();
             doubleJump.doubleJump(p);
 
-            cooldowns[getAbilitySlot(p, 2)] = System.currentTimeMillis()/1000L + 15;
+            cooldowns[getAbilitySlot(p, 2)] = System.currentTimeMillis()/1000L + 10;
 
         } else if (abilityID == 3){
 

@@ -23,6 +23,7 @@ import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.gamesystems.ArtBlocks;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.playersystems.abilities.Abilities;
+import worm.me.playersystems.abilities.active.AgilityDoubleJump;
 import worm.me.playersystems.abilities.active.FrogGrab;
 import worm.me.playersystems.quests.QuestInitialize;
 import worm.me.playersystems.PlayerSpawning;
@@ -365,6 +366,10 @@ public final class Server extends JavaPlugin {
 
         FrogGrab.cancelAllGrabs();
         FrogGrab.clearAllMovementRestrictions();
+
+        ShadowStep.cancelAllGhosts();
+
+        AgilityDoubleJump.cancelAllPlatforms();
 
 
     }
