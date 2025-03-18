@@ -25,6 +25,7 @@ import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.AgilityDoubleJump;
 import worm.me.playersystems.abilities.active.FrogGrab;
+import worm.me.playersystems.abilities.active.ShadowStep;
 import worm.me.playersystems.quests.QuestInitialize;
 import worm.me.playersystems.PlayerSpawning;
 import worm.me.playersystems.saddle.SaddleSystem;
@@ -370,7 +371,6 @@ public final class Server extends JavaPlugin {
         ShadowStep.cancelAllGhosts();
 
         AgilityDoubleJump.cancelAllPlatforms();
-
 
     }
 

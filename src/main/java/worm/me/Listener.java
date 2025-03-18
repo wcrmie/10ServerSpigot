@@ -22,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.Vector;
 import worm.me.gamesystems.fishing.FishingSystem;
 import worm.me.gamesystems.ArtBlocks;
 import worm.me.gamesystems.recipes.RecipesGUI;
@@ -385,6 +386,33 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
     @EventHandler
+    public void onEntityDamage(EntityDamageEvent e){
+        if (e.getEntity() instanceof Player && e.getCause() == EntityDamageEvent.DamageCause.FALL){
+            Player player = (Player) e.getEntity();
+            Abilities ability = new Abilities();
+            if (ability.isActive(player,8) && !player.isSneaking()){
+
+                if (player.getInventory().getBoots() != null) {
+                    ItemStack item = player.getInventory().getBoots();
+                    if (player.getInventory().getBoots().hasItemMeta()) {
+                        ItemMeta meta = item.getItemMeta();
+                        if (meta != null) {
+                            PersistentDataContainer data = meta.getPersistentDataContainer();
+                            NamespacedKey key = new NamespacedKey(plugin, "slimeboots");
+                            if (data.has(key, PersistentDataType.STRING)) {
+                                String tagValue = data.get(key, PersistentDataType.STRING);
+
+                                e.setCancelled(true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    @EventHandler
     public void onEnchantTable(InventoryOpenEvent e){
         if (!e.getInventory().getType().equals(InventoryType.ENCHANTING)) return;
         e.setCancelled(true);
@@ -422,6 +450,28 @@ public class Listener implements org.bukkit.event.Listener {
                 Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(6, e.getPlayer()));
             }
 
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.GRAY_STAINED_GLASS && e.getPlayer().isSneaking()) {
+                Player player = e.getPlayer();
+
+                Block blockBelow = player.getLocation().subtract(0, 0.1, 0).getBlock();
+
+                Location playerLoc = player.getLocation();
+                Vector direction = playerLoc.getDirection();
+                direction.setY(0);
+                if (direction.length() > 0) {
+                    direction.normalize();
+                }
+
+                Location finalLocation = playerLoc.clone();
+                finalLocation.add(direction.multiply(5));
+
+                Block finalFeetBlock = finalLocation.getBlock();
+                Block finalHeadBlock = finalLocation.clone().add(0, 1, 0).getBlock();
+
+                if (blockBelow.getType().isSolid() && finalFeetBlock.isPassable() && finalHeadBlock.isPassable()) {
+                    Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(7, player));
+                }
+            }
 
 
             if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.PINK_CONCRETE_POWDER && e.getPlayer().isSneaking()) {
@@ -430,10 +480,11 @@ public class Listener implements org.bukkit.event.Listener {
                     ItemMeta meta = item.getItemMeta();
                     if (meta != null) {
                         PersistentDataContainer data = meta.getPersistentDataContainer();
-                       // NamespacedKey key = new NamespacedKey(plugin, "tongue");
-                       // if (data.has(key, PersistentDataType.STRING)) {
+                        NamespacedKey key = new NamespacedKey(plugin, "tongue");
+                        if (data.has(key, PersistentDataType.STRING)) {
+                            String tagValue = data.get(key, PersistentDataType.STRING);
                             Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(5, e.getPlayer()));
-                      //  }
+                        }
                     }
                 }
             }

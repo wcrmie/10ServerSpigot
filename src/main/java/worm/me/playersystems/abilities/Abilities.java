@@ -11,6 +11,7 @@ import worm.me.playersystems.abilities.active.AgilityLeap;
 import worm.me.playersystems.abilities.active.FrogGrab;
 import worm.me.playersystems.abilities.active.*;
 import worm.me.Server;
+import worm.me.playersystems.abilities.passive.SlimeBoots;
 
 import java.util.*;
 
@@ -52,6 +53,12 @@ public class Abilities {
 
         // ID 6
         abilityGuiComponents.put(6, List.of("SCREAM", "GOAT_HORN", "Scream while holding a note block " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK]"));
+
+        // ID 7
+        abilityGuiComponents.put(7, List.of("Shadow Step", "GRAY_STAINED_GLASS", "move forward through walls with a path of shadows following you while holding Gray Stained Glass Block" + ChatColor.GRAY + "[SNEAK] + [Left-Click]"));
+
+        // ID 8
+        abilityGuiComponents.put(8, List.of("Slime Boots", "SLIME_BALL", "Bounce while wearing slime boots " + ChatColor.GRAY + "[SNEAK] to Deactivate "));
     }
 
     public void initializeRequirements(){
@@ -64,6 +71,8 @@ public class Abilities {
         abilityRequirements.put(4, new int[]{0, 0, 0, 0, 0, 0, 20, 0});
         abilityRequirements.put(5, new int[]{10, 40, 0, 50, 0, 0, 20, 0});
         abilityRequirements.put(6, new int[]{20, 10, 5, 15, 0, 0, 10, 20});
+        abilityRequirements.put(7, new int[]{20, 0, 5, 0, 5, 5, 25, 0});
+        abilityRequirements.put(8, new int[]{10, 0, 5, 10, 10, 0, 10, 0});
     }
 
     public List<Integer> getActiveAbilities(Player p){
@@ -156,7 +165,18 @@ public class Abilities {
 
             cooldowns[getAbilitySlot(p, 6)] = System.currentTimeMillis()/1000L + 30;
 
+        } else if (abilityID == 7){
+
+            ShadowStep ShadowStep = new ShadowStep();
+            ShadowStep.shadowStep(p);
+
+            cooldowns[getAbilitySlot(p, 7)] = System.currentTimeMillis()/1000L + 25;
+
+        } else if (abilityID == 8) {
+            SlimeBoots SlimeBoots = new SlimeBoots();
+            SlimeBoots.bounce(p);
         }
+
 
 
         container.set(abilityCooldown, PersistentDataType.LONG_ARRAY, cooldowns);
