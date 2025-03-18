@@ -22,6 +22,7 @@ import worm.me.commands.gui.OpenSkinGUICommand;
 import worm.me.gamesystems.recipes.Recipes;
 import worm.me.gamesystems.ArtBlocks;
 import worm.me.playersystems.abilities.Abilities;
+import worm.me.playersystems.abilities.active.AgilityDoubleJump;
 import worm.me.playersystems.abilities.active.FrogGrab;
 import worm.me.playersystems.abilities.active.ShadowStep;
 import worm.me.playersystems.quests.QuestInitialize;
@@ -364,6 +365,8 @@ public final class Server extends JavaPlugin {
         FrogGrab.clearAllMovementRestrictions();
 
         ShadowStep.cancelAllGhosts();
+
+        AgilityDoubleJump.cancelAllPlatforms();
 
 
     }
