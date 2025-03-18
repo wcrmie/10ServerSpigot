@@ -13,9 +13,12 @@ import org.bukkit.event.player.PlayerHarvestBlockEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
+import worm.me.gamesystems.blocks.LootTable;
+import worm.me.gamesystems.blocks.RollTable;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -130,6 +133,17 @@ public class Levels {
 
             } else if (Server.getPlugin().foragingBlocks.containsKey(event.getBlock().getType())) {
                 addExp(Server.getPlugin().foragingBlocks.get(event.getBlock().getType()), skillTranslation("Foraging"), p);
+
+                if (event.getBlock().getType().equals(Material.DIRT)) {
+                    Server.pluginMessage("Dirt broken", p);
+                    ((BlockBreakEvent) e).setDropItems(false);
+
+                    Location loc = ((BlockBreakEvent) e).getBlock().getLocation();
+
+                    loc.add(0.5, 0, 0.5);
+
+                    loc.getWorld().dropItemNaturally(loc, Objects.requireNonNull(RollTable.rollTable(LootTable.DIRT)));
+                }
 
 
 

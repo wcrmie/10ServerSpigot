@@ -1,0 +1,71 @@
+package worm.me.gamesystems.recipes;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
+import worm.me.GuiConstructor;
+import worm.me.Server;
+
+import java.util.*;
+
+public class ShapelessRecipes {
+
+    public static Map<ItemStack, List<List<ItemStack>>> shapelessRecipeMap = new HashMap<>();
+
+    public void addRecipes(){
+
+        // ID 0
+        shapelessRecipeMap.put(GuiConstructor.createGuiItem(Material.COOKED_MUTTON, ChatColor.WHITE + "Salted Jerky"), List.of(List.of(new ItemStack(Material.ROTTEN_FLESH), GuiConstructor.createGuiItem(Material.QUARTZ, ChatColor.WHITE + "Salt")), List.of(GuiConstructor.createGuiItem(Material.STONE, "SALTED_JERKY"))));
+
+
+        // ID 1
+        ItemStack snowball = new ItemStack(Material.SNOWBALL);
+
+        ItemMeta meta = snowball.getItemMeta();
+
+        meta.setDisplayName(ChatColor.WHITE + "Portable Snowman");
+
+        meta.getPersistentDataContainer().set(new NamespacedKey(Server.getPlugin(), "snowman"), PersistentDataType.STRING, "snowman");
+
+        snowball.setItemMeta(meta);
+
+        shapelessRecipeMap.put(snowball, List.of(List.of(new ItemStack(Material.CARVED_PUMPKIN), new ItemStack(Material.SNOW_BLOCK), new ItemStack(Material.SNOW_BLOCK)), List.of(GuiConstructor.createGuiItem(Material.STONE, "PORTABLE_SNOWMAN"))));
+
+
+        shapelessRecipes(shapelessRecipeMap);
+
+    }
+
+    public void shapelessRecipes(Map<ItemStack, List<List<ItemStack>>> recipe) {
+
+        Set<ItemStack> keys = recipe.keySet();
+
+        for (ItemStack key : keys) {
+
+            List<List<ItemStack>> values = recipe.get(key);
+
+            if (Bukkit.getRecipe(new NamespacedKey(Server.getPlugin(), values.get(1).getFirst().getItemMeta().getDisplayName())) == null){
+                ShapelessRecipe shapedRecipe = new ShapelessRecipe(new NamespacedKey(Server.getPlugin(), values.get(1).getFirst().getItemMeta().getDisplayName()), key);
+
+                for (int i = 0; i < recipe.get(key).size(); i++) {
+                    if (values.getFirst().get(i).getType() != Material.AIR){
+
+                        shapedRecipe.addIngredient(new RecipeChoice.ExactChoice(values.getFirst().get(i)));
+
+                    }
+                }
+                Bukkit.addRecipe(shapedRecipe);
+
+            }
+        }
+    }
+
+
+}

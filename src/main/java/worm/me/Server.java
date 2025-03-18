@@ -19,8 +19,9 @@ import worm.me.commands.gui.HatsCommand;
 import worm.me.commands.gui.OpenAbilitiesGUICommand;
 import worm.me.commands.gui.OpenLevelsGUICommand;
 import worm.me.commands.gui.OpenSkinGUICommand;
-import worm.me.gamesystems.recipes.Recipes;
+import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.gamesystems.ArtBlocks;
+import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.FrogGrab;
 import worm.me.playersystems.quests.QuestInitialize;
@@ -85,10 +86,13 @@ public final class Server extends JavaPlugin {
 
         // Add custom recipes
 
-        Recipes recipes = new Recipes();
+        ShapedRecipes shapedRecipes = new ShapedRecipes();
 
-        recipes.removeRecipes();
-        recipes.addRecipes();
+        ShapelessRecipes shapelessRecipes = new ShapelessRecipes();
+
+        shapedRecipes.removeRecipes();
+        shapedRecipes.addRecipes();
+        shapelessRecipes.addRecipes();
 
 
         // Register commands

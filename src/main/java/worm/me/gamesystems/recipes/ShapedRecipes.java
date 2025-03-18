@@ -11,7 +11,7 @@ import worm.me.Server;
 
 import java.util.*;
 
-public class Recipes {
+public class ShapedRecipes {
 
     public static Map<ItemStack, List<List<ItemStack>>> shapedRecipeMap = new HashMap<>();
 
@@ -22,6 +22,8 @@ public class Recipes {
                 new ItemStack(Material.STICK), new ItemStack(Material.AIR), new ItemStack(Material.STICK)), List.of(GuiConstructor.createGuiItem(Material.STONE, "CHEAP_RAILS"))));
         shapedRecipeMap.put(new ItemStack(Material.POWERED_RAIL, 2), List.of(List.of(new ItemStack(Material.STICK), new ItemStack(Material.REDSTONE), new ItemStack(Material.STICK), new ItemStack(Material.STICK), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.STICK),
                new ItemStack(Material.STICK), new ItemStack(Material.AIR), new ItemStack(Material.STICK)), List.of(GuiConstructor.createGuiItem(Material.STONE, "CHEAP_POWERED_RAILS"))));
+        shapedRecipeMap.put(new ItemStack(Material.OAK_SAPLING, 1), List.of(List.of(new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.STICK), new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.STICK), new ItemStack(Material.DIRT), new ItemStack(Material.STICK),
+                new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.WATER_BUCKET), new ItemStack(Material.WHEAT_SEEDS)), List.of(GuiConstructor.createGuiItem(Material.STONE, "OAK_SAPLING"))));
 
 
         shapedRecipes(shapedRecipeMap);

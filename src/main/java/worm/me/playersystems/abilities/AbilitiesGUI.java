@@ -97,7 +97,7 @@ public class AbilitiesGUI {
             int slotNum = i + 10;
 
             if (slotNum % 9 == 0){
-                slotNum++;
+                slotNum += 2;
             } else if ((slotNum + 1) % 9 == 0){
                 slotNum = slotNum + 2;
             }
@@ -142,6 +142,25 @@ public class AbilitiesGUI {
         if (slotNum % 9 == 0){
             return;
         } else if ((slotNum + 1) % 9 == 0){
+            return;
+        }
+
+        for (int i = 0; i < 9; i++){
+            if (slotNum - (i * 9) < 9){
+                slotNum = slotNum - (i * 2);
+                break;
+            }
+
+        }
+
+        Abilities abilities = new Abilities();
+
+        if (abilities.getActiveAbilities(p).contains(slotNum)){
+            Server.pluginMessage(ChatColor.RED + "You already have this ability active!", p);
+        }
+
+        if (abilities.hasAbilityOnCooldown(p)) {
+            Server.pluginMessage(ChatColor.RED + "You have an ability on cooldown!", p);
             return;
         }
 

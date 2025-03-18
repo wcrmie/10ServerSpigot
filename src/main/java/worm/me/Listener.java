@@ -3,8 +3,11 @@ package worm.me;
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
+import org.bukkit.entity.Snowman;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -12,6 +15,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
+import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -426,11 +430,10 @@ public class Listener implements org.bukkit.event.Listener {
                     ItemMeta meta = item.getItemMeta();
                     if (meta != null) {
                         PersistentDataContainer data = meta.getPersistentDataContainer();
-                        NamespacedKey key = new NamespacedKey(plugin, "tongue");
-                        if (data.has(key, PersistentDataType.STRING)) {
-                            String tagValue = data.get(key, PersistentDataType.STRING);
+                       // NamespacedKey key = new NamespacedKey(plugin, "tongue");
+                       // if (data.has(key, PersistentDataType.STRING)) {
                             Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(5, e.getPlayer()));
-                        }
+                      //  }
                     }
                 }
             }
@@ -499,6 +502,52 @@ public class Listener implements org.bukkit.event.Listener {
             }
             if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
                 e.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onSnowballThrow(PlayerInteractEvent e){
+
+        if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
+            if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.SNOWBALL) &&
+                    e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "snowman"), PersistentDataType.STRING, "no").equals("snowman")){
+                e.setCancelled(true);
+
+                Snowball snowball = e.getPlayer().launchProjectile(Snowball.class);
+                snowball.getPersistentDataContainer().set(new NamespacedKey(plugin, "snowman"), PersistentDataType.STRING, "snowman");
+
+            }
+        }
+
+    }
+
+    @EventHandler
+    public void onSnowballHit(ProjectileHitEvent e){
+        if (e.getEntity() instanceof Snowball snowball){
+            if (snowball.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "snowman"), PersistentDataType.STRING, "no").equals("snowman")){
+                Snowman snowman = e.getEntity().getLocation().getWorld().spawn(e.getEntity().getLocation(), Snowman.class);
+                snowman.setDerp(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onTreeGrow(StructureGrowEvent e){
+        if (e.getSpecies() == TreeType.TREE){
+            Location loc = e.getLocation();
+            for (int x = loc.getBlockX() - 2; x < loc.getBlockX() + 2; x++){
+                for (int z = loc.getBlockZ() - 2; z < loc.getBlockZ() + 2; z++){
+                    for (int y = loc.getBlockY() - 2; y < loc.getBlockY(); y++){
+                        Block block = loc.getWorld().getBlockAt(x, y, z);
+                        if (block.getType() == Material.DIRT && block.getRelative(0, 1, 0).getType() == Material.AIR){
+                            int RNG = ThreadLocalRandom.current().nextInt(0, 50);
+                            if (RNG == 0) block.setType(Material.GRASS_BLOCK);
+                            System.out.println(block.getLocation());
+                        }
+                    }
+
+                }
             }
         }
     }

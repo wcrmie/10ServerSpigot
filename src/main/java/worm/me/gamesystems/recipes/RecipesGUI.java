@@ -26,21 +26,21 @@ public class RecipesGUI {
 
         gui.setItem(4, GuiConstructor.createGuiItem(Material.CRAFTING_TABLE, ChatColor.GRAY + "Recipes"));
 
-        Recipes recipes = new Recipes();
+        ShapedRecipes shapedRecipes = new ShapedRecipes();
 
-        int slot = 10;
+        int slot = 9;
 
         for (int i = 0; i < 28; i++){
 
             Server.pluginMessage(ChatColor.RED + "" + slot + ", " + i, p);
 
-            if (i + (28 * (page - 1)) >= recipes.shapedRecipeMap.size()){
+            if (i + (28 * (page - 1)) >= shapedRecipes.shapedRecipeMap.size()){
                 break;
             }
 
-            ItemStack recipe = recipes.shapedRecipeMap.keySet().toArray(ItemStack[] :: new)[i + (28 * (page - 1))];
+            ItemStack recipe = shapedRecipes.shapedRecipeMap.keySet().toArray(ItemStack[] :: new)[i + (28 * (page - 1))];
 
-            slot = slot + i;
+            slot++;
 
             if ((slot + 1) % 9 == 0) {
                 slot += 2;
@@ -66,8 +66,8 @@ public class RecipesGUI {
 
             slot ++;
 
-            if (!Recipes.shapedRecipeMap.get(recipe).getFirst().get(i).getType().isAir()) {
-                gui.setItem(slot, Recipes.shapedRecipeMap.get(recipe).getFirst().get(i));
+            if (!ShapedRecipes.shapedRecipeMap.get(recipe).getFirst().get(i).getType().isAir()) {
+                gui.setItem(slot, ShapedRecipes.shapedRecipeMap.get(recipe).getFirst().get(i));
             } else {
                 gui.setItem(slot, new ItemStack(Material.AIR));
             }
@@ -87,7 +87,7 @@ public class RecipesGUI {
     public void eventHandlerMain(InventoryClickEvent e){
         e.setCancelled(true);
 
-        Recipes recipes = new Recipes();
+        ShapedRecipes shapedRecipes = new ShapedRecipes();
 
         String invName = e.getView().getTitle();
 
@@ -104,7 +104,7 @@ public class RecipesGUI {
             MainGUIMenu.openMainMenu((Player) e.getWhoClicked());
 
 
-        }else if (recipes.shapedRecipeMap.containsKey(e.getCurrentItem())){
+        }else if (shapedRecipes.shapedRecipeMap.containsKey(e.getCurrentItem())){
             openRecipeGUI((Player) e.getWhoClicked(), e.getCurrentItem());
         }
 

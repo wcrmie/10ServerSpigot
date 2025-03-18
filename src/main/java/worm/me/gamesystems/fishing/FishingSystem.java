@@ -106,7 +106,10 @@ public class FishingSystem {
 
     public void spawnEntityOnHook(PlayerFishEvent event, Map<Class<? extends Entity>, List<Integer>> table) {
         Location hookLocation = event.getHook().getLocation();
-        double strength = ThreadLocalRandom.current().nextDouble(0.1, 0.3);
+
+        while (hookLocation.getBlock().getType() == Material.WATER) {
+            hookLocation.add(0, 1, 0);
+        }
 
         Class<? extends Entity> entity = generateSeaCreature(table);
 
@@ -119,7 +122,7 @@ public class FishingSystem {
             Location playerLocation = event.getPlayer().getLocation().clone();
             org.bukkit.util.Vector direction = playerLocation.subtract(hookLocation).toVector().normalize();
 
-            creature.setVelocity(direction.multiply(strength));
+            creature.setVelocity(direction.multiply(0.6));
         }
     }
 

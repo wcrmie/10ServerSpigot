@@ -12,7 +12,9 @@ import org.bukkit.scoreboard.Team;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import worm.me.playersystems.abilities.Abilities;
+import worm.me.playersystems.abilities.AbilitiesGUI;
 import worm.me.playersystems.playerdata.social.MessageHead;
+import worm.me.playersystems.playerdata.social.hats.Hats;
 import worm.me.playersystems.playerdata.social.skins.Skin;
 import worm.me.playersystems.playerdata.tools.Tools;
 import worm.me.playersystems.quests.QuestAssign;
@@ -183,7 +185,14 @@ public class VoidPlayer {
         }
 
         if (!container.has(new NamespacedKey(plugin, "unlockedabiliies"), PersistentDataType.INTEGER_ARRAY)) {
-            container.set(new NamespacedKey(plugin, "unlockedabilities"), PersistentDataType.INTEGER_ARRAY, new int[100]);
+
+            int[] unlockedAbilities = new int[100];
+
+            // unlock double jump
+            unlockedAbilities[2] = 1;
+
+
+            container.set(new NamespacedKey(plugin, "unlockedabilities"), PersistentDataType.INTEGER_ARRAY, unlockedAbilities);
         }
 
         if (!container.has(new NamespacedKey(plugin, "activeabilities"), PersistentDataType.INTEGER_ARRAY)) {
@@ -204,6 +213,10 @@ public class VoidPlayer {
 
         if (!container.has(new NamespacedKey(plugin, "hatsUnlocked"), PersistentDataType.INTEGER_ARRAY)) {
             container.set(new NamespacedKey(plugin, "hatsUnlocked"), PersistentDataType.INTEGER_ARRAY, new int[2700]);
+            Hats hats = new Hats();
+            hats.equipHat(player, 0);
+            hats.unlockHat(player, 0);
+
         }
 
         if (!container.has(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY)) {
