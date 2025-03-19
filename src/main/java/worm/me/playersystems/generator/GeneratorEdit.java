@@ -9,8 +9,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import worm.me.GuiConstructor;
-import worm.me.playersystems.playerdata.Unlocks;
-import worm.me.playersystems.playerdata.VoidPlayer;
+import worm.me.playersystems.data.Unlocks;
+import worm.me.playersystems.data.VoidPlayer;
 import worm.me.Server;
 
 import java.util.Arrays;

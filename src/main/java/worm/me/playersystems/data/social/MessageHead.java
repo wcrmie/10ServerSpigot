@@ -1,4 +1,4 @@
-package worm.me.playersystems.playerdata.social;
+package worm.me.playersystems.data.social;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;

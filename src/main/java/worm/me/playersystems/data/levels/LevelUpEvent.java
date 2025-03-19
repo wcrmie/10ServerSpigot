@@ -1,36 +1,36 @@
-package worm.me.playersystems.playerdata.levels;
+package worm.me.playersystems.data.levels;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public final class GainExpEvent extends Event {
+public class LevelUpEvent extends Event {
 
     private static final HandlerList handlers = new HandlerList();
+    private final int skill;
+    private final int level;
+    private final Player player;
 
-    private Player player;
-    private long expValue;
-    private int skillType;
+    public LevelUpEvent(int skill, int level, Player player) {
+        this.skill = skill;
+        this.level = level;
+        this.player = player;
+    }
 
-    public GainExpEvent(Player p, long exp, int skill) {
-        this.player = p;
-        this.expValue = exp;
-        this.skillType = skill;
+    public int getLevel() {
+        return level;
     }
 
     public Player getPlayer() {
         return player;
     }
 
-    public long getExpValue() {
-        return expValue;
+    public int getSkill() {
+        return skill;
     }
 
-    public int getSkillType() {
-        return skillType;
-    }
-
+    @Override
     public @NotNull HandlerList getHandlers() {
         return handlers;
     }
@@ -38,4 +38,5 @@ public final class GainExpEvent extends Event {
     public static HandlerList getHandlerList() {
         return handlers;
     }
+
 }

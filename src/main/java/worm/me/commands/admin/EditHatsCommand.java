@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import worm.me.playersystems.playerdata.social.hats.HatsStorage;
+import worm.me.playersystems.data.social.hats.HatsStorage;
 import worm.me.Server;
 
 public class EditHatsCommand implements CommandExecutor {

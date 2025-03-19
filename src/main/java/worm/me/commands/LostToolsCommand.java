@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import worm.me.playersystems.playerdata.VoidPlayer;
+import worm.me.playersystems.data.VoidPlayer;
 import worm.me.Server;
 
 public class LostToolsCommand implements CommandExecutor {

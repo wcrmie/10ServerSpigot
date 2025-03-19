@@ -11,9 +11,9 @@ import worm.me.gamesystems.recipes.RecipesGUI;
 import worm.me.GuiConstructor;
 import worm.me.playersystems.abilities.AbilitiesGUI;
 import worm.me.playersystems.generator.GeneratorEdit;
-import worm.me.playersystems.playerdata.PlayerProfileGUI;
-import worm.me.playersystems.playerdata.social.hats.Hats;
-import worm.me.playersystems.playerdata.social.skins.SkinGui;
+import worm.me.playersystems.data.PlayerProfileGUI;
+import worm.me.playersystems.data.social.hats.Hats;
+import worm.me.playersystems.data.social.skins.SkinGui;
 import worm.me.Server;
 
 public class MainGUIMenu {

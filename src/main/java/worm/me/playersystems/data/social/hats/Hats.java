@@ -1,4 +1,4 @@
-package worm.me.playersystems.playerdata.social.hats;
+package worm.me.playersystems.data.social.hats;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;

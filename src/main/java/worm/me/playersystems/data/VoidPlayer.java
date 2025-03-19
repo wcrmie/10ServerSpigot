@@ -1,4 +1,4 @@
-package worm.me.playersystems.playerdata;
+package worm.me.playersystems.data;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,11 +12,10 @@ import org.bukkit.scoreboard.Team;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import worm.me.playersystems.abilities.Abilities;
-import worm.me.playersystems.abilities.AbilitiesGUI;
-import worm.me.playersystems.playerdata.social.MessageHead;
-import worm.me.playersystems.playerdata.social.hats.Hats;
-import worm.me.playersystems.playerdata.social.skins.Skin;
-import worm.me.playersystems.playerdata.tools.Tools;
+import worm.me.playersystems.data.social.MessageHead;
+import worm.me.playersystems.data.social.hats.Hats;
+import worm.me.playersystems.data.social.skins.Skin;
+import worm.me.playersystems.data.tools.Tools;
 import worm.me.playersystems.quests.QuestAssign;
 import worm.me.Server;
 

@@ -6,7 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import worm.me.playersystems.playerdata.social.hats.Hats;
+import worm.me.playersystems.data.social.hats.Hats;
 import worm.me.Server;
 
 public class HatsCommand implements CommandExecutor {

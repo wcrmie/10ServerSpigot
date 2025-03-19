@@ -1,4 +1,4 @@
-package worm.me.playersystems.playerdata.levels;
+package worm.me.playersystems.data.levels;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

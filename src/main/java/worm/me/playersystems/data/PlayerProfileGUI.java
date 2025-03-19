@@ -1,4 +1,4 @@
-package worm.me.playersystems.playerdata;
+package worm.me.playersystems.data;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -9,7 +9,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import worm.me.GuiConstructor;
-import worm.me.playersystems.playerdata.levels.LevelsGUI;
+import worm.me.playersystems.data.levels.LevelsGUI;
 
 public class PlayerProfileGUI {
 

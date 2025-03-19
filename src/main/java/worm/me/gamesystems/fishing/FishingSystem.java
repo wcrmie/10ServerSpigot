@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerFishEvent;
-import worm.me.playersystems.playerdata.levels.Levels;
+import worm.me.playersystems.data.levels.Levels;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;

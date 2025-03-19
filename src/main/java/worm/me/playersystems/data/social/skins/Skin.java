@@ -1,4 +1,4 @@
-package worm.me.playersystems.playerdata.social.skins;
+package worm.me.playersystems.data.social.skins;
 
 import net.skinsrestorer.api.exception.DataRequestException;
 import net.skinsrestorer.api.exception.MineSkinException;

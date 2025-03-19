@@ -1,4 +1,4 @@
-package worm.me.playersystems.playerdata.social;
+package worm.me.playersystems.data.social;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
