@@ -1,11 +1,12 @@
 package worm.me.gamesystems.recipes;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.persistence.PersistentDataType;
 import worm.me.GuiConstructor;
 import worm.me.Server;
 
@@ -24,7 +25,23 @@ public class ShapedRecipes {
                new ItemStack(Material.STICK), new ItemStack(Material.AIR), new ItemStack(Material.STICK)), List.of(GuiConstructor.createGuiItem(Material.STONE, "CHEAP_POWERED_RAILS"))));
         shapedRecipeMap.put(new ItemStack(Material.OAK_SAPLING, 1), List.of(List.of(new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.STICK), new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.STICK), new ItemStack(Material.DIRT), new ItemStack(Material.STICK),
                 new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.WATER_BUCKET), new ItemStack(Material.WHEAT_SEEDS)), List.of(GuiConstructor.createGuiItem(Material.STONE, "OAK_SAPLING"))));
-
+        shapedRecipeMap.put(
+                createSlimeBoots(),
+                List.of(
+                        List.of(
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.SLIME_BALL),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.SLIME_BALL),
+                                new ItemStack(Material.SLIME_BLOCK),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.SLIME_BLOCK)
+                        ),
+                        List.of(GuiConstructor.createGuiItem(Material.STONE, "SLIME_BOOTS"))
+                )
+        );
 
         shapedRecipes(shapedRecipeMap);
 
@@ -122,5 +139,24 @@ public class ShapedRecipes {
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "iron_boots"));
 
 
+    }
+
+    private ItemStack createSlimeBoots() {
+        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
+        ItemMeta meta = boots.getItemMeta();
+
+        // Set name and color
+        meta.setDisplayName(ChatColor.GREEN + "Slime Boots");
+        ((LeatherArmorMeta)meta).setColor(Color.LIME);
+
+        // Add NBT tag
+        meta.getPersistentDataContainer().set(
+                new NamespacedKey(Server.getPlugin(), "slimeboots"),
+                PersistentDataType.STRING,
+                "true"
+        );
+
+        boots.setItemMeta(meta);
+        return boots;
     }
 }

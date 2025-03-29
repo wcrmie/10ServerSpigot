@@ -99,6 +99,7 @@ public final class Server extends JavaPlugin {
 
         // Register commands
 
+        getCommand("resetworld").setExecutor(new WorldResetCommand());
         getCommand("blockcount").setExecutor(new BlockCountCommand(WorldBorderSizeHandler));
         getCommand("expansionpercentage").setExecutor(new ExpansionPercentageCommand(WorldBorderSizeHandler));
 

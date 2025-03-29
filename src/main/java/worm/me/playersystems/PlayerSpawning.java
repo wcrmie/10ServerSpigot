@@ -39,7 +39,7 @@ public class PlayerSpawning {
 
     public Location worldBorderGetRandomBlock() {
         Location spawnCenter = new Location(world, 0.5, 240, 0.5);
-        int excludeRadius = 20;
+        int excludeRadius = 10;
 
         Location randomLocation;
         do {

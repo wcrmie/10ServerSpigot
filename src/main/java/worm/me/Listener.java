@@ -26,6 +26,7 @@ import org.bukkit.util.Vector;
 import worm.me.gamesystems.fishing.FishingSystem;
 import worm.me.gamesystems.ArtBlocks;
 import worm.me.gamesystems.recipes.RecipesGUI;
+import worm.me.gamesystems.worldreset.WorldReset;
 import worm.me.playersystems.*;
 import worm.me.playersystems.abilities.AbilitiesGUI;
 import worm.me.playersystems.abilities.Abilities;
@@ -71,9 +72,13 @@ public class Listener implements org.bukkit.event.Listener {
 
     }
 
-
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event){
+    public void onBlockPlace(BlockPlaceEvent event) {
+        if (WorldReset.getInstance().isBlockPlacingDisabled()) {
+            event.setCancelled(true);
+            return;
+        }
+
         plugin.getWorldBorderHandler().incrementBlockCount(event);
         if (event.getPlayer() != null) {
             VoidPlayer.registerStats(event.getPlayer(), 0);
@@ -106,10 +111,14 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event){
-
         if (!event.isBedSpawn()) {
-            PlayerSpawning handler = new PlayerSpawning(plugin);
-            handler.playerSpawn(event.getPlayer());
+            NamespacedKey customSpawnKey = new NamespacedKey(plugin, "custom_spawn");
+            if (event.getPlayer().getPersistentDataContainer().has(customSpawnKey, PersistentDataType.BOOLEAN)) {
+                if (event.getPlayer().getPersistentDataContainer().get(customSpawnKey, PersistentDataType.BOOLEAN) == true) {
+                    PlayerSpawning handler = new PlayerSpawning(plugin);
+                    handler.playerSpawn(event.getPlayer());
+                }
+            }
         }
     }
 
@@ -143,8 +152,12 @@ public class Listener implements org.bukkit.event.Listener {
         Generator generator = new Generator(plugin);
         generator.generateItem(player);
 
-        // Initialize player data
         VoidPlayer.initializeData(player);
+
+        NamespacedKey customSpawnKey = new NamespacedKey(plugin, "custom_spawn");
+        if (!player.getPersistentDataContainer().has(customSpawnKey, PersistentDataType.BOOLEAN)) {
+            player.getPersistentDataContainer().set(customSpawnKey, PersistentDataType.BOOLEAN, true);
+        }
     }
 
     @EventHandler
@@ -212,11 +225,16 @@ public class Listener implements org.bukkit.event.Listener {
 
         }
 
+        if (e.getEntity().getType() == EntityType.ENDERMAN) {
+            int emeraldCount = ThreadLocalRandom.current().nextInt(0, 3);
+            e.getDrops().add(new ItemStack(Material.EMERALD, emeraldCount));
+        }
+
         if (e.getEntity().getType() == EntityType.PLAYER) e.getDrops().add(GuiConstructor.createGuiItem(Material.ROTTEN_FLESH, ChatColor.WHITE + "Player Flesh", ChatColor.GRAY + "A Player's flesh."));
 
         e.getDrops().removeIf(item -> item.getType().getTranslationKey().contains("sword") || item.getType().getTranslationKey().contains("axe") ||
                 item.getType().getTranslationKey().contains("shovel") || item.getType().getTranslationKey().contains("pickaxe"));
-        
+
     }
 
     @EventHandler
@@ -648,7 +666,7 @@ public class Listener implements org.bukkit.event.Listener {
             ArrayList<ItemStack> prunedItems = new ArrayList<>();
 
             Arrays.stream(p.getOpenInventory().getTopInventory().getContents())
-                            .filter(Objects::nonNull).forEach(prunedItems::add);
+                    .filter(Objects::nonNull).forEach(prunedItems::add);
 
             Vault.storeItems(prunedItems, p);
         }
@@ -799,19 +817,19 @@ public class Listener implements org.bukkit.event.Listener {
 
             if (Server.stones.containsKey(clickedItem.getType())){
 
-                    boolean unlocked = false;
+                boolean unlocked = false;
 
-                    for (ItemStack item : VoidPlayer.getUnlockedGens(p)){
-                        if (item.getType() == clickedItem.getType()){
-                            unlocked = true;
-                            break;
-                        }
+                for (ItemStack item : VoidPlayer.getUnlockedGens(p)){
+                    if (item.getType() == clickedItem.getType()){
+                        unlocked = true;
+                        break;
                     }
-                    if (unlocked){
-                        PersistentDataContainer container = p.getPersistentDataContainer();
-                        container.set(genEdit.stoneBlock, PersistentDataType.STRING, clickedItem.getType().toString());
-                        p.sendMessage(ChatColor.GREEN + "Your stone block has been changed to " + clickedItem.getTranslationKey());
-                    }
+                }
+                if (unlocked){
+                    PersistentDataContainer container = p.getPersistentDataContainer();
+                    container.set(genEdit.stoneBlock, PersistentDataType.STRING, clickedItem.getType().toString());
+                    p.sendMessage(ChatColor.GREEN + "Your stone block has been changed to " + clickedItem.getTranslationKey());
+                }
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(p);
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Wood Block")){
             e.setCancelled(true);

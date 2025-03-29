@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import worm.me.gamesystems.structure.generation.IslandSpawning;
 import worm.me.gamesystems.structure.generation.TreasureChests;
 import worm.me.Server;
+import worm.me.gamesystems.worldreset.WorldReset;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -42,6 +43,12 @@ public class WorldBorderSizeHandler {
         this.expansionPercentage = config.getDouble(EXPANSION_PERCENTAGE_CONFIG_KEY, 0.25);
     }
 
+    public void checkForResetTrigger() {
+        if (worldBorder.getSize() >= 501) {
+            WorldReset.getInstance().startResetTimer();
+        }
+    }
+
     public void adjustWorldBorder() {
         long worldBlockSize = calculateWorldBlockSize();
         if ((calculateNewSize(worldBlockSize) >= 1)) {
@@ -50,12 +57,13 @@ public class WorldBorderSizeHandler {
                 newSize += 1;
             }
             worldBorder.setSize(newSize);
+            checkForResetTrigger();
         }
     }
 
     int lastSpawnDone = 0;
     public void spawnthings() {
-        if ((blockCount % 20000)==0 && blockCount != lastSpawnDone) {
+        if ((blockCount % 5000)==0 && blockCount != lastSpawnDone) {
             lastSpawnDone = (int) blockCount;
             TreasureChests TreasureChestsH = new TreasureChests();
             TreasureChestsH.chestSpawn();

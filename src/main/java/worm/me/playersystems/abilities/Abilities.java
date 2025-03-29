@@ -69,9 +69,9 @@ public class Abilities {
         abilityRequirements.put(2, new int[]{10, 0, 0, 0, 0, 0, 5, 0});
         abilityRequirements.put(3, new int[]{0, 0, 0, 0, 0, 0, 15, 0});
         abilityRequirements.put(4, new int[]{0, 0, 0, 0, 0, 0, 20, 0});
-        abilityRequirements.put(5, new int[]{10, 40, 0, 50, 0, 0, 20, 0});
+        abilityRequirements.put(5, new int[]{1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000});
         abilityRequirements.put(6, new int[]{20, 10, 5, 15, 0, 0, 10, 20});
-        abilityRequirements.put(7, new int[]{20, 0, 5, 0, 5, 5, 25, 0});
+        abilityRequirements.put(7, new int[]{20, 0, 5, 0, 5, 5, 15, 0});
         abilityRequirements.put(8, new int[]{10, 0, 5, 10, 10, 0, 10, 0});
     }
 
