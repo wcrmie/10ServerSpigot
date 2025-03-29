@@ -24,7 +24,7 @@ import worm.me.gamesystems.ArtBlocks;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.AgilityDoubleJump;
-import worm.me.playersystems.abilities.active.FrogGrab;
+import worm.me.playersystems.abilities.active.FeatherDash;
 import worm.me.playersystems.abilities.active.ShadowStep;
 import worm.me.playersystems.quests.QuestInitialize;
 import worm.me.playersystems.PlayerSpawning;
@@ -43,6 +43,7 @@ public final class Server extends JavaPlugin {
     private WorldBorderSizeHandler WorldBorderSizeHandler;
     private PlayerSpawning playerspawning;
     private SaddleSystem saddleSystem;
+    private FeatherDash featherDash;
     private ArtBlocks artBlocks;
 
     public Map<Material, Long> miningBlocks = new HashMap<>();
@@ -85,6 +86,7 @@ public final class Server extends JavaPlugin {
         playerspawning = new PlayerSpawning(this);
         saddleSystem = new SaddleSystem(this);
         artBlocks = new ArtBlocks(this);
+        featherDash = new FeatherDash();
 
         // Add custom recipes
 
@@ -366,10 +368,8 @@ public final class Server extends JavaPlugin {
         getLogger().info("Plugin disabled");
         getServer().getScheduler().cancelTasks(this);
 
-        FrogGrab.cancelAllGrabs();
-        FrogGrab.clearAllMovementRestrictions();
-
         ShadowStep.cancelAllGhosts();
+        featherDash.cleanupAll();
 
         AgilityDoubleJump.cancelAllPlatforms();
 

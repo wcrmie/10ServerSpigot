@@ -1,4 +1,4 @@
-package worm.me.playersystems.abilities.active;
+package worm.me.playersystems.abilities.OffAbilities;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

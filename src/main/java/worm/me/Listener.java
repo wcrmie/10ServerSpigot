@@ -31,7 +31,7 @@ import worm.me.playersystems.*;
 import worm.me.playersystems.abilities.AbilitiesGUI;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
-import worm.me.playersystems.abilities.active.FrogGrab;
+import worm.me.playersystems.abilities.active.FeatherDash;
 import worm.me.playersystems.generator.Generator;
 import worm.me.playersystems.generator.GeneratorEdit;
 import worm.me.playersystems.data.*;
@@ -62,6 +62,8 @@ public class Listener implements org.bukkit.event.Listener {
     public Listener(Server plugin) {
         this.plugin = plugin;
     }
+
+    private final FeatherDash featherDash = new FeatherDash();
 
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
@@ -166,6 +168,8 @@ public class Listener implements org.bukkit.event.Listener {
 
         PersistentDataContainer container = p.getPersistentDataContainer();
 
+        featherDash.cancelDash(e.getPlayer().getUniqueId());
+
         container.set(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY, new long[]{System.currentTimeMillis()/1000L, container.get(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY)[1]});
     }
 
@@ -228,6 +232,10 @@ public class Listener implements org.bukkit.event.Listener {
         if (e.getEntity().getType() == EntityType.ENDERMAN) {
             int emeraldCount = ThreadLocalRandom.current().nextInt(0, 3);
             e.getDrops().add(new ItemStack(Material.EMERALD, emeraldCount));
+        }
+        if (e.getEntity().getType() == EntityType.ENDERMITE) {
+            int emeraldCount = ThreadLocalRandom.current().nextInt(0, 2);
+            e.getDrops().add(new ItemStack(Material.SMALL_AMETHYST_BUD, emeraldCount));
         }
 
         if (e.getEntity().getType() == EntityType.PLAYER) e.getDrops().add(GuiConstructor.createGuiItem(Material.ROTTEN_FLESH, ChatColor.WHITE + "Player Flesh", ChatColor.GRAY + "A Player's flesh."));
@@ -373,7 +381,7 @@ public class Listener implements org.bukkit.event.Listener {
                 }
             }
         }
-
+/*
         if (FrogGrab.isPlayerMovementRestricted(player.getUniqueId())) {
             Location from = e.getFrom();
             Location to = e.getTo();
@@ -394,6 +402,8 @@ public class Listener implements org.bukkit.event.Listener {
             }
         }
 
+ */
+
         if (Objects.requireNonNull(e.getTo()).getY() < 200) e.getPlayer().damage(1000000);
 
         if (ability.getAbilitySlot(e.getPlayer(), 2) != -1){
@@ -408,7 +418,7 @@ public class Listener implements org.bukkit.event.Listener {
         if (e.getEntity() instanceof Player && e.getCause() == EntityDamageEvent.DamageCause.FALL){
             Player player = (Player) e.getEntity();
             Abilities ability = new Abilities();
-            if (ability.isActive(player,8) && !player.isSneaking()){
+            if (ability.isActive(player,7) && !player.isSneaking()){
 
                 if (player.getInventory().getBoots() != null) {
                     ItemStack item = player.getInventory().getBoots();
@@ -465,13 +475,15 @@ public class Listener implements org.bukkit.event.Listener {
         if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
 
             if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.NOTE_BLOCK && e.getPlayer().isSneaking()) {
-                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(6, e.getPlayer()));
+                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(5, e.getPlayer()));
             }
 
-            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.GRAY_STAINED_GLASS && e.getPlayer().isSneaking()) {
-                Player player = e.getPlayer();
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.FEATHER && e.getPlayer().isSneaking()) {
+                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(8, e.getPlayer()));
+            }
 
-                Block blockBelow = player.getLocation().subtract(0, 0.1, 0).getBlock();
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.TINTED_GLASS && e.getPlayer().isSneaking()) {
+                Player player = e.getPlayer();
 
                 Location playerLoc = player.getLocation();
                 Vector direction = playerLoc.getDirection();
@@ -481,17 +493,17 @@ public class Listener implements org.bukkit.event.Listener {
                 }
 
                 Location finalLocation = playerLoc.clone();
-                finalLocation.add(direction.multiply(5));
+                finalLocation.add(direction.multiply(10));
 
                 Block finalFeetBlock = finalLocation.getBlock();
                 Block finalHeadBlock = finalLocation.clone().add(0, 1, 0).getBlock();
 
-                if (blockBelow.getType().isSolid() && finalFeetBlock.isPassable() && finalHeadBlock.isPassable()) {
-                    Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(7, player));
+                if (player.isOnGround() && finalFeetBlock.isPassable() && finalHeadBlock.isPassable()) {
+                    Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(6, player));
                 }
             }
 
-
+            /*
             if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.PINK_CONCRETE_POWDER && e.getPlayer().isSneaking()) {
                 ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
                 if (item.hasItemMeta()) {
@@ -506,6 +518,8 @@ public class Listener implements org.bukkit.event.Listener {
                     }
                 }
             }
+            */
+
 
 
         }

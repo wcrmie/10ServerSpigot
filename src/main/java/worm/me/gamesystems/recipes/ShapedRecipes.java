@@ -62,6 +62,42 @@ public class ShapedRecipes {
                 )
         );
 
+        shapedRecipeMap.put(
+                (new ItemStack(Material.AMETHYST_SHARD, 1)),
+                List.of(
+                        List.of(
+                                new ItemStack(Material.SMALL_AMETHYST_BUD),
+                                new ItemStack(Material.SMALL_AMETHYST_BUD),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.SMALL_AMETHYST_BUD),
+                                new ItemStack(Material.SMALL_AMETHYST_BUD),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.AIR)
+                        ),
+                        List.of(GuiConstructor.createGuiItem(Material.STONE, "AMETHYST_SHARD"))
+                )
+        );
+
+        shapedRecipeMap.put(
+                (new ItemStack(Material.BUDDING_AMETHYST, 1)),
+                List.of(
+                        List.of(
+                                new ItemStack(Material.AMETHYST_SHARD),
+                                new ItemStack(Material.AMETHYST_BLOCK),
+                                new ItemStack(Material.AMETHYST_SHARD),
+                                new ItemStack(Material.AMETHYST_BLOCK),
+                                new ItemStack(Material.AMETHYST_BLOCK),
+                                new ItemStack(Material.AMETHYST_BLOCK),
+                                new ItemStack(Material.AMETHYST_SHARD),
+                                new ItemStack(Material.AMETHYST_BLOCK),
+                                new ItemStack(Material.AMETHYST_SHARD)
+                        ),
+                        List.of(GuiConstructor.createGuiItem(Material.STONE, "BUDDING_AMETHYST"))
+                )
+        );
+
         shapedRecipes(shapedRecipeMap);
 
     }

@@ -8,7 +8,7 @@ import org.bukkit.persistence.PersistentDataType;
 import worm.me.playersystems.abilities.active.AgilityDash;
 import worm.me.playersystems.abilities.active.AgilityDoubleJump;
 import worm.me.playersystems.abilities.active.AgilityLeap;
-import worm.me.playersystems.abilities.active.FrogGrab;
+import worm.me.playersystems.abilities.OffAbilities.FrogGrab;
 import worm.me.playersystems.abilities.active.*;
 import worm.me.Server;
 import worm.me.playersystems.abilities.passive.SlimeBoots;
@@ -49,16 +49,16 @@ public class Abilities {
         abilityGuiComponents.put(4, List.of("Wall Jump", "IRON_BARS", "Clutch onto walls using " + ChatColor.GRAY + "[SNEAK]"));
 
         // ID 5
-        abilityGuiComponents.put(5, List.of("Frog Grab", "PINK_CONCRETE_POWDER", "Grab things with your tongue using a tongue item " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK]"));
+        abilityGuiComponents.put(5, List.of("SCREAM", "GOAT_HORN", "Scream while holding a note block " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK]"));
 
         // ID 6
-        abilityGuiComponents.put(6, List.of("SCREAM", "GOAT_HORN", "Scream while holding a note block " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK]"));
+        abilityGuiComponents.put(6, List.of("Shadow Step", "TINTED_GLASS", "move forward through walls with a path of shadows following you while holding Tinted Glass" + ChatColor.GRAY + "[SNEAK] + [Left-Click]"));
 
         // ID 7
-        abilityGuiComponents.put(7, List.of("Shadow Step", "GRAY_STAINED_GLASS", "move forward through walls with a path of shadows following you while holding Gray Stained Glass Block" + ChatColor.GRAY + "[SNEAK] + [Left-Click]"));
+        abilityGuiComponents.put(7, List.of("Slime Boots", "SLIME_BALL", "Bounce while wearing slime boots " + ChatColor.GRAY + "[SNEAK] to Deactivate "));
 
         // ID 8
-        abilityGuiComponents.put(8, List.of("Slime Boots", "SLIME_BALL", "Bounce while wearing slime boots " + ChatColor.GRAY + "[SNEAK] to Deactivate "));
+        abilityGuiComponents.put(8, List.of("Feather Dash", "ELYTRA", "Move accros the air swiftly holding a feather" + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK]"));
     }
 
     public void initializeRequirements(){
@@ -69,10 +69,10 @@ public class Abilities {
         abilityRequirements.put(2, new int[]{10, 0, 0, 0, 0, 0, 5, 0});
         abilityRequirements.put(3, new int[]{0, 0, 0, 0, 0, 0, 15, 0});
         abilityRequirements.put(4, new int[]{0, 0, 0, 0, 0, 0, 20, 0});
-        abilityRequirements.put(5, new int[]{1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000});
-        abilityRequirements.put(6, new int[]{20, 10, 5, 15, 0, 0, 10, 20});
-        abilityRequirements.put(7, new int[]{20, 0, 5, 0, 5, 5, 15, 0});
-        abilityRequirements.put(8, new int[]{10, 0, 5, 10, 10, 0, 10, 0});
+        abilityRequirements.put(5, new int[]{20, 10, 5, 15, 0, 0, 10, 20});
+        abilityRequirements.put(6, new int[]{35, 0, 5, 0, 5, 5, 15, 0});
+        abilityRequirements.put(7, new int[]{10, 0, 5, 10, 10, 0, 10, 0});
+        abilityRequirements.put(8, new int[]{0, 25, 0, 5, 0, 0, 10, 0});
     }
 
     public List<Integer> getActiveAbilities(Player p){
@@ -153,28 +153,26 @@ public class Abilities {
 
         } else if (abilityID == 5){
 
-            FrogGrab frogGrab = new FrogGrab();
-            frogGrab.frogGrab(p);
-
-            cooldowns[getAbilitySlot(p, 5)] = System.currentTimeMillis()/1000L + 10;
-
-        } else if (abilityID == 6){
-
             AbliityScream AbliityScream = new AbliityScream();
             AbliityScream.scream(p);
 
-            cooldowns[getAbilitySlot(p, 6)] = System.currentTimeMillis()/1000L + 30;
+            cooldowns[getAbilitySlot(p, 5)] = System.currentTimeMillis()/1000L + 15;
 
-        } else if (abilityID == 7){
+        } else if (abilityID == 6){
 
             ShadowStep ShadowStep = new ShadowStep();
             ShadowStep.shadowStep(p);
 
-            cooldowns[getAbilitySlot(p, 7)] = System.currentTimeMillis()/1000L + 25;
+            cooldowns[getAbilitySlot(p, 6)] = System.currentTimeMillis()/1000L + 20;
 
-        } else if (abilityID == 8) {
+        } else if (abilityID == 7) {
             SlimeBoots SlimeBoots = new SlimeBoots();
             SlimeBoots.bounce(p);
+
+        } else if (abilityID == 8){
+            FeatherDash featherDash = new FeatherDash();
+            featherDash.featherDash(p);
+            cooldowns[getAbilitySlot(p, 8)] = System.currentTimeMillis()/1000L + 15;
         }
 
 
