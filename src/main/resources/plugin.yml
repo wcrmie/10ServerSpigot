@@ -39,10 +39,6 @@ commands:
   abilities:
     description: Opens the ability selection GUI for the player.
     usage: /<command>
-  spawnchest:
-    description: Spawns a treasure chest at a random location within the world border
-    usage: /<command>
-    permission: 10VS.treasureChestSpawn
   hats:
     description: Opens the hat selection GUI for the player, or sets their hat.
     usage: /<command> [integer]

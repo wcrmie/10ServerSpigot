@@ -220,7 +220,6 @@ public class PlayerSpawning {
     }
 
     public void removeAllBlocks() {
-        Bukkit.getServer().broadcastMessage("Removing " + blocksToRemove.size() + " blocks");
         for (Location location : blocksToRemove.keySet()) {
             Block block = world.getBlockAt(location);
             if (block.getType() == Material.BEDROCK) {

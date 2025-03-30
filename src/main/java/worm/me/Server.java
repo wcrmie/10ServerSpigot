@@ -22,6 +22,7 @@ import worm.me.commands.gui.OpenSkinGUICommand;
 import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.gamesystems.ArtBlocks;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
+import worm.me.gamesystems.structure.generation.TreasureChests;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.AgilityDoubleJump;
 import worm.me.playersystems.abilities.active.FeatherDash;
@@ -45,6 +46,7 @@ public final class Server extends JavaPlugin {
     private SaddleSystem saddleSystem;
     private FeatherDash featherDash;
     private ArtBlocks artBlocks;
+    private TreasureChests treasureChests;
 
     public Map<Material, Long> miningBlocks = new HashMap<>();
 
@@ -87,6 +89,7 @@ public final class Server extends JavaPlugin {
         saddleSystem = new SaddleSystem(this);
         artBlocks = new ArtBlocks(this);
         featherDash = new FeatherDash();
+        this.treasureChests = new TreasureChests(this);
 
         // Add custom recipes
 
@@ -118,7 +121,6 @@ public final class Server extends JavaPlugin {
         this.getCommand("rules").setExecutor(new RulesCommand());
         this.getCommand("sit").setExecutor(new SitCommand(this));
         this.getCommand("setCharLimit").setExecutor(new SetPlayerCharLimCommand(this));
-        this.getCommand("spawnchest").setExecutor(new TreasureChestSpawnCommand());
         this.getCommand("abilities").setExecutor(new OpenAbilitiesGUICommand());
         this.getCommand("hats").setExecutor(new HatsCommand());
         this.getCommand("levels").setExecutor(new OpenLevelsGUICommand(this));
@@ -372,6 +374,11 @@ public final class Server extends JavaPlugin {
         featherDash.cleanupAll();
 
         AgilityDoubleJump.cancelAllPlatforms();
+
+        if (treasureChests != null) {
+            treasureChests.stop();
+        }
+
 
     }
 

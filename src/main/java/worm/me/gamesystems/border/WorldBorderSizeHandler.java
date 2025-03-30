@@ -65,8 +65,6 @@ public class WorldBorderSizeHandler {
     public void spawnthings() {
         if ((blockCount % 5000)==0 && blockCount != lastSpawnDone) {
             lastSpawnDone = (int) blockCount;
-            TreasureChests TreasureChestsH = new TreasureChests();
-            TreasureChestsH.chestSpawn();
 
             IslandSpawning IslandSpawningH = new IslandSpawning(plugin);
             IslandSpawningH.IslandSpawn(null);

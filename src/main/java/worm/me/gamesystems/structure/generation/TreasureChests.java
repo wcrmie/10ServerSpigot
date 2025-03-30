@@ -5,174 +5,180 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.WorldBorder;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitRunnable;
+import worm.me.Server;
 
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class TreasureChests {
+    private final Server plugin;
+    private final World world;
+    private BukkitRunnable spawnTask;
+    private long nextSpawnTime;
 
-    private final World world = Bukkit.getWorld("ul_Void");
-    private final WorldBorder worldBorder = world.getWorldBorder();
-    private int xMoreThan, xLessThan, yMoreThan, yLessThan, zMoreThan, zLessThan;
+    private final double SLOT_LOOT_CHANCE = 0.40;
+    private final Map<Material, LootEntry> LOOT_TABLE = createLootTable();
 
-    public TreasureChests() {
-        updateBorderValues();
+    private static class LootEntry {
+        final int weight;
+        final int maxStack;
+        final boolean isSlimeBoots;
+
+        LootEntry(int weight, int maxStack) {
+            this(weight, maxStack, false);
+        }
+
+        LootEntry(int weight, int maxStack, boolean isSlimeBoots) {
+            this.weight = weight;
+            this.maxStack = maxStack;
+            this.isSlimeBoots = isSlimeBoots;
+        }
     }
 
-    private void updateBorderValues() {
-        double borderSize = worldBorder.getSize();
-        xMoreThan = (int) ((borderSize / 2) * -1);
-        xLessThan = (int) (borderSize / 2) - 1;
-        zMoreThan = (int) ((borderSize / 2) * -1);
-        zLessThan = (int) (borderSize / 2) - 1;
-        yMoreThan = 220;
-        yLessThan = 280;
+    public TreasureChests(Server plugin) {
+        this.plugin = plugin;
+        this.world = Bukkit.getWorld("ul_Void");
+        initialize();
     }
 
-    public Location worldBorderGetRandomBlock() {
-        Location spawnCenter = new Location(world, 0.5, 240, 0.5);
-        int excludeRadius = 20;
-
-        Location randomLocation;
-        do {
-            int xCord = ThreadLocalRandom.current().nextInt(xMoreThan, xLessThan);
-            int yCord = ThreadLocalRandom.current().nextInt(yMoreThan, yLessThan);
-            int zCord = ThreadLocalRandom.current().nextInt(zMoreThan, zLessThan);
-            randomLocation = new Location(world, xCord, yCord, zCord);
-        } while (randomLocation.distance(spawnCenter) < excludeRadius);
-
-        return randomLocation;
+    private void initialize() {
+        this.nextSpawnTime = plugin.getConfig().getLong("treasure-next-spawn", 0);
+        scheduleNextSpawn(shouldSpawnNow() ? 0 : getRemainingTicks());
     }
 
-
-    public Location validLocation() {
-        Location location =           findValidLocation(17, 17, 17, 45, 45, 45 ,3,    "Estra Extra big used");
-        if (location == null) {
-            location =                findValidLocation(11,  11,  11,  15, 15, 15 ,10,   "Extra big used");
-            if (location == null) {
-                location =            findValidLocation(7,  9,  7,  11, 9,  11, 20,   "big used");
-                if (location == null) {
-                    location =        findValidLocation(3,  5,  3,  0,  1,  0 , 500,  "med used");
-                    if (location == null) {
-                        location =    findValidLocation(0,  3,  0,  0,  1,  0 , 2000, "small used");
-                        if (location == null) {
-                            location = worldBorderGetRandomBlock();
-                        }}}}}
-        return location;
+    private Map<Material, LootEntry> createLootTable() {
+        Map<Material, LootEntry> table = new HashMap<>();
+        table.put(Material.MOJANG_BANNER_PATTERN, new LootEntry(20, 1));
+        table.put(Material.SNIFFER_EGG, new LootEntry(20, 1));
+        table.put(Material.BREAD, new LootEntry(40, 10));
+        table.put(Material.ENCHANTED_GOLDEN_APPLE, new LootEntry(1, 1));
+        table.put(Material.LEATHER_BOOTS, new LootEntry(20, 1, true));
+        table.put(Material.SNORT_POTTERY_SHERD, new LootEntry(5, 1));
+        table.put(Material.IRON_INGOT, new LootEntry(12, 1));
+        table.put(Material.IRON_NUGGET, new LootEntry(40, 5));
+        table.put(Material.PHANTOM_MEMBRANE, new LootEntry(20, 1));
+        table.put(Material.GOLDEN_CARROT, new LootEntry(20, 5));
+        table.put(Material.GOLD_INGOT, new LootEntry(20, 1));
+        table.put(Material.GOLD_NUGGET, new LootEntry(24, 5));
+        table.put(Material.COOKED_BEEF, new LootEntry(36, 15));
+        table.put(Material.GOLDEN_APPLE, new LootEntry(12, 2));
+        return table;
     }
 
-    private Location findValidLocation(int xSize, int ySize, int zSize, int xBSize, int yBSize, int zBSize, int maxAttempts, String successMessage) {
-        int yOffSetUp = 1;
-        int locationAttempts = 0;
-        Location location;
-        boolean validLocation;
-        do {
-            locationAttempts++;
-            validLocation = true;
-            location = worldBorderGetRandomBlock();
-            int xStart = (int) (location.getX() - (xBSize / 2.0));
-            int xEnd = (int) (location.getX() + (xBSize / 2.0));
-            int yStart = (int) (location.getY() - (yBSize / 2.0)) + yOffSetUp;
-            int yEnd = (int) (location.getY() + (yBSize / 2.0)) + yOffSetUp;
-            int zStart = (int) (location.getZ() - (zBSize / 2.0));
-            int zEnd = (int) (location.getZ() + (zBSize / 2.0));
-            //full
-            for (int x = (int) (location.getX() - (xSize / 2.0)); x <= (int) (location.getX() + (xSize / 2.0)); x++) {
-                for (int y = (int) (location.getY() - (ySize / 2.0)) + yOffSetUp; y <= (int) (location.getY() + (ySize / 2.0)) + yOffSetUp; y++) {
-                    for (int z = (int) (location.getZ() - (zSize / 2.0)); z <= (int) (location.getZ() + (zSize / 2.0)); z++) {
-                        if (!isAir(x, y, z)) {
-                            validLocation = false;
-                            break;
-                        }
-                    }
-                    if (!validLocation) break;
-                }
-                if (!validLocation) break;
+    private boolean shouldSpawnNow() {
+        return nextSpawnTime == 0 || nextSpawnTime < System.currentTimeMillis();
+    }
+
+    private long getRemainingTicks() {
+        return (nextSpawnTime - System.currentTimeMillis()) / 50;
+    }
+
+    private void scheduleNextSpawn(long delayTicks) {
+        cancelExistingTask();
+
+        spawnTask = new BukkitRunnable() {
+            @Override
+            public void run() {
+                trySpawnChest();
+                updateNextSpawnTime();
+                scheduleNextSpawn(72000); // 1 hour in ticks
             }
-            //x sides
-            for (int y = yStart; y <= yEnd; y++) {
-                for (int z = zStart; z <= zEnd; z++) {
-                    if (!isAir(xStart, y, z) || !isAir(xEnd, y, z)) {
-                        validLocation = false;
-                        break;
-                    }
-                }
-                if (!validLocation) break;
-            }
-            //y sides
-            for (int x = xStart; x <= xEnd; x++) {
-                for (int z = zStart; z <= zEnd; z++) {
-                    if (!isAir(x, yStart, z) || !isAir(x, yEnd, z)) {
-                        validLocation = false;
-                        break;
-                    }
-                }
-                if (!validLocation) break;
-            }
-            //z sides
-            for (int x = xStart; x <= xEnd; x++) {
-                for (int y = yStart; y <= yEnd; y++) {
-                    if (!isAir(x, y, zStart) || !isAir(x, y, zEnd)) {
-                        validLocation = false;
-                        break;
-                    }
-                }
-                if (!validLocation) break;
-            }
-        } while (!validLocation && locationAttempts < maxAttempts);
-        if (validLocation) {
-            return location;
+        };
+        spawnTask.runTaskTimer(plugin, delayTicks, 0);
+    }
+
+    private void trySpawnChest() {
+        Location location = findValidLocation();
+        if (location != null) {
+            Block block = world.getBlockAt(location);
+            block.setType(Material.CHEST);
+            fillChest((Chest) block.getState());
+        }
+    }
+
+    private Location findValidLocation() {
+        WorldBorder border = world.getWorldBorder();
+        double size = border.getSize();
+
+        for (int i = 0; i < 50; i++) {
+            double x = ThreadLocalRandom.current().nextDouble(-size/2, size/2);
+            double z = ThreadLocalRandom.current().nextDouble(-size/2, size/2);
+            int y = world.getHighestBlockYAt((int)x, (int)z);
+
+            Location loc = new Location(world, x, y, z);
+            if (isValidLocation(loc)) return loc;
         }
         return null;
     }
 
-    private boolean isAir(int x, int y, int z) {
-        Block block = world.getBlockAt(x, y, z);
-        return block.getType() == Material.AIR;
+    private boolean isValidLocation(Location loc) {
+        return loc.distanceSquared(new Location(world, 0, 0, 0)) > 400 &&
+                loc.getBlock().getType().isAir() &&
+                loc.clone().add(0, 1, 0).getBlock().getType().isAir();
     }
 
-    public void chestSpawn() {
-        updateBorderValues();
-        Location location = validLocation();
-        Block block = world.getBlockAt(location);
-        block.setType(Material.CHEST);
-        Chest chest = (Chest) block.getState();
-        Inventory inventory = chest.getInventory();
-        addLootToChest(inventory);
-    }
-
-    private void addLootToChest(Inventory chestInventory) {
-        Object[][] lootTable = {
-                {Material.COD, 5, 20, 20.0},
-                {Material.SALMON, 5, 15, 10.0},
-                {Material.PUFFERFISH, 1, 5, 5.0},
-                {Material.BREAD, 1, 3, 5.0},
-                {Material.APPLE, 1, 1, 5.0}
-        };
-
-        for (int i = 0; i < chestInventory.getSize(); i++) {
-            if (chestInventory.getItem(i) != null) {
-                continue;
-            }
-
-            for (Object[] loot : lootTable) {
-                double rng = ThreadLocalRandom.current().nextDouble(0.0, 100.0);
-
-                Double chance = (Double) loot[3];
-
-                if (rng <= chance) {
-                    Material material = (Material) loot[0];
-                    int minAmount = (int) loot[1];
-                    int maxAmount = (int) loot[2];
-
-                    int amount = ThreadLocalRandom.current().nextInt(minAmount, maxAmount + 1);
-                    ItemStack item = new ItemStack(material, amount);
-
-                    chestInventory.setItem(i, item);
-                    break;
-                }
+    private void fillChest(Chest chest) {
+        Inventory inv = chest.getInventory();
+        for (int slot = 0; slot < inv.getSize(); slot++) {
+            if (ThreadLocalRandom.current().nextDouble() < SLOT_LOOT_CHANCE) {
+                inv.setItem(slot, generateLootItem());
             }
         }
     }
-}
 
+    private ItemStack generateLootItem() {
+        int totalWeight = LOOT_TABLE.values().stream().mapToInt(e -> e.weight).sum();
+        int random = ThreadLocalRandom.current().nextInt(totalWeight);
+        int current = 0;
+
+        for (Map.Entry<Material, LootEntry> entry : LOOT_TABLE.entrySet()) {
+            current += entry.getValue().weight;
+            if (random < current) {
+                LootEntry loot = entry.getValue();
+                if (loot.isSlimeBoots) {
+                    return createSlimeBoots();
+                }
+                return new ItemStack(entry.getKey(),
+                        ThreadLocalRandom.current().nextInt(1, loot.maxStack + 1));
+            }
+        }
+        return new ItemStack(Material.IRON_INGOT, 1);
+    }
+
+    private ItemStack createSlimeBoots() {
+        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
+        ItemMeta meta = boots.getItemMeta();
+
+        meta.setDisplayName(ChatColor.GREEN + "Slime Boots");
+        ((LeatherArmorMeta)meta).setColor(Color.LIME);
+
+        meta.getPersistentDataContainer().set(
+                new NamespacedKey(plugin, "slimeboots"),
+                PersistentDataType.STRING,
+                "true"
+        );
+
+        boots.setItemMeta(meta);
+        return boots;
+    }
+
+    private void updateNextSpawnTime() {
+        nextSpawnTime = System.currentTimeMillis() + 3600000;
+        plugin.getConfig().set("treasure-next-spawn", nextSpawnTime);
+        plugin.saveConfig();
+    }
+
+    private void cancelExistingTask() {
+        if (spawnTask != null) {
+            spawnTask.cancel();
+        }
+    }
+
+    public void stop() {
+        cancelExistingTask();
+    }
+}
