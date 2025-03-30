@@ -237,6 +237,10 @@ public class Listener implements org.bukkit.event.Listener {
             int emeraldCount = ThreadLocalRandom.current().nextInt(0, 2);
             e.getDrops().add(new ItemStack(Material.SMALL_AMETHYST_BUD, emeraldCount));
         }
+        if (e.getEntity().getType() == EntityType.SILVERFISH) {
+            int emeraldCount = ThreadLocalRandom.current().nextInt(3, 6);
+            e.getDrops().add(new ItemStack(Material.IRON_NUGGET, emeraldCount));
+        }
 
         if (e.getEntity().getType() == EntityType.PLAYER) e.getDrops().add(GuiConstructor.createGuiItem(Material.ROTTEN_FLESH, ChatColor.WHITE + "Player Flesh", ChatColor.GRAY + "A Player's flesh."));
 
