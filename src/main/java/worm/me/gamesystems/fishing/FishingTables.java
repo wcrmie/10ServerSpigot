@@ -11,26 +11,54 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 
-public class FishingSystem {
+public class FishingTables {
 
     private final Map<Class<? extends Entity>, List<Integer>> lootTable1 = new HashMap<>();
     private final Map<Material, List<Integer>> lootTable2 = new HashMap<>();
     private final Map<Class<? extends Entity>, List<Integer>> seaCreatureTable = new HashMap<>();
     private final Map<String, FishingConfiguration> fishingConfigurations = new HashMap<>();
 
-    public FishingSystem() {
+    public FishingTables() {
         lootTable1.put(Cod.class, List.of(60, 2));
         lootTable1.put(Salmon.class, List.of(25, 2));
         lootTable1.put(TropicalFish.class, List.of(2, 10));
         lootTable1.put(PufferFish.class, List.of(13, 5));
 
 
-        lootTable2.put(Material.NAME_TAG, List.of(167, 5));
-        lootTable2.put(Material.SADDLE, List.of(167, 10));
+        lootTable2.put(Material.NAME_TAG, List.of(8, 5));
+        lootTable2.put(Material.SADDLE, List.of(7, 10));
+        lootTable2.put(Material.TRIPWIRE_HOOK, List.of(1, 5));
+        lootTable2.put(Material.STRING, List.of(12, 5));
+        lootTable2.put(Material.BELL, List.of(4, 15));
+        lootTable2.put(Material.ANGLER_POTTERY_SHERD, List.of(2, 20));
+        lootTable2.put(Material.MUSIC_DISC_13, List.of(5, 10));
+        lootTable2.put(Material.LEATHER, List.of(8, 5));
+        lootTable2.put(Material.LEAD, List.of(7, 5));
+        lootTable2.put(Material.ROTTEN_FLESH, List.of(5, 5));
+        lootTable2.put(Material.BONE, List.of(5, 5));
+        lootTable2.put(Material.EXPERIENCE_BOTTLE, List.of(4, 15));
+        lootTable2.put(Material.KELP, List.of(5, 10));
+        lootTable2.put(Material.SEA_PICKLE, List.of(5, 10));
+        lootTable2.put(Material.SEAGRASS, List.of(2, 5));
+        lootTable2.put(Material.SPONGE, List.of(1, 25));
+        lootTable2.put(Material.FISHING_ROD, List.of(1, 25));
+        lootTable2.put(Material.TIDE_ARMOR_TRIM_SMITHING_TEMPLATE, List.of(1, 25));
+
 
         seaCreatureTable.put(ElderGuardian.class, List.of(1, 25));
-        seaCreatureTable.put(Guardian.class, List.of(9, 15));
-        seaCreatureTable.put(Zombie.class, List.of(25, 5));
+        seaCreatureTable.put(Guardian.class, List.of(3, 15));
+        seaCreatureTable.put(Axolotl.class, List.of(5, 10));
+        seaCreatureTable.put(Squid.class, List.of(10, 5));
+        seaCreatureTable.put(GlowSquid.class, List.of(7, 7));
+        seaCreatureTable.put(Dolphin.class, List.of(4, 12));
+        seaCreatureTable.put(Tadpole.class, List.of(2, 20));
+        seaCreatureTable.put(Turtle.class, List.of(4, 12));
+        seaCreatureTable.put(Drowned.class, List.of(5, 10));
+        seaCreatureTable.put(Bogged.class, List.of(3, 15));
+        seaCreatureTable.put(Cat.class, List.of(1, 25));
+        seaCreatureTable.put(Slime.class, List.of(3, 15));
+        seaCreatureTable.put(WanderingTrader.class, List.of(1, 25));
+        seaCreatureTable.put(Silverfish.class, List.of(1, 25));
 
         fishingConfigurations.put("0", new FishingConfiguration(40,40,20));
         fishingConfigurations.put("1", new FishingConfiguration(0,0,0));

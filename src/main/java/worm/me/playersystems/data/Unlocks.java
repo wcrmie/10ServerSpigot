@@ -60,23 +60,13 @@ public class Unlocks {
 
             List<ItemStack> unlockedGens = getUnlockedGens(p);
 
-            for (ItemStack itemStack : unlockedGens) {
-                System.out.println("Unlocked gens: " + itemStack.getType());
-            }
-
             Set<Material> totalGens = (Set<Material>) unlockTypes.get(type).keySet();
-
-            System.out.println("Total gens: " + totalGens);
-
-            System.out.println("Previously Unlocked gens: " + unlockedGens);
 
             for (ItemStack unlockedGen : unlockedGens) {
                 totalGens.remove(unlockedGen.getType());
             }
 
             mapAsList = totalGens;
-
-            System.out.println("Map as list: " + mapAsList);
 
         } else if (type == 4){
             List<Integer> skippedAbilities = new ArrayList<>();
@@ -95,7 +85,6 @@ public class Unlocks {
         }
 
         for (int i = 0; i < unlockTypes.get(type).size(); i++){
-            System.out.println(i);
             for (int j = 0; j < 8; j++){
                 int req = reqsMap.get(mapAsList.toArray()[i])[j];
                 if (req != 0) {

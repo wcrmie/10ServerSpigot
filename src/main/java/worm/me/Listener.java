@@ -4,10 +4,7 @@ import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import net.coreprotect.CoreProtectAPI;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
-import org.bukkit.entity.Snowman;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -17,13 +14,14 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
-import worm.me.gamesystems.fishing.FishingSystem;
+import worm.me.gamesystems.fishing.FishingTables;
 import worm.me.gamesystems.ArtBlocks;
 import worm.me.gamesystems.recipes.RecipesGUI;
 import worm.me.playersystems.*;
@@ -31,6 +29,8 @@ import worm.me.playersystems.abilities.AbilitiesGUI;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
 import worm.me.playersystems.abilities.active.FrogGrab;
+import worm.me.playersystems.data.tools.Tools;
+import worm.me.playersystems.data.tools.Upgrade;
 import worm.me.playersystems.generator.Generator;
 import worm.me.playersystems.generator.GeneratorEdit;
 import worm.me.playersystems.data.*;
@@ -56,7 +56,7 @@ public class Listener implements org.bukkit.event.Listener {
 
     private final Server plugin;
 
-    private final Map<Player, Boolean> doubleJumpMap = new HashMap<>();
+    private final List<LivingEntity> tickList = new ArrayList<>();
 
     public Listener(Server plugin) {
         this.plugin = plugin;
@@ -64,7 +64,8 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
-        FishingSystem handler = new FishingSystem();
+
+        FishingTables handler = new FishingTables();
         handler.handleFishing(event);
 
         Levels.expHandler(event.getPlayer(), event);
@@ -214,8 +215,8 @@ public class Listener implements org.bukkit.event.Listener {
 
         if (e.getEntity().getType() == EntityType.PLAYER) e.getDrops().add(GuiConstructor.createGuiItem(Material.ROTTEN_FLESH, ChatColor.WHITE + "Player Flesh", ChatColor.GRAY + "A Player's flesh."));
 
-        e.getDrops().removeIf(item -> item.getType().getTranslationKey().contains("sword") || item.getType().getTranslationKey().contains("axe") ||
-                item.getType().getTranslationKey().contains("shovel") || item.getType().getTranslationKey().contains("pickaxe"));
+        e.getDrops().removeIf(item -> item.getType().toString().contains("sword") || item.getType().toString().contains("axe") ||
+                item.getType().toString().contains("shovel") || item.getType().toString().contains("pickaxe"));
         
     }
 
@@ -289,7 +290,20 @@ public class Listener implements org.bukkit.event.Listener {
         event.getRecipients().clear();
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.isOp()) event.getRecipients().add(player);
+
+            double distance = player.getLocation().distance(event.getPlayer().getLocation());
+
+            if (distance <= 50) {
+
+                int color = distance == 0 ? 255 : (int) Math.round(255 - distance * 5);
+                String hexColor = String.format("#%02x%02x%02x", color, color, color);
+                player.sendMessage(net.md_5.bungee.api.ChatColor.of(hexColor) + event.getPlayer().getName() + ": " + event.getMessage());
+
+
+            }
         }
+
+
     }
 
     // --------------------------ABILITY EVENTS--------------------------
@@ -330,15 +344,16 @@ public class Listener implements org.bukkit.event.Listener {
 
 
     @EventHandler
-    public void onPlayerMoveEvent(PlayerMoveEvent e){
+    public void onPlayerMoveMoveEvent(PlayerMoveEvent e){
 
 
         Abilities ability = new Abilities();
 
         if (e.getFrom() == e.getTo()) return;
 
-        if (!ability.isActive(e.getPlayer(), 2) && e.getPlayer().getGameMode() != GameMode.CREATIVE) {
+        if (!ability.isActive(e.getPlayer(), 2) && e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
             e.getPlayer().setAllowFlight(false);
+            e.getPlayer().setFlying(false);
         }
 
         Player player = e.getPlayer();
@@ -383,6 +398,29 @@ public class Listener implements org.bukkit.event.Listener {
                 e.getPlayer().setAllowFlight(true);
             }
         }
+    }
+
+    @EventHandler
+    public void onEntitySpawn(EntitySpawnEvent event) {
+
+        if (event.getEntity() instanceof Player) return;
+
+        if (event.getEntity() instanceof LivingEntity entity) tickList.add(entity);
+
+        if (event.getEntity() instanceof Villager villy) {
+            villy.setProfession(Villager.Profession.NITWIT);
+        }
+    }
+
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent event) {
+
+        if (event.getEntity() instanceof Player) return;
+
+        LivingEntity entity = event.getEntity();
+
+        tickList.remove(entity);
+
     }
 
     @EventHandler
@@ -489,7 +527,6 @@ public class Listener implements org.bukkit.event.Listener {
                 }
             }
 
-
         }
 
         if (e.getHand() != EquipmentSlot.HAND) {
@@ -509,12 +546,15 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onPlayerDismount(EntityDismountEvent e){
-        Player p = (Player) e.getEntity();
-        if (e.getDismounted().getType() == EntityType.ARMOR_STAND){
-            e.getDismounted().remove();
-            Location loc = p.getLocation();
-            loc.setY(p.getLocation().getY() + 1);
-            p.teleport(loc);
+
+
+        if (e.getEntity() instanceof Player p){
+            if (e.getDismounted().getType() == EntityType.ARMOR_STAND){
+                e.getDismounted().remove();
+                Location loc = p.getLocation();
+                loc.setY(p.getLocation().getY() + 1);
+                p.teleport(loc);
+            }
         }
     }
 
@@ -565,6 +605,8 @@ public class Listener implements org.bukkit.event.Listener {
                     e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "snowman"), PersistentDataType.STRING, "no").equals("snowman")){
                 e.setCancelled(true);
 
+                e.getPlayer().getInventory().getItemInMainHand().setAmount(e.getPlayer().getInventory().getItemInMainHand().getAmount() - 1);
+
                 Snowball snowball = e.getPlayer().launchProjectile(Snowball.class);
                 snowball.getPersistentDataContainer().set(new NamespacedKey(plugin, "snowman"), PersistentDataType.STRING, "snowman");
 
@@ -594,7 +636,6 @@ public class Listener implements org.bukkit.event.Listener {
                         if (block.getType() == Material.DIRT && block.getRelative(0, 1, 0).getType() == Material.AIR){
                             int RNG = ThreadLocalRandom.current().nextInt(0, 50);
                             if (RNG == 0) block.setType(Material.GRASS_BLOCK);
-                            System.out.println(block.getLocation());
                         }
                     }
 
@@ -617,7 +658,6 @@ public class Listener implements org.bukkit.event.Listener {
 
         for (int i = 0; i < 5; i++){
             unlocks.attemptUnlock(i, p);
-            Server.pluginMessage("" + i, p);
         }
 
 
@@ -627,7 +667,13 @@ public class Listener implements org.bukkit.event.Listener {
     public void onUnlock(UnlockEvent e){
         Player p = e.getPlayer();
 
-        Server.pluginMessage(ChatColor.GREEN + "You have unlocked a(n) " + e.getUnlock() + " " + e.getUnlockType(), p);
+        if (e.getUnlockType().equals("Ability")) {
+            Server.pluginMessage(ChatColor.GREEN + "You have unlocked a(n) " + Abilities.abilityGuiComponents.get(Integer.parseInt(e.getUnlock())).getFirst() + " " + e.getUnlockType(), p);
+        } else {
+            Server.pluginMessage(ChatColor.GREEN + "You have unlocked a(n) " + e.getUnlock() + " " + e.getUnlockType(), p);
+        }
+
+
     }
 
     @EventHandler
@@ -655,8 +701,6 @@ public class Listener implements org.bukkit.event.Listener {
 
         if (e.getView().getTitle().contains(ChatColor.RED + "Hat Storage ")){
 
-            Server.pluginMessage(ChatColor.RED + "Hat storage closed", p);
-
             HatsStorage hatsStorage = new HatsStorage();
             hatsStorage.eventHandler(e);
 
@@ -667,7 +711,7 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onInventoryClick(PlayerSwapHandItemsEvent e){
-        Player p = (Player) e.getPlayer();
+        Player p = e.getPlayer();
         if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
             e.setCancelled(true);
         }
@@ -675,7 +719,7 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onInventoryClick(PlayerItemHeldEvent e){
-        Player p = (Player) e.getPlayer();
+        Player p = e.getPlayer();
         if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
             e.setCancelled(true);
         }
@@ -683,6 +727,30 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e){
+
+        if (Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST)).getType() != InventoryType.PLAYER && !Tools.toolType(e.getCursor().getType()).equals("none")) e.setCancelled(true);
+
+        if (Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST)).getType().equals(InventoryType.PLAYER)) {
+            if (Objects.requireNonNull(e.getCurrentItem()).getType().equals(Material.WOODEN_AXE) || e.getCurrentItem().getType().equals(Material.WOODEN_PICKAXE) ||
+                    e.getCurrentItem().getType().equals(Material.WOODEN_SWORD) || e.getCurrentItem().getType().equals(Material.WOODEN_SHOVEL) || e.getCurrentItem().getType().equals(Material.WOODEN_HOE)){
+                if (Objects.requireNonNull(e.getCursor()).getType() == Upgrade.WOOD_TOOL.getUpgradeItem().getType() && e.getCursor().getAmount() >= Upgrade.WOOD_TOOL.getUpgradeItem().getAmount()){
+                    e.setCancelled(true);
+                    e.getCursor().setAmount(e.getCursor().getAmount() - Upgrade.WOOD_TOOL.getUpgradeItem().getAmount());
+                    ToolsEvents toolsEvents = new ToolsEvents();
+                    toolsEvents.toolUpgradeAttempt((Player) e.getWhoClicked(), e);
+                }
+
+            } else if (Objects.requireNonNull(e.getCurrentItem().getType()).equals(Material.STONE_AXE) || e.getCurrentItem().getType().equals(Material.STONE_PICKAXE) ||
+                    e.getCurrentItem().getType().equals(Material.STONE_SWORD) || e.getCurrentItem().getType().equals(Material.STONE_SHOVEL) || e.getCurrentItem().getType().equals(Material.STONE_HOE)){
+                if (Objects.requireNonNull(e.getCursor()).getType() == Upgrade.STONE_TOOL.getUpgradeItem().getType() && e.getCursor().getAmount() >= Upgrade.STONE_TOOL.getUpgradeItem().getAmount()){
+                    e.setCancelled(true);
+                    e.getCursor().setAmount(e.getCursor().getAmount() - Upgrade.STONE_TOOL.getUpgradeItem().getAmount());
+                    ToolsEvents toolsEvents = new ToolsEvents();
+                    toolsEvents.toolUpgradeAttempt((Player) e.getWhoClicked(), e);
+                }
+
+            }
+        }
 
 
         if (Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.AIR)).getType().isAir()) return;
@@ -763,8 +831,6 @@ public class Listener implements org.bukkit.event.Listener {
         }
 
         if (invName.contains(ChatColor.DARK_GRAY + "Hats Page ")) {
-
-            Server.pluginMessage("Attempted hat storage click", p);
 
             Hats hat = new Hats();
 

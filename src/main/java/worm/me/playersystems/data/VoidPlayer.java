@@ -32,6 +32,8 @@ public class VoidPlayer {
 
     public static List<ItemStack> getTools(Player p){
 
+        if (Tools.playerTools.get(p) != null) return Tools.playerTools.get(p);
+
         PersistentDataContainer pdc = p.getPersistentDataContainer();
 
         String encodedData = pdc.get(new NamespacedKey(Server.getPlugin(), "tools"), PersistentDataType.STRING);
@@ -63,6 +65,8 @@ public class VoidPlayer {
     }
 
     public static void setTools(List<ItemStack> tools, Player p){
+
+        Tools.playerTools.put(p, tools);
 
         PersistentDataContainer pdc = p.getPersistentDataContainer();
 
@@ -188,14 +192,14 @@ public class VoidPlayer {
             int[] unlockedAbilities = new int[100];
 
             // unlock double jump
-            unlockedAbilities[2] = 1;
+            unlockedAbilities[1] = 1;
 
 
             container.set(new NamespacedKey(plugin, "unlockedabilities"), PersistentDataType.INTEGER_ARRAY, unlockedAbilities);
         }
 
         if (!container.has(new NamespacedKey(plugin, "activeabilities"), PersistentDataType.INTEGER_ARRAY)) {
-            container.set(new NamespacedKey(plugin, "activeabilities"), PersistentDataType.INTEGER_ARRAY, new int[3]);
+            container.set(new NamespacedKey(plugin, "activeabilities"), PersistentDataType.INTEGER_ARRAY, new int[]{1,0,0});
         }
 
         if (!container.has(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY)) {

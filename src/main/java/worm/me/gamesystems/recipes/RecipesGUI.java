@@ -32,8 +32,6 @@ public class RecipesGUI {
 
         for (int i = 0; i < 28; i++){
 
-            Server.pluginMessage(ChatColor.RED + "" + slot + ", " + i, p);
-
             if (i + (28 * (page - 1)) >= shapedRecipes.shapedRecipeMap.size()){
                 break;
             }

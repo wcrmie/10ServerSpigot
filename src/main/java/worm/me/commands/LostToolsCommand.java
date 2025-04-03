@@ -20,7 +20,7 @@ public class LostToolsCommand implements CommandExecutor {
 
             for (ItemStack item : VoidPlayer.getTools(p)){
                 if (inv.firstEmpty() != -1){
-                    if (!inv.contains(item)) inv.addItem(item);
+                    if (!inv.contains(item.getType())) inv.addItem(item);
                 } else {
                     Server.pluginMessage(ChatColor.RED + "You have no space in your inventory to receive your tools!", p);
                     break;

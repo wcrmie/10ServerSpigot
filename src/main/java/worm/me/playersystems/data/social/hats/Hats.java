@@ -31,8 +31,6 @@ public class Hats {
                 slot++;
             }
 
-            Server.pluginMessage(ChatColor.RED + "" + slot + ", " + i, p);
-
             if ((slot + 1) % 9 == 0) {
                 slot += 2;
             }
@@ -49,7 +47,7 @@ public class Hats {
     public void equipHat(Player p, int i){
 
         HatsStorage hatsStorage = new HatsStorage();
-        if (p.getPersistentDataContainer().get(Hats.hatsUnlocked, PersistentDataType.INTEGER_ARRAY)[i] == 1 || p.getGameMode().equals(GameMode.CREATIVE)){
+        if (p.getPersistentDataContainer().getOrDefault(Hats.hatsUnlocked, PersistentDataType.INTEGER_ARRAY, new int[i + 1])[i] == 1 || p.getGameMode().equals(GameMode.CREATIVE)){
             p.getInventory().setHelmet(hatsStorage.getHat(i));
             Server.pluginMessage(ChatColor.GREEN + "Hat set!", p);
         } else {
@@ -80,11 +78,7 @@ public class Hats {
 
         if (e.getSlot() > 9 && e.getSlot() % 9 != 0 && (e.getSlot() + 1) % 9 != 0 && e.getSlot() < 45){
 
-            Server.pluginMessage(ChatColor.RED + "it got here", (Player) e.getWhoClicked());
-
             int slot = e.getSlot();
-
-            Server.pluginMessage(ChatColor.RED + "" + slot, (Player) e.getWhoClicked());
 
             if ((slot - 1) % 9 == 0 && slot != 10){
                 slot--;

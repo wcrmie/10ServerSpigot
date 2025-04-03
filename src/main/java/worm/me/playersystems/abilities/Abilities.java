@@ -37,10 +37,10 @@ public class Abilities {
         abilityGuiComponents.put(0, List.of("Empty", "RED_STAINED_GLASS_PANE", "Empty Slot", "This slot is empty"));
 
         // ID 1
-        abilityGuiComponents.put(1, List.of("Dash", "IRON_SWORD", "Dash forward with a sword using " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK]"));
+        abilityGuiComponents.put(1, List.of("Double Jump", "FEATHER", "Jump a second time in the air!"));
 
         // ID 2
-        abilityGuiComponents.put(2, List.of("Double Jump", "FEATHER", "Jump a second time in the air!"));
+        abilityGuiComponents.put(2, List.of("Dash", "IRON_SWORD", "Dash forward with a sword using " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK]"));
 
         // ID 3
         abilityGuiComponents.put(3, List.of("Leap", "IRON_AXE", "Leap up in the air with an axe using " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK]"));

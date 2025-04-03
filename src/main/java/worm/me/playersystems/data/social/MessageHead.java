@@ -91,7 +91,11 @@ public class MessageHead {
                 }
 
                 // New line
-                if (charCounter[0] >= 47 && ("" + character).equals(" ")){
+                if (charCounter[0] >= 32 && ("" + character).equals(" ")){
+                    messageNewLine(chat, world);
+                    charCounter[0] = 0;
+                    chatMessage[0] = "";
+                } else if (charCounter[0] >= 50) {
                     messageNewLine(chat, world);
                     charCounter[0] = 0;
                     chatMessage[0] = "";

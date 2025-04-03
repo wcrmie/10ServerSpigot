@@ -139,13 +139,13 @@ public class AbilitiesGUI {
             return;
         }
 
-        if (slotNum % 9 == 0){
+        if (slot % 9 == 0){
             return;
-        } else if ((slotNum + 1) % 9 == 0){
+        } else if ((slot + 1) % 9 == 0){
             return;
         }
 
-        for (int i = 0; i < 9; i++){
+        for (int i = 0; i <= 9; i++){
             if (slotNum - (i * 9) < 9){
                 slotNum = slotNum - (i * 2);
                 break;

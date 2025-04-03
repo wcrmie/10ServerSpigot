@@ -1,5 +1,7 @@
 package worm.me;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 import net.skinsrestorer.api.SkinsRestorer;
@@ -22,6 +24,7 @@ import worm.me.commands.gui.OpenSkinGUICommand;
 import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.gamesystems.ArtBlocks;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
+import worm.me.gamesystems.recipes.SmeltingRecipes;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.AgilityDoubleJump;
 import worm.me.playersystems.abilities.active.FrogGrab;
@@ -70,6 +73,13 @@ public final class Server extends JavaPlugin {
 
 
     @Override
+    public void onLoad(){
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+
+        PacketEvents.getAPI().load();
+    }
+
+    @Override
     public void onEnable() {
         // Plugin startup logic
 
@@ -92,9 +102,12 @@ public final class Server extends JavaPlugin {
 
         ShapelessRecipes shapelessRecipes = new ShapelessRecipes();
 
+        SmeltingRecipes smeltingRecipes = new SmeltingRecipes();
+
         shapedRecipes.removeRecipes();
         shapedRecipes.addRecipes();
         shapelessRecipes.addRecipes();
+        smeltingRecipes.initializeSmeltingRecipes();
 
 
         // Register commands
@@ -303,6 +316,8 @@ public final class Server extends JavaPlugin {
         sounds.add(Sound.ENTITY_ENDERMAN_HURT); // 22
         sounds.add(Sound.ENTITY_ENDER_DRAGON_HURT); // 23
         sounds.add(Sound.ENTITY_WITCH_THROW); // 24
+        sounds.add(Sound.BLOCK_DECORATED_POT_INSERT); // 25
+        sounds.add(Sound.BLOCK_DECORATED_POT_INSERT_FAIL); // 26
 
         // CREATE BLOCK KEYS FOR GENERATOR
         stones.put(Material.COBBLESTONE, new int[]{0,0,0,0,0,1,0,0});
@@ -371,6 +386,8 @@ public final class Server extends JavaPlugin {
         ShadowStep.cancelAllGhosts();
 
         AgilityDoubleJump.cancelAllPlatforms();
+
+        PacketEvents.getAPI().terminate();
 
     }
 

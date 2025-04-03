@@ -3,7 +3,7 @@ version: '1.0-SNAPSHOT'
 main: worm.me.Server
 api-version: '1.21'
 authors: [ worm, clem ]
-depend: [WorldGuard]
+depend: [WorldGuard, packetevents]
 softdepend: [SkinsRestorer]
 commands:
   setVoice:

@@ -1,11 +1,11 @@
 package worm.me.gamesystems.recipes;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import worm.me.GuiConstructor;
 import worm.me.Server;
 
@@ -20,10 +20,59 @@ public class ShapedRecipes {
         // ID 0
         shapedRecipeMap.put(new ItemStack(Material.RAIL, 4), List.of(List.of(new ItemStack(Material.STICK), new ItemStack(Material.AIR), new ItemStack(Material.STICK), new ItemStack(Material.STICK), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.STICK),
                 new ItemStack(Material.STICK), new ItemStack(Material.AIR), new ItemStack(Material.STICK)), List.of(GuiConstructor.createGuiItem(Material.STONE, "CHEAP_RAILS"))));
+
+        // ID 1
         shapedRecipeMap.put(new ItemStack(Material.POWERED_RAIL, 2), List.of(List.of(new ItemStack(Material.STICK), new ItemStack(Material.REDSTONE), new ItemStack(Material.STICK), new ItemStack(Material.STICK), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.STICK),
                new ItemStack(Material.STICK), new ItemStack(Material.AIR), new ItemStack(Material.STICK)), List.of(GuiConstructor.createGuiItem(Material.STONE, "CHEAP_POWERED_RAILS"))));
+
+        // ID 2
         shapedRecipeMap.put(new ItemStack(Material.OAK_SAPLING, 1), List.of(List.of(new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.STICK), new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.STICK), new ItemStack(Material.DIRT), new ItemStack(Material.STICK),
                 new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.WATER_BUCKET), new ItemStack(Material.WHEAT_SEEDS)), List.of(GuiConstructor.createGuiItem(Material.STONE, "OAK_SAPLING"))));
+
+        // ID 3, 4, and 5
+        shapedRecipeMap.put(new ItemStack(Material.CHAINMAIL_CHESTPLATE, 1), List.of(List.of(new ItemStack(Material.IRON_INGOT), new ItemStack(Material.AIR), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET),
+                new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_INGOT)), List.of(GuiConstructor.createGuiItem(Material.STONE, "CHAINMAIL_CHESTPLATE"))));
+
+        shapedRecipeMap.put(new ItemStack(Material.CHAINMAIL_LEGGINGS, 1), List.of(List.of(new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.AIR), new ItemStack(Material.IRON_NUGGET),
+                new ItemStack(Material.IRON_INGOT), new ItemStack(Material.AIR), new ItemStack(Material.IRON_INGOT)), List.of(GuiConstructor.createGuiItem(Material.STONE, "CHAINMAIL_LEGGINGS"))));
+
+        shapedRecipeMap.put(new ItemStack(Material.CHAINMAIL_BOOTS, 1), List.of(List.of(new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.AIR), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.AIR), new ItemStack(Material.IRON_INGOT),
+                new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "CHAINMAIL_BOOTS"))));
+
+        // ID 6, 7, 8
+        ItemStack emeraldChestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
+        ItemStack emeraldLeggings = new ItemStack(Material.LEATHER_LEGGINGS);
+        ItemStack emeraldBoots = new ItemStack(Material.LEATHER_BOOTS);
+
+        LeatherArmorMeta meta = (LeatherArmorMeta) emeraldChestplate.getItemMeta();
+        assert meta != null;
+        meta.setDisplayName(ChatColor.GREEN + "Emerald Chestplate");
+        meta.setUnbreakable(true);
+        meta.setColor(Color.GREEN);
+
+        emeraldChestplate.setItemMeta(meta);
+
+        shapedRecipeMap.put(emeraldChestplate, List.of(List.of(new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD),
+                new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD)), List.of(GuiConstructor.createGuiItem(Material.STONE, "EMERALD_CHESTPLATE"))));
+
+        meta.setDisplayName(ChatColor.GREEN + "Emerald Leggings");
+
+        emeraldLeggings.setItemMeta(meta);
+
+        shapedRecipeMap.put(emeraldLeggings, List.of(List.of(new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD),
+                new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD)), List.of(GuiConstructor.createGuiItem(Material.STONE, "EMERALD_LEGGINGS"))));
+
+        meta.setDisplayName(ChatColor.GREEN + "Emerald Boots");
+
+        emeraldBoots.setItemMeta(meta);
+
+        shapedRecipeMap.put(emeraldBoots, List.of(List.of(new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD),
+                new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "EMERALD_BOOTS"))));
+
+        // ID 9
+        shapedRecipeMap.put(new ItemStack(Material.JUKEBOX), List.of(List.of(new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),
+                new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.IRON_INGOT),new ItemStack(Material.OAK_PLANKS),
+                new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS)), List.of(GuiConstructor.createGuiItem(Material.STONE, "JUKEBOX"))));
 
 
         shapedRecipes(shapedRecipeMap);
@@ -67,8 +116,11 @@ public class ShapedRecipes {
 
                         char c = (char) (i + 64);
 
-                        shapedRecipe.setIngredient(c, new RecipeChoice.ExactChoice(values.getFirst().get(i)));
-
+                        if (values.getFirst().get(i).getType() == Material.OAK_PLANKS) {
+                            shapedRecipe.setIngredient(c, new RecipeChoice.MaterialChoice(Tag.PLANKS));
+                        } else {
+                            shapedRecipe.setIngredient(c, new RecipeChoice.ExactChoice(values.getFirst().get(i)));
+                        }
                     }
 
                 }

@@ -105,7 +105,7 @@ public class Levels {
         Bukkit.getServer().getPluginManager().callEvent(event);
 
         setLevel(skill, player, level);
-        Server.getPlugin().broadcast(ChatColor.AQUA + player.getName() + " has reached level " + level + " in " + skills.get(skill) + "!");
+        Server.pluginMessage(ChatColor.AQUA + "You have reached level " + level + " in " + skills.get(skill) + "!", player);
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 0.8F);
     }
 

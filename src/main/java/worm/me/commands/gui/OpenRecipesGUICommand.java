@@ -15,6 +15,7 @@ public class OpenRecipesGUICommand implements CommandExecutor {
 
             RecipesGUI recipesGUI = new RecipesGUI();
             recipesGUI.openMainGUI(p, 1);
+            return true;
 
         }
 
