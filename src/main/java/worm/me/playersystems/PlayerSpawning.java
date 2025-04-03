@@ -39,7 +39,7 @@ public class PlayerSpawning {
 
     public Location worldBorderGetRandomBlock() {
         Location spawnCenter = new Location(world, 0.5, 240, 0.5);
-        int excludeRadius = 20;
+        int excludeRadius = 10;
 
         Location randomLocation;
         do {
@@ -220,7 +220,6 @@ public class PlayerSpawning {
     }
 
     public void removeAllBlocks() {
-        Bukkit.getServer().broadcastMessage("Removing " + blocksToRemove.size() + " blocks");
         for (Location location : blocksToRemove.keySet()) {
             Block block = world.getBlockAt(location);
             if (block.getType() == Material.BEDROCK) {

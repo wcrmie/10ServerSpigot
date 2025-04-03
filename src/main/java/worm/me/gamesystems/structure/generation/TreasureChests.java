@@ -3,10 +3,15 @@ package worm.me.gamesystems.structure.generation;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.WorldBorder;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.persistence.PersistentDataType;
 
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class TreasureChests {
@@ -15,8 +20,44 @@ public class TreasureChests {
     private final WorldBorder worldBorder = world.getWorldBorder();
     private int xMoreThan, xLessThan, yMoreThan, yLessThan, zMoreThan, zLessThan;
 
+    private final Map<Material, LootEntry> lootTable = new HashMap<>();
+
+    private static class LootEntry {
+        int weight;
+        int maxQuantity;
+        boolean isSpecialItem;
+
+        public LootEntry(int weight, int maxQuantity) {
+            this(weight, maxQuantity, false);
+        }
+
+        public LootEntry(int weight, int maxQuantity, boolean isSpecialItem) {
+            this.weight = weight;
+            this.maxQuantity = maxQuantity;
+            this.isSpecialItem = isSpecialItem;
+        }
+    }
+
     public TreasureChests() {
         updateBorderValues();
+        initializeLootTable();
+    }
+
+    private void initializeLootTable() {
+        lootTable.put(Material.MOJANG_BANNER_PATTERN, new LootEntry(20, 1));
+        lootTable.put(Material.SNIFFER_EGG, new LootEntry(20, 1));
+        lootTable.put(Material.BREAD, new LootEntry(40, 10));
+        lootTable.put(Material.ENCHANTED_GOLDEN_APPLE, new LootEntry(1, 1));
+        lootTable.put(Material.LEATHER_BOOTS, new LootEntry(20, 1, true)); // This is for slime boots
+        lootTable.put(Material.SNORT_POTTERY_SHERD, new LootEntry(5, 1));
+        lootTable.put(Material.IRON_INGOT, new LootEntry(12, 1));
+        lootTable.put(Material.IRON_NUGGET, new LootEntry(40, 5));
+        lootTable.put(Material.PHANTOM_MEMBRANE, new LootEntry(20, 1));
+        lootTable.put(Material.GOLDEN_CARROT, new LootEntry(20, 5));
+        lootTable.put(Material.GOLD_INGOT, new LootEntry(20, 1));
+        lootTable.put(Material.GOLD_NUGGET, new LootEntry(24, 5));
+        lootTable.put(Material.COOKED_BEEF, new LootEntry(36, 15));
+        lootTable.put(Material.GOLDEN_APPLE, new LootEntry(12, 2));
     }
 
     private void updateBorderValues() {
@@ -44,20 +85,23 @@ public class TreasureChests {
         return randomLocation;
     }
 
-
     public Location validLocation() {
-        Location location =           findValidLocation(17, 17, 17, 45, 45, 45 ,3,    "Estra Extra big used");
+        Location location = findValidLocation(17, 17, 17, 45, 45, 45 ,3, "Estra Extra big used");
         if (location == null) {
-            location =                findValidLocation(11,  11,  11,  15, 15, 15 ,10,   "Extra big used");
+            location = findValidLocation(11, 11, 11, 15, 15, 15 ,10, "Extra big used");
             if (location == null) {
-                location =            findValidLocation(7,  9,  7,  11, 9,  11, 20,   "big used");
+                location = findValidLocation(7, 9, 7, 11, 9, 11, 20, "big used");
                 if (location == null) {
-                    location =        findValidLocation(3,  5,  3,  0,  1,  0 , 500,  "med used");
+                    location = findValidLocation(3, 5, 3, 0, 1, 0 , 500, "med used");
                     if (location == null) {
-                        location =    findValidLocation(0,  3,  0,  0,  1,  0 , 2000, "small used");
+                        location = findValidLocation(0, 3, 0, 0, 1, 0 , 2000, "small used");
                         if (location == null) {
                             location = worldBorderGetRandomBlock();
-                        }}}}}
+                        }
+                    }
+                }
+            }
+        }
         return location;
     }
 
@@ -141,38 +185,65 @@ public class TreasureChests {
         addLootToChest(inventory);
     }
 
+    private ItemStack createSlimeBoots() {
+        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
+        LeatherArmorMeta meta = (LeatherArmorMeta) boots.getItemMeta();
+
+        meta.setDisplayName(ChatColor.GREEN + "Slime Boots");
+        meta.setColor(Color.LIME);
+
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + "You must have the slime boot ability to use this");
+        meta.setLore(lore);
+
+        meta.getPersistentDataContainer().set(
+                new NamespacedKey(Bukkit.getPluginManager().getPlugin("YourPluginName"), "slimeboots"),
+                PersistentDataType.STRING,
+                "true"
+        );
+
+        boots.setItemMeta(meta);
+        return boots;
+    }
+
     private void addLootToChest(Inventory chestInventory) {
-        Object[][] lootTable = {
-                {Material.COD, 5, 20, 20.0},
-                {Material.SALMON, 5, 15, 10.0},
-                {Material.PUFFERFISH, 1, 5, 5.0},
-                {Material.BREAD, 1, 3, 5.0},
-                {Material.APPLE, 1, 1, 5.0}
-        };
+        int totalWeight = lootTable.values().stream().mapToInt(entry -> entry.weight).sum();
 
-        for (int i = 0; i < chestInventory.getSize(); i++) {
-            if (chestInventory.getItem(i) != null) {
-                continue;
-            }
+        int chestSize = chestInventory.getSize();
+        int minSlots = (int) Math.ceil(chestSize * 0.10);
+        int maxSlots = (int) Math.ceil(chestSize * 0.20);
+        int slotsToFill = ThreadLocalRandom.current().nextInt(minSlots, maxSlots + 1);
 
-            for (Object[] loot : lootTable) {
-                double rng = ThreadLocalRandom.current().nextDouble(0.0, 100.0);
+        Set<Integer> filledSlots = new HashSet<>();
 
-                Double chance = (Double) loot[3];
+        for (int i = 0; i < slotsToFill; i++) {
+            int slot;
+            do {
+                slot = ThreadLocalRandom.current().nextInt(chestSize);
+            } while (filledSlots.contains(slot));
 
-                if (rng <= chance) {
-                    Material material = (Material) loot[0];
-                    int minAmount = (int) loot[1];
-                    int maxAmount = (int) loot[2];
+            filledSlots.add(slot);
 
-                    int amount = ThreadLocalRandom.current().nextInt(minAmount, maxAmount + 1);
-                    ItemStack item = new ItemStack(material, amount);
+            int randomWeight = ThreadLocalRandom.current().nextInt(totalWeight);
+            int currentWeight = 0;
 
-                    chestInventory.setItem(i, item);
+            for (Map.Entry<Material, LootEntry> entry : lootTable.entrySet()) {
+                currentWeight += entry.getValue().weight;
+                if (randomWeight < currentWeight) {
+                    ItemStack item;
+
+                    if (entry.getKey() == Material.LEATHER_BOOTS && entry.getValue().isSpecialItem) {
+                        item = createSlimeBoots();
+                    } else {
+                        int quantity = ThreadLocalRandom.current().nextInt(1, entry.getValue().maxQuantity + 1);
+                        item = new ItemStack(entry.getKey(), quantity);
+
+                    }
+
+                    chestInventory.setItem(slot, item);
                     break;
                 }
             }
         }
     }
 }
-

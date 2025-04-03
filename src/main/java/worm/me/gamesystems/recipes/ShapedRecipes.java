@@ -6,6 +6,9 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.persistence.PersistentDataType;
 import worm.me.GuiConstructor;
 import worm.me.Server;
 
@@ -28,6 +31,24 @@ public class ShapedRecipes {
         // ID 2
         shapedRecipeMap.put(new ItemStack(Material.OAK_SAPLING, 1), List.of(List.of(new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.STICK), new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.STICK), new ItemStack(Material.DIRT), new ItemStack(Material.STICK),
                 new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.WATER_BUCKET), new ItemStack(Material.WHEAT_SEEDS)), List.of(GuiConstructor.createGuiItem(Material.STONE, "OAK_SAPLING"))));
+        shapedRecipeMap.put(
+                createSlimeBoots(),
+                List.of(
+                        List.of(
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.SLIME_BALL),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.SLIME_BALL),
+                                new ItemStack(Material.SLIME_BLOCK),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.SLIME_BLOCK)
+                        ),
+                        List.of(GuiConstructor.createGuiItem(Material.STONE, "SLIME_BOOTS"))
+                )
+        );
+
 
         // ID 3, 4, and 5
         shapedRecipeMap.put(new ItemStack(Material.CHAINMAIL_CHESTPLATE, 1), List.of(List.of(new ItemStack(Material.IRON_INGOT), new ItemStack(Material.AIR), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET),
@@ -74,6 +95,59 @@ public class ShapedRecipes {
                 new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.IRON_INGOT),new ItemStack(Material.OAK_PLANKS),
                 new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS)), List.of(GuiConstructor.createGuiItem(Material.STONE, "JUKEBOX"))));
 
+        shapedRecipeMap.put(
+                (new ItemStack(Material.MINECART, 1)),
+                List.of(
+                        List.of(
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.IRON_NUGGET),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.IRON_NUGGET),
+                                new ItemStack(Material.IRON_NUGGET),
+                                new ItemStack(Material.IRON_NUGGET),
+                                new ItemStack(Material.IRON_NUGGET)
+                        ),
+                        List.of(GuiConstructor.createGuiItem(Material.STONE, "MINECART"))
+                )
+        );
+
+        shapedRecipeMap.put(
+                (new ItemStack(Material.AMETHYST_SHARD, 1)),
+                List.of(
+                        List.of(
+                                new ItemStack(Material.SMALL_AMETHYST_BUD),
+                                new ItemStack(Material.SMALL_AMETHYST_BUD),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.SMALL_AMETHYST_BUD),
+                                new ItemStack(Material.SMALL_AMETHYST_BUD),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.AIR)
+                        ),
+                        List.of(GuiConstructor.createGuiItem(Material.STONE, "AMETHYST_SHARD"))
+                )
+        );
+
+        shapedRecipeMap.put(
+                (new ItemStack(Material.BUDDING_AMETHYST, 1)),
+                List.of(
+                        List.of(
+                                new ItemStack(Material.AMETHYST_SHARD),
+                                new ItemStack(Material.AMETHYST_BLOCK),
+                                new ItemStack(Material.AMETHYST_SHARD),
+                                new ItemStack(Material.AMETHYST_BLOCK),
+                                new ItemStack(Material.AMETHYST_BLOCK),
+                                new ItemStack(Material.AMETHYST_BLOCK),
+                                new ItemStack(Material.AMETHYST_SHARD),
+                                new ItemStack(Material.AMETHYST_BLOCK),
+                                new ItemStack(Material.AMETHYST_SHARD)
+                        ),
+                        List.of(GuiConstructor.createGuiItem(Material.STONE, "BUDDING_AMETHYST"))
+                )
+        );
 
         shapedRecipes(shapedRecipeMap);
 
@@ -137,6 +211,7 @@ public class ShapedRecipes {
             Bukkit.removeRecipe(new NamespacedKey(Server.getPlugin(), shapedRecipeMap.get(i).getFirst().toString()));
         }
 
+        Bukkit.removeRecipe(new NamespacedKey("minecraft", "minecart"));
 
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "wooden_pickaxe"));
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "wooden_axe"));
@@ -174,5 +249,28 @@ public class ShapedRecipes {
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "iron_boots"));
 
 
+    }
+
+    private ItemStack createSlimeBoots() {
+        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
+        ItemMeta meta = boots.getItemMeta();
+
+        // Set name and color
+        meta.setDisplayName(ChatColor.GREEN + "Slime Boots");
+        ((LeatherArmorMeta)meta).setColor(Color.LIME);
+
+        // Add NBT tag
+        meta.getPersistentDataContainer().set(
+                new NamespacedKey(Server.getPlugin(), "slimeboots"),
+                PersistentDataType.STRING,
+                "true"
+        );
+
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + "You must have the slime boot ability to use this");
+        meta.setLore(lore);
+
+        boots.setItemMeta(meta);
+        return boots;
     }
 }
