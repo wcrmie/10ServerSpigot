@@ -47,6 +47,8 @@ public final class Server extends JavaPlugin {
     private FeatherDash featherDash;
     private ArtBlocks artBlocks;
     private TreasureChests treasureChests;
+    private static final long CHEST_SPAWN_INTERVAL = 2 * 60 * 60 * 20;
+    private static final String LAST_CHEST_SPAWN_KEY = "lastChestSpawn";
 
     public Map<Material, Long> miningBlocks = new HashMap<>();
 
@@ -89,7 +91,8 @@ public final class Server extends JavaPlugin {
         saddleSystem = new SaddleSystem(this);
         artBlocks = new ArtBlocks(this);
         featherDash = new FeatherDash();
-        this.treasureChests = new TreasureChests(this);
+        this.treasureChests = new TreasureChests();
+        setupChestSpawnSchedule();
 
         // Add custom recipes
 
@@ -374,12 +377,31 @@ public final class Server extends JavaPlugin {
         featherDash.cleanupAll();
 
         AgilityDoubleJump.cancelAllPlatforms();
+    }
 
-        if (treasureChests != null) {
-            treasureChests.stop();
+    private void setupChestSpawnSchedule() {
+        long lastSpawn = getConfig().getLong(LAST_CHEST_SPAWN_KEY, 0);
+        long currentTime = System.currentTimeMillis();
+        long timeSinceLastSpawn = currentTime - lastSpawn;
+
+        long intervalMillis = 2 * 60 * 60 * 1000;
+
+        long initialDelay;
+        if (lastSpawn == 0) {
+            initialDelay = 0;
+        } else if (timeSinceLastSpawn >= intervalMillis) {
+            initialDelay = 0;
+        } else {
+            initialDelay = intervalMillis - timeSinceLastSpawn;
         }
 
+        long initialDelayTicks = initialDelay / 50;
 
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
+            treasureChests.chestSpawn();
+            getConfig().set(LAST_CHEST_SPAWN_KEY, System.currentTimeMillis());
+            saveConfig();
+        }, initialDelayTicks, CHEST_SPAWN_INTERVAL);
     }
 
     public void broadcast(String message){

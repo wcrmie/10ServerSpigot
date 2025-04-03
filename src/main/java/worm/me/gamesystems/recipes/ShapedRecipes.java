@@ -212,6 +212,10 @@ public class ShapedRecipes {
                 "true"
         );
 
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + "You must have the slime boot ability to use this");
+        meta.setLore(lore);
+
         boots.setItemMeta(meta);
         return boots;
     }
