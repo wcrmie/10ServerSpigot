@@ -233,8 +233,6 @@ public class Listener implements org.bukkit.event.Listener {
 
                 long[] repsess = c.get(new NamespacedKey(Server.getPlugin(), "repsess"), PersistentDataType.LONG_ARRAY);
 
-                Server.pluginMessage("" + repsess[1], p);
-
                 repsess[1]++;
 
                 c.set(new NamespacedKey(Server.getPlugin(), "repsess"), PersistentDataType.LONG_ARRAY, repsess);
