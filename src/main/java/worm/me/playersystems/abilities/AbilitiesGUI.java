@@ -155,8 +155,9 @@ public class AbilitiesGUI {
 
         Abilities abilities = new Abilities();
 
-        if (abilities.getActiveAbilities(p).contains(slotNum)){
+        if (abilities.getActiveAbilities(p).contains(slotNum) && slotNum != 0){
             Server.pluginMessage(ChatColor.RED + "You already have this ability active!", p);
+            return;
         }
 
         if (abilities.hasAbilityOnCooldown(p)) {

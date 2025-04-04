@@ -64,7 +64,7 @@ public class Abilities {
 
         // Format: abilityRequirements.put(abilityID, new int[]{combat, farming, crafting, fishing, smithing, mining, agility, foraging});
         abilityRequirements.put(0, new int[]{1,  0,  0, 0,  0, 0, 0,  0});
-        abilityRequirements.put(1, new int[]{5,  0,  0, 0,  0, 0, 10, 0});
+        abilityRequirements.put(1, new int[]{1,  0,  0, 0,  0, 0, 0, 0});
         abilityRequirements.put(2, new int[]{10, 0,  0, 0,  0, 0, 5,  0});
         abilityRequirements.put(3, new int[]{0,  0,  0, 0,  0, 0, 15, 0});
         abilityRequirements.put(4, new int[]{0,  0,  0, 0,  0, 0, 20, 0});
@@ -126,15 +126,15 @@ public class Abilities {
 
         } else if (abilityID == 1){
 
-            AgilityDash agilityDash = new AgilityDash();
-            agilityDash.dash(p);
+            AgilityDoubleJump doubleJump = new AgilityDoubleJump();
+            doubleJump.doubleJump(p);
 
             cooldowns[getAbilitySlot(p, 1)] = System.currentTimeMillis()/1000L + 10;
 
         } else if (abilityID == 2){
 
-            AgilityDoubleJump doubleJump = new AgilityDoubleJump();
-            doubleJump.doubleJump(p);
+            AgilityDash agilityDash = new AgilityDash();
+            agilityDash.dash(p);
 
             cooldowns[getAbilitySlot(p, 2)] = System.currentTimeMillis()/1000L + 10;
 
@@ -177,6 +177,9 @@ public class Abilities {
 
 
         container.set(abilityCooldown, PersistentDataType.LONG_ARRAY, cooldowns);
+
+        CooldownDisplay cd = new CooldownDisplay();
+        cd.UpdateScoreboard(p);
 
 
     }

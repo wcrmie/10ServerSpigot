@@ -96,12 +96,6 @@
             <url>https://repo.destroystokyo.com/repository/maven-public//</url>
         </repository>
 
-
-        <repository>
-            <id>retrooper-repo</id>
-            <url>https://repo.retrooper.com/repository/public/</url>
-        </repository>
-
     </repositories>
 
     <dependencies>

@@ -1,5 +1,11 @@
 package worm.me.playersystems.abilities.active;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.protocol.player.InteractionHand;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientAnimation;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import worm.me.playersystems.abilities.Abilities;
@@ -8,13 +14,18 @@ import worm.me.playersystems.data.levels.Levels;
 
 public class AgilityDash {
 
-    private final Abilities ability = new Abilities();
-
     public void dash(Player p){
         Vector direction = p.getLocation().getDirection();
         direction.multiply(1.3);
         direction.setY(0.5);
         p.setVelocity(direction);
         Levels.addExp(5L, Levels.skillTranslation("Agility"), p);
+
+        World world = p.getWorld();
+        world.spawnParticle(Particle.SWEEP_ATTACK, p.getLocation(), 5, 0.3, 0.00001, 0.3, 0.05);
+        world.playSound(p.getLocation(), Sound.ITEM_TRIDENT_THROW, .8f, 1.5f);
+
+        p.swingMainHand();
+
     }
 }

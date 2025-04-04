@@ -74,7 +74,7 @@ public class ShapedRecipes {
         emeraldChestplate.setItemMeta(meta);
 
         shapedRecipeMap.put(emeraldChestplate, List.of(List.of(new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD),
-                new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD)), List.of(GuiConstructor.createGuiItem(Material.STONE, "EMERALD_CHESTPLATE"))));
+                new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD)), List.of(GuiConstructor.createGuiItem(Material.STONE, "EMERALD_CHESTPLATE"))));
 
         meta.setDisplayName(ChatColor.GREEN + "Emerald Leggings");
 

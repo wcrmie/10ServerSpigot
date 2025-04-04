@@ -8,8 +8,6 @@ import worm.me.playersystems.abilities.Abilities;
 
 public class SlimeBoots {
 
-    private final Abilities ability = new Abilities();
-
     public void bounce(Player p) {
 
         float fallDistance = p.getFallDistance();
@@ -29,7 +27,7 @@ public class SlimeBoots {
         );
 
         p.setVelocity(bounceVelocity);
-        World world = (World) p.getWorld();
+        World world = p.getWorld();
         world.playSound(p.getLocation(), Sound.ENTITY_SLIME_JUMP, 0.2f, 1.0f);
 
     }

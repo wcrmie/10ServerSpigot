@@ -12,6 +12,7 @@ import org.bukkit.scoreboard.Team;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 import worm.me.playersystems.abilities.Abilities;
+import worm.me.playersystems.abilities.CooldownDisplay;
 import worm.me.playersystems.data.social.MessageHead;
 import worm.me.playersystems.data.social.hats.Hats;
 import worm.me.playersystems.data.social.skins.Skin;
@@ -262,6 +263,9 @@ public class VoidPlayer {
         // Assign quests
         QuestAssign questAssign = new QuestAssign();
         questAssign.dailyCheck(player);
+
+        CooldownDisplay cooldownDisplay = new CooldownDisplay();
+        cooldownDisplay.UpdateScoreboard(player);
 
     }
 

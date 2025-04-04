@@ -3,7 +3,7 @@ version: '1.0-SNAPSHOT'
 main: worm.me.Server
 api-version: '1.21'
 authors: [ worm, clem ]
-depend: [WorldGuard, packetevents]
+depend: [WorldGuard]
 softdepend: [SkinsRestorer]
 commands:
   setVoice:
@@ -13,7 +13,7 @@ commands:
     description: Allows the player to choose which blocks are generated for them every 10 seconds via a GUI.
     usage: /<command>
   shout:
-    description: Allows the player to send a message to everyone on the Server once every 15 minutes
+    description: Allows the player to send a message to everyone on the Server once every 5 minutes
     usage: /<command> <message>
   rules:
     description: Displays the rules to the player.
@@ -65,6 +65,7 @@ commands:
   rename:
     description: Rename held item.
     usage: /<command> <string>
+    permission: 10VS.rename
   recipes:
     description: Opens the recipes GUI for the player.
     usage: /<command>

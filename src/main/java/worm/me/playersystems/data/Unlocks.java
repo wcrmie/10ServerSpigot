@@ -76,6 +76,8 @@ public class Unlocks {
                 int j = unlockedAbilities[i];
                 if (j == 1){
                     skippedAbilities.add(i);
+
+                    System.out.println(i);
                 }
             }
 

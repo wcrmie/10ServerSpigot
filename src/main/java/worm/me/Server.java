@@ -1,7 +1,5 @@
 package worm.me;
 
-import com.github.retrooper.packetevents.PacketEvents;
-import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
 import net.skinsrestorer.api.SkinsRestorer;
@@ -74,14 +72,6 @@ public final class Server extends JavaPlugin {
 
     public WorldBorderSizeHandler getWorldBorderHandler() {
         return this.WorldBorderSizeHandler;
-    }
-
-
-    @Override
-    public void onLoad(){
-        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
-
-        PacketEvents.getAPI().load();
     }
 
     @Override
@@ -417,8 +407,6 @@ public final class Server extends JavaPlugin {
             getConfig().set(LAST_CHEST_SPAWN_KEY, System.currentTimeMillis());
             saveConfig();
         }, initialDelayTicks, CHEST_SPAWN_INTERVAL);
-        PacketEvents.getAPI().terminate();
-
     }
 
     public void broadcast(String message){

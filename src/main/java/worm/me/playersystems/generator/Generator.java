@@ -8,6 +8,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import worm.me.Server;
+import worm.me.playersystems.data.tools.Tools;
 
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -26,7 +27,7 @@ public class Generator {
             @Override
             public void run() {
                 if (player.isOnline()) {
-                    if (hasEmptySlot(player)) player.getInventory().addItem(randomItem(player));
+                    if (hasEmptySlot(player) && Tools.toolType(Objects.requireNonNullElse(player.getItemOnCursor().getType(), Material.STONE)).equals("none")) player.getInventory().addItem(randomItem(player));
                 } else cancel();
             }
         }.runTaskTimer(plugin, 200, 200);
