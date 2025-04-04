@@ -378,26 +378,41 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onPlayerMoveMoveEvent(PlayerMoveEvent e){
 
-
         Abilities ability = new Abilities();
 
         if (e.getFrom() == e.getTo()) return;
 
-        if (!ability.isActive(e.getPlayer(), 2) && e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
+        if (!ability.isActive(e.getPlayer(), 2) && e.getPlayer().getGameMode() != GameMode.CREATIVE) {
             e.getPlayer().setAllowFlight(false);
-            e.getPlayer().setFlying(false);
         }
 
         Player player = e.getPlayer();
-        if (player.getGameMode() == GameMode.SURVIVAL && player.getAllowFlight()) {
-            if (!player.isFlying() && player.getFallDistance() > 3) {
+
+        if (
+                ability.isActive(e.getPlayer(), 7)
+                        && !player.isSneaking()
+                        && player.getInventory().getBoots() != null
+                        && player.getInventory().getBoots().hasItemMeta()
+                        && player.getInventory().getBoots().getItemMeta() != null
+                        && player.getInventory().getBoots().getItemMeta().getPersistentDataContainer().has(new NamespacedKey(plugin, "slimeboots"), PersistentDataType.STRING)
+        )
+        {
+            if (!player.isFlying()) {
                 if (player.isOnGround()) {
-                    player.damage(player.getFallDistance() - 3);
+                    Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(7, player));
+                }
+            }
+        } else {
+
+            if (player.getGameMode() == GameMode.SURVIVAL && player.getAllowFlight()) {
+                if (!player.isFlying() && player.getFallDistance() > 3) {
+                    if (player.isOnGround()) {
+                        player.damage(player.getFallDistance() - 3);
 
 
-
-                    if (player.getHealth() > (player.getFallDistance() - 3)) {
-                        Levels.addExp((Math.round(player.getFallDistance() - 3)/2), Levels.skillTranslation("Agility"), player);
+                        if (player.getHealth() > (player.getFallDistance() - 3)) {
+                            Levels.addExp((Math.round(player.getFallDistance() - 3) / 2), Levels.skillTranslation("Agility"), player);
+                        }
                     }
                 }
             }
