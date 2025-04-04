@@ -30,6 +30,7 @@ import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.AgilityDoubleJump;
 import worm.me.playersystems.abilities.active.FeatherDash;
 import worm.me.playersystems.abilities.active.ShadowStep;
+import worm.me.playersystems.generator.Generator;
 import worm.me.playersystems.quests.QuestInitialize;
 import worm.me.playersystems.PlayerSpawning;
 import worm.me.playersystems.saddle.SaddleSystem;
@@ -369,6 +370,10 @@ public final class Server extends JavaPlugin {
 
         abilities.initializeRequirements();
 
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Generator generator = new Generator(plugin);
+            generator.generateItem(player);
+        }
 
     }
 
