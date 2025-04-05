@@ -59,7 +59,7 @@ public class Tools {
 
             if (newTool.toString().contains("STONE")){
 
-                toolMeta.setLore(List.of(ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "8 Iron Ingots"));
+                toolMeta.setLore(List.of(ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "4 Iron Ingots"));
             }
 
             ItemStack newToolItem = new ItemStack(newTool);
@@ -91,7 +91,7 @@ public class Tools {
 
             } else if (downgrade.toString().contains("STONE")) {
 
-                toolMeta.setLore(List.of(ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "8 Iron Ingots"));
+                toolMeta.setLore(List.of(ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "4 Iron Ingots"));
 
             }
 

@@ -3,19 +3,18 @@ package worm.me.playersystems.data;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.checkerframework.checker.units.qual.N;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.data.levels.Levels;
 import worm.me.Server;
 
 import java.lang.constant.Constable;
 import java.util.*;
-
-import static worm.me.playersystems.data.VoidPlayer.getUnlockedGens;
-import static worm.me.playersystems.data.VoidPlayer.setUnlockedGens;
 
 public class Unlocks {
 
@@ -44,92 +43,40 @@ public class Unlocks {
         return translation.toArray(new String[translation.size()]);
     }
 
-    public void attemptUnlock(int type, Player p){
+    public static boolean hasAbilityUnlocked(Player p, int ability){
+        PersistentDataContainer container = p.getPersistentDataContainer();
+        int[] levels = Objects.requireNonNullElse(container.get(new NamespacedKey(Server.getPlugin(), "levels"), PersistentDataType.INTEGER_ARRAY), new int[8]);
 
-        // Allow maps with different key types
-        Map<? extends Constable, int[]> reqsMap = unlockTypes.get(type);
-
-        // Push keys to array to use indices
-        Set<? extends Constable> mapAsList = unlockTypes.get(type).keySet();
-
-        PersistentDataContainer pdc = p.getPersistentDataContainer();
-        int[] playerLevels = pdc.get(Levels.Levels, PersistentDataType.INTEGER_ARRAY);
-
-        // Get rid of anything the player has already unlocked
-        if (type < 4){
-
-            List<ItemStack> unlockedGens = getUnlockedGens(p);
-
-            Set<Material> totalGens = (Set<Material>) unlockTypes.get(type).keySet();
-
-            for (ItemStack unlockedGen : unlockedGens) {
-                totalGens.remove(unlockedGen.getType());
-            }
-
-            mapAsList = totalGens;
-
-        } else if (type == 4){
-            List<Integer> skippedAbilities = new ArrayList<>();
-            Set<Integer> totalAbilities = (Set<Integer>) unlockTypes.get(type).keySet();
-            int[] unlockedAbilities = pdc.get(Abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY);
-            for (int i = 0; i < unlockedAbilities.length; i++){
-                int j = unlockedAbilities[i];
-                if (j == 1){
-                    skippedAbilities.add(i);
-
-                    System.out.println(i);
-                }
-            }
-
-            skippedAbilities.forEach(totalAbilities::remove);
-
-            mapAsList = totalAbilities;
-        }
-
-        for (int i = 0; i < unlockTypes.get(type).size(); i++){
-            for (int j = 0; j < 8; j++){
-                int req = reqsMap.get(mapAsList.toArray()[i])[j];
-                if (req != 0) {
-                    if (playerLevels[j] < req) {
-                        break;
-
-                    // If the player has the required levels, unlock the thing
-                    }
-                } else {
-
-                    if (j >= 6) {
-
-
-                        // If the unlock is a generator, add it to the player's unlocked generators
-                        if (type < 4) {
-
-                            List<ItemStack> gens = getUnlockedGens(p);
-
-                            gens.add(new ItemStack((Material) mapAsList.toArray()[i]));
-                            setUnlockedGens(p, gens);
-
-                            UnlockEvent unlockEvent = new UnlockEvent(p, mapAsList.toArray()[i].toString(), "Generator");
-                            Bukkit.getServer().getPluginManager().callEvent(unlockEvent);
-
-                            // If the unlock is an ability, add it to the player's unlocked abilities
-                        } else if (type == 4) {
-                            int[] unlockedAbilities = pdc.get(Abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY);
-                            unlockedAbilities[i] = 1;
-                            pdc.set(Abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY, unlockedAbilities);
-
-                            UnlockEvent unlockEvent = new UnlockEvent(p, mapAsList.toArray()[i].toString(), "Ability");
-                            Bukkit.getServer().getPluginManager().callEvent(unlockEvent);
-
-                            // -----------------If unlock is recipe VVV
-                        } else if (type == 5) {
-
-
-
-                        }
-                    }
-                }
+        for (int i = 0; i < levels.length; i++){
+            if (levels[i] < Abilities.abilityRequirements.get(ability)[i]){
+                return false;
             }
         }
+        return true;
+    }
+
+    public static boolean hasGenUnlocked(Player p, Material gen){
+        PersistentDataContainer container = p.getPersistentDataContainer();
+        int[] levels = Objects.requireNonNullElse(container.get(new NamespacedKey(Server.getPlugin(), "levels"), PersistentDataType.INTEGER_ARRAY), new int[8]);
+
+        int[] reqs;
+
+        if (Server.stones.containsKey(gen)) {
+            reqs = Server.stones.get(gen);
+        } else if (Server.planks.containsKey(gen)) {
+            reqs = Server.planks.get(gen);
+        } else if (Server.dirts.containsKey(gen)) {
+            reqs = Server.dirts.get(gen);
+        } else {
+            reqs = Server.miscs.get(gen);
+        }
+
+        for (int i = 0; i < levels.length; i++){
+            if (levels[i] < reqs[i]){
+                return false;
+            }
+        }
+        return true;
     }
 
 

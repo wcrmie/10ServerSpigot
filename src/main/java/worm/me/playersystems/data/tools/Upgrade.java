@@ -6,8 +6,8 @@ import org.bukkit.inventory.ItemStack;
 public enum Upgrade {
 
     WOOD_TOOL(new ItemStack(Material.COBBLESTONE, 16)),
-    STONE_TOOL(new ItemStack(Material.IRON_INGOT, 8)),
-    CHAIN_ARMOR(new ItemStack(Material.IRON_INGOT, 8));
+    STONE_TOOL(new ItemStack(Material.IRON_INGOT, 4)),
+    CHAIN_ARMOR(new ItemStack(Material.IRON_INGOT, 4));
 
     final ItemStack upgradeItem;
 

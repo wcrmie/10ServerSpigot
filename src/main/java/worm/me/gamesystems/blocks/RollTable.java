@@ -17,11 +17,9 @@ public class RollTable {
         for (ItemStack i : table.getWeights().keySet()) {
             tempWeight += table.getWeights().get(i);
             if (RNG <= tempWeight) {
-                System.out.println(i.toString());
                 return i;
             }
         }
-        System.out.println("bruh");
         return null;
     }
 }

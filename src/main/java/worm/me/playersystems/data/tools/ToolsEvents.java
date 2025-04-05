@@ -34,7 +34,6 @@ public class ToolsEvents {
         p.getInventory().setItemInMainHand(tools.toolDowngrade(e.getBrokenItem()));
 
         VoidPlayer.setTools(playerTools, p);
-        Server.pluginMessage(playerTools.toString(), p);
     }
 
     public void toolUpgradeAttempt(Player player, InventoryClickEvent event){

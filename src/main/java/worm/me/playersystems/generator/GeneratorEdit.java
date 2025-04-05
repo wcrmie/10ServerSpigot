@@ -75,17 +75,12 @@ public class GeneratorEdit {
         i.setItem(24, createGuiItem(Material.SMOOTH_BASALT, "", ""));
 
         for (int j = 10; j < 25; j++){
+
+            ItemStack item = i.getItem(j);
+
             if (Server.stones.containsKey(i.getItem(j).getType())){
 
-                boolean unlocked = false;
-
-                for (ItemStack item : VoidPlayer.getUnlockedGens(p)){
-                    if (item.getType() == i.getItem(j).getType()){
-                        unlocked = true;
-                        break;
-                    }
-                }
-                if (!unlocked) i.setItem(j, createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + "LOCKED", Unlocks.requirementsTranslation(Server.stones.get(i.getItem(j).getType()))));
+                if (!Unlocks.hasGenUnlocked(p, item.getType())) i.setItem(j, createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + item.getType().toString() + " (LOCKED)", Unlocks.requirementsTranslation(Server.stones.get(i.getItem(j).getType()))));
             }
         }
 
@@ -113,17 +108,13 @@ public class GeneratorEdit {
         i.setItem(16, createGuiItem(Material.ACACIA_PLANKS, "", ""));
 
         for (int j = 10; j < 17; j++){
-            if (Server.planks.containsKey(i.getItem(j).getType())){
 
-                boolean unlocked = false;
+            ItemStack item = i.getItem(j);
 
-                for (ItemStack item : VoidPlayer.getUnlockedGens(p)){
-                    if (item.getType() == i.getItem(j).getType()){
-                        unlocked = true;
-                        break;
-                    }
-                }
-                if (!unlocked) i.setItem(j, createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + "LOCKED", Unlocks.requirementsTranslation(Server.planks.get(i.getItem(j).getType()))));
+            if (Server.planks.containsKey(item.getType())){
+
+
+                if (!Unlocks.hasGenUnlocked(p, item.getType())) i.setItem(j, createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + item.getType().toString() + " (LOCKED)", Unlocks.requirementsTranslation(Server.planks.get(i.getItem(j).getType()))));
             }
         }
 
@@ -151,17 +142,12 @@ public class GeneratorEdit {
         i.setItem(16, createGuiItem(Material.RED_SAND, "", ""));
 
         for (int j = 10; j < 17; j++){
+
+            ItemStack item = i.getItem(j);
+
             if (Server.dirts.containsKey(i.getItem(j).getType())){
 
-                boolean unlocked = false;
-
-                for (ItemStack item : VoidPlayer.getUnlockedGens(p)){
-                    if (item.getType() == i.getItem(j).getType()){
-                        unlocked = true;
-                        break;
-                    }
-                }
-                if (!unlocked) i.setItem(j, createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + "LOCKED", Unlocks.requirementsTranslation(Server.dirts.get(i.getItem(j).getType()))));
+                if (!Unlocks.hasGenUnlocked(p, item.getType())) i.setItem(j, createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + item.getType().toString() + " (LOCKED)", Unlocks.requirementsTranslation(Server.dirts.get(i.getItem(j).getType()))));
             }
         }
 
@@ -184,17 +170,12 @@ public class GeneratorEdit {
         i.setItem(15, createGuiItem(Material.REDSTONE, "", ""));
 
         for (int j = 10; j < 16; j++){
+
+            ItemStack item = i.getItem(j);
+
             if (Server.miscs.containsKey(i.getItem(j).getType())){
 
-                boolean unlocked = false;
-
-                for (ItemStack item : VoidPlayer.getUnlockedGens(p)){
-                    if (item.getType() == i.getItem(j).getType()){
-                        unlocked = true;
-                        break;
-                    }
-                }
-                if (!unlocked) i.setItem(j, createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + "LOCKED", Unlocks.requirementsTranslation(Server.miscs.get(i.getItem(j).getType()))));
+                if (!Unlocks.hasGenUnlocked(p, item.getType())) i.setItem(j, createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + item.getType().toString() + " (LOCKED)", Unlocks.requirementsTranslation(Server.miscs.get(i.getItem(j).getType()))));
             }
         }
 

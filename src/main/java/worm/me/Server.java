@@ -68,6 +68,7 @@ public final class Server extends JavaPlugin {
     public static Map<Material, int[]> dirts = new HashMap<>();
     public static Map<Material, int[]> planks = new HashMap<>();
     public static Map<Material, int[]> miscs = new HashMap<>();
+    public List<Player> generating = new ArrayList<>();
 
     public static Map<String, List<Material>> tools = new HashMap<>();
 
@@ -78,11 +79,6 @@ public final class Server extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Generator generator = new Generator(plugin);
-            generator.generateItem(player);
-        }
 
         plugin = this;
 
@@ -365,6 +361,11 @@ public final class Server extends JavaPlugin {
 
         abilities.initializeRequirements();
 
+        for (Player p : Bukkit.getOnlinePlayers()){
+            generating.add(p);
+            Generator generator = new Generator(this);
+            generator.generateItem(p);
+        }
 
     }
 

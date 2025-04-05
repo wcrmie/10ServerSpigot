@@ -9,6 +9,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.GuiConstructor;
 import worm.me.Server;
+import worm.me.playersystems.data.Unlocks;
 
 import java.util.Arrays;
 import java.util.List;
@@ -107,7 +108,7 @@ public class AbilitiesGUI {
                 break;
             }
 
-            if (Objects.requireNonNullElse(container.get(Abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY), new int[50])[i] != 0 || p.isOp()){
+            if (Unlocks.hasAbilityUnlocked(p, i) || p.isOp()){
 
                 // Construct item
                 gui.setItem(slotNum, GuiConstructor.createGuiItem(Material.valueOf(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription, Arrays.toString(abilityReqs.toArray(new String[0]))));
@@ -128,7 +129,7 @@ public class AbilitiesGUI {
         // Handle the GUI events here
         PersistentDataContainer container = p.getPersistentDataContainer();
 
-        int slotNum = slot - 10;
+        int slotID = slot - 10;
 
         if (slot < 9 || slot > 44){
 
@@ -146,8 +147,8 @@ public class AbilitiesGUI {
         }
 
         for (int i = 0; i <= 9; i++){
-            if (slotNum - (i * 9) < 9){
-                slotNum = slotNum - (i * 2);
+            if (slotID - (i * 9) < 9){
+                slotID = slotID - (i * 2);
                 break;
             }
 
@@ -155,7 +156,7 @@ public class AbilitiesGUI {
 
         Abilities abilities = new Abilities();
 
-        if (abilities.getActiveAbilities(p).contains(slotNum) && slotNum != 0){
+        if (abilities.getActiveAbilities(p).contains(slotID) && slotID != 0){
             Server.pluginMessage(ChatColor.RED + "You already have this ability active!", p);
             return;
         }
@@ -165,19 +166,19 @@ public class AbilitiesGUI {
             return;
         }
 
-        if (Objects.requireNonNullElse(container.get(Abilities.abilitiesUnlocked, PersistentDataType.INTEGER_ARRAY)[slotNum], 0) == 1 || p.isOp()){
+        if (Unlocks.hasAbilityUnlocked(p, slotID) || p.isOp()){
             int[] active = Objects.requireNonNullElse(container.get(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY), new int[3]);
             if (e.getView().getTitle().contains("First")){
-                Server.pluginMessage("First " + slotNum, p);
-                active[0] = slotNum;
+                Server.pluginMessage("First " + slotID, p);
+                active[0] = slotID;
                 container.set(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
             }
             if (e.getView().getTitle().contains("Second")){
-                active[1] = slotNum;
+                active[1] = slotID;
                 container.set(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
             }
             if (e.getView().getTitle().contains("Third")){
-                active[2] = slotNum;
+                active[2] = slotID;
                 container.set(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
             }
         }

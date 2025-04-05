@@ -95,73 +95,6 @@ public class VoidPlayer {
 
     }
 
-    public static List<ItemStack> getUnlockedGens(Player p){
-
-            PersistentDataContainer pdc = p.getPersistentDataContainer();
-
-            String encodedData = pdc.get(new NamespacedKey(Server.getPlugin(), "unlockedgens"), PersistentDataType.STRING);
-
-            List<ItemStack> items = new ArrayList<>();
-
-            if (!encodedData.isEmpty()){
-                byte[] rawData = Base64.getDecoder().decode(encodedData);
-
-                try {
-                    ByteArrayInputStream io = new ByteArrayInputStream(rawData);
-                    BukkitObjectInputStream is = new BukkitObjectInputStream(io);
-
-                    int size = is.readInt();
-
-                    for (int i = 0; i < size; i++) {
-
-                        ItemStack item = (ItemStack) is.readObject();
-
-                        System.out.println(item.getType());
-
-                        items.add(item);
-
-                    }
-
-                    is.close();
-
-                    return items;
-
-                } catch (IOException | ClassNotFoundException e) {
-                    Bukkit.getLogger().info(e.getMessage());
-                }
-            }
-            return items;
-    }
-
-    public static void setUnlockedGens(Player p, List<ItemStack> gens){
-
-            PersistentDataContainer pdc = p.getPersistentDataContainer();
-
-            try {
-                ByteArrayOutputStream io = new ByteArrayOutputStream();
-                BukkitObjectOutputStream os = new BukkitObjectOutputStream(io);
-
-                os.writeInt(gens.size());
-
-                for (ItemStack item : gens) {
-                    os.writeObject(item);
-                }
-
-                os.flush();
-
-                byte[] rawData = io.toByteArray();
-
-                String encodedData = Base64.getEncoder().encodeToString(rawData);
-
-                pdc.set(new NamespacedKey(Server.getPlugin(), "unlockedgens"), PersistentDataType.STRING, encodedData);
-
-                os.close();
-
-            } catch (IOException e) {
-                Bukkit.getLogger().info(e.getMessage());
-            }
-    }
-
     public static void initializeData(Player player){
 
         PersistentDataContainer container = player.getPersistentDataContainer();
@@ -245,20 +178,14 @@ public class VoidPlayer {
         MessageHead messageHead = new MessageHead(plugin);
         player.getPersistentDataContainer().set(messageHead.armorStandExists, PersistentDataType.BOOLEAN, false);
 
-        // Change player's skin
-        Skin skin = new Skin(plugin);
-        skin.setSkin(player);
-
         // Hide the player's nametag
-        if (!player.isOp()) {
-            Scoreboard score = Bukkit.getScoreboardManager().getMainScoreboard();
-            Team nHide = score.getTeam("hiddenName");
-            if (nHide == null) {
-                nHide = score.registerNewTeam("hiddenName");
-                nHide.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.FOR_OWN_TEAM);
-            }
-            nHide.addEntry(player.getName());
+        Scoreboard score = Bukkit.getScoreboardManager().getMainScoreboard();
+        Team nHide = score.getTeam("hiddenName");
+        if (nHide == null) {
+            nHide = score.registerNewTeam("hiddenName");
+            nHide.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
         }
+        nHide.addEntry(player.getName());
 
         // Assign quests
         QuestAssign questAssign = new QuestAssign();

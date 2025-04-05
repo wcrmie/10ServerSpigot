@@ -71,6 +71,8 @@ public class Levels {
      */
     public static void addExp(long exp, int skill, Player player){
 
+        if (exp == 0) return;
+
         PersistentDataContainer container = player.getPersistentDataContainer();
 
         // Call event
@@ -135,7 +137,6 @@ public class Levels {
                 addExp(Server.getPlugin().foragingBlocks.get(event.getBlock().getType()), skillTranslation("Foraging"), p);
 
                 if (event.getBlock().getType().equals(Material.DIRT)) {
-                    Server.pluginMessage("Dirt broken", p);
                     ((BlockBreakEvent) e).setDropItems(false);
 
                     Location loc = ((BlockBreakEvent) e).getBlock().getLocation();

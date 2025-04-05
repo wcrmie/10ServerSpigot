@@ -163,6 +163,7 @@ public class Listener implements org.bukkit.event.Listener {
         Player player = event.getPlayer();
 
         // Give the player a random item every 10 seconds
+        Server.getPlugin().generating.add(event.getPlayer());
         Generator generator = new Generator(plugin);
         generator.generateItem(player);
 
@@ -178,6 +179,7 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent e){
         Player p = e.getPlayer();
+        Server.getPlugin().generating.remove(e.getPlayer());
 
         PersistentDataContainer container = p.getPersistentDataContainer();
 
@@ -306,8 +308,6 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onChat(PlayerChatEvent event){
 
-        event.setCancelled(true);
-
         // For messages above head
         MessageHead messageHead = new MessageHead(plugin);
 
@@ -331,17 +331,17 @@ public class Listener implements org.bukkit.event.Listener {
 
         // Only ops can see chat logged (later will include moderators and such)
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.isOp()) event.getRecipients().add(player);
-
             double distance = player.getLocation().distance(event.getPlayer().getLocation());
 
-            if (distance <= 50 || player.hasPermission("10VS.MOD")) {
-
+            if (distance <= 50) {
                 int color = distance == 0 ? 255 : (int) Math.round(255 - distance * 5);
                 String hexColor = String.format("#%02x%02x%02x", color, color, color);
                 player.sendMessage(net.md_5.bungee.api.ChatColor.of(hexColor) + event.getPlayer().getName() + ": " + event.getMessage());
-
-
+                event.setCancelled(true);
+                return;
+            } else if (player.hasPermission("10VS.MOD")) {
+                player.sendMessage(p.getName() + ": " + m);
+                event.setCancelled(true);
             }
         }
 
@@ -388,7 +388,6 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onPlayerMoveMoveEvent(PlayerMoveEvent e){
 
-
         Abilities ability = new Abilities();
 
         if (e.getFrom() == e.getTo()) return;
@@ -406,7 +405,7 @@ public class Listener implements org.bukkit.event.Listener {
 
 
 
-                    if (player.getHealth() > (player.getFallDistance() - 3)) {
+                    if (player.getHealth()*2 > (player.getFallDistance() - 3)) {
                         Levels.addExp((Math.round(player.getFallDistance() - 3)/2), Levels.skillTranslation("Agility"), player);
                     }
                 }
@@ -461,9 +460,19 @@ public class Listener implements org.bukkit.event.Listener {
 
         if (event.getEntity() instanceof Player) return;
 
+        for (ItemStack itemStack : event.getDrops()) {
+            if (!Tools.toolType(itemStack.getType()).equals("none")) {
+                event.getDrops().remove(itemStack);
+            }
+        }
+
         LivingEntity entity = event.getEntity();
 
         tickList.remove(entity);
+
+        if (event.getEntity() instanceof Bat) {
+            event.getDrops().add(new ItemStack(Material.IRON_NUGGET, 1));
+        }
 
     }
 
@@ -707,13 +716,6 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onLevelUp(LevelUpEvent e){
-        Player p = e.getPlayer();
-        Unlocks unlocks = new Unlocks();
-
-        for (int i = 0; i < 5; i++){
-            unlocks.attemptUnlock(i, p);
-        }
-
 
     }
 
@@ -781,10 +783,10 @@ public class Listener implements org.bukkit.event.Listener {
     public void onInventoryClick(InventoryClickEvent e){
 
         if (Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST)).getType() == InventoryType.PLAYER && (e.getAction().equals(InventoryAction.SWAP_WITH_CURSOR) || e.getAction().equals(InventoryAction.COLLECT_TO_CURSOR)) &&
-                !Tools.toolType(e.getCurrentItem().getType()).equals("none") && e.getWhoClicked().getInventory().firstEmpty() == -1) e.setCancelled(true);
+                !Tools.toolType(Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STONE)).getType()).equals("none") && e.getWhoClicked().getInventory().firstEmpty() == -1) e.setCancelled(true);
         if (Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST)).getType() != InventoryType.PLAYER && !Tools.toolType(e.getCursor().getType()).equals("none")) e.setCancelled(true);
 
-        if (!Tools.toolType(e.getCurrentItem().getType()).equals("none") && (e.getClickedInventory().getType() == InventoryType.PLAYER && e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)) ||
+        if (!Tools.toolType(Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STONE)).getType()).equals("none") && (e.getClickedInventory().getType() == InventoryType.PLAYER && e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)) ||
                 (e.getAction().equals(InventoryAction.HOTBAR_SWAP) && e.getClickedInventory().getType() != InventoryType.PLAYER) && !Tools.toolType(e.getWhoClicked().getInventory().getItem(e.getHotbarButton()).getType()).equals("none")) e.setCancelled(true);
 
         if (Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST)).getType().equals(InventoryType.PLAYER)) {
@@ -922,15 +924,7 @@ public class Listener implements org.bukkit.event.Listener {
 
             if (Server.stones.containsKey(clickedItem.getType())){
 
-                boolean unlocked = false;
-
-                for (ItemStack item : VoidPlayer.getUnlockedGens(p)){
-                    if (item.getType() == clickedItem.getType()){
-                        unlocked = true;
-                        break;
-                    }
-                }
-                if (unlocked){
+                if (Unlocks.hasGenUnlocked(p, clickedItem.getType())){
                     PersistentDataContainer container = p.getPersistentDataContainer();
                     container.set(genEdit.stoneBlock, PersistentDataType.STRING, clickedItem.getType().toString());
                     p.sendMessage(ChatColor.GREEN + "Your stone block has been changed to " + clickedItem.getTranslationKey());
@@ -943,19 +937,12 @@ public class Listener implements org.bukkit.event.Listener {
 
             if (Server.planks.containsKey(clickedItem.getType())){
 
-                boolean unlocked = false;
-
-                for (ItemStack item : VoidPlayer.getUnlockedGens(p)){
-                    if (item.getType() == clickedItem.getType()){
-                        unlocked = true;
-                        break;
-                    }
-                }
-                if (unlocked){
+                if (Unlocks.hasGenUnlocked(p, clickedItem.getType())){
                     PersistentDataContainer container = p.getPersistentDataContainer();
                     container.set(genEdit.woodBlock, PersistentDataType.STRING, clickedItem.getType().toString());
                     p.sendMessage(ChatColor.GREEN + "Your wood block has been changed to " + clickedItem.getTranslationKey());
                 }
+
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(p);
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Loose Block")){
             e.setCancelled(true);
@@ -964,15 +951,8 @@ public class Listener implements org.bukkit.event.Listener {
 
             if (Server.dirts.containsKey(clickedItem.getType())){
 
-                boolean unlocked = false;
 
-                for (ItemStack item : VoidPlayer.getUnlockedGens(p)){
-                    if (item.getType() == clickedItem.getType()){
-                        unlocked = true;
-                        break;
-                    }
-                }
-                if (unlocked){
+                if (Unlocks.hasGenUnlocked(p, clickedItem.getType())) {
                     PersistentDataContainer container = p.getPersistentDataContainer();
                     container.set(genEdit.dirtBlock, PersistentDataType.STRING, clickedItem.getType().toString());
                     p.sendMessage(ChatColor.GREEN + "Your loose block has been changed to " + clickedItem.getTranslationKey());
@@ -987,15 +967,7 @@ public class Listener implements org.bukkit.event.Listener {
 
             if (Server.miscs.containsKey(clickedItem.getType())){
 
-                boolean unlocked = false;
-
-                for (ItemStack item : VoidPlayer.getUnlockedGens(p)){
-                    if (item.getType() == clickedItem.getType()){
-                        unlocked = true;
-                        break;
-                    }
-                }
-                if (unlocked){
+                if (Unlocks.hasGenUnlocked(p, clickedItem.getType())){
                     PersistentDataContainer container = p.getPersistentDataContainer();
                     container.set(genEdit.miscItem, PersistentDataType.STRING, clickedItem.getType().toString());
                     p.sendMessage(ChatColor.GREEN + "Your misc. item has been changed to " + clickedItem.getTranslationKey());
