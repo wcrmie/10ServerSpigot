@@ -15,21 +15,21 @@ public class SlimeBoots {
         if (fallDistance < 2.3f) return;
 
         float bouncePercentage = 0.85f;
+        float desiredHeight = fallDistance * bouncePercentage;
 
-        float desiredHeight = p.getFallDistance() * bouncePercentage;
+        // Calculate vertical bounce velocity using physics
         float bounceFactor = (float) Math.sqrt(2 * 0.08 * desiredHeight);
 
         Vector currentVelocity = p.getVelocity();
         Vector bounceVelocity = new Vector(
-                currentVelocity.getX(),
+                currentVelocity.getX() * 5f,
                 bounceFactor,
-                currentVelocity.getZ()
+                currentVelocity.getZ() * 5f
         );
 
         p.setVelocity(bounceVelocity);
         World world = p.getWorld();
         world.playSound(p.getLocation(), Sound.ENTITY_SLIME_JUMP, 0.2f, 1.0f);
-
     }
 
 }

@@ -149,6 +149,24 @@ public class ShapedRecipes {
                 )
         );
 
+        shapedRecipeMap.put(
+                (new ItemStack(Material.HOPPER, 1)),
+                List.of(
+                        List.of(
+                                new ItemStack(Material.IRON_NUGGET),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.IRON_NUGGET),
+                                new ItemStack(Material.IRON_NUGGET),
+                                new ItemStack(Material.CHEST),
+                                new ItemStack(Material.IRON_NUGGET),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.IRON_NUGGET),
+                                new ItemStack(Material.AIR)
+                        ),
+                        List.of(GuiConstructor.createGuiItem(Material.STONE, "HOPPER"))
+                )
+        );
+
         shapedRecipes(shapedRecipeMap);
 
     }
@@ -211,6 +229,7 @@ public class ShapedRecipes {
             Bukkit.removeRecipe(new NamespacedKey(Server.getPlugin(), shapedRecipeMap.get(i).getFirst().toString()));
         }
 
+        Bukkit.removeRecipe(new NamespacedKey("minecraft", "hopper"));
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "minecart"));
 
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "wooden_pickaxe"));
