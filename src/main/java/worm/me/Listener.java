@@ -200,6 +200,13 @@ public class Listener implements org.bukkit.event.Listener {
 
         CoreProtectAPI api = Server.getPlugin().getCoreProtect();
 
+
+        if (e.getBlock().getType() == Material.PUMPKIN) {
+            e.setDropItems(false);
+            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.CARVED_PUMPKIN));
+            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.PUMPKIN_SEEDS));
+        }
+
         // If the block was placed by the player in the last 10 seconds, don't give exp
 
         if (api != null) {
@@ -492,6 +499,7 @@ public class Listener implements org.bukkit.event.Listener {
                             NamespacedKey key = new NamespacedKey(plugin, "slimeboots");
                             if (data.has(key, PersistentDataType.STRING)) {
                                 String tagValue = data.get(key, PersistentDataType.STRING);
+                                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(7, player));
 
                                 e.setCancelled(true);
                             }
