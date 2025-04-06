@@ -28,10 +28,10 @@ public class PlayerSpawning {
         double borderSize = worldBorder.getSize();
         Location center = worldBorder.getCenter();
 
-        xMoreThan = (int) (center.getX() - (borderSize / 2));
-        xLessThan = (int) (center.getX() + (borderSize / 2)) - 1;
-        zMoreThan = (int) (center.getZ() - (borderSize / 2));
-        zLessThan = (int) (center.getZ() + (borderSize / 2)) - 1;
+        xMoreThan = (int) ((center.getX() - (borderSize / 2)))/3;
+        xLessThan = (int) ((center.getX() + (borderSize / 2)) - 1)/3;
+        zMoreThan = (int) ((center.getZ() - (borderSize / 2)))/3;
+        zLessThan = (int) ((center.getZ() + (borderSize / 2)) - 1)/3;
 
         yMoreThan = Math.max(world.getMinHeight(), 220);
         yLessThan = Math.min(world.getMaxHeight(), 280);
@@ -161,7 +161,7 @@ public class PlayerSpawning {
             return location;
         }
 
-        location = findValidLocation(0, 3, 0, 1, 1, 1, 0, 2000, "enxtra Small",true);
+        location = findValidLocation(0, 3, 0, 1, 1, 1, 0, 20000, "enxtra Small",true);
         if (location != null) {
             return location;
         }
