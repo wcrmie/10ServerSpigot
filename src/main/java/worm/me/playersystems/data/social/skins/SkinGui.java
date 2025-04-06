@@ -27,22 +27,29 @@ public class SkinGui {
 
         GUI.setItem(0, GuiConstructor.createGuiItem(Material.KNOWLEDGE_BOOK, ChatColor.BLUE + "\uD83D\uDEC8", " ", ChatColor.GRAY + "You can set your skin in this menu.", ChatColor.GRAY + "More skins may come in the future!"));
 
+        ItemStack playerskin = new ItemStack(Material.PLAYER_HEAD, 1);
+        SkullMeta skullMeta = (SkullMeta) playerskin.getItemMeta();
+        skullMeta.setOwner(p.getName());
+        skullMeta.setDisplayName(ChatColor.BLUE + "Your skin");
+        playerskin.setItemMeta(skullMeta);
+        GUI.setItem(11, playerskin);
+
         ItemStack snowman = new ItemStack(Material.PLAYER_HEAD, 1);
-        SkullMeta skullMeta = (SkullMeta) snowman.getItemMeta();
+        SkullMeta skullMeta2 = (SkullMeta) snowman.getItemMeta();
         skullMeta.setOwner("snowmaam");
         skullMeta.setDisplayName(ChatColor.BLUE + "Snowman");
         snowman.setItemMeta(skullMeta);
-        GUI.setItem(11, snowman);
+        GUI.setItem(13, snowman);
 
         ItemStack steve = new ItemStack(Material.PLAYER_HEAD, 1);
-        SkullMeta skullMeta2 = (SkullMeta) steve.getItemMeta();
+        SkullMeta skullMeta3 = (SkullMeta) steve.getItemMeta();
         skullMeta2.setOwner("worrm");
         skullMeta2.setDisplayName(ChatColor.BLUE + "Alex Dino Onesie");
         steve.setItemMeta(skullMeta2);
-        GUI.setItem(13, steve);
+        GUI.setItem(14, steve);
 
         ItemStack alex = new ItemStack(Material.PLAYER_HEAD, 1);
-        SkullMeta skullMeta3 = (SkullMeta) alex.getItemMeta();
+        SkullMeta skullMeta4 = (SkullMeta) alex.getItemMeta();
         skullMeta3.setOwner("goobier");
         skullMeta3.setDisplayName(ChatColor.BLUE + "Farmer Steve");
         alex.setItemMeta(skullMeta3);
@@ -63,9 +70,12 @@ public class SkinGui {
         Player p = (Player) e.getWhoClicked();
 
         if (slot == 11){
-            setSkin(p, "snowmaam", plugin);
+            setSkin(p, p.getName(), plugin);
         }
         else if (slot == 13){
+            setSkin(p, "snowmaam", plugin);
+        }
+        else if (slot == 14){
             setSkin(p, "worrm", plugin);
         }
         else if (slot == 15){

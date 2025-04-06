@@ -139,6 +139,8 @@ public final class Server extends JavaPlugin {
         this.getCommand("hatstorage").setExecutor(new EditHatsCommand());
         this.getCommand("rename").setExecutor(new RenameCommand());
         this.getCommand("recipes").setExecutor(new OpenRecipesGUICommand());
+        this.getCommand("suicide").setExecutor(new SuicideCommand());
+        this.getCommand("discord").setExecutor(new DiscordCommand());
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 

@@ -73,3 +73,9 @@ commands:
     description: Initiates a complete world reset
     usage: /resetworld
     permission: 10VS.worldreset
+  discord:
+    description: Get the discord link
+    usage: /discord
+  suicide:
+    description: Kills the player
+    usage: /<command>

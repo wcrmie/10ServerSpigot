@@ -149,6 +149,36 @@ public class ShapedRecipes {
                 )
         );
 
+        shapedRecipeMap.put(
+                (new ItemStack(Material.HOPPER, 1)),
+                List.of(
+                        List.of(
+                                new ItemStack(Material.IRON_NUGGET),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.IRON_NUGGET),
+                                new ItemStack(Material.IRON_NUGGET),
+                                new ItemStack(Material.CHEST),
+                                new ItemStack(Material.IRON_NUGGET),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.IRON_NUGGET),
+                                new ItemStack(Material.AIR)
+                        ),
+                        List.of(GuiConstructor.createGuiItem(Material.STONE, "HOPPER"))
+                )
+        );
+
+        ItemStack snowball = new ItemStack(Material.SNOWBALL);
+
+        ItemMeta snowmeta = snowball.getItemMeta();
+
+        snowmeta.setDisplayName(ChatColor.WHITE + "Portable Snowman");
+
+        snowmeta.getPersistentDataContainer().set(new NamespacedKey(Server.getPlugin(), "snowman"), PersistentDataType.STRING, "snowman");
+
+        snowball.setItemMeta(meta);
+
+        shapedRecipeMap.put(snowball, List.of(List.of(new ItemStack(Material.AIR), new ItemStack(Material.CARVED_PUMPKIN), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.SNOW_BLOCK), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.SNOW_BLOCK), new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "PORTABLE_SNOWMAN"))));
+
         shapedRecipes(shapedRecipeMap);
 
     }
@@ -211,6 +241,7 @@ public class ShapedRecipes {
             Bukkit.removeRecipe(new NamespacedKey(Server.getPlugin(), shapedRecipeMap.get(i).getFirst().toString()));
         }
 
+        Bukkit.removeRecipe(new NamespacedKey("minecraft", "hopper"));
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "minecart"));
 
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "wooden_pickaxe"));

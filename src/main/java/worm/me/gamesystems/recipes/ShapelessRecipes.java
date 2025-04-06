@@ -25,20 +25,6 @@ public class ShapelessRecipes {
         shapelessRecipeMap.put(GuiConstructor.createGuiItem(Material.COOKED_MUTTON, ChatColor.WHITE + "Salted Jerky"), List.of(List.of(new ItemStack(Material.ROTTEN_FLESH), GuiConstructor.createGuiItem(Material.QUARTZ, ChatColor.WHITE + "Salt")), List.of(GuiConstructor.createGuiItem(Material.STONE, "SALTED_JERKY"))));
 
 
-        // ID 1
-        ItemStack snowball = new ItemStack(Material.SNOWBALL);
-
-        ItemMeta meta = snowball.getItemMeta();
-
-        meta.setDisplayName(ChatColor.WHITE + "Portable Snowman");
-
-        meta.getPersistentDataContainer().set(new NamespacedKey(Server.getPlugin(), "snowman"), PersistentDataType.STRING, "snowman");
-
-        snowball.setItemMeta(meta);
-
-        shapelessRecipeMap.put(snowball, List.of(List.of(new ItemStack(Material.CARVED_PUMPKIN), new ItemStack(Material.SNOW_BLOCK), new ItemStack(Material.SNOW_BLOCK)), List.of(GuiConstructor.createGuiItem(Material.STONE, "PORTABLE_SNOWMAN"))));
-
-
         shapelessRecipes(shapelessRecipeMap);
 
     }

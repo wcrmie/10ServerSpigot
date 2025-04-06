@@ -38,12 +38,18 @@ public class WorldReset {
     public void startResetTimer() {
         if (resetInProgress) return;
 
+        for (Player player : Bukkit.getOnlinePlayers()) {
+
+            Server.pluginMessage(ChatColor.RED + "The world will reset in 1 hour!", player);
+
+        }
+
         resetInProgress = true;
-        resetTime = System.currentTimeMillis() / 1000L + 86400;
+        resetTime = System.currentTimeMillis() / 1000L + 3600;
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             triggerReset(null);
-        }, 86400 * 20L);
+        }, 3600 * 20L);
 
         saveData();
     }

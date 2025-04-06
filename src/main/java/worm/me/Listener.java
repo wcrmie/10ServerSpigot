@@ -3,6 +3,7 @@ package worm.me;
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import net.coreprotect.CoreProtectAPI;
 import net.kyori.adventure.util.TriState;
+import net.minecraft.world.item.enchantment.effects.ExplodeEffect;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -202,6 +203,13 @@ public class Listener implements org.bukkit.event.Listener {
 
         CoreProtectAPI api = Server.getPlugin().getCoreProtect();
 
+
+        if (e.getBlock().getType() == Material.PUMPKIN) {
+            e.setDropItems(false);
+            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.CARVED_PUMPKIN));
+            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.PUMPKIN_SEEDS));
+        }
+
         // If the block was placed by the player in the last 10 seconds, don't give exp
 
         if (api != null) {
@@ -240,6 +248,7 @@ public class Listener implements org.bukkit.event.Listener {
                 repsess[1]++;
 
                 c.set(new NamespacedKey(Server.getPlugin(), "repsess"), PersistentDataType.LONG_ARRAY, repsess);
+
             }
 
         }
@@ -255,6 +264,10 @@ public class Listener implements org.bukkit.event.Listener {
         }
         if (e.getEntity().getType() == EntityType.SILVERFISH) {
             int emeraldCount = ThreadLocalRandom.current().nextInt(3, 6);
+            e.getDrops().add(new ItemStack(Material.IRON_NUGGET, emeraldCount));
+        }
+        if (e.getEntity().getType() == EntityType.BAT) {
+            int emeraldCount = ThreadLocalRandom.current().nextInt(0, 2);
             e.getDrops().add(new ItemStack(Material.IRON_NUGGET, emeraldCount));
         }
 
@@ -291,6 +304,16 @@ public class Listener implements org.bukkit.event.Listener {
         if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < 220){
             e.setCancelled(true);
             p.sendMessage(ChatColor.RED + "The build area is between y = 220 and y = 280.");
+        }
+    }
+
+    @EventHandler
+    public void onExplosion(EntityExplodeEvent event) {
+        Entity entity = event.getEntity();
+        if (entity.getType().equals(EntityType.TNT) || entity.getType().equals(EntityType.TNT_MINECART)) {
+            event.setCancelled(true);
+            World world = entity.getWorld();
+            world.createExplosion(entity.getLocation(), 3);
         }
     }
 
@@ -335,16 +358,12 @@ public class Listener implements org.bukkit.event.Listener {
         for (Player player : Bukkit.getOnlinePlayers()) {
             double distance = player.getLocation().distance(event.getPlayer().getLocation());
 
-            if (distance <= 50) {
-                int color = distance == 0 ? 255 : (int) Math.round(255 - distance * 5);
-                String hexColor = String.format("#%02x%02x%02x", color, color, color);
-                player.sendMessage(net.md_5.bungee.api.ChatColor.of(hexColor) + event.getPlayer().getName() + ": " + event.getMessage());
-                event.setCancelled(true);
-                return;
-            } else if (player.hasPermission("10vs.setcharlimit")) {
-                player.sendMessage(p.getName() + ": " + m);
-                event.setCancelled(true);
-            }
+            int color = distance == 0 ? 255 : (int) Math.round(255 - 255* (distance/(player.getWorld().getWorldBorder().getSize() + 50)));
+            String hexColor = String.format("#%02x%02x%02x", color, color, color);
+            player.sendMessage(net.md_5.bungee.api.ChatColor.of(hexColor) + event.getPlayer().getName() + ": " + event.getMessage());
+            event.setCancelled(true);
+            return;
+
         }
 
 
@@ -482,6 +501,7 @@ public class Listener implements org.bukkit.event.Listener {
                                 String tagValue = data.get(key, PersistentDataType.STRING);
                                 SlimeBoots slimeBoots = new SlimeBoots();
                                 slimeBoots.bounce(player);
+                                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(7, player));
 
                                 e.setCancelled(true);
                             }
@@ -841,15 +861,15 @@ public class Listener implements org.bukkit.event.Listener {
         }
 
         if (invName.equals(ChatColor.DARK_GRAY + "Your Active Abilities")){
-            AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
-            abilitiesGUI.initializeAbilitySelection(p, e);
             e.setCancelled(true);
+            AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
+            abilitiesGUI.initializeAbilitySelection(p, e);;
         }
 
         if (invName.contains("Ability Slot")) {
+            e.setCancelled(true);
             AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
             abilitiesGUI.activateAbility(p, e.getSlot(), e);
-            e.setCancelled(true);
         }
 
         if (invName.contains("Recipes Page ")) {
