@@ -111,12 +111,12 @@ public class AbilitiesGUI {
             if (Unlocks.hasAbilityUnlocked(p, i) || p.isOp()){
 
                 // Construct item
-                gui.setItem(slotNum, GuiConstructor.createGuiItem(Material.valueOf(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription, Arrays.toString(abilityReqs.toArray(new String[0]))));
+                gui.setItem(slotNum, GuiConstructor.createGuiItem(Material.valueOf(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
 
             } else {
 
                 // If the ability is not unlocked, add a red glass pane
-                gui.setItem(slotNum, GuiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + abilityName, abilityDescription, Arrays.toString(abilityReqs.toArray(new String[0]))));
+                gui.setItem(slotNum, GuiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + abilityName, Unlocks.requirementsTranslation(Abilities.abilityRequirements.get(i))));
 
             }
 

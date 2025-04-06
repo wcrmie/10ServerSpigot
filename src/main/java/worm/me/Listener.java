@@ -2,6 +2,7 @@ package worm.me;
 
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import net.coreprotect.CoreProtectAPI;
+import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -31,6 +32,7 @@ import worm.me.playersystems.abilities.AbilitiesGUI;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
 import worm.me.playersystems.abilities.active.FeatherDash;
+import worm.me.playersystems.abilities.passive.SlimeBoots;
 import worm.me.playersystems.data.tools.Tools;
 import worm.me.playersystems.data.tools.Upgrade;
 import worm.me.playersystems.generator.Generator;
@@ -339,7 +341,7 @@ public class Listener implements org.bukkit.event.Listener {
                 player.sendMessage(net.md_5.bungee.api.ChatColor.of(hexColor) + event.getPlayer().getName() + ": " + event.getMessage());
                 event.setCancelled(true);
                 return;
-            } else if (player.hasPermission("10VS.MOD")) {
+            } else if (player.hasPermission("10vs.setcharlimit")) {
                 player.sendMessage(p.getName() + ": " + m);
                 event.setCancelled(true);
             }
@@ -396,21 +398,6 @@ public class Listener implements org.bukkit.event.Listener {
             e.getPlayer().setAllowFlight(false);
             e.getPlayer().setFlying(false);
         }
-
-        Player player = e.getPlayer();
-        if (player.getGameMode() == GameMode.SURVIVAL && player.getAllowFlight()) {
-            if (!player.isFlying() && player.getFallDistance() > 3) {
-                if (player.isOnGround()) {
-                    player.damage(player.getFallDistance() - 3);
-
-
-
-                    if (player.getHealth()*2 > (player.getFallDistance() - 3)) {
-                        Levels.addExp((Math.round(player.getFallDistance() - 3)/2), Levels.skillTranslation("Agility"), player);
-                    }
-                }
-            }
-        }
 /*
         if (FrogGrab.isPlayerMovementRestricted(player.getUniqueId())) {
             Location from = e.getFrom();
@@ -439,6 +426,7 @@ public class Listener implements org.bukkit.event.Listener {
         if (ability.getAbilitySlot(e.getPlayer(), 1) != -1){
             if (Objects.requireNonNullElse(e.getPlayer().getPersistentDataContainer().get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])[ability.getAbilitySlot(e.getPlayer(), 1)] <= System.currentTimeMillis()/1000L && ability.isActive(e.getPlayer(), 1)){
                 e.getPlayer().setAllowFlight(true);
+                e.getPlayer().setFlyingFallDamage(TriState.TRUE);
             }
         }
     }
@@ -492,6 +480,8 @@ public class Listener implements org.bukkit.event.Listener {
                             NamespacedKey key = new NamespacedKey(plugin, "slimeboots");
                             if (data.has(key, PersistentDataType.STRING)) {
                                 String tagValue = data.get(key, PersistentDataType.STRING);
+                                SlimeBoots slimeBoots = new SlimeBoots();
+                                slimeBoots.bounce(player);
 
                                 e.setCancelled(true);
                             }
@@ -782,6 +772,8 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e){
 
+        if (!e.getView().getType().equals(InventoryType.PLAYER) && e.getAction().equals(InventoryAction.HOTBAR_SWAP)) e.setCancelled(true);
+
         if (Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST)).getType() == InventoryType.PLAYER && (e.getAction().equals(InventoryAction.SWAP_WITH_CURSOR) || e.getAction().equals(InventoryAction.COLLECT_TO_CURSOR)) &&
                 !Tools.toolType(Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STONE)).getType()).equals("none") && e.getWhoClicked().getInventory().firstEmpty() == -1) e.setCancelled(true);
         if (Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST)).getType() != InventoryType.PLAYER && !Tools.toolType(e.getCursor().getType()).equals("none")) e.setCancelled(true);
@@ -791,7 +783,7 @@ public class Listener implements org.bukkit.event.Listener {
 
         if (Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST)).getType().equals(InventoryType.PLAYER)) {
             if (Objects.requireNonNull(e.getCurrentItem()).getType().equals(Material.WOODEN_AXE) || e.getCurrentItem().getType().equals(Material.WOODEN_PICKAXE) ||
-                    e.getCurrentItem().getType().equals(Material.WOODEN_SWORD) || e.getCurrentItem().getType().equals(Material.WOODEN_SHOVEL) || e.getCurrentItem().getType().equals(Material.WOODEN_HOE)){
+                    e.getCurrentItem().getType().equals(Material.WOODEN_SWORD) || e.getCurrentItem().getType().equals(Material.WOODEN_SHOVEL)){
                 if (Objects.requireNonNull(e.getCursor()).getType() == Upgrade.WOOD_TOOL.getUpgradeItem().getType() && e.getCursor().getAmount() >= Upgrade.WOOD_TOOL.getUpgradeItem().getAmount()){
                     e.setCancelled(true);
                     e.getCursor().setAmount(e.getCursor().getAmount() - Upgrade.WOOD_TOOL.getUpgradeItem().getAmount());
@@ -800,7 +792,7 @@ public class Listener implements org.bukkit.event.Listener {
                 }
 
             } else if (Objects.requireNonNull(e.getCurrentItem().getType()).equals(Material.STONE_AXE) || e.getCurrentItem().getType().equals(Material.STONE_PICKAXE) ||
-                    e.getCurrentItem().getType().equals(Material.STONE_SWORD) || e.getCurrentItem().getType().equals(Material.STONE_SHOVEL) || e.getCurrentItem().getType().equals(Material.STONE_HOE)){
+                    e.getCurrentItem().getType().equals(Material.STONE_SWORD) || e.getCurrentItem().getType().equals(Material.STONE_SHOVEL)){
                 if (Objects.requireNonNull(e.getCursor()).getType() == Upgrade.STONE_TOOL.getUpgradeItem().getType() && e.getCursor().getAmount() >= Upgrade.STONE_TOOL.getUpgradeItem().getAmount()){
                     e.setCancelled(true);
                     e.getCursor().setAmount(e.getCursor().getAmount() - Upgrade.STONE_TOOL.getUpgradeItem().getAmount());

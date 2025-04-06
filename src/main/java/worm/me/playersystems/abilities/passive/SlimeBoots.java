@@ -1,5 +1,6 @@
 package worm.me.playersystems.abilities.passive;
 
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -29,6 +30,7 @@ public class SlimeBoots {
         p.setVelocity(bounceVelocity);
         World world = p.getWorld();
         world.playSound(p.getLocation(), Sound.ENTITY_SLIME_JUMP, 0.2f, 1.0f);
+        world.spawnParticle(Particle.ITEM_SLIME, p.getLocation(), 3, 3, 0.00001, 0.3, 0.05);
 
     }
 

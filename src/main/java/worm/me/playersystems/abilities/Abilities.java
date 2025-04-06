@@ -36,28 +36,28 @@ public class Abilities {
         abilityGuiComponents.put(0, List.of("Empty", "RED_STAINED_GLASS_PANE", "Empty Slot", "This slot is empty"));
 
         // ID 1
-        abilityGuiComponents.put(1, List.of("Double Jump", "FEATHER", "Jump a second time in the air!"));
+        abilityGuiComponents.put(1, List.of("Double Jump", "FEATHER", ChatColor.DARK_GRAY + "Rapidly press space twice in the air to perform a double jump!"));
 
         // ID 2
-        abilityGuiComponents.put(2, List.of("Dash", "IRON_SWORD", "Dash forward with a sword using " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK]"));
+        abilityGuiComponents.put(2, List.of("Dash", "IRON_SWORD", ChatColor.DARK_GRAY + "Dash forward with a sword using " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK]"));
 
         // ID 3
-        abilityGuiComponents.put(3, List.of("Leap", "IRON_AXE", "Leap up in the air with an axe using " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK]"));
+        abilityGuiComponents.put(3, List.of("Leap", "IRON_AXE", ChatColor.DARK_GRAY + "Leap up in the air with an axe using " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK]"));
 
         // ID 4
-        abilityGuiComponents.put(4, List.of("Wall Jump", "IRON_BARS", "Clutch onto walls using " + ChatColor.GRAY + "[SNEAK]"));
+        abilityGuiComponents.put(4, List.of("Wall Jump", "IRON_BARS", ChatColor.DARK_GRAY + "Clutch onto walls using " + ChatColor.GRAY + "[SNEAK]"));
 
         // ID 5
-        abilityGuiComponents.put(5, List.of("SCREAM", "GOAT_HORN", "Scream while holding a note block " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK]"));
+        abilityGuiComponents.put(5, List.of("SCREAM", "GOAT_HORN", ChatColor.DARK_GRAY + "Scream while holding a note block using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK]"));
 
         // ID 6
-        abilityGuiComponents.put(6, List.of("Shadow Step", "TINTED_GLASS", "move forward through walls with a path of shadows following you while holding Tinted Glass" + ChatColor.GRAY + "[SNEAK] + [Left-Click]"));
+        abilityGuiComponents.put(6, List.of("Shadow-Step", "TINTED_GLASS", ChatColor.DARK_GRAY + "Step through space while holding Tinted Glass using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK]"));
 
         // ID 7
-        abilityGuiComponents.put(7, List.of("Slime Boots", "SLIME_BALL", "Bounce while wearing slime boots " + ChatColor.GRAY + "[SNEAK] to Deactivate "));
+        abilityGuiComponents.put(7, List.of("Slime Boots", "SLIME_BALL", ChatColor.DARK_GRAY + "Bounce while wearing slime boots " + ChatColor.GRAY + "[SNEAK] to Deactivate "));
 
         // ID 8
-        abilityGuiComponents.put(8, List.of("Feather Dash", "ELYTRA", "Move accros the air swiftly holding a feather" + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK]"));
+        abilityGuiComponents.put(8, List.of("Quick-Step", "ELYTRA", ChatColor.DARK_GRAY + "Step through the air swiftly while holding a feather using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK]"));
     }
 
     public void initializeRequirements(){
