@@ -37,8 +37,10 @@ public class ShapelessRecipes {
 
             List<List<ItemStack>> values = recipe.get(key);
 
-            if (Bukkit.getRecipe(new NamespacedKey(Server.getPlugin(), values.get(1).getFirst().getItemMeta().getDisplayName())) == null){
-                ShapelessRecipe shapedRecipe = new ShapelessRecipe(new NamespacedKey(Server.getPlugin(), values.get(1).getFirst().getItemMeta().getDisplayName()), key);
+            String keyName = values.get(1).getFirst().getItemMeta().getDisplayName();
+
+            if (Bukkit.getRecipe(new NamespacedKey(Server.getPlugin(), keyName)) == null){
+                ShapelessRecipe shapedRecipe = new ShapelessRecipe(new NamespacedKey(Server.getPlugin(), keyName), key);
 
                 for (int i = 0; i < recipe.get(key).size(); i++) {
                     if (values.getFirst().get(i).getType() != Material.AIR){
