@@ -1,34 +1,53 @@
 package worm.me.listeners;
 
+import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import net.coreprotect.CoreProtectAPI;
 import net.coreprotect.api.result.ParseResult;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import net.kyori.adventure.util.TriState;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
+import org.bukkit.entity.Snowman;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.Vector;
 import worm.me.GuiConstructor;
 import worm.me.Server;
+import worm.me.gamesystems.ArtBlocks;
 import worm.me.gamesystems.fishing.FishingTables;
 import worm.me.playersystems.PlayerSpawning;
+import worm.me.playersystems.abilities.Abilities;
+import worm.me.playersystems.abilities.AbilityAttemptEvent;
 import worm.me.playersystems.abilities.active.FeatherDash;
+import worm.me.playersystems.abilities.passive.SlimeBoots;
+import worm.me.playersystems.data.UnlockEvent;
 import worm.me.playersystems.data.VoidPlayer;
+import worm.me.playersystems.data.levels.GainExpEvent;
+import worm.me.playersystems.data.levels.LevelUpEvent;
 import worm.me.playersystems.data.levels.Levels;
+import worm.me.playersystems.data.tools.ToolsEvents;
 import worm.me.playersystems.generator.Generator;
+import worm.me.playersystems.quests.QuestGui;
+import worm.me.playersystems.quests.QuestProgressEvent;
+import worm.me.playersystems.quests.Quests;
 import worm.me.playersystems.saddle.SaddleSystem;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PlayerListener implements Listener {
@@ -83,8 +102,168 @@ public class PlayerListener implements Listener {
         handler.rightClick(event);
     }
 
+    @EventHandler
+    public void onPlayerPlace(BlockPlaceEvent e){
+        Player p = e.getPlayer();
+
+        // Height limit for building
+        if (p.getGameMode() == GameMode.CREATIVE) return;
+        if (Objects.requireNonNull(e.getBlock().getLocation().getWorld()).getName().equals("ul_Void_nether")) return;
+        if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < 220){
+            e.setCancelled(true);
+            p.sendMessage(ChatColor.RED + "The build area is between y = 220 and y = 280.");
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent e){
+        if (e.getEntity() instanceof Player && e.getCause() == EntityDamageEvent.DamageCause.FALL){
+            Player player = (Player) e.getEntity();
+            Abilities ability = new Abilities();
+            if (ability.isActive(player,7) && !player.isSneaking()){
+
+                if (player.getInventory().getBoots() != null) {
+                    ItemStack item = player.getInventory().getBoots();
+                    if (player.getInventory().getBoots().hasItemMeta()) {
+                        ItemMeta meta = item.getItemMeta();
+                        if (meta != null) {
+                            PersistentDataContainer data = meta.getPersistentDataContainer();
+                            NamespacedKey key = new NamespacedKey(plugin, "slimeboots");
+                            if (data.has(key, PersistentDataType.STRING)) {
+                                SlimeBoots slimeBoots = new SlimeBoots();
+                                slimeBoots.bounce(player);
+                                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(7, player));
+
+                                e.setCancelled(true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDismount(EntityDismountEvent e){
+
+        if (e.getEntity() instanceof Player p){
+            if (e.getDismounted().getType() == EntityType.ARMOR_STAND){
+                e.getDismounted().remove();
+                Location loc = p.getLocation();
+                loc.setY(p.getLocation().getY() + 1);
+                p.teleport(loc);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onToolBreak(PlayerItemBreakEvent e){
+
+        String tool = e.getBrokenItem().getType().toString().toLowerCase();
+
+        for (String s : worm.me.Server.tools.keySet()){
+            if (tool.contains(s)){
+                ToolsEvents toolsEvents = new ToolsEvents();
+                toolsEvents.toolBreak(e.getPlayer(), e);
+                break;
+            }
+        }
+    }
+
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent e){
+        String tool = e.getItemDrop().getItemStack().toString().toLowerCase();
+
+        for (String s : worm.me.Server.tools.keySet()){
+            if (tool.contains(s)){
+                e.setCancelled(true);
+                break;
+            }
+        }
+    }
+
+    @EventHandler
+    public void onItemPickup(EntityPickupItemEvent e){
+        if (e.getEntity() instanceof Player){
+            Player p = (Player) e.getEntity();
+            if (p.getItemOnCursor().getType().toString().contains("PICKAXE") || p.getItemOnCursor().getType().toString().contains("AXE") || p.getItemOnCursor().getType().toString().contains("SHOVEL") || p.getItemOnCursor().getType().toString().contains("SWORD")){
+                e.setCancelled(true);
+            }
+            if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
+                e.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onSnowballThrow(PlayerInteractEvent e){
+
+        if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
+            if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.SNOWBALL) &&
+                    e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "snowman"), PersistentDataType.STRING, "no").equals("snowman")){
+                e.setCancelled(true);
+
+                e.getPlayer().getInventory().getItemInMainHand().setAmount(e.getPlayer().getInventory().getItemInMainHand().getAmount() - 1);
+
+                Snowball snowball = e.getPlayer().launchProjectile(Snowball.class);
+                snowball.getPersistentDataContainer().set(new NamespacedKey(plugin, "snowman"), PersistentDataType.STRING, "snowman");
+
+            }
+        }
+
+    }
+
+    @EventHandler
+    public void onSnowballHit(ProjectileHitEvent e){
+        if (e.getEntity() instanceof Snowball snowball){
+            if (snowball.getPersistentDataContainer().getOrDefault(new NamespacedKey(plugin, "snowman"), PersistentDataType.STRING, "no").equals("snowman")){
+                Snowman snowman = e.getEntity().getLocation().getWorld().spawn(e.getEntity().getLocation(), Snowman.class);
+                snowman.setDerp(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onSwapHands(PlayerSwapHandItemsEvent e){
+        Player p = e.getPlayer();
+        if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onChangeHeldItem(PlayerItemHeldEvent e){
+        Player p = e.getPlayer();
+        if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
+            e.setCancelled(true);
+        }
+    }
+
 
     // ----------------------------Experience and Leveling-----------------------------
+
+    @EventHandler
+    public void onExpGain(GainExpEvent e){
+        if (Levels.getExp(Levels.skills.get(e.getSkillType()), e.getPlayer()) + e.getExpValue() > Levels.expRequired(Levels.getLevel(e.getSkillType(), e.getPlayer()) + 1)){
+            Levels.levelUp(e.getSkillType(), e.getPlayer());
+        }
+    }
+
+    @EventHandler
+    public void onLevelUp(LevelUpEvent e){
+
+    }
+
+    @EventHandler
+    public void onUnlock(UnlockEvent e){
+        Player p = e.getPlayer();
+
+        if (e.getUnlockType().equals("Ability")) {
+            worm.me.Server.pluginMessage(ChatColor.GREEN + "You have unlocked the " + Abilities.abilityGuiComponents.get(Integer.parseInt(e.getUnlock())).getFirst() + " " + e.getUnlockType(), p);
+        } else {
+            worm.me.Server.pluginMessage(ChatColor.GREEN + "You have unlocked the " + e.getUnlock() + " " + e.getUnlockType(), p);
+        }
+    }
 
     @EventHandler
     public void onPlayerBreak(BlockBreakEvent e){
@@ -182,7 +361,206 @@ public class PlayerListener implements Listener {
         Levels.expHandler(e.getPlayer(), e);
 
     }
+
+    @EventHandler
+    public void onCraft(CraftItemEvent event) {
+        if (!event.isCancelled()) Levels.addExp(1, Levels.skillTranslation("Crafting"), (Player) event.getWhoClicked());
+
+    }
+
     // ----------------------------END Experience and Levelling-----------------------------
+
+
+    // ----------------------------Ability Events-----------------------------
+
+    @EventHandler
+    public void onPlayerMoveEvent(PlayerMoveEvent e){
+
+        Abilities ability = new Abilities();
+
+        if (e.getFrom() == e.getTo()) return;
+
+        if (!ability.isActive(e.getPlayer(), 1) && e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
+            e.getPlayer().setAllowFlight(false);
+            e.getPlayer().setFlying(false);
+        }
+/*      FROGGRAB IS A HISTORICAL, ARCHIVED ABILITY
+        if (FrogGrab.isPlayerMovementRestricted(player.getUniqueId())) {
+            Location from = e.getFrom();
+            Location to = e.getTo();
+
+            if (to != null) {
+                if (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ()) {
+                    Location newLocation = new Location(
+                            from.getWorld(),
+                            from.getX(),
+                            from.getY(),
+                            from.getZ(),
+                            to.getYaw(),
+                            to.getPitch()
+                    );
+
+                    e.setTo(newLocation);
+                }
+            }
+        }
+
+ */
+
+        if (Objects.requireNonNull(e.getTo()).getY() < 200) e.getPlayer().damage(1000000);
+
+        if (ability.getAbilitySlot(e.getPlayer(), 1) != -1){
+            if (Objects.requireNonNullElse(e.getPlayer().getPersistentDataContainer().get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])[ability.getAbilitySlot(e.getPlayer(), 1)] <= System.currentTimeMillis()/1000L && ability.isActive(e.getPlayer(), 1)){
+                e.getPlayer().setAllowFlight(true);
+                e.getPlayer().setFlyingFallDamage(TriState.TRUE);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onAbilityAttempt(AbilityAttemptEvent e){
+
+        Abilities ability = new Abilities();
+
+        PersistentDataContainer container = e.getPlayer().getPersistentDataContainer();
+
+        if (ability.isActive(e.getPlayer(), e.getAbilityID())){
+            if (Objects.requireNonNullElse(container.get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])[ability.getAbilitySlot(e.getPlayer(), e.getAbilityID())] <= System.currentTimeMillis()/1000L) {
+                ability.handleAbility(e.getPlayer(), e.getAbilityID());
+            } else {
+
+                worm.me.Server.pluginMessage(ChatColor.RED + "Your " + Abilities.abilityGuiComponents.get(e.getAbilityID()).getFirst() + " is on cooldown for " + (container.get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY)[ability.getAbilitySlot(e.getPlayer(), e.getAbilityID())] - (System.currentTimeMillis()/1000)) + " seconds.", e.getPlayer());
+                e.setCancelled(true);
+            }
+        }
+        else e.setCancelled(true);
+
+    }
+
+
+    @EventHandler
+    public void onPlayerFlightEvent(PlayerToggleFlightEvent e){
+        Player p = e.getPlayer();
+
+        if (p.getGameMode().equals(GameMode.CREATIVE)) return;
+
+        // Make the player double jump
+        e.setCancelled(true);
+
+        Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(1, p));
+
+    }
+
+    @EventHandler (ignoreCancelled = true)
+    public void onPlayerRightClick(UseItemEvent e){
+        Player p = e.getCause().getFirstPlayer();
+
+        if (e.getOriginalEvent() instanceof PlayerInteractEvent) {
+
+            if (((PlayerInteractEvent) e.getOriginalEvent()).getAction().equals(Action.RIGHT_CLICK_AIR) || ((PlayerInteractEvent) e.getOriginalEvent()).getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+                if (p.getInventory().getItemInMainHand().toString().toLowerCase().contains("sword")) {
+                    if (p.isSneaking()){
+                        Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(2, p));
+                    }
+                } else if (p.getInventory().getItemInMainHand().toString().toLowerCase().contains("_axe")) {
+                    if (p.isSneaking()){
+                        Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(3, p));
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e){
+
+        if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.NOTE_BLOCK && e.getPlayer().isSneaking()) {
+                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(5, e.getPlayer()));
+            }
+
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.FEATHER && e.getPlayer().isSneaking()) {
+                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(8, e.getPlayer()));
+            }
+
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE && e.getPlayer().isSneaking()) {
+                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(9, e.getPlayer()));
+            }
+
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.TINTED_GLASS && e.getPlayer().isSneaking()) {
+                Player player = e.getPlayer();
+
+                Location playerLoc = player.getLocation();
+                Vector direction = playerLoc.getDirection();
+                direction.setY(0);
+                if (direction.length() > 0) {
+                    direction.normalize();
+                }
+
+                Location finalLocation = playerLoc.clone();
+                finalLocation.add(direction.multiply(10));
+
+                Block finalFeetBlock = finalLocation.getBlock();
+                Block finalHeadBlock = finalLocation.clone().add(0, 1, 0).getBlock();
+
+                if (player.isOnGround() && finalFeetBlock.isPassable() && finalHeadBlock.isPassable()) {
+                    Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(6, player));
+                }
+            }
+
+            /*
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.PINK_CONCRETE_POWDER && e.getPlayer().isSneaking()) {
+                ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
+                if (item.hasItemMeta()) {
+                    ItemMeta meta = item.getItemMeta();
+                    if (meta != null) {
+                        PersistentDataContainer data = meta.getPersistentDataContainer();
+                        NamespacedKey key = new NamespacedKey(plugin, "tongue");
+                        if (data.has(key, PersistentDataType.STRING)) {
+                            String tagValue = data.get(key, PersistentDataType.STRING);
+                            Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(5, e.getPlayer()));
+                        }
+                    }
+                }
+            }
+            */
+
+
+        }
+
+        if (e.getHand() != EquipmentSlot.HAND) {
+            return;
+        }
+
+        Player p = e.getPlayer();
+        if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().equals(Material.END_PORTAL_FRAME)){
+            QuestGui questGui = new QuestGui();
+            questGui.questGuiOpen(p);
+        }
+        if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("WOOL")){
+            ArtBlocks handler = new ArtBlocks(plugin);
+            handler.rightClick(e);
+        }
+    }
+
+    // ----------------------------END Ability Events-----------------------------
+
+
+
+    // ----------------------------Player Questing-----------------------------
+
+    @EventHandler
+    public void onQuestProgress(QuestProgressEvent e) {
+
+        if (e.getProgress() == e.getMaxProgress()) {
+            Quests quests = new Quests();
+            quests.completeQuest(e.getQuestID(), e.getPlayer());
+        }
+    }
+
+    // ----------------------------END Player Questing-----------------------------
+
 
     // ----------------------------END Player Gameplay Actions-----------------------------
 
