@@ -167,6 +167,24 @@ public class ShapedRecipes {
                 )
         );
 
+        shapedRecipeMap.put(
+                (new ItemStack(Material.TINTED_GLASS, 1)),
+                List.of(
+                        List.of(
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.GLASS),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.GLASS),
+                                new ItemStack(Material.AMETHYST_SHARD),
+                                new ItemStack(Material.GLASS),
+                                new ItemStack(Material.AIR),
+                                new ItemStack(Material.GLASS),
+                                new ItemStack(Material.AIR)
+                        ),
+                        List.of(GuiConstructor.createGuiItem(Material.STONE, "TINTED_GLASS"))
+                )
+        );
+
         ItemStack snowball = new ItemStack(Material.SNOWBALL);
 
         ItemMeta snowmeta = snowball.getItemMeta();
@@ -248,6 +266,7 @@ public class ShapedRecipes {
             Bukkit.removeRecipe(new NamespacedKey(Server.getPlugin(), shapedRecipeMap.get(i).getFirst().toString()));
         }
 
+        Bukkit.removeRecipe(new NamespacedKey("minecraft", "tinted_glass"));
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "tnt"));
 
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "hopper"));
