@@ -72,6 +72,8 @@ public class Hats {
 
         e.setCancelled(true);
 
+        Player p = (Player) e.getWhoClicked();
+
         if (e.getCurrentItem().getType().equals(Material.GRAY_STAINED_GLASS_PANE) || e.getCurrentItem().getType().equals(Material.AIR)){
             return;
         }
