@@ -86,7 +86,12 @@ public class Hats {
 
             int page = Integer.parseInt(e.getView().getTitle().split("Hats Page ")[1]);
 
-            equipHat((Player) e.getWhoClicked(), slot - 10 + 54 * (page - 1));
+            equipHat(p, slot - 10 + 54 * (page - 1));
+        } else if (e.getSlot() == 4) {
+
+            unequipHat(p);
+            Server.pluginMessage(ChatColor.GREEN + "Your hat has been unequipped!", p);
+
         }
 
 
