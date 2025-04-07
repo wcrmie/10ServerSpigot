@@ -106,6 +106,7 @@ public class Hats {
         ItemStack empty = GuiConstructor.createGuiItem(Material.STONE_BUTTON, ChatColor.GRAY + "No Hat Equipped", ChatColor.DARK_GRAY + "Do /hats");
         ItemMeta meta = empty.getItemMeta();
         meta.addEnchant(Enchantment.BINDING_CURSE, 1 , true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 
         empty.setItemMeta(meta);
 
