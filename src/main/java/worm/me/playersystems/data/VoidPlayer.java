@@ -151,7 +151,7 @@ public class VoidPlayer {
         if (!container.has(new NamespacedKey(plugin, "hatsUnlocked"), PersistentDataType.INTEGER_ARRAY)) {
             container.set(new NamespacedKey(plugin, "hatsUnlocked"), PersistentDataType.INTEGER_ARRAY, new int[2700]);
             Hats hats = new Hats();
-            hats.equipHat(player, 0);
+            hats.unequipHat(player);
             hats.unlockHat(player, 0);
 
         }
