@@ -45,7 +45,9 @@ public class ShapelessRecipes {
                 for (int i = 0; i < recipe.get(key).size(); i++) {
                     if (values.getFirst().get(i).getType() != Material.AIR){
 
-                        shapedRecipe.addIngredient(new RecipeChoice.ExactChoice(values.getFirst().get(i)));
+                        if (keyName.equals("SALTED_JERKY") && values.getFirst().get(i).getType() == Material.ROTTEN_FLESH) {
+                            shapedRecipe.addIngredient(Material.ROTTEN_FLESH);
+                        } else shapedRecipe.addIngredient(new RecipeChoice.ExactChoice(values.getFirst().get(i)));
 
                     }
                 }
