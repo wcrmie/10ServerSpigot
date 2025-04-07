@@ -1,6 +1,5 @@
 package worm.me.playersystems.data.tools;
 
-import net.minecraft.world.item.component.ItemLore;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

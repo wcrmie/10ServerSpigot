@@ -103,7 +103,9 @@ public class PlayerSpawning {
                 continue;
             }
 
+
             if (!vc) {
+
                 for (int y = baseY - 1; y >= Math.max(baseY - 100, world.getMinHeight()) && isValid; y--) {
                     if (!isAir(baseX, y, baseZ)) {
                         isValid = false;

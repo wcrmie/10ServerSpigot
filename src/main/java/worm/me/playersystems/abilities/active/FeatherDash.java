@@ -1,5 +1,6 @@
 package worm.me.playersystems.abilities.active;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -15,7 +16,7 @@ import java.util.UUID;
 public class FeatherDash {
     private final Map<UUID, BukkitTask> activeDashes = new HashMap<>();
 
-    private final int DASH_DURATION = 30;
+    private final int DASH_DURATION = 20;
     private final double DASH_SPEED = 0.5;
 
     public void featherDash(Player p) {
@@ -42,6 +43,9 @@ public class FeatherDash {
                     cleanup(p);
                     Levels.addExp(5L, Levels.skillTranslation("Agility"), p);
                     this.cancel();
+                }
+                if (ticks % 4 == 0 && ticks != 20) {
+                    p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PARROT_FLY, 1f, 1f);
                 }
             }
         }.runTaskTimer(Server.getPlugin(), 0L, 1L);

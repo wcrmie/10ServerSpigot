@@ -2,7 +2,6 @@ package worm.me.listeners;
 
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import net.coreprotect.CoreProtectAPI;
-import net.coreprotect.api.result.ParseResult;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -34,6 +33,7 @@ import worm.me.playersystems.abilities.AbilitiesGUI;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
 import worm.me.playersystems.abilities.active.FeatherDash;
+import worm.me.playersystems.abilities.active.SpeedStep;
 import worm.me.playersystems.abilities.passive.SlimeBoots;
 import worm.me.playersystems.data.tools.Tools;
 import worm.me.playersystems.data.tools.Upgrade;
@@ -322,6 +322,10 @@ public class MainListener implements org.bukkit.event.Listener {
 
             if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.FEATHER && e.getPlayer().isSneaking()) {
                 Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(8, e.getPlayer()));
+            }
+
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE && e.getPlayer().isSneaking()) {
+                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(9, e.getPlayer()));
             }
 
             if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.TINTED_GLASS && e.getPlayer().isSneaking()) {
