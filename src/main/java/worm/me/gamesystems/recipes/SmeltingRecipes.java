@@ -1,12 +1,14 @@
 package worm.me.gamesystems.recipes;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.BlastingRecipe;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.SmokingRecipe;
+import worm.me.GuiConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +16,7 @@ import java.util.Map;
 public class SmeltingRecipes {
 
     public Map<ItemStack, ItemStack> smeltingRecipes = new HashMap<>();
+    public Map<ItemStack, ItemStack> blastingRecipes = new HashMap<>();
 
     public void addSmeltingRecipes(){
 
@@ -30,7 +33,11 @@ public class SmeltingRecipes {
         smeltingRecipes.put(new ItemStack(Material.CHAINMAIL_LEGGINGS), new ItemStack(Material.IRON_NUGGET, 5));
         smeltingRecipes.put(new ItemStack(Material.CHAINMAIL_BOOTS), new ItemStack(Material.IRON_NUGGET, 3));
         smeltingRecipes.put(new ItemStack(Material.RAW_IRON), new ItemStack(Material.IRON_NUGGET));
-        smeltingRecipes.put(new ItemStack(Material.IRON_ORE), new ItemStack(Material.IRON_NUGGET));
+        smeltingRecipes.put(new ItemStack(Material.IRON_ORE), new ItemStack(Material.IRON_NUGGET, 2));
+        smeltingRecipes.put(new ItemStack(Material.ROTTEN_FLESH), GuiConstructor.createGuiItem(Material.DRIED_KELP, ChatColor.WHITE + "Gamey Meat"));
+
+        blastingRecipes.put(new ItemStack(Material.RAW_IRON), new ItemStack(Material.IRON_NUGGET, 2));
+        blastingRecipes.put(new ItemStack(Material.IRON_ORE), new ItemStack(Material.IRON_NUGGET, 3));
 
     }
 
@@ -41,16 +48,25 @@ public class SmeltingRecipes {
         for (ItemStack itemStack : smeltingRecipes.keySet()) {
 
             NamespacedKey key = new NamespacedKey("void", itemStack.getType().toString().toLowerCase() + "_smelting");
-            NamespacedKey keyblast = new NamespacedKey("void", itemStack.getType().toString().toLowerCase() + "_blasting");
-            NamespacedKey keysmoke = new NamespacedKey("void", itemStack.getType().toString().toLowerCase() + "_smoking");
 
             if (Bukkit.getRecipe(key) != null) {
                 continue;
             }
 
             Bukkit.addRecipe(new FurnaceRecipe(key, smeltingRecipes.get(itemStack), itemStack.getType(), 5F, 150));
-            Bukkit.addRecipe(new BlastingRecipe(keyblast, itemStack, itemStack.getType(), 0F, 10));
-            Bukkit.addRecipe(new SmokingRecipe(keysmoke, itemStack, itemStack.getType(), 0F, 10));
+
+        }
+
+        for (ItemStack itemStack : blastingRecipes.keySet()) {
+
+            NamespacedKey key = new NamespacedKey("void", itemStack.getType().toString().toLowerCase() + "_blasting");
+
+            if (Bukkit.getRecipe(key) != null) {
+                continue;
+            }
+
+            Bukkit.addRecipe(new BlastingRecipe(key, blastingRecipes.get(itemStack), itemStack.getType(), 5F, 150));
+
         }
 
 

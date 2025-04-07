@@ -2,6 +2,7 @@ package worm.me;
 
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import net.coreprotect.CoreProtectAPI;
+import net.coreprotect.api.result.ParseResult;
 import net.kyori.adventure.util.TriState;
 import net.minecraft.world.item.enchantment.effects.ExplodeEffect;
 import org.bukkit.*;
@@ -121,7 +122,6 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void onArrowHit(ProjectileHitEvent e){
         if (e.getEntity().getShooter() instanceof Player shooter && e.getHitEntity() != null && e.getEntity().getPersistentDataContainer().get(new NamespacedKey(plugin, "arrow"), PersistentDataType.STRING) != null){
-            Server.pluginMessage(ChatColor.GRAY + "" + VoidPlayer.getStat(shooter, 2), shooter);
             VoidPlayer.registerStats(shooter, 2);
         }
     }
@@ -220,7 +220,7 @@ public class Listener implements org.bukkit.event.Listener {
             boolean exp = true;
 
             for (String[] value : lookup) {
-                CoreProtectAPI.ParseResult result = api.parseResult(value);
+                ParseResult result = api.parseResult(value);
 
                 if (result.getType().equals(e.getBlock().getType()) && result.getActionString().equals("place") && result.getX() == e.getBlock().getX() && result.getY() == e.getBlock().getY() && result.getZ() == e.getBlock().getZ()) {
                     exp = false;
@@ -353,18 +353,7 @@ public class Listener implements org.bukkit.event.Listener {
         // queue messages to be sent above head
         messageHead.messageQueue(p, m);
         messageHead.messageDisplay(p, m);
-
-        // Only ops can see chat logged (later will include moderators and such)
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            double distance = player.getLocation().distance(event.getPlayer().getLocation());
-
-            int color = distance == 0 ? 255 : (int) Math.round(255 - 255* (distance/(player.getWorld().getWorldBorder().getSize() + 50)));
-            String hexColor = String.format("#%02x%02x%02x", color, color, color);
-            player.sendMessage(net.md_5.bungee.api.ChatColor.of(hexColor) + event.getPlayer().getName() + ": " + event.getMessage());
-            event.setCancelled(true);
-            return;
-
-        }
+        event.setCancelled(true);
 
 
     }
@@ -544,8 +533,7 @@ public class Listener implements org.bukkit.event.Listener {
 
     @EventHandler
     public void onCraft(CraftItemEvent event) {
-
-        Levels.addExp(1, Levels.skillTranslation("Crafting"), (Player) event.getWhoClicked());
+        if (!event.isCancelled()) Levels.addExp(1, Levels.skillTranslation("Crafting"), (Player) event.getWhoClicked());
 
     }
 

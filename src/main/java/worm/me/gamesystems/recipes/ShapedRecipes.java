@@ -175,9 +175,12 @@ public class ShapedRecipes {
 
         snowmeta.getPersistentDataContainer().set(new NamespacedKey(Server.getPlugin(), "snowman"), PersistentDataType.STRING, "snowman");
 
-        snowball.setItemMeta(meta);
+        snowball.setItemMeta(snowmeta);
 
         shapedRecipeMap.put(snowball, List.of(List.of(new ItemStack(Material.AIR), new ItemStack(Material.CARVED_PUMPKIN), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.SNOW_BLOCK), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.SNOW_BLOCK), new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "PORTABLE_SNOWMAN"))));
+
+        shapedRecipeMap.put(new ItemStack(Material.TNT), List.of(List.of(new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.GUNPOWDER),
+                new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.SAND)), List.of(GuiConstructor.createGuiItem(Material.STONE, "TNT"))));
 
         shapedRecipes(shapedRecipeMap);
 
@@ -231,6 +234,10 @@ public class ShapedRecipes {
 
                 Bukkit.addRecipe(shapedRecipe);
 
+                Bukkit.removeRecipe(new NamespacedKey(Server.getPlugin(), values.get(1).getFirst().getItemMeta().getDisplayName()));
+
+                Bukkit.addRecipe(shapedRecipe);
+
             }
         }
     }
@@ -240,6 +247,8 @@ public class ShapedRecipes {
         for (ItemStack i : shapedRecipeMap.keySet()) {
             Bukkit.removeRecipe(new NamespacedKey(Server.getPlugin(), shapedRecipeMap.get(i).getFirst().toString()));
         }
+
+        Bukkit.removeRecipe(new NamespacedKey("minecraft", "tnt"));
 
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "hopper"));
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "minecart"));

@@ -187,6 +187,8 @@ public final class Server extends JavaPlugin {
         foragingBlocks.put(Material.JUNGLE_LOG, 15L);
         foragingBlocks.put(Material.ACACIA_LOG, 10L);
         foragingBlocks.put(Material.DARK_OAK_LOG, 5L);
+        foragingBlocks.put(Material.MANGROVE_LOG, 10L);
+        foragingBlocks.put(Material.CHERRY_LOG, 3L);
         foragingBlocks.put(Material.SHORT_GRASS, 1L);
         foragingBlocks.put(Material.TALL_GRASS, 2L);
         foragingBlocks.put(Material.MOSS_BLOCK, 2L);
@@ -287,7 +289,7 @@ public final class Server extends JavaPlugin {
         smithingItems.put(Material.IRON_INGOT, 3L);
         smithingItems.put(Material.GOLD_NUGGET, 2L);
         smithingItems.put(Material.GOLD_INGOT, 5L);
-        smithingItems.put(Material.IRON_NUGGET, 1L);
+        smithingItems.put(Material.IRON_NUGGET, 3L);
         smithingItems.put(Material.COAL, 1L);
 
 
@@ -435,12 +437,12 @@ public final class Server extends JavaPlugin {
     public CoreProtectAPI getCoreProtect() {
         Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
 
-        if (plugin == null || !(plugin instanceof CoreProtect)) {
+        if (!(plugin instanceof CoreProtect)) {
             return null;
         }
 
         CoreProtectAPI CoreProtect = ((CoreProtect) plugin).getAPI();
-        if (CoreProtect.isEnabled() == false) {
+        if (!CoreProtect.isEnabled()) {
             return null;
         }
 
