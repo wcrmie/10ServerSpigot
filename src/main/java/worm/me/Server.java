@@ -24,6 +24,9 @@ import worm.me.gamesystems.ArtBlocks;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.gamesystems.recipes.SmeltingRecipes;
 import worm.me.gamesystems.structure.generation.TreasureChests;
+import worm.me.listeners.MainListener;
+import worm.me.listeners.PlayerListener;
+import worm.me.listeners.WorldListener;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.AgilityDoubleJump;
 import worm.me.playersystems.abilities.active.FeatherDash;
@@ -118,8 +121,10 @@ public final class Server extends JavaPlugin {
 
 
 
-        // Allows ListenerClass to receive events.
-        getServer().getPluginManager().registerEvents(new Listener(this), this);
+        // Allows listeners to receive events.
+        getServer().getPluginManager().registerEvents(new MainListener(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+        getServer().getPluginManager().registerEvents(new WorldListener(this), this);
 
         // Allows Command classes to register commands
         this.getCommand("islandspawn").setExecutor(new IslandSpawnCommand(this));
