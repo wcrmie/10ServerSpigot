@@ -77,7 +77,7 @@ public class SaddleSystem {
             if (!(player.getPassengers().isEmpty())) {
                 Entity currentPassenger = player.getPassengers().getFirst();
                 throwEntity(currentPassenger, player);
-            }
+            } else return;
 
             if (clickedEntity instanceof Player clickedPlayer) {
                 ItemStack helmet = clickedPlayer.getInventory().getHelmet();
