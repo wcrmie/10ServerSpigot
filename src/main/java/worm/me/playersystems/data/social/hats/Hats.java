@@ -21,6 +21,8 @@ public class Hats {
 
         hatsGUI.setItem(0, GuiConstructor.createGuiItem(Material.KNOWLEDGE_BOOK, ChatColor.BLUE + "\uD83D\uDEC8", " ", ChatColor.GRAY + "You may select any of your unlocked hats here."));
 
+        hatsGUI.setItem(4, GuiConstructor.createGuiItem(Material.BARRIER, ChatColor.RED + "Unequip Hat"));
+
         HatsStorage hatsStorage = new HatsStorage();
 
         int slot = 10;
