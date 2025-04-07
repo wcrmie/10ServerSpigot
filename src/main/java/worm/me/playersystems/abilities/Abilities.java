@@ -36,28 +36,31 @@ public class Abilities {
         abilityGuiComponents.put(0, List.of("Empty", "RED_STAINED_GLASS_PANE", "Empty Slot", "This slot is empty"));
 
         // ID 1
-        abilityGuiComponents.put(1, List.of("Double Jump", "FEATHER", ChatColor.DARK_GRAY + "Rapidly press space twice in the air to perform a double jump!"));
+        abilityGuiComponents.put(1, List.of("Double Jump", "FEATHER", ChatColor.DARK_GRAY + "Rapidly press space twice in the air to perform a double jump! "));
 
         // ID 2
-        abilityGuiComponents.put(2, List.of("Dash", "IRON_SWORD", ChatColor.DARK_GRAY + "Dash forward with a sword using " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK]"));
+        abilityGuiComponents.put(2, List.of("Dash", "IRON_SWORD", ChatColor.DARK_GRAY + "Dash forward " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK] + [Holding Sword]"));
 
         // ID 3
-        abilityGuiComponents.put(3, List.of("Leap", "IRON_AXE", ChatColor.DARK_GRAY + "Leap up in the air with an axe using " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK]"));
+        abilityGuiComponents.put(3, List.of("Leap", "IRON_AXE", ChatColor.DARK_GRAY + "Leap up in the air " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK] + [Holding Axe]"));
 
         // ID 4
         abilityGuiComponents.put(4, List.of("Wall Jump", "IRON_BARS", ChatColor.DARK_GRAY + "Clutch onto walls using " + ChatColor.GRAY + "[SNEAK]"));
 
         // ID 5
-        abilityGuiComponents.put(5, List.of("SCREAM", "GOAT_HORN", ChatColor.DARK_GRAY + "Scream while holding a note block using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK]"));
+        abilityGuiComponents.put(5, List.of("SCREAM", "GOAT_HORN", ChatColor.DARK_GRAY + "Make a Scream noise " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Note Block]"));
 
         // ID 6
-        abilityGuiComponents.put(6, List.of("Shadow-Step", "TINTED_GLASS", ChatColor.DARK_GRAY + "Step through space while holding Tinted Glass using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK]"));
+        abilityGuiComponents.put(6, List.of("Shadow-Step", "TINTED_GLASS", ChatColor.DARK_GRAY + "Step through space, and  " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Tinted Glass] + [Standing on Ground]"));
 
         // ID 7
-        abilityGuiComponents.put(7, List.of("Slime Boots", "SLIME_BALL", ChatColor.DARK_GRAY + "Bounce while wearing slime boots " + ChatColor.GRAY + "[SNEAK] to Deactivate "));
+        abilityGuiComponents.put(7, List.of("Slime Boots", "SLIME_BALL", ChatColor.DARK_GRAY + "Bounce " + ChatColor.GRAY + "[Wearing Slime Boots] ||| [SNEAK] to Deactivate "));
 
         // ID 8
-        abilityGuiComponents.put(8, List.of("Quick-Step", "ELYTRA", ChatColor.DARK_GRAY + "Step through the air swiftly while holding a feather using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK]"));
+        abilityGuiComponents.put(8, List.of("Feather-Float", "ELYTRA", ChatColor.DARK_GRAY + "Float through the air swiftly " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Feather]"));
+
+        // ID 9
+        abilityGuiComponents.put(9, List.of("Speed-Step", "RABBIT_FOOT", ChatColor.DARK_GRAY + "Speed off in the direction you are looking " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Tripwire Hook]"));
     }
 
     public void initializeRequirements(){
@@ -72,6 +75,7 @@ public class Abilities {
         abilityRequirements.put(6, new int[]{35, 0,  0, 0,  5, 5, 15, 0});
         abilityRequirements.put(7, new int[]{5,  0,  0, 5,  2, 0, 10, 0});
         abilityRequirements.put(8, new int[]{0,  25, 0, 5,  0, 0, 10, 0});
+        abilityRequirements.put(9, new int[]{5,  0, 0, 0,  0, 5, 25, 10});
     }
 
     public List<Integer> getActiveAbilities(Player p){
@@ -172,6 +176,10 @@ public class Abilities {
             FeatherDash featherDash = new FeatherDash();
             featherDash.featherDash(p);
             cooldowns[getAbilitySlot(p, 8)] = System.currentTimeMillis()/1000L + 15;
+        } else if (abilityID == 9){
+            SpeedStep SpeedStep = new SpeedStep();
+            SpeedStep.SpeedStep(p);
+            cooldowns[getAbilitySlot(p, 9)] = System.currentTimeMillis()/1000L + 20;
         }
 
 

@@ -28,6 +28,7 @@ import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.AgilityDoubleJump;
 import worm.me.playersystems.abilities.active.FeatherDash;
 import worm.me.playersystems.abilities.active.ShadowStep;
+import worm.me.playersystems.abilities.active.SpeedStep;
 import worm.me.playersystems.generator.Generator;
 import worm.me.playersystems.quests.QuestInitialize;
 import worm.me.playersystems.PlayerSpawning;
@@ -47,6 +48,7 @@ public final class Server extends JavaPlugin {
     private PlayerSpawning playerspawning;
     private SaddleSystem saddleSystem;
     private FeatherDash featherDash;
+    private SpeedStep speedStep;
     private ArtBlocks artBlocks;
     private TreasureChests treasureChests;
     private static final long CHEST_SPAWN_INTERVAL = 2 * 60 * 60 * 20;
@@ -93,6 +95,7 @@ public final class Server extends JavaPlugin {
         saddleSystem = new SaddleSystem(this);
         artBlocks = new ArtBlocks(this);
         featherDash = new FeatherDash();
+        speedStep = new SpeedStep();
         this.treasureChests = new TreasureChests();
         setupChestSpawnSchedule();
 
@@ -391,6 +394,7 @@ public final class Server extends JavaPlugin {
 
         ShadowStep.cancelAllGhosts();
         featherDash.cleanupAll();
+        speedStep.cleanupAll();
 
         AgilityDoubleJump.cancelAllPlatforms();
     }

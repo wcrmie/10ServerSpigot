@@ -2,9 +2,7 @@ package worm.me;
 
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import net.coreprotect.CoreProtectAPI;
-import net.coreprotect.api.result.ParseResult;
 import net.kyori.adventure.util.TriState;
-import net.minecraft.world.item.enchantment.effects.ExplodeEffect;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -34,6 +32,7 @@ import worm.me.playersystems.abilities.AbilitiesGUI;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
 import worm.me.playersystems.abilities.active.FeatherDash;
+import worm.me.playersystems.abilities.active.SpeedStep;
 import worm.me.playersystems.abilities.passive.SlimeBoots;
 import worm.me.playersystems.data.tools.Tools;
 import worm.me.playersystems.data.tools.Upgrade;
@@ -69,6 +68,7 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
     private final FeatherDash featherDash = new FeatherDash();
+    private final SpeedStep speedStep = new SpeedStep();
 
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
@@ -187,6 +187,7 @@ public class Listener implements org.bukkit.event.Listener {
         PersistentDataContainer container = p.getPersistentDataContainer();
 
         featherDash.cancelDash(e.getPlayer().getUniqueId());
+        speedStep.cancelDash(e.getPlayer().getUniqueId());
 
         container.set(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY, new long[]{System.currentTimeMillis()/1000L, container.get(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY)[1]});
     }
@@ -220,7 +221,7 @@ public class Listener implements org.bukkit.event.Listener {
             boolean exp = true;
 
             for (String[] value : lookup) {
-                ParseResult result = api.parseResult(value);
+                CoreProtectAPI.ParseResult result = api.parseResult(value);
 
                 if (result.getType().equals(e.getBlock().getType()) && result.getActionString().equals("place") && result.getX() == e.getBlock().getX() && result.getY() == e.getBlock().getY() && result.getZ() == e.getBlock().getZ()) {
                     exp = false;
@@ -548,6 +549,10 @@ public class Listener implements org.bukkit.event.Listener {
 
             if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.FEATHER && e.getPlayer().isSneaking()) {
                 Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(8, e.getPlayer()));
+            }
+
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE && e.getPlayer().isSneaking()) {
+                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(9, e.getPlayer()));
             }
 
             if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.TINTED_GLASS && e.getPlayer().isSneaking()) {
