@@ -551,7 +551,7 @@ public class Listener implements org.bukkit.event.Listener {
                 Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(8, e.getPlayer()));
             }
 
-            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE && e.getPlayer().isSneaking()) {
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.TRIPWIRE_HOOK && e.getPlayer().isSneaking()) {
                 Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(9, e.getPlayer()));
             }
 

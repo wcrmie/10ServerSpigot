@@ -1,5 +1,6 @@
 package worm.me.playersystems.abilities;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -178,7 +179,7 @@ public class Abilities {
             cooldowns[getAbilitySlot(p, 8)] = System.currentTimeMillis()/1000L + 15;
         } else if (abilityID == 9){
             SpeedStep SpeedStep = new SpeedStep();
-            SpeedStep.SpeedStep(p);
+            SpeedStep.speedStep(p);
             cooldowns[getAbilitySlot(p, 9)] = System.currentTimeMillis()/1000L + 20;
         }
 

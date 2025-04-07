@@ -16,8 +16,8 @@ import java.util.UUID;
 public class FeatherDash {
     private final Map<UUID, BukkitTask> activeDashes = new HashMap<>();
 
-    private final int DASH_DURATION = 20;
-    private final double DASH_SPEED = 0.5;
+    private final int DASH_DURATION = 35;
+    private final double DASH_SPEED = 0.25;
 
     public void featherDash(Player p) {
         cancelDash(p.getUniqueId());
@@ -44,7 +44,7 @@ public class FeatherDash {
                     Levels.addExp(5L, Levels.skillTranslation("Agility"), p);
                     this.cancel();
                 }
-                if (ticks % 4 == 0 && ticks != 20) {
+                if (ticks % 5 == 0 && ticks != 35) {
                     p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PARROT_FLY, 1f, 1f);
                 }
             }
