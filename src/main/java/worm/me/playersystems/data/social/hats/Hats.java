@@ -97,5 +97,17 @@ public class Hats {
 
     }
 
+    public void unequipHat(Player p){
+
+        ItemStack empty = GuiConstructor.createGuiItem(Material.STONE_BUTTON, ChatColor.GRAY + "No Hat Equipped", ChatColor.DARK_GRAY + "Do /hats");
+        ItemMeta meta = empty.getItemMeta();
+        meta.addEnchant(Enchantment.BINDING_CURSE, 1 , true);
+
+        empty.setItemMeta(meta);
+
+        p.getInventory().setHelmet(empty);
+
+    }
+
 
 }
