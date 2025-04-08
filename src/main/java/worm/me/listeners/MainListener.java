@@ -53,7 +53,7 @@ public class MainListener implements org.bukkit.event.Listener {
         InventoryView view = e.getView();
         String invName = view.getTitle();
         Player player = (Player) e.getWhoClicked();
-        Material itemType = Objects.requireNonNull(e.getCurrentItem()).getType();
+        Material itemType = Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).getType();
         ItemStack cursor = e.getCursor();
         InventoryAction action = e.getAction();
 
@@ -68,7 +68,7 @@ public class MainListener implements org.bukkit.event.Listener {
                     cursor.setAmount(cursor.getAmount() - Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount());
 
                     ItemStack armor = new ItemStack(Material.IRON_BOOTS);
-                    armor.setItemMeta(cursor.getItemMeta());
+                    armor.setItemMeta(e.getCurrentItem().getItemMeta());
 
                     inventory.setItem(e.getSlot(), armor);
                     player.playSound(player, Sound.BLOCK_ANVIL_USE, 1F, 2F);
@@ -80,7 +80,7 @@ public class MainListener implements org.bukkit.event.Listener {
                     cursor.setAmount(cursor.getAmount() - Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount());
 
                     ItemStack armor = new ItemStack(Material.IRON_CHESTPLATE);
-                    armor.setItemMeta(cursor.getItemMeta());
+                    armor.setItemMeta(e.getCurrentItem().getItemMeta());
 
                     inventory.setItem(e.getSlot(), armor);
                     player.playSound(player, Sound.BLOCK_ANVIL_USE, 1F, 2F);
@@ -92,7 +92,7 @@ public class MainListener implements org.bukkit.event.Listener {
                     cursor.setAmount(cursor.getAmount() - Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount());
 
                     ItemStack armor = new ItemStack(Material.IRON_LEGGINGS);
-                    armor.setItemMeta(cursor.getItemMeta());
+                    armor.setItemMeta(e.getCurrentItem().getItemMeta());
 
                     inventory.setItem(e.getSlot(), armor);
                     player.playSound(player, Sound.BLOCK_ANVIL_USE, 1F, 2F);

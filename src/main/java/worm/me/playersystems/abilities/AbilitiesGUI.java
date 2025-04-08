@@ -62,8 +62,6 @@ public class AbilitiesGUI {
 
     public void abilitiesSelect(Player p, int slot){
 
-        PersistentDataContainer container = p.getPersistentDataContainer();
-
         String title;
 
         if (slot == 0) {
@@ -79,6 +77,9 @@ public class AbilitiesGUI {
         Inventory gui = GuiConstructor.chestInventory( ChatColor.DARK_GRAY + title + " Ability Slot", 54);
 
         // for each item
+
+        int slotNum = 10;
+
         for (int i = 0; i < Abilities.abilityGuiComponents.size(); i++){
 
             // Get the ability name, material, and description
@@ -95,13 +96,10 @@ public class AbilitiesGUI {
             }
 
             // Make sure the slot, or the slot + 1 is not divisible by 9. (we don't want stuff on the edges of the gui)
-            int slotNum = i + 10;
 
-            if (slotNum % 9 == 0){
-                slotNum += 2;
-            } else if ((slotNum + 1) % 9 == 0){
-                slotNum = slotNum + 2;
-            }
+
+            if ((slotNum + 1) % 9 == 0) slotNum += 2;
+
 
             // Never have more than 28 items in the GUI
             if (i > 28 || i > Abilities.abilityGuiComponents.size()){
@@ -120,6 +118,7 @@ public class AbilitiesGUI {
 
             }
 
+            slotNum++;
             // Open inventory to player.
         }
         p.openInventory(gui);
