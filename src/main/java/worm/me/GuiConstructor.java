@@ -9,7 +9,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import worm.me.playersystems.MainGUIMenu;
+import worm.me.playersystems.info.MainGUIMenu;
 
 import java.util.Arrays;
 

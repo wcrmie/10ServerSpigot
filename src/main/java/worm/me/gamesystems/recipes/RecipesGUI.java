@@ -7,8 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import worm.me.GuiConstructor;
-import worm.me.playersystems.MainGUIMenu;
-import worm.me.Server;
+import worm.me.playersystems.info.MainGUIMenu;
 
 public class RecipesGUI {
 

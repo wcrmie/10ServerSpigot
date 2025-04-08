@@ -1,4 +1,4 @@
-package worm.me.playersystems;
+package worm.me.playersystems.info;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -52,9 +52,9 @@ public class GuideBook {
                 "\n" +
                 "\n" +
                 "\n").reset().append(" [TABLE OF CONTENTS]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "4")).create());
-        pages.add(new ComponentBuilder("COMMUNICATION").underlined(true).append("\n\nIf you haven't noticed, no messages are sent in chat. Instead, they are typed out above the player's head. Each player can choose their own voice, according to an ID and pitch, with /setvoice. An example would be\n").reset()
+        pages.add(new ComponentBuilder("COMMUNICATION").underlined(true).append("\n\nMessages are typed out above the player's head. Each player can choose their own voice, according to an ID and pitch, with /setvoice. An example would be\n").reset()
                 .append("/setvoice 13 0.5").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/setvoice 13 0.5")).create());
-        pages.add(new ComponentBuilder("COMMUNICATION").underlined(true).append("\n\nThere also exists a /shout command which has a 15 minute cooldown, but does not send a message above the player's head. This is more for trading purposes than chatting.").reset().create());
+        pages.add(new ComponentBuilder("COMMUNICATION").underlined(true).append("\n\nThere also exists a /shout command which has a 5 minute cooldown, but does not send a message above the player's head. This is more for trading purposes, and getting your message seen, than chatting.").reset().create());
         pages.add(new ComponentBuilder("COMMUNICATION").underlined(true).append("\n\nSkins are changed and names hidden, so it would be mindful to create a \"password\" betweem friends.\n\n\n\n\n\n").reset().append(" [TABLE OF CONTENTS]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "4")).create());
         pages.add(new ComponentBuilder("RECIPES").underlined(true).append("\n\nThere are a few recipes immediately granted to the player upon joining. Other recipes are granted with levels. \n" +
                 "\n" +

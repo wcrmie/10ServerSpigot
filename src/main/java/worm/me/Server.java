@@ -50,7 +50,7 @@ public final class Server extends JavaPlugin {
     private WorldBorderSizeHandler WorldBorderSizeHandler;
     private PlayerSpawning playerspawning;
     private SaddleSystem saddleSystem;
-    private SpeedStep featherDash;
+    private FeatherDash featherDash = new FeatherDash();
     private ArtBlocks artBlocks;
     private TreasureChests treasureChests;
     private static final long CHEST_SPAWN_INTERVAL = 2 * 60 * 60 * 20;
@@ -80,6 +80,8 @@ public final class Server extends JavaPlugin {
         return this.WorldBorderSizeHandler;
     }
 
+    private SpeedStep speedStep = new SpeedStep();
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -96,8 +98,6 @@ public final class Server extends JavaPlugin {
         playerspawning = new PlayerSpawning(this);
         saddleSystem = new SaddleSystem(this);
         artBlocks = new ArtBlocks(this);
-        featherDash = new FeatherDash();
-        speedStep = new SpeedStep();
         this.treasureChests = new TreasureChests();
         setupChestSpawnSchedule();
 
@@ -148,6 +148,7 @@ public final class Server extends JavaPlugin {
         this.getCommand("recipes").setExecutor(new OpenRecipesGUICommand());
         this.getCommand("suicide").setExecutor(new SuicideCommand());
         this.getCommand("discord").setExecutor(new DiscordCommand());
+        this.getCommand("togglegens").setExecutor(new ToggleGensCommand());
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 
@@ -195,6 +196,7 @@ public final class Server extends JavaPlugin {
         foragingBlocks.put(Material.ACACIA_LOG, 10L);
         foragingBlocks.put(Material.DARK_OAK_LOG, 5L);
         foragingBlocks.put(Material.MANGROVE_LOG, 10L);
+        foragingBlocks.put(Material.PALE_OAK_LOG, 5L);
         foragingBlocks.put(Material.CHERRY_LOG, 3L);
         foragingBlocks.put(Material.SHORT_GRASS, 1L);
         foragingBlocks.put(Material.TALL_GRASS, 2L);

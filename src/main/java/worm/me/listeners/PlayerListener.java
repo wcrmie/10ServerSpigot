@@ -16,8 +16,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
-import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceExtractEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -35,17 +34,24 @@ import worm.me.playersystems.abilities.AbilityAttemptEvent;
 import worm.me.playersystems.abilities.active.FeatherDash;
 import worm.me.playersystems.abilities.passive.SlimeBoots;
 import worm.me.playersystems.data.UnlockEvent;
+import worm.me.playersystems.data.Vault;
 import worm.me.playersystems.data.VoidPlayer;
 import worm.me.playersystems.data.levels.GainExpEvent;
 import worm.me.playersystems.data.levels.LevelUpEvent;
 import worm.me.playersystems.data.levels.Levels;
+import worm.me.playersystems.data.social.MessageHead;
+import worm.me.playersystems.data.social.hats.HatsStorage;
+import worm.me.playersystems.data.tools.Tools;
 import worm.me.playersystems.data.tools.ToolsEvents;
 import worm.me.playersystems.generator.Generator;
+import worm.me.playersystems.info.Tips;
 import worm.me.playersystems.quests.QuestGui;
 import worm.me.playersystems.quests.QuestProgressEvent;
 import worm.me.playersystems.quests.Quests;
 import worm.me.playersystems.saddle.SaddleSystem;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -59,6 +65,40 @@ public class PlayerListener implements Listener {
     }
 
     // ----------------------------Player Gameplay Actions-----------------------------
+
+
+    @EventHandler
+    public void onInventoryOpen(InventoryOpenEvent e){
+        if (e.getInventory().getType().equals(InventoryType.ENDER_CHEST)){
+            e.setCancelled(true);
+            Vault.openVault((Player) e.getPlayer());
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent e){
+
+        Player p = (Player) e.getPlayer();
+
+        if (e.getView().getTitle().equals(ChatColor.DARK_PURPLE + "Vault")){
+
+            ArrayList<ItemStack> prunedItems = new ArrayList<>();
+
+            Arrays.stream(p.getOpenInventory().getTopInventory().getContents())
+                    .filter(Objects::nonNull).forEach(prunedItems::add);
+
+            Vault.storeItems(prunedItems, p);
+        }
+
+        if (e.getView().getTitle().contains(ChatColor.RED + "Hat Storage ")){
+
+            HatsStorage hatsStorage = new HatsStorage();
+            hatsStorage.eventHandler(e);
+
+        }
+
+    }
+
 
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
@@ -239,6 +279,38 @@ public class PlayerListener implements Listener {
         }
     }
 
+    // --------------------------MESSAGEHEAD--------------------------
+
+    @EventHandler
+    public void onChat(PlayerChatEvent event){
+
+        // For messages above head
+        MessageHead messageHead = new MessageHead(plugin);
+
+        // initialize variables
+        Player p = event.getPlayer();
+        String m = event.getMessage();
+
+        // message character limit
+
+        PersistentDataContainer c = p.getPersistentDataContainer();
+
+        if (m.length() > c.getOrDefault(messageHead.msgLength, PersistentDataType.INTEGER, 192)){
+            p.sendMessage(ChatColor.RED + String.format("Your messages must be %d characters or less.", c.getOrDefault(messageHead.msgLength, PersistentDataType.INTEGER, 192)));
+            event.setCancelled(true);
+            return;
+        }
+
+        // queue messages to be sent above head
+        messageHead.messageQueue(p, m);
+        messageHead.messageDisplay(p, m);
+        event.setCancelled(true);
+
+
+    }
+
+    // --------------------------END MESSAGEHEAD--------------------------
+
 
     // ----------------------------Experience and Leveling-----------------------------
 
@@ -341,11 +413,29 @@ public class PlayerListener implements Listener {
             e.getDrops().add(new ItemStack(Material.IRON_NUGGET, emeraldCount));
         }
 
-        if (e.getEntity().getType() == EntityType.PLAYER) e.getDrops().add(GuiConstructor.createGuiItem(Material.ROTTEN_FLESH, ChatColor.WHITE + "Player Flesh", ChatColor.GRAY + "A Player's flesh."));
+        if (e.getEntity().getType() == EntityType.PLAYER) {
+            e.getDrops().add(GuiConstructor.createGuiItem(Material.ROTTEN_FLESH, ChatColor.WHITE + "Player Flesh", ChatColor.GRAY + "A Player's flesh."));
+        }
 
-        e.getDrops().removeIf(item -> item.getType().toString().contains("sword") || item.getType().toString().contains("axe") ||
-                item.getType().toString().contains("shovel") || item.getType().toString().contains("pickaxe"));
+        e.getDrops().removeIf(item -> !Tools.toolType(item.getType()).equals("none"));
 
+    }
+
+    @EventHandler
+    public void DeathMessage(PlayerDeathEvent e){
+
+        Player player = e.getPlayer();
+
+        for (Player p : Bukkit.getOnlinePlayers()){
+
+            double distance = p.getLocation().distance(e.getEntity().getLocation());
+
+            int color = distance == 0 ? 255 : (int) Math.round(255 - 255 * (distance / (player.getWorld().getWorldBorder().getSize() + 50)));
+            if (color < 50) color = 50;
+            String hexColor = String.format("#%02x%02x%02x", color, color, color);
+            p.sendMessage(net.md_5.bungee.api.ChatColor.of(hexColor) + "[" + ChatColor.RED + "☠" + net.md_5.bungee.api.ChatColor.of(hexColor) + "] " + e.getDeathMessage());
+
+        }
     }
 
     @EventHandler
@@ -574,10 +664,15 @@ public class PlayerListener implements Listener {
         // Set player variable
         Player player = event.getPlayer();
 
+        player.setGravity(true);
+
         // Give the player a random item every 10 seconds
         worm.me.Server.getPlugin().generating.add(event.getPlayer());
         Generator generator = new Generator(plugin);
         generator.generateItem(player);
+
+        Tips tips = new Tips();
+        tips.beginTipSending(player);
 
         // Initialize player data
         VoidPlayer.initializeData(player);

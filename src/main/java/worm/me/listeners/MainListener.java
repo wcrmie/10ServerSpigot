@@ -1,59 +1,28 @@
 package worm.me.listeners;
 
-import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
-import net.coreprotect.CoreProtectAPI;
-import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockFromToEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.*;
-import org.bukkit.event.player.*;
-import org.bukkit.event.world.StructureGrowEvent;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.util.Vector;
 import worm.me.GuiConstructor;
 import worm.me.Server;
-import worm.me.gamesystems.fishing.FishingTables;
-import worm.me.gamesystems.ArtBlocks;
 import worm.me.gamesystems.recipes.RecipesGUI;
-import worm.me.gamesystems.worldreset.WorldReset;
-import worm.me.playersystems.*;
 import worm.me.playersystems.abilities.AbilitiesGUI;
-import worm.me.playersystems.abilities.Abilities;
-import worm.me.playersystems.abilities.AbilityAttemptEvent;
-import worm.me.playersystems.abilities.active.FeatherDash;
-import worm.me.playersystems.abilities.active.SpeedStep;
-import worm.me.playersystems.abilities.passive.SlimeBoots;
 import worm.me.playersystems.data.tools.Tools;
 import worm.me.playersystems.data.tools.Upgrade;
-import worm.me.playersystems.generator.Generator;
 import worm.me.playersystems.generator.GeneratorEdit;
 import worm.me.playersystems.data.*;
-import worm.me.playersystems.data.levels.GainExpEvent;
-import worm.me.playersystems.data.levels.LevelUpEvent;
-import worm.me.playersystems.data.levels.Levels;
 import worm.me.playersystems.data.levels.LevelsGUI;
 import worm.me.playersystems.data.social.hats.Hats;
-import worm.me.playersystems.data.social.hats.HatsStorage;
-import worm.me.playersystems.quests.QuestGui;
-import worm.me.playersystems.data.social.MessageHead;
+import worm.me.playersystems.info.GuideBook;
 import worm.me.playersystems.data.social.skins.SkinGui;
-import org.bukkit.event.player.PlayerJoinEvent;
 import worm.me.playersystems.data.tools.ToolsEvents;
-import worm.me.playersystems.quests.QuestProgressEvent;
-import worm.me.playersystems.quests.Quests;
-import worm.me.playersystems.saddle.SaddleSystem;
+import worm.me.playersystems.info.MainGUIMenu;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -61,6 +30,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MainListener implements org.bukkit.event.Listener {
 
     private final worm.me.Server plugin;
+
+    private final List<LivingEntity> tickList = new ArrayList<>();
 
     public MainListener(worm.me.Server plugin) {
         this.plugin = plugin;
@@ -76,82 +47,94 @@ public class MainListener implements org.bukkit.event.Listener {
     }
 
     @EventHandler
-    public void onInventoryOpen(InventoryOpenEvent e){
-        if (e.getInventory().getType().equals(InventoryType.ENDER_CHEST)){
-            e.setCancelled(true);
-            Vault.openVault((Player) e.getPlayer());
-        }
-    }
-
-    @EventHandler
-    public void onInventoryClose(InventoryCloseEvent e){
-
-        Player p = (Player) e.getPlayer();
-
-        if (e.getView().getTitle().equals(ChatColor.DARK_PURPLE + "Vault")){
-
-            ArrayList<ItemStack> prunedItems = new ArrayList<>();
-
-            Arrays.stream(p.getOpenInventory().getTopInventory().getContents())
-                    .filter(Objects::nonNull).forEach(prunedItems::add);
-
-            Vault.storeItems(prunedItems, p);
-        }
-
-        if (e.getView().getTitle().contains(ChatColor.RED + "Hat Storage ")){
-
-            HatsStorage hatsStorage = new HatsStorage();
-            hatsStorage.eventHandler(e);
-
-
-        }
-
-    }
-
-    @EventHandler
     public void onInventoryClick(InventoryClickEvent e){
 
-        if (!e.getView().getType().equals(InventoryType.PLAYER) && e.getAction().equals(InventoryAction.HOTBAR_SWAP)) e.setCancelled(true);
+        Inventory inventory = Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST));
+        InventoryView view = e.getView();
+        String invName = view.getTitle();
+        Player player = (Player) e.getWhoClicked();
+        Material itemType = Objects.requireNonNull(e.getCurrentItem()).getType();
+        ItemStack cursor = e.getCursor();
+        InventoryAction action = e.getAction();
 
-        if (Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST)).getType() == InventoryType.PLAYER && (e.getAction().equals(InventoryAction.SWAP_WITH_CURSOR) || e.getAction().equals(InventoryAction.COLLECT_TO_CURSOR)) &&
+        if (!inventory.getType().equals(InventoryType.PLAYER) && e.getAction().equals(InventoryAction.HOTBAR_SWAP)){
+            e.setCancelled(true);
+        }
+
+        switch (itemType) {
+            case CHAINMAIL_BOOTS -> {
+                if (cursor.getType().equals(Upgrade.CHAIN_ARMOR.getUpgradeItem().getType()) && cursor.getAmount() >= Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount()){
+                    e.setCancelled(true);
+                    cursor.setAmount(cursor.getAmount() - Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount());
+
+                    ItemStack armor = new ItemStack(Material.IRON_BOOTS);
+                    armor.setItemMeta(cursor.getItemMeta());
+
+                    inventory.setItem(e.getSlot(), armor);
+                    player.playSound(player, Sound.BLOCK_ANVIL_USE, 1F, 2F);
+                }
+            }
+            case CHAINMAIL_CHESTPLATE -> {
+                if (cursor.getType().equals(Upgrade.CHAIN_ARMOR.getUpgradeItem().getType()) && cursor.getAmount() >= Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount()){
+                    e.setCancelled(true);
+                    cursor.setAmount(cursor.getAmount() - Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount());
+
+                    ItemStack armor = new ItemStack(Material.IRON_CHESTPLATE);
+                    armor.setItemMeta(cursor.getItemMeta());
+
+                    inventory.setItem(e.getSlot(), armor);
+                    player.playSound(player, Sound.BLOCK_ANVIL_USE, 1F, 2F);
+                }
+            }
+            case CHAINMAIL_LEGGINGS -> {
+                if (cursor.getType().equals(Upgrade.CHAIN_ARMOR.getUpgradeItem().getType()) && cursor.getAmount() >= Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount()) {
+                    e.setCancelled(true);
+                    cursor.setAmount(cursor.getAmount() - Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount());
+
+                    ItemStack armor = new ItemStack(Material.IRON_LEGGINGS);
+                    armor.setItemMeta(cursor.getItemMeta());
+
+                    inventory.setItem(e.getSlot(), armor);
+                    player.playSound(player, Sound.BLOCK_ANVIL_USE, 1F, 2F);
+                }
+            }
+        }
+
+        if (inventory.getType() == InventoryType.PLAYER && (action.equals(InventoryAction.SWAP_WITH_CURSOR) || action.equals(InventoryAction.COLLECT_TO_CURSOR)) &&
                 !Tools.toolType(Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STONE)).getType()).equals("none") && e.getWhoClicked().getInventory().firstEmpty() == -1) e.setCancelled(true);
         if (Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST)).getType() != InventoryType.PLAYER && !Tools.toolType(e.getCursor().getType()).equals("none")) e.setCancelled(true);
 
         if (!Tools.toolType(Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STONE)).getType()).equals("none") && (e.getClickedInventory().getType() == InventoryType.PLAYER && e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)) ||
-                (e.getAction().equals(InventoryAction.HOTBAR_SWAP) && e.getClickedInventory().getType() != InventoryType.PLAYER) && !Tools.toolType(e.getWhoClicked().getInventory().getItem(e.getHotbarButton()).getType()).equals("none")) e.setCancelled(true);
+                (action.equals(InventoryAction.HOTBAR_SWAP) && inventory.getType() != InventoryType.PLAYER) && !Tools.toolType(e.getWhoClicked().getInventory().getItem(e.getHotbarButton()).getType()).equals("none")) e.setCancelled(true);
 
-        if (Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST)).getType().equals(InventoryType.PLAYER)) {
-            if (Objects.requireNonNull(e.getCurrentItem()).getType().equals(Material.WOODEN_AXE) || e.getCurrentItem().getType().equals(Material.WOODEN_PICKAXE) ||
-                    e.getCurrentItem().getType().equals(Material.WOODEN_SWORD) || e.getCurrentItem().getType().equals(Material.WOODEN_SHOVEL)){
-                if (Objects.requireNonNull(e.getCursor()).getType() == Upgrade.WOOD_TOOL.getUpgradeItem().getType() && e.getCursor().getAmount() >= Upgrade.WOOD_TOOL.getUpgradeItem().getAmount()){
+        if (inventory.getType().equals(InventoryType.PLAYER)) {
+            if (itemType.equals(Material.WOODEN_AXE) || itemType.equals(Material.WOODEN_PICKAXE) ||
+                    itemType.equals(Material.WOODEN_SWORD) || itemType.equals(Material.WOODEN_SHOVEL)){
+                if (cursor.getType() == Upgrade.WOOD_TOOL.getUpgradeItem().getType() && cursor.getAmount() >= Upgrade.WOOD_TOOL.getUpgradeItem().getAmount()){
                     e.setCancelled(true);
-                    e.getCursor().setAmount(e.getCursor().getAmount() - Upgrade.WOOD_TOOL.getUpgradeItem().getAmount());
+                    cursor.setAmount(cursor.getAmount() - Upgrade.WOOD_TOOL.getUpgradeItem().getAmount());
                     ToolsEvents toolsEvents = new ToolsEvents();
-                    toolsEvents.toolUpgradeAttempt((Player) e.getWhoClicked(), e);
+                    toolsEvents.toolUpgradeAttempt(player, e);
+                    player.playSound(player, Sound.BLOCK_ANVIL_USE, 1F, 2F);
                 }
 
-            } else if (Objects.requireNonNull(e.getCurrentItem().getType()).equals(Material.STONE_AXE) || e.getCurrentItem().getType().equals(Material.STONE_PICKAXE) ||
-                    e.getCurrentItem().getType().equals(Material.STONE_SWORD) || e.getCurrentItem().getType().equals(Material.STONE_SHOVEL)){
-                if (Objects.requireNonNull(e.getCursor()).getType() == Upgrade.STONE_TOOL.getUpgradeItem().getType() && e.getCursor().getAmount() >= Upgrade.STONE_TOOL.getUpgradeItem().getAmount()){
+            } else if (itemType.equals(Material.STONE_AXE) || itemType.equals(Material.STONE_PICKAXE) ||
+                    itemType.equals(Material.STONE_SWORD) || itemType.equals(Material.STONE_SHOVEL)){
+                if (cursor.getType() == Upgrade.STONE_TOOL.getUpgradeItem().getType() && cursor.getAmount() >= Upgrade.STONE_TOOL.getUpgradeItem().getAmount()){
                     e.setCancelled(true);
-                    e.getCursor().setAmount(e.getCursor().getAmount() - Upgrade.STONE_TOOL.getUpgradeItem().getAmount());
+                    cursor.setAmount(cursor.getAmount() - Upgrade.STONE_TOOL.getUpgradeItem().getAmount());
                     ToolsEvents toolsEvents = new ToolsEvents();
-                    toolsEvents.toolUpgradeAttempt((Player) e.getWhoClicked(), e);
+                    toolsEvents.toolUpgradeAttempt(player, e);
+                    player.playSound(player, Sound.BLOCK_ANVIL_USE, 1F, 2F);
                 }
-
             }
         }
 
-
-        if (Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.AIR)).getType().isAir()) return;
-
-        Player p = (Player) e.getWhoClicked();
-
-        if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
+        if (!player.getPassengers().isEmpty() && player.getPassengers().getFirst().getType() != EntityType.PLAYER){
             e.setCancelled(true);
         }
 
-        String tool = e.getCursor().getType().toString().toLowerCase();
+        String tool = cursor.getType().toString().toLowerCase();
         for (String s : worm.me.Server.tools.keySet()){
             if (tool.contains(s)){
                 if (e.getClickedInventory().getType() != InventoryType.PLAYER) e.setCancelled(true);
@@ -161,13 +144,10 @@ public class MainListener implements org.bukkit.event.Listener {
 
         GeneratorEdit genEdit = new GeneratorEdit();
 
-        InventoryView inv = e.getView();
-        String invName = inv.getTitle();
-
         if (e.getSlotType() == InventoryType.SlotType.ARMOR){
         }
 
-        if (e.getCurrentItem().isSimilar(GuiConstructor.createGuiItem(Material.BARRIER, ChatColor.RED + "Close Menu", " ", ChatColor.GRAY + "Close this menu."))) p.closeInventory();
+        if (e.getCurrentItem().isSimilar(GuiConstructor.createGuiItem(Material.BARRIER, ChatColor.RED + "Close Menu", " ", ChatColor.GRAY + "Close this menu."))) player.closeInventory();
 
         if (e.getCurrentItem().getType() == Material.SPECTRAL_ARROW && e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Go Back")){
             GuiConstructor guiConstructor = new GuiConstructor();
@@ -182,13 +162,13 @@ public class MainListener implements org.bukkit.event.Listener {
         if (invName.equals(ChatColor.DARK_GRAY + "Your Active Abilities")){
             e.setCancelled(true);
             AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
-            abilitiesGUI.initializeAbilitySelection(p, e);;
+            abilitiesGUI.initializeAbilitySelection(player, e);;
         }
 
         if (invName.contains("Ability Slot")) {
             e.setCancelled(true);
             AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
-            abilitiesGUI.activateAbility(p, e.getSlot(), e);
+            abilitiesGUI.activateAbility(player, e.getSlot(), e);
         }
 
         if (invName.contains("Recipes Page ")) {
@@ -238,13 +218,13 @@ public class MainListener implements org.bukkit.event.Listener {
 
 
             if (clickedItem.getType().equals(Material.COBBLESTONE)){
-                genEdit.stoneItem(p);
+                genEdit.stoneItem(player);
             } else if (clickedItem.getType().equals(Material.DIRT)) {
-                genEdit.dirtItem(p);
+                genEdit.dirtItem(player);
             } else if (clickedItem.getType().equals(Material.OAK_PLANKS)) {
-                genEdit.woodItem(p);
+                genEdit.woodItem(player);
             } else if (clickedItem.getType().equals(Material.COAL)) {
-                genEdit.miscItem(p);
+                genEdit.miscItem(player);
             }
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Stone Block")){
             e.setCancelled(true);
@@ -255,12 +235,12 @@ public class MainListener implements org.bukkit.event.Listener {
 
             if (worm.me.Server.stones.containsKey(clickedItem.getType())){
 
-                if (Unlocks.hasGenUnlocked(p, clickedItem.getType())){
-                    PersistentDataContainer container = p.getPersistentDataContainer();
+                if (Unlocks.hasGenUnlocked(player, clickedItem.getType())){
+                    PersistentDataContainer container = player.getPersistentDataContainer();
                     container.set(genEdit.stoneBlock, PersistentDataType.STRING, clickedItem.getType().toString());
-                    p.sendMessage(ChatColor.GREEN + "Your stone block has been changed to " + clickedItem.getTranslationKey());
+                    player.sendMessage(ChatColor.GREEN + "Your stone block has been changed to " + clickedItem.getTranslationKey());
                 }
-            } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(p);
+            } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Wood Block")){
             e.setCancelled(true);
 
@@ -268,13 +248,13 @@ public class MainListener implements org.bukkit.event.Listener {
 
             if (worm.me.Server.planks.containsKey(clickedItem.getType())){
 
-                if (Unlocks.hasGenUnlocked(p, clickedItem.getType())){
-                    PersistentDataContainer container = p.getPersistentDataContainer();
+                if (Unlocks.hasGenUnlocked(player, clickedItem.getType())){
+                    PersistentDataContainer container = player.getPersistentDataContainer();
                     container.set(genEdit.woodBlock, PersistentDataType.STRING, clickedItem.getType().toString());
-                    p.sendMessage(ChatColor.GREEN + "Your wood block has been changed to " + clickedItem.getTranslationKey());
+                    player.sendMessage(ChatColor.GREEN + "Your wood block has been changed to " + clickedItem.getTranslationKey());
                 }
 
-            } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(p);
+            } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Loose Block")){
             e.setCancelled(true);
 
@@ -283,12 +263,12 @@ public class MainListener implements org.bukkit.event.Listener {
             if (worm.me.Server.dirts.containsKey(clickedItem.getType())){
 
 
-                if (Unlocks.hasGenUnlocked(p, clickedItem.getType())) {
-                    PersistentDataContainer container = p.getPersistentDataContainer();
+                if (Unlocks.hasGenUnlocked(player, clickedItem.getType())) {
+                    PersistentDataContainer container = player.getPersistentDataContainer();
                     container.set(genEdit.dirtBlock, PersistentDataType.STRING, clickedItem.getType().toString());
-                    p.sendMessage(ChatColor.GREEN + "Your loose block has been changed to " + clickedItem.getTranslationKey());
+                    player.sendMessage(ChatColor.GREEN + "Your loose block has been changed to " + clickedItem.getTranslationKey());
                 }
-            } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(p);
+            } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Miscellaneous Item")){
             e.setCancelled(true);
 
@@ -298,12 +278,12 @@ public class MainListener implements org.bukkit.event.Listener {
 
             if (Server.miscs.containsKey(clickedItem.getType())){
 
-                if (Unlocks.hasGenUnlocked(p, clickedItem.getType())){
-                    PersistentDataContainer container = p.getPersistentDataContainer();
+                if (Unlocks.hasGenUnlocked(player, clickedItem.getType())){
+                    PersistentDataContainer container = player.getPersistentDataContainer();
                     container.set(genEdit.miscItem, PersistentDataType.STRING, clickedItem.getType().toString());
-                    p.sendMessage(ChatColor.GREEN + "Your misc. item has been changed to " + clickedItem.getTranslationKey());
+                    player.sendMessage(ChatColor.GREEN + "Your misc. item has been changed to " + clickedItem.getTranslationKey());
                 }
-            } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(p);
+            } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
         } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Quests")){
             e.setCancelled(true);
 

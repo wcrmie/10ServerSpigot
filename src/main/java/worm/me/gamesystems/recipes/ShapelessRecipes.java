@@ -1,9 +1,6 @@
 package worm.me.gamesystems.recipes;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
@@ -24,6 +21,8 @@ public class ShapelessRecipes {
         // ID 0
         shapelessRecipeMap.put(GuiConstructor.createGuiItem(Material.COOKED_MUTTON, ChatColor.WHITE + "Salted Jerky"), List.of(List.of(new ItemStack(Material.ROTTEN_FLESH), GuiConstructor.createGuiItem(Material.QUARTZ, ChatColor.WHITE + "Salt")), List.of(GuiConstructor.createGuiItem(Material.STONE, "SALTED_JERKY"))));
 
+        // ID 1
+        shapelessRecipeMap.put(new ItemStack(Material.STRING, 4), List.of(List.of(new ItemStack(Material.WHITE_WOOL)), List.of(GuiConstructor.createGuiItem(Material.STONE, "STRING"))));
 
         shapelessRecipes(shapelessRecipeMap);
 
@@ -40,18 +39,24 @@ public class ShapelessRecipes {
             String keyName = values.get(1).getFirst().getItemMeta().getDisplayName();
 
             if (Bukkit.getRecipe(new NamespacedKey(Server.getPlugin(), keyName)) == null){
-                ShapelessRecipe shapedRecipe = new ShapelessRecipe(new NamespacedKey(Server.getPlugin(), keyName), key);
+                ShapelessRecipe shapelessRecipe = new ShapelessRecipe(new NamespacedKey(Server.getPlugin(), keyName), key);
 
-                for (int i = 0; i < recipe.get(key).size(); i++) {
-                    if (values.getFirst().get(i).getType() != Material.AIR){
+                for (int i = 0; i < recipe.get(key).size() - 1; i++) {
 
-                        if (keyName.equals("SALTED_JERKY") && values.getFirst().get(i).getType() == Material.ROTTEN_FLESH) {
-                            shapedRecipe.addIngredient(Material.ROTTEN_FLESH);
-                        } else shapedRecipe.addIngredient(new RecipeChoice.ExactChoice(values.getFirst().get(i)));
+                    Material material = values.getFirst().get(i).getType();
+
+                    if (material != Material.AIR){
+
+                        if (keyName.equals("SALTED_JERKY") && material == Material.ROTTEN_FLESH) {
+                            shapelessRecipe.addIngredient(Material.ROTTEN_FLESH);
+                        } else if (material == Material.WHITE_WOOL) {
+                            shapelessRecipe.addIngredient(new RecipeChoice.MaterialChoice(Tag.WOOL));
+
+                        } else shapelessRecipe.addIngredient(new RecipeChoice.ExactChoice(values.getFirst().get(i)));
 
                     }
                 }
-                Bukkit.addRecipe(shapedRecipe);
+                Bukkit.addRecipe(shapelessRecipe);
 
             }
         }

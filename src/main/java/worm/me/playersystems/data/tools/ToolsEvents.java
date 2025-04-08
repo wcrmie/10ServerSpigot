@@ -29,9 +29,11 @@ public class ToolsEvents {
 
         playerTools.remove(clickedItem);
 
-        playerTools.add(tools.toolDowngrade(e.getBrokenItem()));
+        playerTools.add(tools.toolDowngrade(clickedItem));
 
-        p.getInventory().setItemInMainHand(tools.toolDowngrade(e.getBrokenItem()));
+        int slot = p.getInventory().getHeldItemSlot();
+
+        p.getInventory().setItem(slot, tools.toolDowngrade(clickedItem));
 
         VoidPlayer.setTools(playerTools, p);
     }

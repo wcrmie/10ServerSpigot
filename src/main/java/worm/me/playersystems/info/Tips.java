@@ -1,0 +1,54 @@
+package worm.me.playersystems.info;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitRunnable;
+import worm.me.Server;
+import worm.me.playersystems.data.tools.Tools;
+
+import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
+
+public class Tips {
+
+    public String getTip(int i){
+        return switch (i) {
+            case 1 -> "View the rules with /rules!";
+            case 2 -> "Endermen may sometimes drop emeralds.";
+            case 3 -> "You can use /recipes to see the custom recipes!";
+            case 4 -> "Hover over your tools to see how to upgrade them!";
+            case 5 -> "This server uses SimpleVoiceChat. Download it here: https://modrinth.com/plugin/simple-voice-chat/";
+            case 6 -> "Blast furnaces may yield more material than regular furnaces.";
+            case 7 -> "Most things on the server can be accessed from /menu";
+            default -> "Join our discord with /discord";
+        };
+    }
+
+    public int createTip() {
+        return ThreadLocalRandom.current().nextInt(0,7);
+    }
+
+    public void sendTip(int i, Player p){
+        String tip = getTip(i);
+        Server.pluginMessage(ChatColor.GRAY + tip, p);
+    }
+
+    public void beginTipSending(Player p){
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+
+                sendTip(createTip(), p);
+
+            }
+        }.runTaskTimer(Server.getPlugin(), 6000, 6000);
+
+    }
+
+
+}

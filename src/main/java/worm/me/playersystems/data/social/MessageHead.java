@@ -158,6 +158,7 @@ public class MessageHead {
             double distance = player.getLocation().distance(p.getLocation());
 
             int color = distance == 0 ? 255 : (int) Math.round(255 - 255 * (distance / (player.getWorld().getWorldBorder().getSize() + 50)));
+            if (color < 50) color = 50;
             String hexColor = String.format("#%02x%02x%02x", color, color, color);
             player.sendMessage(net.md_5.bungee.api.ChatColor.of(hexColor) + p.getName() + ": " + m);
         }
