@@ -62,6 +62,9 @@ public class Abilities {
 
         // ID 9
         abilityGuiComponents.put(9, List.of("Speed-Step", "RABBIT_FOOT", ChatColor.DARK_GRAY + "Speed off in the direction you are looking " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Tripwire Hook]"));
+
+        // ID 10
+        abilityGuiComponents.put(10, List.of("Tactical Retreat", "BOW", ChatColor.DARK_GRAY + "spring backwards like a coward " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Bow]"));
     }
 
     public void initializeRequirements(){
@@ -77,6 +80,7 @@ public class Abilities {
         abilityRequirements.put(7, new int[]{5,  0,  0, 5,  2, 0, 10, 0});
         abilityRequirements.put(8, new int[]{0,  25, 0, 5,  0, 0, 10, 0});
         abilityRequirements.put(9, new int[]{5,  0, 0, 0,  0, 5, 25, 10});
+        abilityRequirements.put(10, new int[]{10,  1, 0, 0,  0, 2, 10, 2});
     }
 
     public List<Integer> getActiveAbilities(Player p){
@@ -181,6 +185,10 @@ public class Abilities {
             SpeedStep SpeedStep = new SpeedStep();
             SpeedStep.speedStep(p);
             cooldowns[getAbilitySlot(p, 9)] = System.currentTimeMillis()/1000L + 20;
+        } else if (abilityID == 10){
+            TacticalRetreat TacticalRetreat = new TacticalRetreat();
+            TacticalRetreat.retreat(p);
+            cooldowns[getAbilitySlot(p, 10)] = System.currentTimeMillis()/1000L + 10;
         }
 
 
