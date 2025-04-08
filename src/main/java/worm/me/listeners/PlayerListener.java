@@ -578,6 +578,10 @@ public class PlayerListener implements Listener {
                 Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(9, e.getPlayer()));
             }
 
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.BOW && e.getPlayer().isSneaking()) {
+                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(10, e.getPlayer()));
+            }
+
             if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.TINTED_GLASS && e.getPlayer().isSneaking()) {
                 Player player = e.getPlayer();
 
