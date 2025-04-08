@@ -90,7 +90,7 @@ public class Tools {
 
             } else if (downgrade.toString().contains("STONE")) {
 
-                toolMeta.setLore(List.of(ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "4 Iron Ingots"));
+                toolMeta.setLore(List.of(ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "2 Iron Ingots"));
 
             }
 
