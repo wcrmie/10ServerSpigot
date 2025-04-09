@@ -2,6 +2,8 @@ package worm.me.playersystems.abilities.active;
 
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -42,6 +44,8 @@ public class FeatherDash {
                 } else {
                     cleanup(p);
                     Levels.addExp(5L, Levels.skillTranslation("Agility"), p);
+                    PotionEffect effect = new PotionEffect(PotionEffectType.SLOW_FALLING, 30, 1);
+                    p.addPotionEffect(effect);
                     this.cancel();
                 }
                 if (ticks % 4 == 0 && ticks != 20) {

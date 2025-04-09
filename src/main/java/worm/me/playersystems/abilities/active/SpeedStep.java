@@ -15,8 +15,8 @@ import java.util.UUID;
 public class SpeedStep {
     private final Map<UUID, BukkitTask> activeDashes = new HashMap<>();
 
-    private final int DASH_DURATION = 5;
-    private final double DASH_SPEED = 3;
+    private final int DASH_DURATION = 10;
+    private final double DASH_SPEED = 1.07;
 
     public void SpeedStep(Player p) {
         cancelDash(p.getUniqueId());
@@ -25,6 +25,7 @@ public class SpeedStep {
         Vector direction = p.getLocation().getDirection().normalize();
         direction.setY(0).normalize();
         p.getWorld().playSound(p.getLocation(), Sound.ITEM_FIRECHARGE_USE, 1.5f, 1.5f);
+        p.teleport(p.getLocation().add(0,0.75, 0));
 
 
         BukkitTask dashTask = new BukkitRunnable() {
