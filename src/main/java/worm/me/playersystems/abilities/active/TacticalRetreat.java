@@ -18,10 +18,8 @@ public class TacticalRetreat {
 
         World world = p.getWorld();
         world.spawnParticle(Particle.SWEEP_ATTACK, p.getLocation(), 5, 0.3, 0.00001, 0.3, 0.05);
-        world.playSound(p.getLocation(), Sound.ITEM_TRIDENT_THROW, 0.5f,1.5f);
-
-        p.swingMainHand();
-
+        world.spawnParticle(Particle.EXPLOSION_EMITTER, p.getLocation(), 1, 0, 0.00001, 0.3, 0.05);
+        world.playSound(p.getLocation(), Sound.ITEM_BRUSH_BRUSHING_SAND_COMPLETE, 0.5f,0.1f);
     }
 }
 

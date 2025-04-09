@@ -151,7 +151,15 @@ public class PlayerListener implements Listener {
         if (Objects.requireNonNull(e.getBlock().getLocation().getWorld()).getName().equals("ul_Void_nether")) return;
         if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < 220){
             e.setCancelled(true);
-            p.sendMessage(ChatColor.RED + "The build area is between y = 220 and y = 280.");
+            Server.pluginMessage(ChatColor.RED + "The build area is between y = 220 and y = 280.", p);
+        }
+    }
+
+    @EventHandler
+    public void onWaterPlace(PlayerBucketEmptyEvent e) {
+        if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < 220) {
+            e.setCancelled(true);
+            Server.pluginMessage(ChatColor.RED + "The build area is between y = 220 and y = 280.", e.getPlayer());
         }
     }
 
@@ -219,6 +227,11 @@ public class PlayerListener implements Listener {
                 e.setCancelled(true);
                 break;
             }
+        }
+
+        if (tool.contains("bow")) {
+            e.setCancelled(true);
+            if (e.getPlayer().isSneaking()) Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(10, e.getPlayer()));
         }
     }
 
@@ -578,8 +591,8 @@ public class PlayerListener implements Listener {
                 Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(9, e.getPlayer()));
             }
 
-            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.BOW && e.getPlayer().isSneaking()) {
-                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(10, e.getPlayer()));
+            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.BOW) {
+                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(11, e.getPlayer()));
             }
 
             if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.TINTED_GLASS && e.getPlayer().isSneaking()) {

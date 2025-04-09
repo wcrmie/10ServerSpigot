@@ -48,22 +48,25 @@ public class Abilities {
         abilityGuiComponents.put(4, List.of("Wall Jump", "IRON_BARS", ChatColor.DARK_GRAY + "Clutch onto walls using " + ChatColor.GRAY + "[SNEAK]"));
 
         // ID 5
-        abilityGuiComponents.put(5, List.of("SCREAM", "GOAT_HORN", ChatColor.DARK_GRAY + "Make a Scream noise " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Note Block]"));
+        abilityGuiComponents.put(5, List.of("SCREAM", "GOAT_HORN", ChatColor.DARK_GRAY + "Scream as loud as you can using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Note Block]"));
 
         // ID 6
-        abilityGuiComponents.put(6, List.of("Shadow-Step", "TINTED_GLASS", ChatColor.DARK_GRAY + "Step through space, and  " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Tinted Glass] + [Standing on Ground]"));
+        abilityGuiComponents.put(6, List.of("Shadow-Step", "TINTED_GLASS", ChatColor.DARK_GRAY + "Step through space using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Tinted Glass] + [Standing on Ground]"));
 
         // ID 7
         abilityGuiComponents.put(7, List.of("Slime Boots", "SLIME_BALL", ChatColor.DARK_GRAY + "Bounce " + ChatColor.GRAY + "[Wearing Slime Boots] ||| [SNEAK] to Deactivate "));
 
         // ID 8
-        abilityGuiComponents.put(8, List.of("Feather-Float", "ELYTRA", ChatColor.DARK_GRAY + "Float through the air swiftly " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Feather]"));
+        abilityGuiComponents.put(8, List.of("Feather-Float", "ELYTRA", ChatColor.DARK_GRAY + "Float through the air swiftly using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Feather]"));
 
         // ID 9
-        abilityGuiComponents.put(9, List.of("Speed-Step", "RABBIT_FOOT", ChatColor.DARK_GRAY + "Speed off in the direction you are looking " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Tripwire Hook]"));
+        abilityGuiComponents.put(9, List.of("Speed-Step", "RABBIT_FOOT", ChatColor.DARK_GRAY + "Speed off in the direction you are looking using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Tripwire Hook]"));
 
         // ID 10
-        abilityGuiComponents.put(10, List.of("Tactical Retreat", "BOW", ChatColor.DARK_GRAY + "spring backwards like a coward " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Bow]"));
+        abilityGuiComponents.put(10, List.of("Tactical Retreat", "BOW", ChatColor.DARK_GRAY + "Gain some distance on your opponent using " + ChatColor.GRAY + "[SNEAK] + [DROP] + [Holding Bow]"));
+
+        // ID 11
+        abilityGuiComponents.put(11, List.of("Ability 11", "ARROW", ChatColor.DARK_GRAY + "Shoot a weak arrow and ride it using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Bow]"));
     }
 
     public void initializeRequirements(){
@@ -80,6 +83,7 @@ public class Abilities {
         abilityRequirements.put(8, new int[]{0,  25, 0, 5,  0, 0, 10, 0});
         abilityRequirements.put(9, new int[]{5,  0, 0, 0,  0, 5, 25, 10});
         abilityRequirements.put(10, new int[]{10,  1, 0, 0,  0, 2, 10, 2});
+        abilityRequirements.put(11, new int[]{10,  1, 0, 0,  0, 2, 10, 2});
     }
 
     public List<Integer> getActiveAbilities(Player p){
@@ -188,6 +192,10 @@ public class Abilities {
             TacticalRetreat TacticalRetreat = new TacticalRetreat();
             TacticalRetreat.retreat(p);
             cooldowns[getAbilitySlot(p, 10)] = System.currentTimeMillis()/1000L + 10;
+        } else if (abilityID == 11) {
+            RideArrow RideArrow = new RideArrow();
+            RideArrow.shootRiddenArrow(p);
+            cooldowns[getAbilitySlot(p, 11)] = System.currentTimeMillis()/1000L + 20;
         }
 
 
