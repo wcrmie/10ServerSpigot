@@ -167,6 +167,42 @@ public class ShapedRecipes {
                 )
         );
 
+        shapedRecipeMap.put(
+                (new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 1)),
+                List.of(
+                        List.of(
+                                new ItemStack(Material.GOLD_BLOCK),
+                                new ItemStack(Material.GOLD_BLOCK),
+                                new ItemStack(Material.GOLD_BLOCK),
+                                new ItemStack(Material.GOLD_BLOCK),
+                                new ItemStack(Material.GOLDEN_APPLE),
+                                new ItemStack(Material.GOLD_BLOCK),
+                                new ItemStack(Material.GOLD_BLOCK),
+                                new ItemStack(Material.GOLD_BLOCK),
+                                new ItemStack(Material.GOLD_BLOCK)
+                        ),
+                        List.of(GuiConstructor.createGuiItem(Material.STONE, "ENCHANTED_GOLDEN_APPLE"))
+                )
+        );
+
+        shapedRecipeMap.put(
+                (new ItemStack(Material.GOLDEN_CARROT, 5)),
+                List.of(
+                        List.of(
+                                new ItemStack(Material.GOLD_NUGGET),
+                                new ItemStack(Material.CARROT),
+                                new ItemStack(Material.GOLD_NUGGET),
+                                new ItemStack(Material.CARROT),
+                                new ItemStack(Material.CARROT),
+                                new ItemStack(Material.CARROT),
+                                new ItemStack(Material.GOLD_NUGGET),
+                                new ItemStack(Material.CARROT),
+                                new ItemStack(Material.GOLD_NUGGET)
+                        ),
+                        List.of(GuiConstructor.createGuiItem(Material.STONE, "GOLDEN_CARROT"))
+                )
+        );
+
         ItemStack snowball = new ItemStack(Material.SNOWBALL);
 
         ItemMeta snowmeta = snowball.getItemMeta();
@@ -248,6 +284,8 @@ public class ShapedRecipes {
             Bukkit.removeRecipe(new NamespacedKey(Server.getPlugin(), shapedRecipeMap.get(i).getFirst().toString()));
         }
 
+
+        Bukkit.removeRecipe(new NamespacedKey("minecraft", "golden_carrot"));
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "tnt"));
 
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "hopper"));

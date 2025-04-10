@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
 import org.bukkit.event.player.PlayerHarvestBlockEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
@@ -170,6 +171,26 @@ public class Levels {
             EntityDeathEvent event = (EntityDeathEvent) e;
 
             if (Server.getPlugin().combatMobs.containsKey(event.getEntityType())) {
+
+                if (getLevel(1, p) >= 7) {
+                    if (event.getEntity().getKiller() != null) {
+                        int goldChance = 0;
+                        if (p.getEquipment().getBoots().getType() == Material.GOLDEN_BOOTS) {
+                            goldChance += 2;
+                        }
+                        if (p.getEquipment().getLeggings().getType() == Material.GOLDEN_LEGGINGS) {
+                            goldChance += 2;
+                        }
+                        if (p.getEquipment().getChestplate().getType() == Material.GOLDEN_CHESTPLATE) {
+                            goldChance += 2;
+                        }
+                        Location location = event.getEntity().getLocation();
+                        int chance = ThreadLocalRandom.current().nextInt(0, 100);
+                        if (chance < goldChance) {
+                            location.getWorld().dropItemNaturally(location, new ItemStack(Material.GOLD_NUGGET));
+                        }
+                    }
+                }
 
                 addExp(Server.getPlugin().combatMobs.get(event.getEntityType()), skillTranslation("Combat"), p);
             }
