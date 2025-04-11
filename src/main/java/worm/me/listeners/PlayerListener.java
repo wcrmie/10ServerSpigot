@@ -416,7 +416,21 @@ public class PlayerListener implements Listener {
 
             }
 
-            if (exp) Levels.expHandler(player, e);
+            if (exp) {
+                Levels.expHandler(player, e);
+
+                if (e.getBlock().getType().equals(Material.COBBLESTONE)) {
+
+                    int rng = ThreadLocalRandom.current().nextInt(0, 100);
+                    if (rng <= 1) {
+
+                        e.getBlock().getLocation().getWorld().spawn(e.getBlock().getLocation(), Silverfish.class);
+                        e.getBlock().getLocation().getWorld().spawnParticle(Particle.CLOUD, e.getBlock().getLocation().getX(), e.getBlock().getLocation().getY(), e.getBlock().getLocation().getZ(), 25, 0.5, 0.5, 0.5, 0.1);
+
+                    }
+
+                }
+            }
         } else player.sendMessage(ChatColor.RED + "CoreProtect is not enabled on this server.");
     }
 
