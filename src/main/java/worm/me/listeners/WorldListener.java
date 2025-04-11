@@ -16,6 +16,7 @@ import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
+import worm.me.gamesystems.mobs.traders.WanderingTrader;
 import worm.me.gamesystems.worldreset.WorldReset;
 import worm.me.playersystems.data.VoidPlayer;
 import worm.me.playersystems.data.tools.Tools;
