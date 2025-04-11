@@ -407,7 +407,7 @@ public class PlayerListener implements Listener {
                 ParseResult result = api.parseResult(value);
 
                 if (e.getBlock().getType() == Material.IRON_ORE) break;
-                if (e.getBlock().getType() == Material.COAL) break;
+                if (e.getBlock().getType() == Material.COAL_ORE) break;
 
                 if (result.getType().equals(e.getBlock().getType()) && result.getActionString().equals("place") && result.getX() == e.getBlock().getX() && result.getY() == e.getBlock().getY() && result.getZ() == e.getBlock().getZ()) {
                     exp = false;
