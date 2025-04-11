@@ -117,6 +117,11 @@ public class WorldListener implements Listener {
 
         if (event.getEntity() instanceof LivingEntity entity) tickList.add(entity);
 
+        if (event.getEntity() instanceof WanderingTrader) {
+            WanderingTrader trader = new WanderingTrader();
+            trader.newTrades((org.bukkit.entity.WanderingTrader) event.getEntity());
+        }
+
         if (event.getEntity() instanceof Villager villy) {
             villy.setProfession(Villager.Profession.NITWIT);
         }
