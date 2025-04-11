@@ -229,7 +229,7 @@ public class PlayerListener implements Listener {
             }
         }
 
-        if (tool.contains("bow")) {
+        if (tool.contains("bow") && e.getPlayer().isSneaking()) {
             e.setCancelled(true);
             if (e.getPlayer().isSneaking()) Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(10, e.getPlayer()));
         }
