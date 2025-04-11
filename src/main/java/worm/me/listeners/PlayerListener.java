@@ -111,6 +111,10 @@ public class PlayerListener implements Listener {
             item.setAmount(item.getAmount() - 8);
             e.getView().setCursor(created);
             e.setCancelled(true);
+
+            Player p = (Player) e.getWhoClicked();
+            p.playSound(p, Sound.ENTITY_PLAYER_SPLASH_HIGH_SPEED, 1, 2);
+            p.playSound(p, Sound.ENTITY_EVOKER_CAST_SPELL, 1, 0.5F);
         }
 
 
