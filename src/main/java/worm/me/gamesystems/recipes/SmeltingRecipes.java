@@ -35,6 +35,8 @@ public class SmeltingRecipes {
         smeltingRecipes.put(new ItemStack(Material.RAW_IRON), new ItemStack(Material.IRON_NUGGET));
         smeltingRecipes.put(new ItemStack(Material.IRON_ORE), new ItemStack(Material.IRON_NUGGET, 2));
         smeltingRecipes.put(new ItemStack(Material.ROTTEN_FLESH), GuiConstructor.createGuiItem(Material.DRIED_KELP, ChatColor.WHITE + "Gamey Meat"));
+        smeltingRecipes.put(new ItemStack(Material.BELL), new ItemStack(Material.GOLD_NUGGET, 2));
+        smeltingRecipes.put(new ItemStack(Material.RAW_GOLD), new ItemStack(Material.GOLD_NUGGET));
 
         blastingRecipes.put(new ItemStack(Material.RAW_IRON), new ItemStack(Material.IRON_NUGGET, 2));
         blastingRecipes.put(new ItemStack(Material.IRON_ORE), new ItemStack(Material.IRON_NUGGET, 3));
