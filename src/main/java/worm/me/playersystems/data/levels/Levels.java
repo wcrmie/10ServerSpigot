@@ -174,20 +174,11 @@ public class Levels {
 
                 if (getLevel(1, p) >= 7) {
                     if (event.getEntity().getKiller() != null) {
-                        int goldChance = 0;
-                        if (p.getEquipment().getBoots().getType() == Material.GOLDEN_BOOTS) {
-                            goldChance += 2;
-                        }
-                        if (p.getEquipment().getLeggings().getType() == Material.GOLDEN_LEGGINGS) {
-                            goldChance += 2;
-                        }
-                        if (p.getEquipment().getChestplate().getType() == Material.GOLDEN_CHESTPLATE) {
-                            goldChance += 2;
-                        }
+                        int goldChance = getGoldChance(p);
                         Location location = event.getEntity().getLocation();
-                        int chance = ThreadLocalRandom.current().nextInt(0, 100);
+                        int chance = ThreadLocalRandom.current().nextInt(0, 80);
                         if (chance < goldChance) {
-                            location.getWorld().dropItemNaturally(location, new ItemStack(Material.GOLD_NUGGET));
+                            event.getDrops().add(new ItemStack(Material.GOLD_NUGGET));
                         }
                     }
                 }
@@ -225,6 +216,20 @@ public class Levels {
 
 
         }
+    }
+
+    private static int getGoldChance(Player p) {
+        int goldChance = 0;
+        if (Objects.requireNonNullElse(p.getEquipment().getBoots(), new ItemStack(Material.AIR)).getType() == Material.GOLDEN_BOOTS) {
+            goldChance += 2;
+        }
+        if (Objects.requireNonNullElse(p.getEquipment().getLeggings(), new ItemStack(Material.AIR)).getType() == Material.GOLDEN_LEGGINGS) {
+            goldChance += 2;
+        }
+        if (Objects.requireNonNullElse(p.getEquipment().getChestplate(), new ItemStack(Material.AIR)).getType() == Material.GOLDEN_CHESTPLATE) {
+            goldChance += 2;
+        }
+        return goldChance;
     }
 
 }
