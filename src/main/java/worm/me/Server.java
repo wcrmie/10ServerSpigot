@@ -19,13 +19,15 @@ import worm.me.commands.gui.HatsCommand;
 import worm.me.commands.gui.OpenAbilitiesGUICommand;
 import worm.me.commands.gui.OpenLevelsGUICommand;
 import worm.me.commands.gui.OpenSkinGUICommand;
+import worm.me.gamesystems.mobs.traders.WanderingTrader;
 import worm.me.gamesystems.recipes.ShapedRecipes;
-import worm.me.gamesystems.ArtBlocks;
+import worm.me.gamesystems.blocks.ArtBlocks;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.gamesystems.recipes.SmeltingRecipes;
 import worm.me.gamesystems.structure.generation.TreasureChests;
 import worm.me.listeners.MainListener;
 import worm.me.listeners.PlayerListener;
+import worm.me.listeners.QuestListener;
 import worm.me.listeners.WorldListener;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.AgilityDoubleJump;
@@ -127,6 +129,7 @@ public final class Server extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MainListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new WorldListener(this), this);
+        getServer().getPluginManager().registerEvents(new QuestListener(), this);
 
         // Allows Command classes to register commands
         this.getCommand("islandspawn").setExecutor(new IslandSpawnCommand(this));
@@ -379,6 +382,8 @@ public final class Server extends JavaPlugin {
             Generator generator = new Generator(this);
             generator.generateItem(p);
         }
+
+        WanderingTrader.initRecipes();
 
     }
 

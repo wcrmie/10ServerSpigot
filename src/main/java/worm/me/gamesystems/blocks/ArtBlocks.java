@@ -1,4 +1,4 @@
-package worm.me.gamesystems;
+package worm.me.gamesystems.blocks;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.enginehub.linbus.stream.token.LinToken;
 import worm.me.Server;
 
 public class Quests {
@@ -44,6 +45,22 @@ public class Quests {
             Bukkit.getServer().getPluginManager().callEvent(new QuestProgressEvent(QuestID, questProgress[slot], slot, Integer.parseInt(QuestInitialize.dailyQuestAttributes.get(QuestID).get(2)), p));
 
         }
+    }
+
+    public int getProgress(int questID, Player p) {
+
+        PersistentDataContainer container = p.getPersistentDataContainer();
+
+        int slot = getQuestSlot(questID, p);
+
+        int[] questProgress = container.getOrDefault(new NamespacedKey(Server.getPlugin(), "questprogress"), PersistentDataType.INTEGER_ARRAY, new int[3]);
+
+        if (slot == -1){
+            return -1;
+        } else {
+            return questProgress[slot];
+        }
+
     }
 
     public void completeQuest(Integer QuestID, Player p) {
@@ -98,6 +115,22 @@ public class Quests {
             player.getInventory().addItem(item);
         }
 
+
+    }
+
+    public boolean hasQuest(Player p, int questID) {
+
+        PersistentDataContainer container = p.getPersistentDataContainer();
+
+        int[] questSlots = container.getOrDefault(new NamespacedKey(Server.getPlugin(), "quests"), PersistentDataType.INTEGER_ARRAY, new int[3]);
+
+        for (int i = 0; i < questSlots.length; i++){
+            if (questSlots[i] == questID){
+                return true;
+            }
+        }
+
+        return false;
 
     }
 

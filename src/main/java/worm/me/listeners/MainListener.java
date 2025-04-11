@@ -54,7 +54,7 @@ public class MainListener implements org.bukkit.event.Listener {
         String invName = view.getTitle();
         Player player = (Player) e.getWhoClicked();
         Material itemType = Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).getType();
-        ItemStack cursor = e.getCursor();
+        ItemStack cursor = Objects.requireNonNullElse(e.getCursor(), new ItemStack(Material.STRUCTURE_VOID));
         InventoryAction action = e.getAction();
 
         if (!inventory.getType().equals(InventoryType.PLAYER) && e.getAction().equals(InventoryAction.HOTBAR_SWAP)){

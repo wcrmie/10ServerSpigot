@@ -160,7 +160,13 @@ public class MessageHead {
             int color = distance == 0 ? 255 : (int) Math.round(255 - 255 * (distance / (player.getWorld().getWorldBorder().getSize() + 50)));
             if (color < 50) color = 50;
             String hexColor = String.format("#%02x%02x%02x", color, color, color);
-            player.sendMessage(net.md_5.bungee.api.ChatColor.of(hexColor) + p.getName() + ": " + m);
+
+            String message = (net.md_5.bungee.api.ChatColor.of(hexColor) + m);
+            if (m.contains(player.getName())) {
+                m.replace(player.getName(), ChatColor.YELLOW + "@" + player.getName() + net.md_5.bungee.api.ChatColor.of(hexColor));
+                player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+            }
+            player.sendMessage(net.md_5.bungee.api.ChatColor.of(hexColor) + p.getName() + ": " + message);
         }
 
     }

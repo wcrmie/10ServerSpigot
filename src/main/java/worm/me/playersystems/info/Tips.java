@@ -43,6 +43,11 @@ public class Tips {
             @Override
             public void run() {
 
+                if (!p.isOnline()) {
+                    this.cancel();
+                    return;
+                }
+
                 sendTip(createTip(), p);
 
             }
