@@ -388,7 +388,7 @@ public class PlayerListener implements Listener {
             if (e.getBlock().getType() == Material.IRON_ORE || e.getBlock().getType() == Material.COAL) {
                 int chance = ThreadLocalRandom.current().nextInt(0, 100);
                 if (chance < 10) {
-                    e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.RAW_GOLD));
+                    e.getBlock().getDrops().add(new ItemStack(Material.RAW_GOLD));
                 }
             }
         }
