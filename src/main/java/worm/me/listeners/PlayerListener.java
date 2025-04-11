@@ -379,9 +379,9 @@ public class PlayerListener implements Listener {
 
 
         if (e.getBlock().getType() == Material.PUMPKIN) {
-            e.setDropItems(false);
-            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.CARVED_PUMPKIN));
-            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.PUMPKIN_SEEDS));
+            e.getBlock().getDrops().clear();
+            e.getBlock().getDrops().add(new ItemStack(Material.CARVED_PUMPKIN));
+            e.getBlock().getDrops().add(new ItemStack(Material.PUMPKIN_SEEDS));
         }
 
         if (Levels.getLevel(6, player) >= 15) {
