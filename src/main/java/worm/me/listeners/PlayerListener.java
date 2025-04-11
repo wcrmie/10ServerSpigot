@@ -99,6 +99,22 @@ public class PlayerListener implements Listener {
 
     }
 
+    @EventHandler
+    public void onInventoryClickEvent(InventoryClickEvent e) {
+
+        ItemStack item = Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID));
+        ItemStack cursor = Objects.requireNonNullElse(e.getCursor(), new ItemStack(Material.STRUCTURE_VOID));
+        if (cursor.getItemMeta() instanceof PotionMeta potionMeta && item.getType().equals(Material.ARROW) && cursor.getType().equals(Material.POTION) && item.getAmount() >= 8) {
+            ItemStack created = new ItemStack(Material.TIPPED_ARROW, 8);
+            created.setItemMeta(potionMeta);
+            item.setAmount(item.getAmount() - 8);
+            e.getView().setCursor(created);
+            e.setCancelled(true);
+        }
+
+
+    }
+
 
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
