@@ -380,6 +380,16 @@ public class PlayerListener implements Listener {
             e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.PUMPKIN_SEEDS));
         }
 
+        if (Levels.getLevel(6, player) >= 15) {
+            if (e.getBlock().getType() == Material.IRON_ORE || e.getBlock().getType() == Material.COAL) {
+                int chance = ThreadLocalRandom.current().nextInt(0, 100);
+                if (chance < 10) {
+                    e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.RAW_GOLD));
+                }
+            }
+        }
+
+
         // If the block was placed by the player in the last 10 seconds, don't give exp
 
         if (api != null) {
@@ -393,6 +403,7 @@ public class PlayerListener implements Listener {
                 ParseResult result = api.parseResult(value);
 
                 if (e.getBlock().getType() == Material.IRON_ORE) break;
+                if (e.getBlock().getType() == Material.COAL) break;
 
                 if (result.getType().equals(e.getBlock().getType()) && result.getActionString().equals("place") && result.getX() == e.getBlock().getX() && result.getY() == e.getBlock().getY() && result.getZ() == e.getBlock().getZ()) {
                     exp = false;
@@ -401,15 +412,17 @@ public class PlayerListener implements Listener {
 
             }
 
-
             if (exp) Levels.expHandler(player, e);
         } else player.sendMessage(ChatColor.RED + "CoreProtect is not enabled on this server.");
     }
 
     @EventHandler
     public void onEntityKilled(EntityDeathEvent e){
+
         if (e.getEntity().getKiller() != null && e.getEntity().getKiller() instanceof Player p){
             Levels.expHandler(p, e);
+            Player player = e.getEntity().getKiller();
+
 
             if (e.getEntity().getType() == EntityType.PLAYER) {
 
@@ -422,8 +435,8 @@ public class PlayerListener implements Listener {
                 c.set(new NamespacedKey(worm.me.Server.getPlugin(), "repsess"), PersistentDataType.LONG_ARRAY, repsess);
 
             }
-
         }
+
 
         // Change drop system in future
         if (e.getEntity().getType() == EntityType.ENDERMAN) {
