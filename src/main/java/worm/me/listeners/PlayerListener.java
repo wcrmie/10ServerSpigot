@@ -409,7 +409,7 @@ public class PlayerListener implements Listener {
                 if (e.getBlock().getType() == Material.IRON_ORE) break;
                 if (e.getBlock().getType() == Material.COAL_ORE) break;
 
-                if (result.getType().equals(e.getBlock().getType()) && result.getActionString().equals("place") && result.getX() == e.getBlock().getX() && result.getY() == e.getBlock().getY() && result.getZ() == e.getBlock().getZ()) {
+                if (result.getType().equals(e.getBlock().getType()) && result.getActionString().equals("place") && result.getX() == e.getBlock().getX() && result.getY() == e.getBlock().getY() && result.getZ() == e.getBlock().getZ() && result.getPlayer() != null) {
                     exp = false;
                     break;
                 }
