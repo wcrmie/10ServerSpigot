@@ -107,6 +107,14 @@ public class WorldListener implements Listener {
 
         if (event.getEntity() instanceof Player) return;
 
+        if (event.getEntity() instanceof Item) {
+            Item item = (Item) event.getEntity();
+            if (item.getItemStack().getType().toString().toLowerCase().contains("_disc")) {
+                ItemMeta meta = item.getItemStack().getItemMeta();
+                    meta.setMaxStackSize(20);
+            }
+        }
+
         if (event.getEntity() instanceof LivingEntity entity) tickList.add(entity);
 
         if (event.getEntity() instanceof Villager villy) {
