@@ -129,7 +129,7 @@ public class WorldListener implements Listener {
 
         if (event.getEntity() instanceof LivingEntity entity) tickList.add(entity);
 
-        if (event.getEntity() instanceof WanderingTrader) {
+        if (event.getEntity() instanceof org.bukkit.entity.WanderingTrader) {
             WanderingTrader trader = new WanderingTrader();
             trader.newTrades((org.bukkit.entity.WanderingTrader) event.getEntity());
         }
