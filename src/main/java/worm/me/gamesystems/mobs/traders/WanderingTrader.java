@@ -32,11 +32,13 @@ public class WanderingTrader {
 
         List<MerchantRecipe> trades = new ArrayList<>();
 
-        List<HashMap<MerchantRecipe, Integer>> tradeTypes = List.of(buying, plants, saps, rarities, blocks);
+        List<HashMap<MerchantRecipe, Integer>> tradeTypes = List.of(buying, saps, plants, rarities, blocks);
 
         for (int j = 0; j < tradeTypes.size(); j++) {
 
             for (int i = 0; i < 2; i++) {
+
+                if (j == 1) i++;
 
                 MerchantRecipe newRecipe = getRandomTrade(tradeTypes.get(j));
 
@@ -44,11 +46,9 @@ public class WanderingTrader {
                     newRecipe = null;
                 }
 
-                try {
-                    if (newRecipe != null) {
-                        trades.add(newRecipe);
-                    }
-                } catch (NullPointerException e) {
+                if (newRecipe != null) {
+                    trades.add(newRecipe);
+                } else {
                     Bukkit.getLogger().warning("TRADE IS NULL");
                     i--;
                 }
