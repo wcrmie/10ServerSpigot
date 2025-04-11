@@ -53,6 +53,12 @@ public class WorldListener implements Listener {
     @EventHandler
     public void onFlow(BlockFromToEvent event) {
 
+        ProtectedRegion region = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(event.getToBlock().getWorld())).getRegion("spawn");
+        if (region.contains(event.getToBlock().getX(), event.getToBlock().getY(), event.getToBlock().getZ())) {
+            event.setCancelled(true);
+            return;
+        }
+
         if (event.getToBlock().getLocation().getBlockY() > 210) return;
 
         if (event.getBlock().getType() == Material.WATER || event.getBlock().getType() == Material.LAVA) {
