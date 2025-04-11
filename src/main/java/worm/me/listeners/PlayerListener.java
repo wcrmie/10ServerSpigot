@@ -27,7 +27,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import worm.me.GuiConstructor;
 import worm.me.Server;
-import worm.me.gamesystems.ArtBlocks;
+import worm.me.gamesystems.blocks.ArtBlocks;
 import worm.me.gamesystems.fishing.FishingTables;
 import worm.me.playersystems.PlayerSpawning;
 import worm.me.playersystems.abilities.Abilities;
