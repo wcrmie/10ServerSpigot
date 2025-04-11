@@ -6,10 +6,7 @@ import net.coreprotect.api.result.ParseResult;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
-import org.bukkit.entity.Snowman;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -384,11 +381,13 @@ public class PlayerListener implements Listener {
             e.getBlock().getDrops().add(new ItemStack(Material.PUMPKIN_SEEDS));
         }
 
-        if (Levels.getLevel(6, player) >= 15) {
+        if (Levels.getLevel(6, player) >= 12) {
             if (e.getBlock().getType() == Material.IRON_ORE || e.getBlock().getType() == Material.COAL_ORE) {
                 int chance = ThreadLocalRandom.current().nextInt(0, 100);
                 if (chance < 10) {
                     e.getBlock().getDrops().add(new ItemStack(Material.RAW_GOLD));
+                    player.playSound(player, Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 0.1F);
+                    Server.pluginMessage(ChatColor.GOLD + "Your Midas' Touch allowed you to uncover a chunk of raw gold!", player);
                 }
             }
         }
@@ -398,7 +397,7 @@ public class PlayerListener implements Listener {
 
         if (api != null) {
 
-            List<String[]> lookup = api.performLookup(10, null, null, null, null, null, 1, e.getBlock().getLocation());
+            List<String[]> lookup = api.performLookup(5, null, null, null, null, null, 1, e.getBlock().getLocation());
 
 
             boolean exp = true;
@@ -453,25 +452,6 @@ public class PlayerListener implements Listener {
                 c.set(new NamespacedKey(worm.me.Server.getPlugin(), "repsess"), PersistentDataType.LONG_ARRAY, repsess);
 
             }
-        }
-
-
-        // Change drop system in future
-        if (e.getEntity().getType() == EntityType.ENDERMAN) {
-            int emeraldCount = ThreadLocalRandom.current().nextInt(0, 3);
-            e.getDrops().add(new ItemStack(Material.EMERALD, emeraldCount));
-        }
-        if (e.getEntity().getType() == EntityType.ENDERMITE) {
-            int emeraldCount = ThreadLocalRandom.current().nextInt(0, 2);
-            e.getDrops().add(new ItemStack(Material.SMALL_AMETHYST_BUD, emeraldCount));
-        }
-        if (e.getEntity().getType() == EntityType.SILVERFISH) {
-            int emeraldCount = ThreadLocalRandom.current().nextInt(3, 6);
-            e.getDrops().add(new ItemStack(Material.IRON_NUGGET, emeraldCount));
-        }
-        if (e.getEntity().getType() == EntityType.BAT) {
-            int emeraldCount = ThreadLocalRandom.current().nextInt(0, 2);
-            e.getDrops().add(new ItemStack(Material.IRON_NUGGET, emeraldCount));
         }
 
         if (e.getEntity().getType() == EntityType.PLAYER) {

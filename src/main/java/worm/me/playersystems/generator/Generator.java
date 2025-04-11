@@ -68,7 +68,8 @@ public class Generator {
         } else if (80 < RNG && RNG <= 90) {
             setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.woodBlock, PersistentDataType.STRING), Material.OAK_PLANKS.toString())));
         } else if (90 < RNG && RNG <= 95) {
-            setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.miscItem, PersistentDataType.STRING), Material.COAL.toString())));
+            setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.miscItem, PersistentDataType.STRING), Material.COAL_ORE.toString())));
+            if (randomItem == Material.COAL) setRandomItem(Material.COAL_ORE);
         } else {
             setRandomItem(Material.IRON_ORE);
         }

@@ -175,10 +175,10 @@ public class Levels {
                 if (getLevel(1, p) >= 7) {
                     if (event.getEntity().getKiller() != null) {
                         int goldChance = getGoldChance(p);
-                        Location location = event.getEntity().getLocation();
                         int chance = ThreadLocalRandom.current().nextInt(0, 80);
-                        if (chance < goldChance) {
+                        if (chance <= goldChance) {
                             event.getDrops().add(new ItemStack(Material.GOLD_NUGGET));
+                            p.playSound(p, Sound.ITEM_AXE_SCRAPE, 1F, 2F);
                         }
                     }
                 }

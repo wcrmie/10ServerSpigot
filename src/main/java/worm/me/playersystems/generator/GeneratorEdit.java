@@ -164,7 +164,7 @@ public class GeneratorEdit {
 
         Server pl = Server.getPlugin();
 
-        i.setItem(11, createGuiItem(Material.COAL, "", ""));
+        i.setItem(11, createGuiItem(Material.COAL_ORE, "", ""));
         i.setItem(12, createGuiItem(Material.QUARTZ, "", ""));
         i.setItem(14, createGuiItem(Material.GLOWSTONE_DUST, "", ""));
         i.setItem(15, createGuiItem(Material.REDSTONE, "", ""));

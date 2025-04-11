@@ -1,10 +1,9 @@
 package worm.me.listeners;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -16,10 +15,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import worm.me.Server;
 import worm.me.gamesystems.mobs.traders.WanderingTrader;
 import worm.me.gamesystems.worldreset.WorldReset;
@@ -155,6 +152,28 @@ public class WorldListener implements Listener {
 
         if (event.getEntity() instanceof Bat) {
             event.getDrops().add(new ItemStack(Material.IRON_NUGGET, 1));
+        }
+
+        // Change drop system in future
+        if (event.getEntity().getType() == EntityType.ENDERMAN) {
+            int emeraldCount = ThreadLocalRandom.current().nextInt(0, 3);
+            event.getDrops().add(new ItemStack(Material.EMERALD, emeraldCount));
+        }
+        if (event.getEntity().getType() == EntityType.ENDERMITE) {
+            int emeraldCount = ThreadLocalRandom.current().nextInt(0, 2);
+            event.getDrops().add(new ItemStack(Material.SMALL_AMETHYST_BUD, emeraldCount));
+        }
+        if (event.getEntity().getType() == EntityType.SILVERFISH) {
+            int emeraldCount = ThreadLocalRandom.current().nextInt(3, 6);
+            event.getDrops().add(new ItemStack(Material.IRON_NUGGET, emeraldCount));
+        }
+        if (event.getEntity().getType() == EntityType.BAT) {
+            int emeraldCount = ThreadLocalRandom.current().nextInt(0, 2);
+            event.getDrops().add(new ItemStack(Material.IRON_NUGGET, emeraldCount));
+        }
+        if (event.getEntity().getType() == EntityType.DROWNED) {
+            int emeraldCount = ThreadLocalRandom.current().nextInt(4, 6);
+            event.getDrops().add(new ItemStack(Material.RAW_COPPER, emeraldCount));
         }
 
     }

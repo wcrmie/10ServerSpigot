@@ -362,7 +362,7 @@ public final class Server extends JavaPlugin {
         planks.put(Material.MANGROVE_PLANKS, new int[]{0,5,0,5,0,0,0,20});
         planks.put(Material.ACACIA_PLANKS, new int[]{0,0,0,5,5,0,0,15});
 
-        miscs.put(Material.COAL, new int[]{0,0,0,0,1,0,0,0});
+        miscs.put(Material.COAL_ORE, new int[]{0,0,0,0,1,0,0,0});
         miscs.put(Material.QUARTZ, new int[]{0,0,0,0,25,25,0,0});
         miscs.put(Material.REDSTONE, new int[]{0,0,10,0,25,10,0,0});
         miscs.put(Material.GLOWSTONE_DUST, new int[]{0,0,0,0,15,0,0,0});
