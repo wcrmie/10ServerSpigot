@@ -38,6 +38,20 @@ public class SmeltingRecipes {
 
         blastingRecipes.put(new ItemStack(Material.RAW_IRON), new ItemStack(Material.IRON_NUGGET, 2));
         blastingRecipes.put(new ItemStack(Material.IRON_ORE), new ItemStack(Material.IRON_NUGGET, 3));
+        blastingRecipes.put(new ItemStack(Material.GOLDEN_HELMET), new ItemStack(Material.GOLD_NUGGET, 6));
+        blastingRecipes.put(new ItemStack(Material.GOLDEN_CHESTPLATE), new ItemStack(Material.GOLD_NUGGET, 9));
+        blastingRecipes.put(new ItemStack(Material.GOLDEN_LEGGINGS), new ItemStack(Material.GOLD_NUGGET, 8));
+        blastingRecipes.put(new ItemStack(Material.GOLDEN_BOOTS), new ItemStack(Material.GOLD_NUGGET, 5));
+        blastingRecipes.put(new ItemStack(Material.IRON_HELMET), new ItemStack(Material.IRON_NUGGET, 6));
+        blastingRecipes.put(new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.IRON_NUGGET, 9));
+        blastingRecipes.put(new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.IRON_NUGGET, 8));
+        blastingRecipes.put(new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.IRON_NUGGET, 6));
+        blastingRecipes.put(new ItemStack(Material.CHAINMAIL_HELMET), new ItemStack(Material.IRON_NUGGET, 5));
+        blastingRecipes.put(new ItemStack(Material.CHAINMAIL_CHESTPLATE), new ItemStack(Material.IRON_NUGGET, 8));
+        blastingRecipes.put(new ItemStack(Material.CHAINMAIL_LEGGINGS), new ItemStack(Material.IRON_NUGGET, 7));
+        blastingRecipes.put(new ItemStack(Material.CHAINMAIL_BOOTS), new ItemStack(Material.IRON_NUGGET, 4));
+        blastingRecipes.put(new ItemStack(Material.BELL), new ItemStack(Material.GOLD_NUGGET, 3));
+        blastingRecipes.put(new ItemStack(Material.RAW_GOLD), new ItemStack(Material.GOLD_NUGGET, 2));
 
     }
 
