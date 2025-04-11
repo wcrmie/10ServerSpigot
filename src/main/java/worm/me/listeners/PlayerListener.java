@@ -385,7 +385,7 @@ public class PlayerListener implements Listener {
         }
 
         if (Levels.getLevel(6, player) >= 15) {
-            if (e.getBlock().getType() == Material.IRON_ORE || e.getBlock().getType() == Material.COAL) {
+            if (e.getBlock().getType() == Material.IRON_ORE || e.getBlock().getType() == Material.COAL_ORE) {
                 int chance = ThreadLocalRandom.current().nextInt(0, 100);
                 if (chance < 10) {
                     e.getBlock().getDrops().add(new ItemStack(Material.RAW_GOLD));
