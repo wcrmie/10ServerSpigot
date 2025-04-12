@@ -2,7 +2,6 @@ package worm.me.listeners;
 
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import net.coreprotect.CoreProtectAPI;
-import net.coreprotect.api.result.ParseResult;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -403,7 +402,7 @@ public class PlayerListener implements Listener {
             boolean exp = true;
 
             for (String[] value : lookup) {
-                ParseResult result = api.parseResult(value);
+                CoreProtectAPI.ParseResult result = api.parseResult(value);
 
                 if (e.getBlock().getType() == Material.IRON_ORE) break;
                 if (e.getBlock().getType() == Material.COAL_ORE) break;
@@ -673,7 +672,7 @@ public class PlayerListener implements Listener {
             QuestGui questGui = new QuestGui();
             questGui.questGuiOpen(p);
         }
-        if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("WOOL")){
+        if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("WOOL") || Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("CONCRETE")){
             ArtBlocks handler = new ArtBlocks(plugin);
             handler.rightClick(e);
         }
