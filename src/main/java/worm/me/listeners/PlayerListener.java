@@ -743,6 +743,8 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event){
+
+        /*
         if (!event.isBedSpawn()) {
             NamespacedKey customSpawnKey = new NamespacedKey(plugin, "custom_spawn");
             if (event.getPlayer().getPersistentDataContainer().has(customSpawnKey, PersistentDataType.BOOLEAN)) {
