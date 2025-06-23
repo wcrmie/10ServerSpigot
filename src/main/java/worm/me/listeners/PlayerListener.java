@@ -33,6 +33,7 @@ import worm.me.Server;
 import worm.me.discord.bot.BotInteractions;
 import worm.me.gamesystems.blocks.ArtBlocks;
 import worm.me.gamesystems.fishing.FishingTables;
+import worm.me.playersystems.FishThrow;
 import worm.me.playersystems.PlayerSpawning;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
@@ -162,9 +163,9 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerRightClick(PlayerInteractEntityEvent event){
-        SaddleSystem handler = new SaddleSystem(plugin);
-        handler.rightClick(event);
+    public void onPlayerRightClick(PlayerInteractEntityEvent e){
+        SaddleSystem sshandler = new SaddleSystem(plugin);
+        sshandler.rightClick(e);
     }
 
     @EventHandler
@@ -277,6 +278,9 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onSnowballThrow(PlayerInteractEvent e){
+
+        //FishThrow fthandler = new FishThrow(plugin);
+        //fthandler.handleBucketThrow(e);
 
         if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
             if (e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.SNOWBALL) &&
@@ -614,6 +618,8 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e){
 
+
+
         if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
 
             if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.NOTE_BLOCK && e.getPlayer().isSneaking()) {
@@ -682,7 +688,7 @@ public class PlayerListener implements Listener {
             QuestGui questGui = new QuestGui();
             questGui.questGuiOpen(p);
         }
-        if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("WOOL")){
+        if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("WOOL") || Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("CONCRETE")){
             ArtBlocks handler = new ArtBlocks(plugin);
             handler.rightClick(e);
         }

@@ -14,16 +14,22 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.checkerframework.checker.units.qual.N;
 import worm.me.Server;
 import worm.me.gamesystems.blocks.BlockManipulation;
+import worm.me.gamesystems.SnowballKnockback;
 import worm.me.gamesystems.mobs.traders.WanderingTrader;
 import worm.me.gamesystems.worldreset.WorldReset;
 import worm.me.playersystems.data.VoidPlayer;
 import worm.me.playersystems.data.tools.Tools;
+import worm.me.playersystems.saddle.SaddleSystem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -267,6 +273,12 @@ public class WorldListener implements Listener {
             event.getDrops().add(new ItemStack(Material.RAW_COPPER, emeraldCount));
         }
 
+    }
+
+    @EventHandler
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent e){
+        SnowballKnockback sbk = new SnowballKnockback(plugin);
+        sbk.onSnowballHit(e);
     }
 
     // --------------------END Entity Events-----------------------
