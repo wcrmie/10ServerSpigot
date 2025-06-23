@@ -19,7 +19,7 @@ public class QuestListener implements Listener {
             Quests quests = new Quests();
             if (quests.hasQuest(p, 4)) {
 
-                Bukkit.getServer().getPluginManager().callEvent(new QuestProgressEvent(4, quests.getProgress(4, p), quests.getQuestSlot(4, p), Integer.parseInt(QuestInitialize.dailyQuestAttributes.get(4).get(2)), p));
+                quests.addProgress(4, p);
 
             }
         }
@@ -37,11 +37,6 @@ public class QuestListener implements Listener {
             // Quest is completed
             player.sendMessage("Congratulations! You have completed the quest: " + questId);
             // Add any additional logic for quest completion here
-        } else {
-            // Update quest progress
-            quests.addProgress(questId, player);
-
-
         }
     }
 

@@ -31,69 +31,69 @@ public class VoidPlayer {
 
     // We will eventually add all getters and setters for VoidPlayers here, in order to clean stuff up
 
-    public static List<ItemStack> getTools(Player p){
+//    public static List<ItemStack> getTools(Player p){
+//
+//        if (Tools.playerTools.get(p) != null) return Tools.playerTools.get(p);
+//
+//        PersistentDataContainer pdc = p.getPersistentDataContainer();
+//
+//        String encodedData = pdc.get(new NamespacedKey(Server.getPlugin(), "tools"), PersistentDataType.STRING);
+//
+//        ArrayList<ItemStack> items = new ArrayList<>();
+//
+//        if (!encodedData.isEmpty()){
+//            byte[] rawData = Base64.getDecoder().decode(encodedData);
+//
+//            try {
+//                ByteArrayInputStream io = new ByteArrayInputStream(rawData);
+//                BukkitObjectInputStream is = new BukkitObjectInputStream(io);
+//
+//                for (int i = 0; i < 4; i++) {
+//
+//                    items.add((ItemStack) is.readObject());
+//
+//                }
+//
+//                is.close();
+//
+//                return items;
+//
+//            } catch (IOException | ClassNotFoundException e) {
+//                Bukkit.getLogger().info(e.getMessage());
+//            }
+//        }
+//        return items;
+//    }
 
-        if (Tools.playerTools.get(p) != null) return Tools.playerTools.get(p);
-
-        PersistentDataContainer pdc = p.getPersistentDataContainer();
-
-        String encodedData = pdc.get(new NamespacedKey(Server.getPlugin(), "tools"), PersistentDataType.STRING);
-
-        ArrayList<ItemStack> items = new ArrayList<>();
-
-        if (!encodedData.isEmpty()){
-            byte[] rawData = Base64.getDecoder().decode(encodedData);
-
-            try {
-                ByteArrayInputStream io = new ByteArrayInputStream(rawData);
-                BukkitObjectInputStream is = new BukkitObjectInputStream(io);
-
-                for (int i = 0; i < 4; i++) {
-
-                    items.add((ItemStack) is.readObject());
-
-                }
-
-                is.close();
-
-                return items;
-
-            } catch (IOException | ClassNotFoundException e) {
-                Bukkit.getLogger().info(e.getMessage());
-            }
-        }
-        return items;
-    }
-
-    public static void setTools(List<ItemStack> tools, Player p){
-
-        Tools.playerTools.put(p, tools);
-
-        PersistentDataContainer pdc = p.getPersistentDataContainer();
-
-        try {
-            ByteArrayOutputStream io = new ByteArrayOutputStream();
-            BukkitObjectOutputStream os = new BukkitObjectOutputStream(io);
-
-            for (ItemStack item : tools) {
-                os.writeObject(item);
-            }
-
-            os.flush();
-
-            byte[] rawData = io.toByteArray();
-
-            String encodedData = Base64.getEncoder().encodeToString(rawData);
-
-            pdc.set(new NamespacedKey(Server.getPlugin(), "tools"), PersistentDataType.STRING, encodedData);
-
-            os.close();
-
-        } catch (IOException e) {
-            Bukkit.getLogger().info(e.getMessage());
-        }
-
-    }
+//    public static void setTools(List<ItemStack> tools, Player p){
+//
+//        Tools.playerTools.put(p, tools);
+//
+//        PersistentDataContainer pdc = p.getPersistentDataContainer();
+//
+//        try {
+//            ByteArrayOutputStream io = new ByteArrayOutputStream();
+//            BukkitObjectOutputStream os = new BukkitObjectOutputStream(io);
+//
+//            for (ItemStack item : tools) {
+//                os.writeObject(item);
+//            }
+//
+//            os.flush();
+//
+//            byte[] rawData = io.toByteArray();
+//
+//            String encodedData = Base64.getEncoder().encodeToString(rawData);
+//
+//            pdc.set(new NamespacedKey(Server.getPlugin(), "tools"), PersistentDataType.STRING, encodedData);
+//
+//            os.close();
+//
+//        } catch (IOException e) {
+//            Bukkit.getLogger().info(e.getMessage());
+//        }
+//
+//    }
 
     public static void initializeData(Player player){
 

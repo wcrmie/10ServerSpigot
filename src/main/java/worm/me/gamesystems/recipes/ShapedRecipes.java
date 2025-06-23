@@ -203,6 +203,24 @@ public class ShapedRecipes {
                 )
         );
 
+        shapedRecipeMap.put(
+                (new ItemStack(Material.SPONGE, 4)),
+                List.of(
+                        List.of(
+                                new ItemStack(Material.KELP),
+                                new ItemStack(Material.KELP),
+                                new ItemStack(Material.KELP),
+                                new ItemStack(Material.KELP),
+                                new ItemStack(Material.SPONGE),
+                                new ItemStack(Material.KELP),
+                                new ItemStack(Material.KELP),
+                                new ItemStack(Material.KELP),
+                                new ItemStack(Material.KELP)
+                        ),
+                        List.of(GuiConstructor.createGuiItem(Material.STONE, "IM_SPUNCHPOP"))
+                )
+        );
+
         ItemStack snowball = new ItemStack(Material.SNOWBALL);
 
         ItemMeta snowmeta = snowball.getItemMeta();
@@ -217,6 +235,13 @@ public class ShapedRecipes {
 
         shapedRecipeMap.put(new ItemStack(Material.TNT), List.of(List.of(new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.GUNPOWDER),
                 new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.SAND)), List.of(GuiConstructor.createGuiItem(Material.STONE, "TNT"))));
+
+        shapedRecipeMap.put(GuiConstructor.createGuiItem(Material.WOODEN_PICKAXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "WOODEN_PICKAXE"))));
+        shapedRecipeMap.put(GuiConstructor.createGuiItem(Material.WOODEN_AXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "WOODEN_AXE"))));
+        shapedRecipeMap.put(GuiConstructor.createGuiItem(Material.WOODEN_SWORD, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "WOODEN_SWORD"))));
+        shapedRecipeMap.put(GuiConstructor.createGuiItem(Material.WOODEN_SHOVEL, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "WOODEN_SHOVEL"))));
+
+
 
         shapedRecipes(shapedRecipeMap);
 
@@ -261,6 +286,8 @@ public class ShapedRecipes {
 
                         if (values.getFirst().get(i).getType() == Material.OAK_PLANKS) {
                             shapedRecipe.setIngredient(c, new RecipeChoice.MaterialChoice(Tag.PLANKS));
+                        } else if (values.getFirst().get(i).getType() == Material.DIRT){
+                            shapedRecipe.setIngredient(c, new RecipeChoice.MaterialChoice(Material.DIRT));
                         } else {
                             shapedRecipe.setIngredient(c, new RecipeChoice.ExactChoice(values.getFirst().get(i)));
                         }

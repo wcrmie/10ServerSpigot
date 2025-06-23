@@ -82,3 +82,9 @@ commands:
   toggleGens:
     description: Toggles the generator on or off
     usage: /<command>
+  link:
+    description: Links your minecraft account to your discord
+    usage: /<command>
+  testannouncement:
+    description: test announcement
+    usage: /<command>

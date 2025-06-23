@@ -10,16 +10,16 @@ public class WorldResetBlocks {
     private final int worldHeightTop = 280+40;
     private final int worldHeightBottom = 220-10;
     private int currentLayer;
-    private boolean isResetting = false;
+    private static boolean isResetting = false;
     private int taskId = -1;
     private Location originalCenter;
 
-    private final int minExcludeX = -6;
-    private final int maxExcludeX = 6;
+    private final int minExcludeX = -4;
+    private final int maxExcludeX = 4;
     private final int minExcludeY = 238;
     private final int maxExcludeY = 245;
-    private final int minExcludeZ = -6;
-    private final int maxExcludeZ = 6;
+    private final int minExcludeZ = -4;
+    private final int maxExcludeZ = 4;
 
     public WorldResetBlocks() {
         this.world = Bukkit.getWorld("ul_Void");
@@ -77,9 +77,5 @@ public class WorldResetBlocks {
             Bukkit.getScheduler().cancelTask(taskId);
             isResetting = false;
         }
-    }
-
-    public boolean isResetting() {
-        return isResetting;
     }
 }

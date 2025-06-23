@@ -100,13 +100,6 @@ public class MainListener implements org.bukkit.event.Listener {
             }
         }
 
-        if (inventory.getType() == InventoryType.PLAYER && (action.equals(InventoryAction.SWAP_WITH_CURSOR) || action.equals(InventoryAction.COLLECT_TO_CURSOR)) &&
-                !Tools.toolType(Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STONE)).getType()).equals("none") && e.getWhoClicked().getInventory().firstEmpty() == -1) e.setCancelled(true);
-        if (Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST)).getType() != InventoryType.PLAYER && !Tools.toolType(e.getCursor().getType()).equals("none")) e.setCancelled(true);
-
-        if (!Tools.toolType(Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STONE)).getType()).equals("none") && (e.getClickedInventory().getType() == InventoryType.PLAYER && e.getAction().equals(InventoryAction.MOVE_TO_OTHER_INVENTORY)) ||
-                (action.equals(InventoryAction.HOTBAR_SWAP) && inventory.getType() != InventoryType.PLAYER) && !Tools.toolType(e.getWhoClicked().getInventory().getItem(e.getHotbarButton()).getType()).equals("none")) e.setCancelled(true);
-
         if (inventory.getType().equals(InventoryType.PLAYER)) {
             if (itemType.equals(Material.WOODEN_AXE) || itemType.equals(Material.WOODEN_PICKAXE) ||
                     itemType.equals(Material.WOODEN_SWORD) || itemType.equals(Material.WOODEN_SHOVEL)){
@@ -132,14 +125,6 @@ public class MainListener implements org.bukkit.event.Listener {
 
         if (!player.getPassengers().isEmpty() && player.getPassengers().getFirst().getType() != EntityType.PLAYER){
             e.setCancelled(true);
-        }
-
-        String tool = cursor.getType().toString().toLowerCase();
-        for (String s : worm.me.Server.tools.keySet()){
-            if (tool.contains(s)){
-                if (e.getClickedInventory().getType() != InventoryType.PLAYER) e.setCancelled(true);
-                break;
-            }
         }
 
         GeneratorEdit genEdit = new GeneratorEdit();

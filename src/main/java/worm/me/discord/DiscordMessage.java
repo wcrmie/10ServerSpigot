@@ -1,10 +1,11 @@
-package worm.me;
+package worm.me.discord;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import worm.me.Server;
 
-public class Discord {
+public class DiscordMessage {
 
     public static void sendDiscordMessage(Player p) {
         // Send message to Player

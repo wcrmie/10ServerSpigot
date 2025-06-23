@@ -2,6 +2,7 @@ package worm.me;
 
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
+import net.dv8tion.jda.api.JDA;
 import net.skinsrestorer.api.SkinsRestorer;
 import net.skinsrestorer.api.SkinsRestorerProvider;
 import org.bukkit.*;
@@ -14,11 +15,17 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import worm.me.commands.*;
 import worm.me.commands.admin.*;
+import worm.me.commands.chat.RulesCommand;
+import worm.me.commands.chat.SetVoiceCommand;
+import worm.me.commands.chat.ShoutCommand;
+import worm.me.commands.discord.DiscordCommand;
+import worm.me.commands.discord.DiscordLinkCommand;
 import worm.me.commands.gui.*;
 import worm.me.commands.gui.HatsCommand;
 import worm.me.commands.gui.OpenAbilitiesGUICommand;
 import worm.me.commands.gui.OpenLevelsGUICommand;
 import worm.me.commands.gui.OpenSkinGUICommand;
+import worm.me.discord.bot.BotInitialize;
 import worm.me.gamesystems.mobs.traders.WanderingTrader;
 import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.gamesystems.blocks.ArtBlocks;
@@ -93,6 +100,8 @@ public final class Server extends JavaPlugin {
         saveDefaultConfig();
         getLogger().info("Plugin enabled");
 
+        BotInitialize.initialize();
+
 
         World world = Bukkit.getWorld("world");
         assert world != null;
@@ -142,7 +151,6 @@ public final class Server extends JavaPlugin {
         this.getCommand("abilities").setExecutor(new OpenAbilitiesGUICommand());
         this.getCommand("hats").setExecutor(new HatsCommand());
         this.getCommand("levels").setExecutor(new OpenLevelsGUICommand(this));
-        this.getCommand("lostTools").setExecutor(new LostToolsCommand());
         this.getCommand("setSkin").setExecutor(new OpenSkinGUICommand());
         this.getCommand("menu").setExecutor(new MenuCommand());
         this.getCommand("profile").setExecutor(new OpenProfileGUICommand());
@@ -151,7 +159,9 @@ public final class Server extends JavaPlugin {
         this.getCommand("recipes").setExecutor(new OpenRecipesGUICommand());
         this.getCommand("suicide").setExecutor(new SuicideCommand());
         this.getCommand("discord").setExecutor(new DiscordCommand());
+        this.getCommand("link").setExecutor(new DiscordLinkCommand());
         this.getCommand("togglegens").setExecutor(new ToggleGensCommand());
+        this.getCommand("testannouncement").setExecutor(new announcementTest());
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 
@@ -393,6 +403,12 @@ public final class Server extends JavaPlugin {
         if (playerspawning != null) {
             playerspawning.removeAllBlocks();
         }
+
+        JDA jda = BotInitialize.api;
+
+        BotInitialize.channel.sendMessage("`Server is shutting down.`").queue();
+
+        jda.shutdown();
 
         FileConfiguration config = getConfig();
         WorldBorderSizeHandler WorldBorderSizeHandler = new WorldBorderSizeHandler(this);

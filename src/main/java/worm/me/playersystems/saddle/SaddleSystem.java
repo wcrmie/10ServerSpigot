@@ -70,14 +70,13 @@ public class SaddleSystem {
     }
 
     public void rightClick(PlayerInteractEntityEvent event) {
-        if (event.getHand() != EquipmentSlot.HAND) {
 
             Entity clickedEntity = event.getRightClicked();
             Player player = event.getPlayer();
             if (!(player.getPassengers().isEmpty())) {
                 Entity currentPassenger = player.getPassengers().getFirst();
                 throwEntity(currentPassenger, player);
-            } else return;
+            }
 
             if (clickedEntity instanceof Player clickedPlayer) {
                 ItemStack helmet = clickedPlayer.getInventory().getHelmet();
@@ -94,6 +93,12 @@ public class SaddleSystem {
                         && helmet.getType() == Material.SADDLE
                         && player.getInventory().getItemInMainHand().getType() == Material.AIR
                         && player.getInventory().getItemInOffHand().getType() == Material.AIR) {
+
+                    if (clickedEntity instanceof Creeper creeper) {
+                        if (creeper.isIgnited()) creeper.setIgnited(false);
+                        creeper.setTarget(null);
+                    }
+
                     player.addPassenger(clickedEntity);
                     if (specialEffectEntities.contains(entityType)) {
                         applySpecialEffects(clickedEntity, player, true);
@@ -104,12 +109,11 @@ public class SaddleSystem {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (specialEffectEntities.contains(player.getPassengers().getFirst().getType())) {
+                    if (!player.getPassengers().isEmpty() && specialEffectEntities.contains(player.getPassengers().getFirst().getType())) {
                         applySpecialEffects(player.getPassengers().getFirst(), player, true);
-                    }
+                    } else cancel();
                 }
-            }.runTaskLater(plugin, 1L);
-        }
+            }.runTaskTimer(plugin, 1L, 1L);
     }
 
     public void leftClick(PlayerAnimationEvent event) {
@@ -136,20 +140,6 @@ public class SaddleSystem {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, PotionEffect.INFINITE_DURATION, 0, false, false, true));
                 } else {
                     player.removePotionEffect(PotionEffectType.SLOW_FALLING);
-                }
-                break;
-
-            case CREEPER:
-                if (entity instanceof Creeper creeper) {
-                    if (apply) {
-                        creeper.setTarget(null);
-                        creeper.setAI(false);
-                        creeper.setMaxFuseTicks(1000*1000*1000);
-                    } else {
-                        creeper.ignite();
-                        creeper.setMaxFuseTicks(20);
-                        creeper.setAI(true);
-                    }
                 }
                 break;
 

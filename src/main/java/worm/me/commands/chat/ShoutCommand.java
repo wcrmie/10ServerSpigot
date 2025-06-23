@@ -1,4 +1,4 @@
-package worm.me.commands;
+package worm.me.commands.chat;
 
 import com.google.common.base.Joiner;
 import org.bukkit.ChatColor;

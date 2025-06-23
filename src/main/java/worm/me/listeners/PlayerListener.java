@@ -1,8 +1,14 @@
 package worm.me.listeners;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.coreprotect.CoreProtectAPI;
 import net.coreprotect.api.result.ParseResult;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -24,6 +30,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import worm.me.GuiConstructor;
 import worm.me.Server;
+import worm.me.discord.bot.BotInteractions;
 import worm.me.gamesystems.blocks.ArtBlocks;
 import worm.me.gamesystems.fishing.FishingTables;
 import worm.me.playersystems.PlayerSpawning;
@@ -183,28 +190,37 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent e){
-        if (e.getEntity() instanceof Player && e.getCause() == EntityDamageEvent.DamageCause.FALL){
-            Player player = (Player) e.getEntity();
-            Abilities ability = new Abilities();
-            if (ability.isActive(player,7) && !player.isSneaking()){
+        if (e.getEntity() instanceof Player player) {
+            if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
+                Abilities ability = new Abilities();
+                if (ability.isActive(player, 7) && !player.isSneaking()) {
 
-                if (player.getInventory().getBoots() != null) {
-                    ItemStack item = player.getInventory().getBoots();
-                    if (player.getInventory().getBoots().hasItemMeta()) {
-                        ItemMeta meta = item.getItemMeta();
-                        if (meta != null) {
-                            PersistentDataContainer data = meta.getPersistentDataContainer();
-                            NamespacedKey key = new NamespacedKey(plugin, "slimeboots");
-                            if (data.has(key, PersistentDataType.STRING)) {
-                                SlimeBoots slimeBoots = new SlimeBoots();
-                                slimeBoots.bounce(player);
-                                Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(7, player));
+                    if (player.getInventory().getBoots() != null) {
+                        ItemStack item = player.getInventory().getBoots();
+                        if (player.getInventory().getBoots().hasItemMeta()) {
+                            ItemMeta meta = item.getItemMeta();
+                            if (meta != null) {
+                                PersistentDataContainer data = meta.getPersistentDataContainer();
+                                NamespacedKey key = new NamespacedKey(plugin, "slimeboots");
+                                if (data.has(key, PersistentDataType.STRING)) {
+                                    SlimeBoots slimeBoots = new SlimeBoots();
+                                    slimeBoots.bounce(player);
+                                    Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(7, player));
 
-                                e.setCancelled(true);
+                                    e.setCancelled(true);
+                                }
                             }
                         }
                     }
                 }
+            }
+
+            ProtectedRegion region = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld())).getRegion("spawn");
+            Location loc = player.getLocation();
+
+            // If the player is in spawn, don't damage them
+            if (region.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
+                e.setCancelled(true);
             }
         }
     }
@@ -239,13 +255,6 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent e){
         String tool = e.getItemDrop().getItemStack().toString().toLowerCase();
-
-        for (String s : worm.me.Server.tools.keySet()){
-            if (tool.contains(s)){
-                e.setCancelled(true);
-                break;
-            }
-        }
 
         if (tool.contains("bow") && e.getPlayer().isSneaking()) {
             e.setCancelled(true);
@@ -376,16 +385,16 @@ public class PlayerListener implements Listener {
 
 
         if (e.getBlock().getType() == Material.PUMPKIN) {
-            e.getBlock().getDrops().clear();
-            e.getBlock().getDrops().add(new ItemStack(Material.CARVED_PUMPKIN));
-            e.getBlock().getDrops().add(new ItemStack(Material.PUMPKIN_SEEDS));
+            e.setDropItems(false);
+            e.getBlock().getLocation().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.CARVED_PUMPKIN));
+            e.getBlock().getLocation().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.PUMPKIN_SEEDS, 2));
         }
 
         if (Levels.getLevel(6, player) >= 12) {
             if (e.getBlock().getType() == Material.IRON_ORE || e.getBlock().getType() == Material.COAL_ORE) {
                 int chance = ThreadLocalRandom.current().nextInt(0, 100);
                 if (chance < 10) {
-                    e.getBlock().getDrops().add(new ItemStack(Material.RAW_GOLD));
+                    e.getBlock().getLocation().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.RAW_GOLD));
                     player.playSound(player, Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 0.1F);
                     Server.pluginMessage(ChatColor.GOLD + "Your Midas' Touch allowed you to uncover a chunk of raw gold!", player);
                 }
@@ -706,6 +715,9 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
 
+        BotInteractions botInteractions = new BotInteractions();
+        botInteractions.joinMessage(event.getPlayer());
+
         // Set player variable
         Player player = event.getPlayer();
 
@@ -726,11 +738,33 @@ public class PlayerListener implements Listener {
         if (!player.getPersistentDataContainer().has(customSpawnKey, PersistentDataType.BOOLEAN)) {
             player.getPersistentDataContainer().set(customSpawnKey, PersistentDataType.BOOLEAN, true);
         }
+
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player.getUniqueId());
+
+        if (!offlinePlayer.hasPlayedBefore()) {
+            Component joinMessage = event.joinMessage();
+
+            joinMessage = joinMessage.append(Component.text(ChatColor.GRAY + " (#" + Bukkit.getServer().getOfflinePlayers().length + ")"));
+
+            event.joinMessage(joinMessage);
+
+            player.teleport(
+                    new Location(
+                            Bukkit.getWorld("ul_Void"),
+                            0.5, 240, 0.5,
+                            0, 0
+                    ));
+        }
+
     }
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent e){
         Player p = e.getPlayer();
+
+        BotInteractions botInteractions = new BotInteractions();
+        botInteractions.leaveMessage(p);
+
         worm.me.Server.getPlugin().generating.remove(e.getPlayer());
 
         PersistentDataContainer container = p.getPersistentDataContainer();
@@ -743,6 +777,17 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event){
+
+        if (!event.isBedSpawn()) {
+
+            event.setRespawnLocation(new Location(
+                    Bukkit.getWorld("ul_Void"),
+                    0.5, 240, 0.5,
+                    0, 0
+            ));
+
+        }
+
 
         /*
         if (!event.isBedSpawn()) {

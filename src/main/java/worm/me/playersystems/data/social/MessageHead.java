@@ -1,14 +1,26 @@
 package worm.me.playersystems.data.social;
 
+import io.papermc.paper.datacomponent.DataComponentBuilder;
+import net.kyori.adventure.Adventure;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.nbt.api.BinaryTagHolder;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.DataComponentValue;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.TextColor;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.hover.content.Item;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import worm.me.Server;
+import worm.me.discord.bot.BotInteractions;
 
 import java.util.*;
 
@@ -161,14 +173,40 @@ public class MessageHead {
             if (color < 50) color = 50;
             String hexColor = String.format("#%02x%02x%02x", color, color, color);
 
-            String message = (net.md_5.bungee.api.ChatColor.of(hexColor) + m);
-            if (m.contains(player.getName())) {
-                m.replace(player.getName(), ChatColor.YELLOW + "@" + player.getName() + net.md_5.bungee.api.ChatColor.of(hexColor));
+            String message = m;
+            if (message.contains(player.getName())) {
+                message = message.replace(player.getName(), ChatColor.YELLOW + "@" + player.getName() + ChatColor.RESET);
                 player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
             }
-            player.sendMessage(net.md_5.bungee.api.ChatColor.of(hexColor) + p.getName() + ": " + message);
+
+            net.kyori.adventure.text.TextComponent msg = Component.text(p.getName() + ": " + message).color(TextColor.fromHexString(hexColor));
+
+            if (message.contains("[i]") || message.contains("[item]")) {
+
+                ItemStack item = p.getInventory().getItemInMainHand();
+
+                String itemName = item.getType().toString();
+
+                if (itemName.isEmpty()) {
+                    itemName = item.getType().toString();
+                }
+
+                message = message.replaceAll("\\[i]", ChatColor.AQUA + "[" + itemName + " x" + item.getAmount() + "]" + ChatColor.RESET).replaceAll("\\[item]", ChatColor.AQUA + "[" + itemName + " x" + item.getAmount() + "]" + ChatColor.RESET);
+
+                msg = Component.text(p.getName() + ": " + message).color(TextColor.fromHexString(hexColor));
+
+                msg = msg.hoverEvent(item.asHoverEvent());
+
+            }
+
+            player.sendMessage(msg);
+
         }
 
+        BotInteractions botInteractions = new BotInteractions();
+
+        m = m.replace("@", "◘");
+        botInteractions.gameMessage(p.getName() + ": " + m);
     }
 
     public void messageTeleport(Player p) {

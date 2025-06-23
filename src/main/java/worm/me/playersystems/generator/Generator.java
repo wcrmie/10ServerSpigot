@@ -1,5 +1,6 @@
 package worm.me.playersystems.generator;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -73,6 +74,13 @@ public class Generator {
         } else {
             setRandomItem(Material.IRON_ORE);
         }
+
+        if (randomItem == Material.DIRT) {
+            ItemStack dirt = new ItemStack(Material.DIRT, 1);
+            dirt.setData(DataComponentTypes.MAX_STACK_SIZE, 99);
+            return dirt;
+        }
+
         return new ItemStack(randomItem, 1);
     }
 

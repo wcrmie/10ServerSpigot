@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
+import worm.me.discord.bot.BotInteractions;
 
 public class WorldReset {
     private static WorldReset instance;
@@ -82,9 +83,12 @@ public class WorldReset {
             }
         }
 
-        worldBorder.setSize(75);
+        worldBorder.setSize(99);
         Server.getPlugin().getWorldBorderHandler().setBlockCount(0);
         resetBlocks.startBlockReset(originalBorderSize, originalCenter);
+
+        BotInteractions botInteractions = new BotInteractions();
+        botInteractions.announceMapReset();
 
         saveData();
     }

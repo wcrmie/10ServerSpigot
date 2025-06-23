@@ -44,7 +44,7 @@ public class WorldBorderSizeHandler {
     }
 
     public void checkForResetTrigger() {
-        if (worldBorder.getSize() >= 501) {
+        if (worldBorder.getSize() >= 200) {
             WorldReset.getInstance().startResetTimer();
         }
     }

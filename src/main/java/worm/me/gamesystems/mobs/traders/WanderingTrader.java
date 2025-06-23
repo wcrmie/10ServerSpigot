@@ -135,61 +135,61 @@ public class WanderingTrader {
         buying.put(invis, 4);
 
         // Plants
-        MerchantRecipe cocoa = new MerchantRecipe(new ItemStack(Material.COCOA_BEANS, 4), 5);
+        MerchantRecipe cocoa = new MerchantRecipe(new ItemStack(Material.COCOA_BEANS, 4), 15);
         cocoa.addIngredient(new ItemStack(Material.GOLD_NUGGET, 8));
 
-        MerchantRecipe sugarcane = new MerchantRecipe(new ItemStack(Material.SUGAR_CANE, 1), 5);
+        MerchantRecipe sugarcane = new MerchantRecipe(new ItemStack(Material.SUGAR_CANE, 1), 15);
         sugarcane.addIngredient(new ItemStack(Material.GOLD_NUGGET, 10));
 
-        MerchantRecipe cactus = new MerchantRecipe(new ItemStack(Material.CACTUS, 1), 5);
+        MerchantRecipe cactus = new MerchantRecipe(new ItemStack(Material.CACTUS, 1), 15);
         cactus.addIngredient(new ItemStack(Material.GOLD_NUGGET, 10));
 
-        MerchantRecipe kelp = new MerchantRecipe(new ItemStack(Material.KELP, 1), 5);
+        MerchantRecipe kelp = new MerchantRecipe(new ItemStack(Material.KELP, 1), 15);
         kelp.addIngredient(new ItemStack(Material.GOLD_NUGGET, 8));
 
-        MerchantRecipe moss = new MerchantRecipe(new ItemStack(Material.MOSS_BLOCK, 1), 5);
+        MerchantRecipe moss = new MerchantRecipe(new ItemStack(Material.MOSS_BLOCK, 1), 15);
         moss.addIngredient(new ItemStack(Material.GOLD_NUGGET, 12));
 
-        MerchantRecipe lichen = new MerchantRecipe(new ItemStack(Material.GLOW_LICHEN, 16), 5);
+        MerchantRecipe lichen = new MerchantRecipe(new ItemStack(Material.GLOW_LICHEN, 16), 15);
         lichen.addIngredient(new ItemStack(Material.GOLD_NUGGET, 10));
 
-        MerchantRecipe beets = new MerchantRecipe(new ItemStack(Material.BEETROOT_SEEDS, 4), 5);
+        MerchantRecipe beets = new MerchantRecipe(new ItemStack(Material.BEETROOT_SEEDS, 4), 15);
         beets.addIngredient(new ItemStack(Material.GOLD_NUGGET, 8));
 
-        MerchantRecipe pumpkin = new MerchantRecipe(new ItemStack(Material.PUMPKIN_SEEDS, 4), 5);
+        MerchantRecipe pumpkin = new MerchantRecipe(new ItemStack(Material.PUMPKIN_SEEDS, 4), 15);
         pumpkin.addIngredient(new ItemStack(Material.GOLD_NUGGET, 8));
 
-        MerchantRecipe melon = new MerchantRecipe(new ItemStack(Material.MELON_SEEDS, 4), 5);
+        MerchantRecipe melon = new MerchantRecipe(new ItemStack(Material.MELON_SEEDS, 4), 15);
         melon.addIngredient(new ItemStack(Material.GOLD_NUGGET, 11));
 
-        MerchantRecipe warts = new MerchantRecipe(new ItemStack(Material.NETHER_WART, 1), 5);
+        MerchantRecipe warts = new MerchantRecipe(new ItemStack(Material.NETHER_WART, 1), 15);
         warts.addIngredient(new ItemStack(Material.GOLD_NUGGET, 15));
 
-        MerchantRecipe sunflower = new MerchantRecipe(new ItemStack(Material.SUNFLOWER, 8), 5);
+        MerchantRecipe sunflower = new MerchantRecipe(new ItemStack(Material.SUNFLOWER, 8), 15);
         sunflower.addIngredient(new ItemStack(Material.GOLD_NUGGET, 8));
 
-        MerchantRecipe rose = new MerchantRecipe(new ItemStack(Material.ROSE_BUSH, 8), 5);
+        MerchantRecipe rose = new MerchantRecipe(new ItemStack(Material.ROSE_BUSH, 8), 15);
         rose.addIngredient(new ItemStack(Material.GOLD_NUGGET, 8));
 
-        MerchantRecipe lilac = new MerchantRecipe(new ItemStack(Material.LILAC, 8), 5);
+        MerchantRecipe lilac = new MerchantRecipe(new ItemStack(Material.LILAC, 8), 15);
         lilac.addIngredient(new ItemStack(Material.GOLD_NUGGET, 8));
 
-        MerchantRecipe peony = new MerchantRecipe(new ItemStack(Material.PEONY, 8), 5);
+        MerchantRecipe peony = new MerchantRecipe(new ItemStack(Material.PEONY, 8), 15);
         peony.addIngredient(new ItemStack(Material.GOLD_NUGGET, 8));
 
-        MerchantRecipe spore = new MerchantRecipe(new ItemStack(Material.SPORE_BLOSSOM, 4), 5);
+        MerchantRecipe spore = new MerchantRecipe(new ItemStack(Material.SPORE_BLOSSOM, 4), 15);
         spore.addIngredient(new ItemStack(Material.GOLD_NUGGET, 8));
 
-        MerchantRecipe glow = new MerchantRecipe(new ItemStack(Material.GLOW_BERRIES, 4), 5);
+        MerchantRecipe glow = new MerchantRecipe(new ItemStack(Material.GLOW_BERRIES, 4), 15);
         glow.addIngredient(new ItemStack(Material.GOLD_NUGGET, 11));
 
-        MerchantRecipe petals = new MerchantRecipe(new ItemStack(Material.PINK_PETALS, 16), 5);
+        MerchantRecipe petals = new MerchantRecipe(new ItemStack(Material.PINK_PETALS, 16), 15);
         petals.addIngredient(new ItemStack(Material.GOLD_NUGGET, 8));
 
-        MerchantRecipe berries = new MerchantRecipe(new ItemStack(Material.SWEET_BERRIES, 4), 5);
+        MerchantRecipe berries = new MerchantRecipe(new ItemStack(Material.SWEET_BERRIES, 4), 15);
         berries.addIngredient(new ItemStack(Material.GOLD_NUGGET, 10));
 
-        MerchantRecipe vines = new MerchantRecipe(new ItemStack(Material.VINE, 8), 5);
+        MerchantRecipe vines = new MerchantRecipe(new ItemStack(Material.VINE, 8), 15);
         vines.addIngredient(new ItemStack(Material.GOLD_NUGGET, 6));
 
         plants.put(cocoa, 7);
@@ -212,34 +212,34 @@ public class WanderingTrader {
         plants.put(berries, 9);
         plants.put(vines, 11);
 
-        MerchantRecipe oak = new MerchantRecipe(new ItemStack(Material.OAK_SAPLING, 1), 5);
+        MerchantRecipe oak = new MerchantRecipe(new ItemStack(Material.OAK_SAPLING, 1), 15);
         oak.addIngredient(new ItemStack(Material.GOLD_NUGGET, 10));
 
-        MerchantRecipe spruce = new MerchantRecipe(new ItemStack(Material.SPRUCE_SAPLING, 1), 5);
+        MerchantRecipe spruce = new MerchantRecipe(new ItemStack(Material.SPRUCE_SAPLING, 1), 15);
         spruce.addIngredient(new ItemStack(Material.GOLD_NUGGET, 12));
 
-        MerchantRecipe birch = new MerchantRecipe(new ItemStack(Material.BIRCH_SAPLING, 1), 5);
+        MerchantRecipe birch = new MerchantRecipe(new ItemStack(Material.BIRCH_SAPLING, 1), 15);
         birch.addIngredient(new ItemStack(Material.GOLD_NUGGET, 9));
 
-        MerchantRecipe jungle = new MerchantRecipe(new ItemStack(Material.JUNGLE_SAPLING, 1), 5);
+        MerchantRecipe jungle = new MerchantRecipe(new ItemStack(Material.JUNGLE_SAPLING, 1), 15);
         jungle.addIngredient(new ItemStack(Material.GOLD_NUGGET, 8));
 
-        MerchantRecipe acacia = new MerchantRecipe(new ItemStack(Material.ACACIA_SAPLING, 1), 5);
+        MerchantRecipe acacia = new MerchantRecipe(new ItemStack(Material.ACACIA_SAPLING, 1), 15);
         acacia.addIngredient(new ItemStack(Material.GOLD_NUGGET, 10));
 
-        MerchantRecipe darkoak = new MerchantRecipe(new ItemStack(Material.DARK_OAK_SAPLING, 1), 5);
+        MerchantRecipe darkoak = new MerchantRecipe(new ItemStack(Material.DARK_OAK_SAPLING, 1), 15);
         darkoak.addIngredient(new ItemStack(Material.GOLD_NUGGET, 5));
 
-        MerchantRecipe mangrove = new MerchantRecipe(new ItemStack(Material.MANGROVE_PROPAGULE, 1), 5);
+        MerchantRecipe mangrove = new MerchantRecipe(new ItemStack(Material.MANGROVE_PROPAGULE, 1), 15);
         mangrove.addIngredient(new ItemStack(Material.GOLD_NUGGET, 14));
 
-        MerchantRecipe cherry = new MerchantRecipe(new ItemStack(Material.CHERRY_SAPLING, 1), 5);
+        MerchantRecipe cherry = new MerchantRecipe(new ItemStack(Material.CHERRY_SAPLING, 1), 15);
         cherry.addIngredient(new ItemStack(Material.GOLD_NUGGET, 11));
 
-        MerchantRecipe azalea = new MerchantRecipe(new ItemStack(Material.FLOWERING_AZALEA, 1), 5);
+        MerchantRecipe azalea = new MerchantRecipe(new ItemStack(Material.FLOWERING_AZALEA, 1), 15);
         azalea.addIngredient(new ItemStack(Material.GOLD_NUGGET, 4));
 
-        MerchantRecipe pale = new MerchantRecipe(new ItemStack(Material.PALE_OAK_SAPLING, 1), 5);
+        MerchantRecipe pale = new MerchantRecipe(new ItemStack(Material.PALE_OAK_SAPLING, 1), 15);
         pale.addIngredient(new ItemStack(Material.GOLD_NUGGET, 7));
 
         saps.put(oak, 2);
@@ -254,46 +254,46 @@ public class WanderingTrader {
         saps.put(pale, 3);
 
         // Rarities
-        MerchantRecipe blazerod = new MerchantRecipe(new ItemStack(Material.BLAZE_ROD, 1), 5);
+        MerchantRecipe blazerod = new MerchantRecipe(new ItemStack(Material.BLAZE_ROD, 1), 15);
         blazerod.addIngredient(new ItemStack(Material.GOLD_INGOT, 4));
 
-        MerchantRecipe enderpearl = new MerchantRecipe(new ItemStack(Material.ENDER_PEARL, 2), 5);
+        MerchantRecipe enderpearl = new MerchantRecipe(new ItemStack(Material.ENDER_PEARL, 2), 15);
         enderpearl.addIngredient(new ItemStack(Material.GOLD_NUGGET, 6));
 
-        MerchantRecipe ghast = new MerchantRecipe(new ItemStack(Material.GHAST_TEAR, 2), 5);
+        MerchantRecipe ghast = new MerchantRecipe(new ItemStack(Material.GHAST_TEAR, 2), 15);
         ghast.addIngredient(new ItemStack(Material.GOLD_INGOT, 2));
 
-        MerchantRecipe creamer = new MerchantRecipe(new ItemStack(Material.MAGMA_CREAM, 4), 5);
+        MerchantRecipe creamer = new MerchantRecipe(new ItemStack(Material.MAGMA_CREAM, 4), 15);
         creamer.addIngredient(new ItemStack(Material.GOLD_NUGGET, 6));
 
-        MerchantRecipe pigstep = new MerchantRecipe(new ItemStack(Material.MUSIC_DISC_PIGSTEP, 1), 5);
+        MerchantRecipe pigstep = new MerchantRecipe(new ItemStack(Material.MUSIC_DISC_PIGSTEP, 1), 15);
         pigstep.addIngredient(new ItemStack(Material.GOLD_INGOT, 2));
 
-        MerchantRecipe otherside = new MerchantRecipe(new ItemStack(Material.MUSIC_DISC_OTHERSIDE, 1), 5);
+        MerchantRecipe otherside = new MerchantRecipe(new ItemStack(Material.MUSIC_DISC_OTHERSIDE, 1), 15);
         otherside.addIngredient(new ItemStack(Material.GOLD_INGOT, 2));
 
-        MerchantRecipe breezeRod = new MerchantRecipe(new ItemStack(Material.BREEZE_ROD, 2), 5);
+        MerchantRecipe breezeRod = new MerchantRecipe(new ItemStack(Material.BREEZE_ROD, 2), 15);
         breezeRod.addIngredient(new ItemStack(Material.GOLD_INGOT, 1));
 
-        MerchantRecipe piglinhead = new MerchantRecipe(new ItemStack(Material.PIGLIN_HEAD, 1), 5);
+        MerchantRecipe piglinhead = new MerchantRecipe(new ItemStack(Material.PIGLIN_HEAD, 1), 15);
         piglinhead.addIngredient(new ItemStack(Material.GOLD_INGOT, 4));
 
         MerchantRecipe trialkey = new MerchantRecipe(new ItemStack(Material.TRIAL_KEY, 1), 5);
         trialkey.addIngredient(new ItemStack(Material.GOLD_INGOT, 3));
 
-        MerchantRecipe wildArmorTrim = new MerchantRecipe(new ItemStack(Material.WILD_ARMOR_TRIM_SMITHING_TEMPLATE, 1), 5);
+        MerchantRecipe wildArmorTrim = new MerchantRecipe(new ItemStack(Material.WILD_ARMOR_TRIM_SMITHING_TEMPLATE, 1), 15);
         wildArmorTrim.addIngredient(new ItemStack(Material.GOLD_INGOT, 1));
 
-        MerchantRecipe coastArmorTrim = new MerchantRecipe(new ItemStack(Material.COAST_ARMOR_TRIM_SMITHING_TEMPLATE, 1), 5);
+        MerchantRecipe coastArmorTrim = new MerchantRecipe(new ItemStack(Material.COAST_ARMOR_TRIM_SMITHING_TEMPLATE, 1), 15);
         coastArmorTrim.addIngredient(new ItemStack(Material.GOLD_INGOT, 1));
 
-        MerchantRecipe duneArmorTrim = new MerchantRecipe(new ItemStack(Material.DUNE_ARMOR_TRIM_SMITHING_TEMPLATE, 1), 5);
+        MerchantRecipe duneArmorTrim = new MerchantRecipe(new ItemStack(Material.DUNE_ARMOR_TRIM_SMITHING_TEMPLATE, 1), 15);
         duneArmorTrim.addIngredient(new ItemStack(Material.GOLD_INGOT, 1));
 
-        MerchantRecipe snoutBanner = new MerchantRecipe(new ItemStack(Material.PIGLIN_BANNER_PATTERN, 1), 5);
+        MerchantRecipe snoutBanner = new MerchantRecipe(new ItemStack(Material.PIGLIN_BANNER_PATTERN, 1), 15);
         snoutBanner.addIngredient(new ItemStack(Material.GOLD_INGOT, 1));
 
-        MerchantRecipe gusterBanner = new MerchantRecipe(new ItemStack(Material.GUSTER_BANNER_PATTERN, 1), 5);
+        MerchantRecipe gusterBanner = new MerchantRecipe(new ItemStack(Material.GUSTER_BANNER_PATTERN, 1), 15);
         gusterBanner.addIngredient(new ItemStack(Material.GOLD_INGOT, 1));
 
         rarities.put(blazerod, 5);
@@ -312,31 +312,31 @@ public class WanderingTrader {
         rarities.put(gusterBanner, 7);
 
         // Blocks
-        MerchantRecipe blackstone = new MerchantRecipe(new ItemStack(Material.BLACKSTONE, 16), 5);
+        MerchantRecipe blackstone = new MerchantRecipe(new ItemStack(Material.BLACKSTONE, 16), 15);
         blackstone.addIngredient(new ItemStack(Material.GOLD_NUGGET, 4));
 
-        MerchantRecipe calcite = new MerchantRecipe(new ItemStack(Material.CALCITE, 16), 5);
+        MerchantRecipe calcite = new MerchantRecipe(new ItemStack(Material.CALCITE, 16), 15);
         calcite.addIngredient(new ItemStack(Material.GOLD_NUGGET, 4));
 
-        MerchantRecipe ice = new MerchantRecipe(new ItemStack(Material.ICE, 16), 5);
+        MerchantRecipe ice = new MerchantRecipe(new ItemStack(Material.ICE, 16), 15);
         ice.addIngredient(new ItemStack(Material.GOLD_NUGGET, 4));
 
-        MerchantRecipe packedIce = new MerchantRecipe(new ItemStack(Material.SOUL_SAND, 16), 5);
+        MerchantRecipe packedIce = new MerchantRecipe(new ItemStack(Material.SOUL_SAND, 16), 15);
         packedIce.addIngredient(new ItemStack(Material.GOLD_NUGGET, 10));
 
-        MerchantRecipe soulSand = new MerchantRecipe(new ItemStack(Material.SOUL_SOIL, 16), 5);
+        MerchantRecipe soulSand = new MerchantRecipe(new ItemStack(Material.SOUL_SOIL, 16), 15);
         soulSand.addIngredient(new ItemStack(Material.GOLD_NUGGET, 7));
 
-        MerchantRecipe quartz = new MerchantRecipe(new ItemStack(Material.MOSSY_COBBLESTONE, 16), 5);
+        MerchantRecipe quartz = new MerchantRecipe(new ItemStack(Material.MOSSY_COBBLESTONE, 16), 15);
         quartz.addIngredient(new ItemStack(Material.GOLD_NUGGET, 4));
 
-        MerchantRecipe darkpris = new MerchantRecipe(new ItemStack(Material.DARK_PRISMARINE, 16), 5);
+        MerchantRecipe darkpris = new MerchantRecipe(new ItemStack(Material.DARK_PRISMARINE, 16), 15);
         darkpris.addIngredient(new ItemStack(Material.GOLD_NUGGET, 4));
 
-        MerchantRecipe seaLanterns = new MerchantRecipe(new ItemStack(Material.SEA_LANTERN, 16), 5);
+        MerchantRecipe seaLanterns = new MerchantRecipe(new ItemStack(Material.SEA_LANTERN, 16), 15);
         seaLanterns.addIngredient(new ItemStack(Material.GOLD_NUGGET, 4));
 
-        MerchantRecipe purpur = new MerchantRecipe(new ItemStack(Material.PURPUR_BLOCK, 16), 5);
+        MerchantRecipe purpur = new MerchantRecipe(new ItemStack(Material.PURPUR_BLOCK, 16), 15);
         purpur.addIngredient(new ItemStack(Material.GOLD_NUGGET, 4));
 
         blocks.put(blackstone, 5);

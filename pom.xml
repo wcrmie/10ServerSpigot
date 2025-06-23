@@ -96,9 +96,22 @@
             <url>https://repo.destroystokyo.com/repository/maven-public//</url>
         </repository>
 
+        <repository>
+            <id>retrooper-repo</id>
+            <url>https://repo.retrooper.net/repository/maven-public/</url>
+        </repository>
+
     </repositories>
 
     <dependencies>
+
+        <dependency>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
+            <version>5.6.1</version> <!-- replace $version with the latest version -->
+            <scope>compile</scope>
+        </dependency>
+
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>

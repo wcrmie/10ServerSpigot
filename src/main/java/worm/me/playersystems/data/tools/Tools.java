@@ -37,8 +37,6 @@ public class Tools {
             tools.get(i).setItemMeta(toolMeta);
             p.getInventory().setItem(i, tools.get(i));
         }
-
-        VoidPlayer.setTools(tools, p);
     }
 
     public ItemStack toolUpgrade(ItemStack tool){

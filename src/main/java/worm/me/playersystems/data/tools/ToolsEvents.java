@@ -16,8 +16,6 @@ public class ToolsEvents {
 
         Tools tools = new Tools();
 
-        List<ItemStack> playerTools = VoidPlayer.getTools(p);
-
         ItemStack clickedItem = e.getBrokenItem();
 
         Damageable meta = (Damageable) clickedItem.getItemMeta();
@@ -27,22 +25,15 @@ public class ToolsEvents {
 
         clickedItem.setItemMeta(meta);
 
-        playerTools.remove(clickedItem);
-
-        playerTools.add(tools.toolDowngrade(clickedItem));
-
         int slot = p.getInventory().getHeldItemSlot();
 
         p.getInventory().setItem(slot, tools.toolDowngrade(clickedItem));
 
-        VoidPlayer.setTools(playerTools, p);
     }
 
     public void toolUpgradeAttempt(Player player, InventoryClickEvent event){
 
         Tools tools = new Tools();
-
-        List<ItemStack> playerTools = VoidPlayer.getTools(player);
 
         ItemStack clickedItem = event.getCurrentItem();
 
@@ -52,13 +43,7 @@ public class ToolsEvents {
 
         clickedItem.setItemMeta(meta);
 
-        playerTools.remove(clickedItem);
-
-        playerTools.add(tools.toolUpgrade(clickedItem));
-
         player.getInventory().setItem(event.getSlot(), tools.toolUpgrade(clickedItem));
-
-        VoidPlayer.setTools(playerTools, player);
 
 
     }

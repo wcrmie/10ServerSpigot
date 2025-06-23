@@ -1,4 +1,4 @@
-package worm.me.commands;
+package worm.me.commands.gui;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

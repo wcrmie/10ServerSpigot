@@ -5,6 +5,7 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -12,12 +13,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
+import org.checkerframework.checker.units.qual.N;
 import worm.me.Server;
+import worm.me.gamesystems.blocks.BlockManipulation;
 import worm.me.gamesystems.mobs.traders.WanderingTrader;
 import worm.me.gamesystems.worldreset.WorldReset;
 import worm.me.playersystems.data.VoidPlayer;
@@ -25,6 +27,7 @@ import worm.me.playersystems.data.tools.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WorldListener implements Listener {
@@ -42,6 +45,7 @@ public class WorldListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
+
         if (WorldReset.getInstance().isBlockPlacingDisabled()) {
             event.setCancelled(true);
             return;
@@ -112,6 +116,11 @@ public class WorldListener implements Listener {
     }
 
     @EventHandler
+    public void onEntityTarget(EntityTargetEvent e) {
+        if (e.getEntity().getVehicle() instanceof Player) e.setCancelled(true);
+    }
+
+    @EventHandler
     public void onEntitySpawn(EntitySpawnEvent event) {
 
         if (event.getEntity() instanceof Player) return;
@@ -120,6 +129,8 @@ public class WorldListener implements Listener {
             Item item = (Item) event.getEntity();
             if (item.getItemStack().getType().toString().toLowerCase().contains("_disc")) {
                 item.getItemStack().setData(DataComponentTypes.MAX_STACK_SIZE, 20);
+            } else if (item.getItemStack().getType().equals(Material.DIRT)) {
+                item.getItemStack().setData(DataComponentTypes.MAX_STACK_SIZE, 99);
             }
         }
 
@@ -133,6 +144,86 @@ public class WorldListener implements Listener {
         if (event.getEntity() instanceof Villager villy) {
             villy.setProfession(Villager.Profession.NITWIT);
         }
+
+        if (event.getEntity() instanceof Spider spider && event.getEntity().getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.NATURAL)) {
+
+            spider.getAttribute(Attribute.SCALE).setBaseValue(0.3);
+            spider.getAttribute(Attribute.ATTACK_DAMAGE).setBaseValue(2);
+            spider.getAttribute(Attribute.MAX_HEALTH).setBaseValue(8);
+
+            int RNG = ThreadLocalRandom.current().nextInt(1,3);
+
+            for (int i = 0; i < RNG; i++) {
+
+                spider.getWorld().spawn(spider.getLocation(), Spider.class, spawnedSpider -> {
+                    spawnedSpider.getAttribute(Attribute.SCALE).setBaseValue(0.3);
+                    spawnedSpider.getAttribute(Attribute.ATTACK_DAMAGE).setBaseValue(2);
+                    spawnedSpider.getAttribute(Attribute.MAX_HEALTH).setBaseValue(8);
+                });
+
+
+            }
+
+        }
+
+        Entity entity = event.getEntity();
+
+        if (entity instanceof Zombie || entity instanceof Skeleton || entity instanceof Stray || entity instanceof Cow || entity instanceof Pig || entity instanceof Sheep || entity instanceof Chicken || entity instanceof Villager || entity instanceof Parrot) {
+
+
+            LivingEntity e = (LivingEntity) entity;
+
+            double rng = ThreadLocalRandom.current().nextDouble(0.85, 1.15);
+
+            e.getAttribute(Attribute.SCALE).setBaseValue(rng);
+
+        }
+
+        if (entity.getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.BREEDING)) {
+
+            int RNG = ThreadLocalRandom.current().nextInt(1, 10);
+
+            if (entity instanceof Rabbit) {
+                RNG = ThreadLocalRandom.current().nextInt(4, 20);
+            }
+
+            World world = entity.getWorld();
+            if (RNG >= 15){
+
+                Entity twin = world.spawn(entity.getLocation(), entity.getType().getEntityClass());
+                Breedable livingTwin = (Breedable) twin;
+                livingTwin.setBaby();
+
+                Entity twin2 = world.spawn(entity.getLocation(), entity.getType().getEntityClass());
+                Breedable livingTwin2 = (Breedable) twin2;
+                livingTwin2.setBaby();
+
+                Entity twin3 = world.spawn(entity.getLocation(), entity.getType().getEntityClass());
+                Breedable livingTwin3 = (Breedable) twin3;
+                livingTwin3.setBaby();
+
+
+            } else if (RNG >= 9) {
+
+                Entity twin = world.spawn(entity.getLocation(), entity.getType().getEntityClass());
+                Breedable livingTwin = (Breedable) twin;
+                livingTwin.setBaby();
+
+                Entity twin2 = world.spawn(entity.getLocation(), entity.getType().getEntityClass());
+                Breedable livingTwin2 = (Breedable) twin2;
+                livingTwin2.setBaby();
+
+
+
+            } else if (RNG >= 5) {
+                Entity twin = world.spawn(entity.getLocation(), entity.getType().getEntityClass());
+                Breedable livingTwin = (Breedable) twin;
+
+                livingTwin.setBaby();
+            }
+
+        }
+
     }
 
     @EventHandler
