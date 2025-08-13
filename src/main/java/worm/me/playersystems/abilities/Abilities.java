@@ -11,6 +11,7 @@ import worm.me.playersystems.abilities.active.AgilityLeap;
 import worm.me.playersystems.abilities.active.*;
 import worm.me.Server;
 import worm.me.playersystems.abilities.passive.SlimeBoots;
+import worm.me.playersystems.data.levels.Reqs;
 
 import java.util.*;
 
@@ -72,13 +73,13 @@ public class Abilities {
     public void initializeRequirements(){
 
         // Format: abilityRequirements.put(abilityID, new int[]{combat, farming, crafting, fishing, smithing, mining, agility, foraging});
-        abilityRequirements.put(0, new int[]{1,  0,  0, 0,  0, 0, 0,  0});
-        abilityRequirements.put(1, new int[]{1,  0,  0, 0,  0, 0, 0, 0});
-        abilityRequirements.put(2, new int[]{5, 0,  0, 0,  0, 0, 3,  0});
-        abilityRequirements.put(3, new int[]{5,  0,  0, 0,  0, 0, 8, 0});
-        abilityRequirements.put(4, new int[]{0,  0,  0, 0,  0, 0, 2000, 0});
-        abilityRequirements.put(5, new int[]{20, 10, 0, 15, 0, 0, 10, 20});
-        abilityRequirements.put(6, new int[]{35, 0,  0, 0,  5, 5, 15, 0});
+        abilityRequirements.put(0, new Reqs.RequirementBuilder().combat(1).build());
+        abilityRequirements.put(1, new Reqs.RequirementBuilder().combat(1).build());
+        abilityRequirements.put(2, new Reqs.RequirementBuilder().combat(5).agility(3).build());
+        abilityRequirements.put(3, new Reqs.RequirementBuilder().combat(5).agility(8).build());
+        abilityRequirements.put(4, new Reqs.RequirementBuilder().combat(2000).build());
+        abilityRequirements.put(5, new Reqs.RequirementBuilder().combat(20).farming(10).fishing(15).agility(10).foraging(20).build());
+        abilityRequirements.put(6, new Reqs.RequirementBuilder().combat(35).smithing(5).mining(5).agility(15).build());
         abilityRequirements.put(7, new int[]{5,  0,  0, 5,  2, 0, 10, 0});
         abilityRequirements.put(8, new int[]{0,  25, 0, 5,  0, 0, 10, 0});
         abilityRequirements.put(9, new int[]{5,  0, 0, 0,  0, 5, 25, 10});

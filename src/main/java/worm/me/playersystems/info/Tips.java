@@ -1,16 +1,10 @@
 package worm.me.playersystems.info;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import worm.me.Server;
-import worm.me.playersystems.data.tools.Tools;
 
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Tips {

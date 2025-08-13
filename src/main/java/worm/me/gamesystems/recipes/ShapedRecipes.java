@@ -11,12 +11,13 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.GuiConstructor;
 import worm.me.Server;
+import worm.me.gamesystems.fishing.rods.BreezeRod;
 
 import java.util.*;
 
 public class ShapedRecipes {
 
-    public static Map<ItemStack, List<List<ItemStack>>> shapedRecipeMap = new HashMap<>();
+    public static Map<ItemStack, List<List<ItemStack>>> shapedRecipeMap = new LinkedHashMap<>();
 
     public void addRecipes(){
 
@@ -241,7 +242,7 @@ public class ShapedRecipes {
         shapedRecipeMap.put(GuiConstructor.createGuiItem(Material.WOODEN_SWORD, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "WOODEN_SWORD"))));
         shapedRecipeMap.put(GuiConstructor.createGuiItem(Material.WOODEN_SHOVEL, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "WOODEN_SHOVEL"))));
 
-
+        shapedRecipeMap.put(BreezeRod.createBreezeRod(), List.of(List.of(new ItemStack(Material.AIR), new ItemStack(Material.AIR),new ItemStack(Material.BREEZE_ROD),new ItemStack(Material.AIR),new ItemStack(Material.BREEZE_ROD),new ItemStack(Material.STRING),new ItemStack(Material.BREEZE_ROD),new ItemStack(Material.AIR),new ItemStack(Material.STRING)), List.of(GuiConstructor.createGuiItem(Material.STONE, "BREEZE_FISHING_ROD"))));
 
         shapedRecipes(shapedRecipeMap);
 

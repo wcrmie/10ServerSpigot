@@ -4,6 +4,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.jetbrains.annotations.NotNull;
+import worm.me.gamesystems.fishing.rods.RodHandler;
 import worm.me.playersystems.data.levels.Levels;
 import org.bukkit.inventory.ItemStack;
 
@@ -13,64 +15,73 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class FishingTables {
 
-    private final Map<Class<? extends Entity>, List<Integer>> lootTable1 = new HashMap<>();
-    private final Map<Material, List<Integer>> lootTable2 = new HashMap<>();
-    private final Map<Class<? extends Entity>, List<Integer>> seaCreatureTable = new HashMap<>();
-    private final Map<String, FishingConfiguration> fishingConfigurations = new HashMap<>();
+    private final Map<Class<? extends Entity>, List<Integer>> lootTable1 = new TableBuilder<Class<? extends Entity>>()
+            .add(Cod.class, 60, 2)
+            .add(Salmon.class, 25, 2)
+            .add(TropicalFish.class, 2, 10)
+            .add(PufferFish.class, 13, 5)
+            .build();
+
+    private final Map<Material, List<Integer>> lootTable2 = new TableBuilder<Material>()
+            .add(Material.NAME_TAG, 8, 5)
+            .add(Material.SADDLE, 7, 10)
+            .add(Material.TRIPWIRE_HOOK, 1, 5)
+            .add(Material.STRING, 12, 5)
+            .add(Material.BELL, 4, 15)
+            .add(Material.ANGLER_POTTERY_SHERD, 2, 20)
+            .add(Material.MUSIC_DISC_13, 5, 10)
+            .add(Material.LEATHER, 8, 5)
+            .add(Material.LEAD, 7, 5)
+            .add(Material.ROTTEN_FLESH, 5, 5)
+            .add(Material.BONE, 5, 5)
+            .add(Material.EXPERIENCE_BOTTLE, 4, 15)
+            .add(Material.KELP, 5, 10)
+            .add(Material.SEA_PICKLE, 5, 10)
+            .add(Material.SEAGRASS, 2, 5)
+            .add(Material.SPONGE, 1, 25)
+            .add(Material.FISHING_ROD, 1, 25)
+            .add(Material.TIDE_ARMOR_TRIM_SMITHING_TEMPLATE,1 ,25 )
+            .build();
+
+    private final Map<Class<? extends Entity>, List<Integer>> seaCreatureTable = new TableBuilder<Class<? extends Entity>>()
+            .add(ElderGuardian.class, 1, 25)
+            .add(Guardian.class, 3, 15)
+            .add(Axolotl.class, 5, 10)
+            .add(Squid.class, 10, 5)
+            .add(GlowSquid.class, 7, 7)
+            .add(Dolphin.class, 4, 12)
+            .add(Tadpole.class, 2, 20)
+            .add(Turtle.class, 4, 12)
+            .add(Drowned.class, 5, 10)
+            .add(Bogged.class, 3, 15)
+            .add(Cat.class, 1, 25)
+            .add(Slime.class, 3, 15)
+            .add(WanderingTrader.class, 1, 25)
+            .add(Silverfish.class, 1, 25)
+            .build();
+
+    private final Map<Class<? extends Entity>, List<Integer>> netherCreatureTable = new TableBuilder<Class<? extends Entity>>()
+            .add(Strider.class, 100, 10)
+            .add(Ghast.class, 25, 50)
+            .add(Blaze.class, 1, 250)
+            .add(MagmaCube.class, 75, 15)
+            .add(PigZombie.class, 65, 17)
+            .build();
+
+    private static final Map<String, FishingConfiguration> fishingConfigurations = new HashMap<>();
 
     public FishingTables() {
-        lootTable1.put(Cod.class, List.of(60, 2));
-        lootTable1.put(Salmon.class, List.of(25, 2));
-        lootTable1.put(TropicalFish.class, List.of(2, 10));
-        lootTable1.put(PufferFish.class, List.of(13, 5));
-
-
-        lootTable2.put(Material.NAME_TAG, List.of(8, 5));
-        lootTable2.put(Material.SADDLE, List.of(7, 10));
-        lootTable2.put(Material.TRIPWIRE_HOOK, List.of(1, 5));
-        lootTable2.put(Material.STRING, List.of(12, 5));
-        lootTable2.put(Material.BELL, List.of(4, 15));
-        lootTable2.put(Material.ANGLER_POTTERY_SHERD, List.of(2, 20));
-        lootTable2.put(Material.MUSIC_DISC_13, List.of(5, 10));
-        lootTable2.put(Material.LEATHER, List.of(8, 5));
-        lootTable2.put(Material.LEAD, List.of(7, 5));
-        lootTable2.put(Material.ROTTEN_FLESH, List.of(5, 5));
-        lootTable2.put(Material.BONE, List.of(5, 5));
-        lootTable2.put(Material.EXPERIENCE_BOTTLE, List.of(4, 15));
-        lootTable2.put(Material.KELP, List.of(5, 10));
-        lootTable2.put(Material.SEA_PICKLE, List.of(5, 10));
-        lootTable2.put(Material.SEAGRASS, List.of(2, 5));
-        lootTable2.put(Material.SPONGE, List.of(1, 25));
-        lootTable2.put(Material.FISHING_ROD, List.of(1, 25));
-        lootTable2.put(Material.TIDE_ARMOR_TRIM_SMITHING_TEMPLATE, List.of(1, 25));
-
-
-        seaCreatureTable.put(ElderGuardian.class, List.of(1, 25));
-        seaCreatureTable.put(Guardian.class, List.of(3, 15));
-        seaCreatureTable.put(Axolotl.class, List.of(5, 10));
-        seaCreatureTable.put(Squid.class, List.of(10, 5));
-        seaCreatureTable.put(GlowSquid.class, List.of(7, 7));
-        seaCreatureTable.put(Dolphin.class, List.of(4, 12));
-        seaCreatureTable.put(Tadpole.class, List.of(2, 20));
-        seaCreatureTable.put(Turtle.class, List.of(4, 12));
-        seaCreatureTable.put(Drowned.class, List.of(5, 10));
-        seaCreatureTable.put(Bogged.class, List.of(3, 15));
-        seaCreatureTable.put(Cat.class, List.of(1, 25));
-        seaCreatureTable.put(Slime.class, List.of(3, 15));
-        seaCreatureTable.put(WanderingTrader.class, List.of(1, 25));
-        seaCreatureTable.put(Silverfish.class, List.of(1, 25));
-
-        fishingConfigurations.put("0", new FishingConfiguration(40,40,20));
-        fishingConfigurations.put("1", new FishingConfiguration(0,0,0));
-        fishingConfigurations.put("2", new FishingConfiguration(0,0,0));
+        fishingConfigurations.put("DEFAULT", new FishingConfiguration(20,40,40, null));
+        fishingConfigurations.put("HOT_ROD", new FishingConfiguration(20,40,40, 10));
+        fishingConfigurations.put("2", new FishingConfiguration(0,0,0, null));
     }
 
-    private static class FishingConfiguration {
+    public static class FishingConfiguration {
         private final int lootTable1Weight;
         private final int lootTable2Weight;
         private final int seaCreatureWeight;
 
-        public FishingConfiguration(int lootTable1Weight, int lootTable2Weight, int seaCreatureWeight) {
+        public FishingConfiguration(int lootTable1Weight, int lootTable2Weight, int seaCreatureWeight, Integer netherCreatureWeight) {
             this.lootTable1Weight = lootTable1Weight;
             this.lootTable2Weight = lootTable2Weight;
             this.seaCreatureWeight = seaCreatureWeight;
@@ -93,14 +104,39 @@ public class FishingTables {
         }
     }
 
+    public static class TableBuilder<T> {
+
+        private HashMap<T, List<Integer>> table;
+
+        public TableBuilder(){
+            table = new HashMap<>();
+        }
+
+        public TableBuilder<T> add(T fishedThing, int weight, int exp) {
+            table.put(fishedThing, List.of(weight, exp));
+            return this;
+        }
+
+        public Map<T, List<Integer>> build() {
+            return Collections.unmodifiableMap(table);
+        }
+
+    }
+
     public void handleFishing(PlayerFishEvent event) {
         if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
 
-            String configName = "0";
+            ItemStack rodItem = event.getPlayer().getInventory().getItem(event.getHand());
+
+
+
+            // Uses the first fishing configuration (DEFAULT); When making new configurations, configName should be given through RodHandler.
+            String configName = RodHandler.catchFish(rodItem);
 
             FishingConfiguration config = fishingConfigurations.get(configName);
             int totalWeight = config.getTotalWeight();
 
+            // Set the rng weight
             double rng = ThreadLocalRandom.current().nextDouble(0.0, totalWeight);
             Item item = (Item) event.getCaught();
 
@@ -136,7 +172,7 @@ public class FishingTables {
         Location hookLocation = event.getHook().getLocation();
 
         while (hookLocation.getBlock().getType() == Material.WATER) {
-            hookLocation.add(0, 1, 0);
+            hookLocation.add(0, 1.5, 0);
         }
 
         Class<? extends Entity> entity = generateSeaCreature(table);
@@ -150,7 +186,7 @@ public class FishingTables {
             Location playerLocation = event.getPlayer().getLocation().clone();
             org.bukkit.util.Vector direction = playerLocation.subtract(hookLocation).toVector().normalize();
 
-            creature.setVelocity(direction.multiply(0.6));
+            creature.setVelocity(direction.multiply(0.8));
         }
     }
 

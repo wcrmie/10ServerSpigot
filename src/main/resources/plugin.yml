@@ -39,9 +39,6 @@ commands:
   abilities:
     description: Opens the ability selection GUI for the player.
     usage: /<command>
-  hats:
-    description: Opens the hat selection GUI for the player, or sets their hat.
-    usage: /<command> [integer]
   levels:
     description: Opens the levels GUI for the player.
     usage: /<command>
@@ -58,10 +55,6 @@ commands:
   profile:
     description: Opens the player's profile.
     usage: /<command> [Player]
-  hatStorage:
-    description: Opens the hat storage GUI for the player.
-    usage: /<command> <page>
-    permission: 10VS.hatStorageModify
   rename:
     description: Rename held item.
     usage: /<command> <string>
@@ -88,3 +81,9 @@ commands:
   testannouncement:
     description: test announcement
     usage: /<command>
+  hat:
+    description: Switches your main hand and hat slots
+    usage: /<command>
+  say:
+    description: An alternative to just typing in chat like a normal person
+    usage: /<command> <message>

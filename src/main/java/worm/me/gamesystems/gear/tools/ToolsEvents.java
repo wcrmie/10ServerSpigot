@@ -1,33 +1,39 @@
-package worm.me.playersystems.data.tools;
+package worm.me.gamesystems.gear.tools;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import worm.me.Server;
-import worm.me.playersystems.data.VoidPlayer;
-
-import java.util.List;
+import worm.me.gamesystems.gear.EnchantsDowngrade;
 
 public class ToolsEvents {
 
-    public void toolBreak(Player p, PlayerItemBreakEvent e){
+    public void toolBreak(Player p, PlayerItemDamageEvent e){
 
         Tools tools = new Tools();
 
-        ItemStack clickedItem = e.getBrokenItem();
+        EnchantsDowngrade enchantsDowngrade = new EnchantsDowngrade();
 
-        Damageable meta = (Damageable) clickedItem.getItemMeta();
+        ItemStack brokenTool = enchantsDowngrade.downgradeEnchants(e.getItem());
+
+        if (brokenTool != e.getItem()) p.playSound(p, Sound.ENTITY_ENDER_EYE_DEATH, 1F, 0.5F);
+
+        Damageable meta = (Damageable) brokenTool.getItemMeta();
 
         assert meta != null;
         meta.setDamage(0);
 
-        clickedItem.setItemMeta(meta);
+        brokenTool.setItemMeta(meta);
 
-        int slot = p.getInventory().getHeldItemSlot();
+        int i = p.getInventory().getHeldItemSlot();
 
-        p.getInventory().setItem(slot, tools.toolDowngrade(clickedItem));
+        p.getInventory().setItem(i, tools.toolDowngrade(brokenTool));
+
+        p.playSound(p, Sound.ENTITY_ITEM_BREAK, 1F, 1F);
 
     }
 

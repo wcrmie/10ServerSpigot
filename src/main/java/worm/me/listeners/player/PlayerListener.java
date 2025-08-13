@@ -1,4 +1,4 @@
-package worm.me.listeners;
+package worm.me.listeners.player;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
@@ -7,11 +7,10 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.coreprotect.CoreProtectAPI;
 import net.coreprotect.api.result.ParseResult;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,6 +22,7 @@ import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -33,8 +33,7 @@ import worm.me.Server;
 import worm.me.discord.bot.BotInteractions;
 import worm.me.gamesystems.blocks.ArtBlocks;
 import worm.me.gamesystems.fishing.FishingTables;
-import worm.me.playersystems.FishThrow;
-import worm.me.playersystems.PlayerSpawning;
+import worm.me.gamesystems.gear.armor.ArmorBreak;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
 import worm.me.playersystems.abilities.active.FeatherDash;
@@ -45,12 +44,13 @@ import worm.me.playersystems.data.VoidPlayer;
 import worm.me.playersystems.data.levels.GainExpEvent;
 import worm.me.playersystems.data.levels.LevelUpEvent;
 import worm.me.playersystems.data.levels.Levels;
-import worm.me.playersystems.data.social.MessageHead;
-import worm.me.playersystems.data.social.hats.HatsStorage;
-import worm.me.playersystems.data.tools.Tools;
-import worm.me.playersystems.data.tools.ToolsEvents;
+import worm.me.playersystems.social.MessageHead;
+// worm.me.playersystems.social.legacyhats.HatsStorage;
+import worm.me.gamesystems.gear.tools.Tools;
+import worm.me.gamesystems.gear.tools.ToolsEvents;
 import worm.me.playersystems.generator.Generator;
 import worm.me.playersystems.info.Tips;
+import worm.me.playersystems.join.FirstJoin;
 import worm.me.playersystems.quests.QuestGui;
 import worm.me.playersystems.quests.QuestProgressEvent;
 import worm.me.playersystems.quests.Quests;
@@ -96,12 +96,12 @@ public class PlayerListener implements Listener {
             Vault.storeItems(prunedItems, p);
         }
 
-        if (e.getView().getTitle().contains(ChatColor.RED + "Hat Storage ")){
-
-            HatsStorage hatsStorage = new HatsStorage();
-            hatsStorage.eventHandler(e);
-
-        }
+//        if (e.getView().getTitle().contains(ChatColor.RED + "Hat Storage ")){
+//
+//            HatsStorage hatsStorage = new HatsStorage();
+//            hatsStorage.eventHandler(e);
+//
+//        }
 
     }
 
@@ -240,17 +240,34 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler
-    public void onToolBreak(PlayerItemBreakEvent e){
+    public void onBreakItem(PlayerItemBreakEvent e){
 
-        String tool = e.getBrokenItem().getType().toString().toLowerCase();
-
-        for (String s : worm.me.Server.tools.keySet()){
-            if (tool.contains(s)){
-                ToolsEvents toolsEvents = new ToolsEvents();
-                toolsEvents.toolBreak(e.getPlayer(), e);
-                break;
-            }
+        if (e.getBrokenItem().getType().toString().replaceAll("BOOTS", "█").replaceAll("LEGGINGS", "█").replaceAll("CHESTPLATE", "█").contains("█")) {
+            ArmorBreak armorBreak = new ArmorBreak();
+            armorBreak.handleArmorBreak(e);
         }
+
+    }
+
+    @EventHandler
+    public void onItemDamage(PlayerItemDamageEvent e) {
+
+        if (((Damageable) e.getItem().getItemMeta()).getDamage() + e.getDamage() >= e.getItem().getType().getMaxDurability()) {
+
+            e.setCancelled(true);
+
+            String tool = e.getItem().getType().toString().toLowerCase();
+
+            for (String s : worm.me.Server.tools.keySet()) {
+                if (tool.contains(s)){
+                    ToolsEvents toolsEvents = new ToolsEvents();
+                    toolsEvents.toolBreak(e.getPlayer(), e);
+                    break;
+                }
+            }
+
+        }
+
     }
 
     @EventHandler
@@ -267,9 +284,6 @@ public class PlayerListener implements Listener {
     public void onItemPickup(EntityPickupItemEvent e){
         if (e.getEntity() instanceof Player){
             Player p = (Player) e.getEntity();
-            if (p.getItemOnCursor().getType().toString().contains("PICKAXE") || p.getItemOnCursor().getType().toString().contains("AXE") || p.getItemOnCursor().getType().toString().contains("SHOVEL") || p.getItemOnCursor().getType().toString().contains("SWORD")){
-                e.setCancelled(true);
-            }
             if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
                 e.setCancelled(true);
             }
@@ -321,6 +335,23 @@ public class PlayerListener implements Listener {
         if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
             e.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onAnvilCombine(PrepareAnvilEvent event) {
+
+        ItemStack result = event.getResult();
+
+        Enchantment[] enchantments = result.getEnchantments().keySet().toArray(new Enchantment[0]);
+
+        for (Enchantment ench : enchantments) {
+            if ((ench.equals(Enchantment.SHARPNESS) || ench.equals(Enchantment.POWER)) && result.getEnchantments().get(ench) > 3) {
+                event.getResult().removeEnchantment(ench);
+                event.getResult().addUnsafeEnchantment(ench, 3);
+            }
+        }
+
+
     }
 
     // --------------------------MESSAGEHEAD--------------------------
@@ -602,6 +633,11 @@ public class PlayerListener implements Listener {
         if (e.getOriginalEvent() instanceof PlayerInteractEvent) {
 
             if (((PlayerInteractEvent) e.getOriginalEvent()).getAction().equals(Action.RIGHT_CLICK_AIR) || ((PlayerInteractEvent) e.getOriginalEvent()).getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+
+                if (e.getItemStack().getType().equals(Material.KNOWLEDGE_BOOK)) {
+                    e.setCancelled(true);
+                }
+
                 if (p.getInventory().getItemInMainHand().toString().toLowerCase().contains("sword")) {
                     if (p.isSneaking()){
                         Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(2, p));
@@ -610,6 +646,25 @@ public class PlayerListener implements Listener {
                     if (p.isSneaking()){
                         Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(3, p));
                     }
+                } else if (p.getInventory().getItemInMainHand().getType().toString().contains("HELMET")){
+
+                    ItemStack item = p.getInventory().getItemInMainHand();
+                    ItemMeta meta = item.getItemMeta();
+
+                    String material = item.getType().toString();
+
+                    material = material.replace("HELMET", "BOOTS");
+
+                    ItemStack newItem = new ItemStack(Material.valueOf(material));
+
+                    newItem.setItemMeta(meta);
+
+                    p.getInventory().remove(item);
+
+                    p.getInventory().setItemInMainHand(newItem);
+
+                    p.playSound(p, Sound.ENTITY_EVOKER_PREPARE_WOLOLO, 1F, 0.5F);
+
                 }
             }
         }
@@ -760,6 +815,10 @@ public class PlayerListener implements Listener {
                             0.5, 240, 0.5,
                             0, 0
                     ));
+
+            FirstJoin firstJoin = new FirstJoin();
+            firstJoin.firstJoin(player);
+
         }
 
     }
@@ -779,6 +838,14 @@ public class PlayerListener implements Listener {
         featherDash.cancelDash(e.getPlayer().getUniqueId());
 
         container.set(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY, new long[]{System.currentTimeMillis()/1000L, container.get(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY)[1]});
+
+        if (p.getVehicle() != null) {
+            for (Entity passenger : p.getVehicle().getPassengers()) {
+                if (passenger instanceof Player) {
+                    passenger.leaveVehicle();
+                }
+            }
+        }
     }
 
     @EventHandler

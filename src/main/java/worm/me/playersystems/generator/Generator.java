@@ -1,6 +1,10 @@
 package worm.me.playersystems.generator;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import io.papermc.paper.datacomponent.DataComponentTypes;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -9,9 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.checkerframework.checker.units.qual.N;
 import worm.me.Server;
-import worm.me.playersystems.data.tools.Tools;
+import worm.me.gamesystems.gear.tools.Tools;
 
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -32,7 +35,20 @@ public class Generator {
 
                 PersistentDataContainer container = player.getPersistentDataContainer();
                 if (player.isOnline()){
-                    if (hasEmptySlot(player) && Tools.toolType(Objects.requireNonNullElse(player.getItemOnCursor().getType(), Material.STONE)).equals("none") && container.getOrDefault(new NamespacedKey(Server.getPlugin(), "togglegens"), PersistentDataType.INTEGER, 0) != 1) player.getInventory().addItem(randomItem(player));
+                    if (hasEmptySlot(player) && container.getOrDefault(new NamespacedKey(Server.getPlugin(), "togglegens"), PersistentDataType.INTEGER, 0) != 1) {
+
+                        ProtectedRegion region = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld())).getRegion("spawn");
+                        Location loc = player.getLocation();
+
+                        ItemStack item = randomItem(player);
+
+                        // If the player is in spawn, don't damage them
+                        if (region.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()) && item.getType().equals(Material.IRON_ORE)) {
+                            
+                        } else {
+                            player.getInventory().addItem(item);
+                        }
+                    }
                 } else cancel();
             }
         }.runTaskTimer(plugin, 200, 200);

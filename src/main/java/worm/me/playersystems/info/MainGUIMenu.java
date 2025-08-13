@@ -17,8 +17,8 @@ import worm.me.gamesystems.worldreset.WorldReset;
 import worm.me.playersystems.abilities.AbilitiesGUI;
 import worm.me.playersystems.generator.GeneratorEdit;
 import worm.me.playersystems.data.PlayerProfileGUI;
-import worm.me.playersystems.data.social.hats.Hats;
-import worm.me.playersystems.data.social.skins.SkinGui;
+//import worm.me.playersystems.social.legacyhats.Hats;
+//import worm.me.playersystems.social.skins.SkinGui;
 import worm.me.Server;
 
 public class MainGUIMenu {
@@ -62,13 +62,12 @@ public class MainGUIMenu {
         if (e.getSlot() == 11) {
             GuideBook.guideBook(p);
         } else if (e.getSlot() == 12) {
-            SkinGui.skinGuiOpen(p);
+            Server.pluginMessage(ChatColor.RED + "This feature is no longer available.", p);
         } else if (e.getSlot() == 13) {
             PlayerProfileGUI playerProfileGUI = new PlayerProfileGUI();
             playerProfileGUI.openProfile(p, p);
         } else if (e.getSlot() == 14) {
-            Hats hats = new Hats();
-            hats.openHatsGUI(p, 1);
+            Server.pluginMessage(ChatColor.RED + "Hats are no longer in this menu. To put something on your head, use /hat.", p);
         } else if (e.getSlot() == 15) {
             Server.pluginMessage(ChatColor.RED + "This feature is not yet available.", p);
         } else if (e.getSlot() == 20) {
@@ -102,7 +101,7 @@ public class MainGUIMenu {
 
         long totalBlocksForReset = calculateTotalBlocksForReset(borderHandler);
         long blocksPlacedTowardsReset = Math.min(currentBlocks, totalBlocksForReset);
-        double percentageToReset = currentSize >= 501 ? 100 :
+        double percentageToReset = currentSize >= 201 ? 100 :
                 (double) blocksPlacedTowardsReset / totalBlocksForReset * 100;
 
         long blocksForNextIncrease = (long) (borderHandler.calculateWorldBlockSize() *

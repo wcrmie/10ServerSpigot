@@ -16,31 +16,37 @@ import org.bukkit.plugin.java.JavaPlugin;
 import worm.me.commands.*;
 import worm.me.commands.admin.*;
 import worm.me.commands.chat.RulesCommand;
+import worm.me.commands.chat.SayCommand;
 import worm.me.commands.chat.SetVoiceCommand;
 import worm.me.commands.chat.ShoutCommand;
 import worm.me.commands.discord.DiscordCommand;
 import worm.me.commands.discord.DiscordLinkCommand;
 import worm.me.commands.gui.*;
-import worm.me.commands.gui.HatsCommand;
+//import worm.me.commands.gui.HatsCommand;
 import worm.me.commands.gui.OpenAbilitiesGUICommand;
 import worm.me.commands.gui.OpenLevelsGUICommand;
-import worm.me.commands.gui.OpenSkinGUICommand;
+//import worm.me.commands.gui.OpenSkinGUICommand;
+// worm.me.commands.legacy.EditHatsCommand;
 import worm.me.discord.bot.BotInitialize;
-import worm.me.gamesystems.mobs.traders.WanderingTrader;
+import worm.me.gamesystems.mobs.traders.Wandering;
 import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.gamesystems.blocks.ArtBlocks;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.gamesystems.recipes.SmeltingRecipes;
 import worm.me.gamesystems.structure.generation.TreasureChests;
+//import worm.me.listeners.MainListener;
 import worm.me.listeners.MainListener;
-import worm.me.listeners.PlayerListener;
 import worm.me.listeners.QuestListener;
 import worm.me.listeners.WorldListener;
+import worm.me.listeners.player.PlayerListener;
+//import worm.me.listeners.QuestListener;
+//import worm.me.listeners.WorldListener;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.AgilityDoubleJump;
 import worm.me.playersystems.abilities.active.FeatherDash;
 import worm.me.playersystems.abilities.active.ShadowStep;
 import worm.me.playersystems.abilities.active.SpeedStep;
+import worm.me.playersystems.data.levels.Reqs;
 import worm.me.playersystems.generator.Generator;
 import worm.me.playersystems.quests.QuestInitialize;
 import worm.me.playersystems.PlayerSpawning;
@@ -149,12 +155,12 @@ public final class Server extends JavaPlugin {
         this.getCommand("sit").setExecutor(new SitCommand(this));
         this.getCommand("setCharLimit").setExecutor(new SetPlayerCharLimCommand(this));
         this.getCommand("abilities").setExecutor(new OpenAbilitiesGUICommand());
-        this.getCommand("hats").setExecutor(new HatsCommand());
+        //this.getCommand("hats").setExecutor(new HatsCommand());
         this.getCommand("levels").setExecutor(new OpenLevelsGUICommand(this));
-        this.getCommand("setSkin").setExecutor(new OpenSkinGUICommand());
+        //this.getCommand("setSkin").setExecutor(new OpenSkinGUICommand());
         this.getCommand("menu").setExecutor(new MenuCommand());
         this.getCommand("profile").setExecutor(new OpenProfileGUICommand());
-        this.getCommand("hatstorage").setExecutor(new EditHatsCommand());
+        //this.getCommand("hatstorage").setExecutor(new EditHatsCommand());
         this.getCommand("rename").setExecutor(new RenameCommand());
         this.getCommand("recipes").setExecutor(new OpenRecipesGUICommand());
         this.getCommand("suicide").setExecutor(new SuicideCommand());
@@ -162,6 +168,8 @@ public final class Server extends JavaPlugin {
         this.getCommand("link").setExecutor(new DiscordLinkCommand());
         this.getCommand("togglegens").setExecutor(new ToggleGensCommand());
         this.getCommand("testannouncement").setExecutor(new announcementTest());
+        this.getCommand("hat").setExecutor(new HatCommand());
+        this.getCommand("say").setExecutor(new SayCommand());
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 
@@ -238,8 +246,8 @@ public final class Server extends JavaPlugin {
         farmingBlocks.put(Material.PUMPKIN, 8L);
         farmingBlocks.put(Material.SUGAR_CANE, 8L);
         farmingBlocks.put(Material.COCOA, 10L);
-        farmingBlocks.put(Material.RED_MUSHROOM_BLOCK, 15L);
-        farmingBlocks.put(Material.BROWN_MUSHROOM_BLOCK, 15L);
+        farmingBlocks.put(Material.RED_MUSHROOM_BLOCK, 2L);
+        farmingBlocks.put(Material.BROWN_MUSHROOM_BLOCK, 2L);
         farmingBlocks.put(Material.NETHER_WART, 15L);
         farmingBlocks.put(Material.CACTUS, 8L);
         farmingBlocks.put(Material.KELP, 1L);
@@ -313,6 +321,7 @@ public final class Server extends JavaPlugin {
         smithingItems.put(Material.GOLD_INGOT, 5L);
         smithingItems.put(Material.IRON_NUGGET, 3L);
         smithingItems.put(Material.COAL, 1L);
+        smithingItems.put(Material.COPPER_INGOT, 1L);
 
 
 
@@ -346,12 +355,12 @@ public final class Server extends JavaPlugin {
         sounds.add(Sound.BLOCK_DECORATED_POT_INSERT_FAIL); // 26
 
         // CREATE BLOCK KEYS FOR GENERATOR
-        stones.put(Material.COBBLESTONE, new int[]{0,0,0,0,0,1,0,0});
-        stones.put(Material.TUFF, new int[]{5,0,0,0,0,10,0,0});
-        stones.put(Material.ANDESITE, new int[]{0,0,0,0,0,7,0,0});
-        stones.put(Material.GRANITE, new int[]{0,0,0,0,0,7,0,0});
-        stones.put(Material.DIORITE, new int[]{0,0,0,0,0,7,0,0});
-        stones.put(Material.DRIPSTONE_BLOCK, new int[]{0,0,0,0,0,25,0,0});
+        stones.put(Material.COBBLESTONE, new Reqs.RequirementBuilder().mining(1).build());
+        stones.put(Material.TUFF, new Reqs.RequirementBuilder().combat(5).mining(10).build());
+        stones.put(Material.ANDESITE, new Reqs.RequirementBuilder().mining(7).build());
+        stones.put(Material.GRANITE, new Reqs.RequirementBuilder().mining(7).build());
+        stones.put(Material.DIORITE, new Reqs.RequirementBuilder().mining(7).build());
+        stones.put(Material.DRIPSTONE_BLOCK, new Reqs.RequirementBuilder().mining(25).build());
         stones.put(Material.PACKED_MUD, new int[]{0,15,0,0,0,15,0,10});
         stones.put(Material.COBBLED_DEEPSLATE, new int[]{0,0,0,0,10,35,0,0});
         stones.put(Material.SMOOTH_BASALT, new int[]{0,0,0,0,15,20,0,0});
@@ -392,8 +401,6 @@ public final class Server extends JavaPlugin {
             Generator generator = new Generator(this);
             generator.generateItem(p);
         }
-
-        WanderingTrader.initRecipes();
 
     }
 

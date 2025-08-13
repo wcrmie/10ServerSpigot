@@ -1,4 +1,4 @@
-package worm.me.playersystems.data.tools;
+package worm.me.gamesystems.gear.tools;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -7,7 +7,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import worm.me.GuiConstructor;
-import worm.me.playersystems.data.VoidPlayer;
 import worm.me.Server;
 
 import java.util.ArrayList;

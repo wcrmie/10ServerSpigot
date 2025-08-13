@@ -1,7 +1,11 @@
 package worm.me.gamesystems;
 
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
@@ -22,6 +26,15 @@ public class SnowballKnockback {
     public void onSnowballHit(EntityDamageByEntityEvent e) {
         if (!(e.getEntity() instanceof Player player)) return;
         if (!(e.getDamager() instanceof Snowball snowball)) return;
+
+        ProtectedRegion region = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld())).getRegion("spawn");
+        Location loc = player.getLocation();
+
+        // If the player is in spawn, don't kb them
+        if (region.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
+            e.setCancelled(true);
+            return;
+        }
 
         e.setDamage(0.0);
 

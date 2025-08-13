@@ -8,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import worm.me.playersystems.data.social.MessageHead;
+import worm.me.playersystems.social.MessageHead;
 import worm.me.Server;
 
 public class SetPlayerCharLimCommand implements CommandExecutor {

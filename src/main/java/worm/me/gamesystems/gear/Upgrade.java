@@ -1,4 +1,4 @@
-package worm.me.playersystems.data.tools;
+package worm.me.gamesystems.gear;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

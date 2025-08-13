@@ -4,28 +4,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import org.bukkit.util.io.BukkitObjectInputStream;
-import org.bukkit.util.io.BukkitObjectOutputStream;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.CooldownDisplay;
-import worm.me.playersystems.data.social.MessageHead;
-import worm.me.playersystems.data.social.hats.Hats;
-import worm.me.playersystems.data.social.skins.Skin;
-import worm.me.playersystems.data.tools.Tools;
+import worm.me.playersystems.social.MessageHead;
+//import worm.me.playersystems.social.legacyhats.Hats;
+import worm.me.gamesystems.gear.tools.Tools;
 import worm.me.playersystems.quests.QuestAssign;
 import worm.me.Server;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
 
 public class VoidPlayer {
 
@@ -148,13 +137,13 @@ public class VoidPlayer {
             container.set(new NamespacedKey(plugin, "10stats"), PersistentDataType.INTEGER_ARRAY, new int[50]);
         }
 
-        if (!container.has(new NamespacedKey(plugin, "hatsUnlocked"), PersistentDataType.INTEGER_ARRAY)) {
-            container.set(new NamespacedKey(plugin, "hatsUnlocked"), PersistentDataType.INTEGER_ARRAY, new int[2700]);
-            Hats hats = new Hats();
-            hats.unequipHat(player);
-            hats.unlockHat(player, 0);
-
-        }
+//        if (!container.has(new NamespacedKey(plugin, "hatsUnlocked"), PersistentDataType.INTEGER_ARRAY)) {
+//            container.set(new NamespacedKey(plugin, "hatsUnlocked"), PersistentDataType.INTEGER_ARRAY, new int[2700]);
+//            Hats hats = new Hats();
+//            hats.unequipHat(player);
+//            hats.unlockHat(player, 0);
+//
+//        }
 
         if (!container.has(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY)) {
             container.set(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY, new long[]{System.currentTimeMillis()/1000L, 0});

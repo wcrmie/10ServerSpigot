@@ -1,16 +1,8 @@
-package worm.me.playersystems.data.social;
+package worm.me.playersystems.social;
 
-import io.papermc.paper.datacomponent.DataComponentBuilder;
-import net.kyori.adventure.Adventure;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.DataComponentValue;
-import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.TextColor;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.*;
-import net.md_5.bungee.api.chat.hover.content.Item;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
