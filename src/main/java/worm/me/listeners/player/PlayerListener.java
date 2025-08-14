@@ -5,7 +5,7 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import net.coreprotect.CoreProtectAPI;
-import net.coreprotect.api.result.ParseResult;
+import net.coreprotect.CoreProtectAPI.ParseResult;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
