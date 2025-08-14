@@ -116,13 +116,8 @@ public class SaddleSystem {
             }.runTaskTimer(plugin, 1L, 1L);
     }
 
-    public void leftClick(PlayerAnimationEvent event) {
-        Player player = event.getPlayer();
-        if (!player.getPassengers().isEmpty() && player.isSneaking()) {
-            Entity passenger = player.getPassengers().getFirst();
-
-            throwEntity(passenger, player);
-        }
+    public void leftClick(Player thrower, Player rider) {
+        throwEntity(thrower, rider);
     }
 
     private void applySpecialEffects(Entity entity, Player player, boolean apply) {
