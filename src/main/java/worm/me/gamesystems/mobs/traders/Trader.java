@@ -13,7 +13,7 @@ public class Trader {
 
         private final Map<MerchantRecipe, Integer> trades = new HashMap<>();
 
-        public TradeBuilder newTrade(ItemStack buying, ItemStack selling, int maxUses, int weight) {
+        public TradeBuilder newTrade(ItemStack selling, ItemStack buying, int maxUses, int weight) {
             MerchantRecipe recipe = new MerchantRecipe(selling, maxUses);
             recipe.addIngredient(buying);
             trades.put(recipe, weight);
