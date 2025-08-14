@@ -468,4 +468,8 @@ public final class Server extends JavaPlugin {
         return plugin;
     }
 
+    public static ConfigManager getConfigManager() {
+        return plugin.configManager;
+    }
+
 }
