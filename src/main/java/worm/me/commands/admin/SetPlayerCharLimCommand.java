@@ -30,7 +30,7 @@ public class SetPlayerCharLimCommand implements CommandExecutor {
                     plugin.pluginMessage(ChatColor.GREEN + "Character limit for " + args[0] + " has been set to " + args[1], (Player) sender);
                     return true;
                 } else {
-                    plugin.pluginMessage(ChatColor.RED + "Character limit must be greater than 0!", (Player) sender);
+                    plugin.pluginMessage(ChatColor.RED + "Character limit can't be negative.", (Player) sender);
                     return false;
                 }
             }
