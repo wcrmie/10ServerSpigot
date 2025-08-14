@@ -162,6 +162,20 @@ public class SaddleSystem {
     }
 
     private void getOnPlayer(Player rider, Player clickedPlayer) {
+
+        PersistentDataContainer container = clickedPlayer.getPersistentDataContainer();
+        if (container.has(new NamespacedKey(Server.getPlugin(), "saddleThrown"), PersistentDataType.LONG)) {
+            long thrownTime = container.getOrDefault(new NamespacedKey(Server.getPlugin(), "saddleThrown"), PersistentDataType.LONG, 0L);
+            if (thrownTime >= System.currentTimeMillis()) {
+                return;
+            }
+        }
+
+        PersistentDataContainer riderContainer = rider.getPersistentDataContainer();
+        if (riderContainer.getOrDefault(new NamespacedKey(Server.getPlugin(), "recentDismount"), PersistentDataType.LONG, 0L) >= System.currentTimeMillis()) {
+            return;
+        }
+
         Player topPlayer = clickedPlayer;
         Player secondToTopPlayer = null;
 
