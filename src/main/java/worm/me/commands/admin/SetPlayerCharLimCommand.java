@@ -23,7 +23,7 @@ public class SetPlayerCharLimCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         for (Player p : Bukkit.getOnlinePlayers()) {
             if (p.getName().equals(args[0])) {
-                if (Integer.parseInt(args[1]) > 0) {
+                if (Integer.parseInt(args[1]) >= 0) {
                     MessageHead messageHead = new MessageHead(this.plugin);
                     p.getPersistentDataContainer().set(messageHead.msgLength, PersistentDataType.INTEGER, Integer.parseInt(args[1]));
                     plugin.pluginMessage(ChatColor.RED + "Your character limit for messages has been set to " + args[1], p);
