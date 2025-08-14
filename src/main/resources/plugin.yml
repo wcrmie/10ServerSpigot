@@ -1,8 +1,8 @@
-name: 10ServerSpigot
-version: '1.0-SNAPSHOT'
+name: '${project.name}'
+version: '${project.version}'
 main: worm.me.Server
 api-version: '1.21'
-authors: [ worm, clem ]
+authors: [ worm, clem, Boolean ]
 depend: [WorldGuard]
 softdepend: [SkinsRestorer]
 commands:
