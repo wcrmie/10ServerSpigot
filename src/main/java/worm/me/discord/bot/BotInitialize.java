@@ -14,6 +14,8 @@ public class BotInitialize {
 
     public static MessageChannel announcementChannel;
 
+    public static MessageChannel staffChannel;
+
     public static Guild guild;
 
     public static JDA api;
@@ -29,6 +31,7 @@ public class BotInitialize {
 
             channel = api.getTextChannelById("1381733550277267608");
             announcementChannel = api.getNewsChannelById("1345095053294571530");
+            staffChannel = api.getTextChannelById("1345096439868428340");
 
             guild = api.getGuildById("1345062374532710541");
 

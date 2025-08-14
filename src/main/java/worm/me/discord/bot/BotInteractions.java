@@ -13,6 +13,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import static worm.me.discord.bot.BotInitialize.staffChannel;
+
 public class BotInteractions {
 
     public void memberMessage(String name, String message) {
@@ -107,4 +109,18 @@ public class BotInteractions {
 
         announcementChannel.sendMessageEmbeds(embed.build()).queue();
     }
+
+    public static void reportMessage(String reporter, String reported) {
+
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setTitle("New Player Report");
+        embed.addField("Reporter: ", reporter, true);
+        embed.addField("Reported: ", reported, true);
+        embed.setThumbnail("https://minotar.net/avatar/" + reported + ".png");
+        embed.setColor(Color.RED);
+
+        staffChannel.sendMessageEmbeds(embed.build()).queue();
+
+    }
+
 }

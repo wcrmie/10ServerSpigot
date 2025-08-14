@@ -1,2 +1,11 @@
 expansionPercentage: 0.25
 blockCount: 0
+webhook-url: "https://discord.com/api/webhooks/..."
+report-cooldown: 300
+reasons:
+  - name: "Cheating"
+    description: "Using unauthorized mods: X-ray, fly hacks, etc.\nClick to report."
+  - name: "Chat Abuse"
+    description: "Spamming, using offensive language, or harassing other players.\nClick to report."
+  - name: "Offensive Profile"
+    description: "Having an offensive name, skin, named item, or anything similar.\nClick to report."

@@ -1,0 +1,68 @@
+package worm.me.managers;
+
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import saturn.report.Report;
+import worm.me.Server;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@SuppressWarnings("deprecation")
+public class ConfigManager {
+
+    private final Server plugin;
+    private List<Map<String, Object>> reasons; // List of reason maps
+    private String webhookUrl;
+    private long reportCooldown;
+
+    public ConfigManager(Server plugin) {
+        this.plugin = plugin;
+        loadConfig();
+    }
+
+    public void loadConfig() {
+        plugin.reloadConfig();
+        FileConfiguration config = plugin.getConfig();
+
+        reportCooldown = config.getLong("report-cooldown");
+
+        webhookUrl = config.getString("webhook-url");
+
+        // Get raw list of maps with unknown generics
+        List<Map<?, ?>> rawList = config.getMapList("reasons");
+
+        // Cast each map and translate color codes
+        reasons = rawList.stream()
+                .map(rawMap -> {
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> reasonMap = (Map<String, Object>) rawMap;
+
+                    String name = (String) reasonMap.get("name");
+                    String description = (String) reasonMap.get("description");
+
+                    if (name != null) {
+                        reasonMap.put("name", ChatColor.translateAlternateColorCodes('&', name));
+                    }
+                    if (description != null) {
+                        reasonMap.put("description", ChatColor.translateAlternateColorCodes('&', description));
+                    }
+
+                    return reasonMap;
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<Map<String, Object>> getReasons() {
+        return reasons;
+    }
+
+    public String getWebhookUrl() {
+        return webhookUrl;
+    }
+
+    public long getReportCooldown() {
+        return reportCooldown;
+    }
+}
