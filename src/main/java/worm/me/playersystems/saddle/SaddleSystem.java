@@ -129,7 +129,7 @@ public class SaddleSystem {
         switch (entity.getType()) {
             case BAT:
                 if (apply) {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, PotionEffect.INFINITE_DURATION, 0, false, false, true));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 2, 1, false, false, true));
                 } else {
                     player.removePotionEffect(PotionEffectType.LEVITATION);
                 }
@@ -137,7 +137,7 @@ public class SaddleSystem {
 
             case CHICKEN:
                 if (apply) {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, PotionEffect.INFINITE_DURATION, 0, false, false, true));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 2, 1, false, false, true));
                 } else {
                     player.removePotionEffect(PotionEffectType.SLOW_FALLING);
                 }
@@ -145,7 +145,7 @@ public class SaddleSystem {
 
             case RABBIT:
                 if (apply) {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, PotionEffect.INFINITE_DURATION, 1, false, false, true));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 2, 1, false, false, true));
                 } else {
                     player.removePotionEffect(PotionEffectType.JUMP_BOOST);
                 }
@@ -153,7 +153,7 @@ public class SaddleSystem {
 
             case TURTLE:
                 if (apply) {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, PotionEffect.INFINITE_DURATION, 0, false, false, true));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 2, 0, false, false, true));
                 } else {
                     player.removePotionEffect(PotionEffectType.WATER_BREATHING);
                 }
