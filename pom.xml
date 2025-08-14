@@ -48,7 +48,7 @@
         </repository>
 
         <repository>
-            <id>coreprotect</id>
+            <id>playpro-repo</id>
             <url>https://maven.playpro.com</url>
         </repository>
 
@@ -104,7 +104,7 @@
         <dependency>
             <groupId>net.coreprotect</groupId>
             <artifactId>coreprotect</artifactId>
-            <version>22.4</version>
+            <version>23.0</version>
             <scope>provided</scope>
         </dependency>
 

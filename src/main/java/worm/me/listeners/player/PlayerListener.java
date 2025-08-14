@@ -4,8 +4,8 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import io.papermc.paper.event.player.PlayerArmSwingEvent;
 import net.coreprotect.CoreProtectAPI;
-import net.coreprotect.CoreProtectAPI.ParseResult;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
@@ -152,17 +152,6 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerLeftClick(PlayerAnimationEvent event){
-
-        if (event.getAnimationType() == PlayerAnimationType.ARM_SWING) {
-
-            SaddleSystem ss = new SaddleSystem(plugin);
-            ss.leftClick(event);
-
-        }
-    }
-
-    @EventHandler
     public void onPlayerRightClick(PlayerInteractEntityEvent e){
         SaddleSystem sshandler = new SaddleSystem(plugin);
         sshandler.rightClick(e);
@@ -223,6 +212,13 @@ public class PlayerListener implements Listener {
             if (region.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
                 e.setCancelled(true);
             }
+
+            if (e.getDamageSource().getCausingEntity() instanceof Player attacker && attacker.getPassengers().contains(player)) {
+
+                SaddleSystem ss = new SaddleSystem(plugin);
+                ss.leftClick(player, attacker);
+
+            }
         }
     }
 
@@ -230,6 +226,10 @@ public class PlayerListener implements Listener {
     public void onPlayerDismount(EntityDismountEvent e){
 
         if (e.getEntity() instanceof Player p){
+
+            PersistentDataContainer pdc = p.getPersistentDataContainer();
+            pdc.set(new NamespacedKey(Server.getPlugin(), "recentDismount"), PersistentDataType.LONG, System.currentTimeMillis() + 1000L);
+
             if (e.getDismounted().getType() == EntityType.ARMOR_STAND){
                 e.getDismounted().remove();
                 Location loc = p.getLocation();
@@ -417,9 +417,6 @@ public class PlayerListener implements Listener {
     public void onPlayerBreak(BlockBreakEvent e){
         Player player = e.getPlayer();
 
-        CoreProtectAPI api = worm.me.Server.getPlugin().getCoreProtect();
-
-
         if (e.getBlock().getType() == Material.PUMPKIN) {
             e.setDropItems(false);
             e.getBlock().getLocation().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.CARVED_PUMPKIN));
@@ -437,45 +434,18 @@ public class PlayerListener implements Listener {
             }
         }
 
+        Levels.expHandler(player, e);
 
-        // If the block was placed by the player in the last 10 seconds, don't give exp
+        if (e.getBlock().getType().equals(Material.COBBLESTONE)) {
 
-        if (api != null) {
+            int rng = ThreadLocalRandom.current().nextInt(0, 100);
+            if (rng <= 1) {
 
-            List<String[]> lookup = api.performLookup(5, null, null, null, null, null, 1, e.getBlock().getLocation());
-
-
-            boolean exp = true;
-
-            for (String[] value : lookup) {
-                ParseResult result = api.parseResult(value);
-
-                if (e.getBlock().getType() == Material.IRON_ORE) break;
-                if (e.getBlock().getType() == Material.COAL_ORE) break;
-
-                if (result.getType().equals(e.getBlock().getType()) && result.getActionString().equals("place") && result.getX() == e.getBlock().getX() && result.getY() == e.getBlock().getY() && result.getZ() == e.getBlock().getZ() && result.getPlayer() != null) {
-                    exp = false;
-                    break;
-                }
+                e.getBlock().getLocation().getWorld().spawn(e.getBlock().getLocation(), Silverfish.class);
+                e.getBlock().getLocation().getWorld().spawnParticle(Particle.CLOUD, e.getBlock().getLocation().getX(), e.getBlock().getLocation().getY(), e.getBlock().getLocation().getZ(), 25, 0.5, 0.5, 0.5, 0.1);
 
             }
-
-            if (exp) {
-                Levels.expHandler(player, e);
-
-                if (e.getBlock().getType().equals(Material.COBBLESTONE)) {
-
-                    int rng = ThreadLocalRandom.current().nextInt(0, 100);
-                    if (rng <= 1) {
-
-                        e.getBlock().getLocation().getWorld().spawn(e.getBlock().getLocation(), Silverfish.class);
-                        e.getBlock().getLocation().getWorld().spawnParticle(Particle.CLOUD, e.getBlock().getLocation().getX(), e.getBlock().getLocation().getY(), e.getBlock().getLocation().getZ(), 25, 0.5, 0.5, 0.5, 0.1);
-
-                    }
-
-                }
-            }
-        } else player.sendMessage(ChatColor.RED + "CoreProtect is not enabled on this server.");
+        }
     }
 
     @EventHandler
