@@ -209,6 +209,9 @@ public class SaddleSystem {
     private void throwEntity(Entity passenger, Player thrower) {
         thrower.removePassenger(passenger);
 
+        PersistentDataContainer container = passenger.getPersistentDataContainer();
+        container.set(new NamespacedKey(Server.getPlugin(), "saddleThrown"), PersistentDataType.LONG, System.currentTimeMillis()+1000L);
+
         new BukkitRunnable() {
             @Override
             public void run() {
