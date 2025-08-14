@@ -260,6 +260,7 @@ public class PlayerListener implements Listener {
 
             for (String s : worm.me.Server.tools.keySet()) {
                 if (tool.contains(s)){
+                    e.setCancelled(true);
                     ToolsEvents toolsEvents = new ToolsEvents();
                     toolsEvents.toolBreak(e.getPlayer(), e);
                     break;
