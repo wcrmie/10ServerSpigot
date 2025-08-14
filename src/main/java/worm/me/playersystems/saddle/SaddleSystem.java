@@ -165,7 +165,8 @@ public class SaddleSystem {
         Player topPlayer = clickedPlayer;
         Player secondToTopPlayer = null;
 
-        while (!topPlayer.getPassengers().isEmpty() && topPlayer.getPassengers().getFirst() instanceof Player && topPlayer != rider) {
+        while (!topPlayer.getPassengers().isEmpty() && topPlayer.getPassengers().getFirst() instanceof Player) {
+            if (topPlayer.getPassengers().contains(rider)) break;
             secondToTopPlayer = topPlayer;
             topPlayer = (Player) topPlayer.getPassengers().getFirst();
         }
