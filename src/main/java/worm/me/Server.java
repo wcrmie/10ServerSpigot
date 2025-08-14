@@ -361,30 +361,30 @@ public final class Server extends JavaPlugin {
         stones.put(Material.GRANITE, new Reqs.RequirementBuilder().mining(7).build());
         stones.put(Material.DIORITE, new Reqs.RequirementBuilder().mining(7).build());
         stones.put(Material.DRIPSTONE_BLOCK, new Reqs.RequirementBuilder().mining(25).build());
-        stones.put(Material.PACKED_MUD, new int[]{0,15,0,0,0,15,0,10});
-        stones.put(Material.COBBLED_DEEPSLATE, new int[]{0,0,0,0,10,35,0,0});
-        stones.put(Material.SMOOTH_BASALT, new int[]{0,0,0,0,15,20,0,0});
+        stones.put(Material.PACKED_MUD, new Reqs.RequirementBuilder().farming(15).mining(15).foraging(10).build());
+        stones.put(Material.COBBLED_DEEPSLATE, new Reqs.RequirementBuilder().smithing(10).mining(35).build());
+        stones.put(Material.SMOOTH_BASALT, new Reqs.RequirementBuilder().smithing(15).mining(20).build());
 
-        dirts.put(Material.DIRT, new int[]{0,1,0,0,0,0,0,0});
-        dirts.put(Material.COARSE_DIRT, new int[]{0,5,0,0,0,5,0,5});
-        dirts.put(Material.SAND, new int[]{0,5,0,0,0,15,0,5});
-        dirts.put(Material.GRAVEL, new int[]{0,0,0,0,0,10,0,10});
-        dirts.put(Material.RED_SAND, new int[]{0,0,0,0,5,25,0,15});
-        dirts.put(Material.CLAY, new int[]{0,5,0,15,0,5,0,15});
-        dirts.put(Material.MUD, new int[]{0,15,0,5,0,0,0,10});
+        dirts.put(Material.DIRT, new Reqs.RequirementBuilder().farming(1).build());
+        dirts.put(Material.COARSE_DIRT, new Reqs.RequirementBuilder().farming(5).mining(5).foraging(5).build());
+        dirts.put(Material.SAND, new Reqs.RequirementBuilder().farming(5).mining(15).foraging(5).build());
+        dirts.put(Material.GRAVEL, new Reqs.RequirementBuilder().mining(10).foraging(10).build());
+        dirts.put(Material.RED_SAND, new Reqs.RequirementBuilder().smithing(5).mining(25).foraging(15).build());
+        dirts.put(Material.CLAY, new Reqs.RequirementBuilder().farming(5).fishing(15).mining(5).foraging(15).build());
+        dirts.put(Material.MUD, new Reqs.RequirementBuilder().farming(15).fishing(5).foraging(10).build());
 
-        planks.put(Material.OAK_PLANKS, new int[]{0,0,0,0,0,0,0,1});
-        planks.put(Material.SPRUCE_PLANKS, new int[]{10,0,0,0,0,0,0,10});
-        planks.put(Material.DARK_OAK_PLANKS, new int[]{0,0,0,15,0,0,0,15});
-        planks.put(Material.BIRCH_PLANKS, new int[]{0,0,0,5,0,0,0,5});
-        planks.put(Material.JUNGLE_PLANKS, new int[]{0,0,10,0,0,0,0,15});
-        planks.put(Material.MANGROVE_PLANKS, new int[]{0,5,0,5,0,0,0,20});
-        planks.put(Material.ACACIA_PLANKS, new int[]{0,0,0,5,5,0,0,15});
+        planks.put(Material.OAK_PLANKS, new Reqs.RequirementBuilder().foraging(1).build());
+        planks.put(Material.SPRUCE_PLANKS, new Reqs.RequirementBuilder().combat(10).foraging(10).build());
+        planks.put(Material.DARK_OAK_PLANKS, new Reqs.RequirementBuilder().fishing(15).foraging(15).build());
+        planks.put(Material.BIRCH_PLANKS, new Reqs.RequirementBuilder().fishing(5).foraging(5).build());
+        planks.put(Material.JUNGLE_PLANKS, new Reqs.RequirementBuilder().crafting(10).foraging(15).build());
+        planks.put(Material.MANGROVE_PLANKS, new Reqs.RequirementBuilder().farming(5).fishing(5).foraging(20).build());
+        planks.put(Material.ACACIA_PLANKS, new Reqs.RequirementBuilder().fishing(5).smithing(5).foraging(15).build());
 
-        miscs.put(Material.COAL_ORE, new int[]{0,0,0,0,1,0,0,0});
-        miscs.put(Material.QUARTZ, new int[]{0,0,0,0,25,25,0,0});
-        miscs.put(Material.REDSTONE, new int[]{0,0,10,0,25,10,0,0});
-        miscs.put(Material.GLOWSTONE_DUST, new int[]{0,0,0,0,15,0,0,0});
+        miscs.put(Material.COAL_ORE, new Reqs.RequirementBuilder().smithing(1).build());
+        miscs.put(Material.QUARTZ, new Reqs.RequirementBuilder().smithing(25).mining(25).build());
+        miscs.put(Material.REDSTONE, new Reqs.RequirementBuilder().crafting(10).smithing(25).mining(10).build());
+        miscs.put(Material.GLOWSTONE_DUST, new Reqs.RequirementBuilder().smithing(15).build());
 
         // CREATE QUESTS
         QuestInitialize questInitialize = new QuestInitialize();
