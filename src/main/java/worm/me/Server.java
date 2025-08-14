@@ -64,9 +64,7 @@ public final class Server extends JavaPlugin {
 
     private WorldBorderSizeHandler WorldBorderSizeHandler;
     private PlayerSpawning playerspawning;
-    private SaddleSystem saddleSystem;
     private FeatherDash featherDash = new FeatherDash();
-    private ArtBlocks artBlocks;
     private TreasureChests treasureChests;
     private static final long CHEST_SPAWN_INTERVAL = 2 * 60 * 60 * 20;
     private static final String LAST_CHEST_SPAWN_KEY = "lastChestSpawn";
@@ -113,8 +111,6 @@ public final class Server extends JavaPlugin {
         assert world != null;
         WorldBorderSizeHandler = new WorldBorderSizeHandler(this);
         playerspawning = new PlayerSpawning(this);
-        saddleSystem = new SaddleSystem(this);
-        artBlocks = new ArtBlocks(this);
         this.treasureChests = new TreasureChests();
         setupChestSpawnSchedule();
 
@@ -472,29 +468,4 @@ public final class Server extends JavaPlugin {
         return plugin;
     }
 
-    public CoreProtectAPI getCoreProtect() {
-        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("CoreProtect");
-
-        if (!(plugin instanceof CoreProtect)) {
-            return null;
-        }
-
-        CoreProtectAPI CoreProtect = ((CoreProtect) plugin).getAPI();
-        if (!CoreProtect.isEnabled()) {
-            return null;
-        }
-
-        if (CoreProtect.APIVersion() < 10) {
-            return null;
-        }
-
-        return CoreProtect;
-    }
-
-    public FileConfiguration getHatsStorage() {
-
-        File hatStorage = new File(Server.getPlugin().getDataFolder(), "hatStorage.yml");
-
-        return YamlConfiguration.loadConfiguration(hatStorage);
-    }
 }
