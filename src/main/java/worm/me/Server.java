@@ -1,17 +1,12 @@
 package worm.me;
-
-import net.coreprotect.CoreProtect;
-import net.coreprotect.CoreProtectAPI;
 import net.dv8tion.jda.api.JDA;
 import net.skinsrestorer.api.SkinsRestorer;
 import net.skinsrestorer.api.SkinsRestorerProvider;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import worm.me.commands.*;
 import worm.me.commands.admin.*;
@@ -19,25 +14,17 @@ import worm.me.commands.chat.*;
 import worm.me.commands.discord.DiscordCommand;
 import worm.me.commands.discord.DiscordLinkCommand;
 import worm.me.commands.gui.*;
-//import worm.me.commands.gui.HatsCommand;
 import worm.me.commands.gui.OpenAbilitiesGUICommand;
 import worm.me.commands.gui.OpenLevelsGUICommand;
-//import worm.me.commands.gui.OpenSkinGUICommand;
-// worm.me.commands.legacy.EditHatsCommand;
 import worm.me.discord.bot.BotInitialize;
-import worm.me.gamesystems.mobs.traders.Wandering;
 import worm.me.gamesystems.recipes.ShapedRecipes;
-import worm.me.gamesystems.blocks.ArtBlocks;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.gamesystems.recipes.SmeltingRecipes;
 import worm.me.gamesystems.structure.generation.TreasureChests;
-//import worm.me.listeners.MainListener;
 import worm.me.listeners.MainListener;
 import worm.me.listeners.QuestListener;
 import worm.me.listeners.WorldListener;
 import worm.me.listeners.player.PlayerListener;
-//import worm.me.listeners.QuestListener;
-//import worm.me.listeners.WorldListener;
 import worm.me.managers.ConfigManager;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.AgilityDoubleJump;
@@ -48,10 +35,7 @@ import worm.me.playersystems.data.levels.Reqs;
 import worm.me.playersystems.generator.Generator;
 import worm.me.playersystems.quests.QuestInitialize;
 import worm.me.playersystems.PlayerSpawning;
-import worm.me.playersystems.saddle.SaddleSystem;
 import worm.me.gamesystems.border.WorldBorderSizeHandler;
-
-import java.io.File;
 import java.util.*;
 
 public final class Server extends JavaPlugin {
