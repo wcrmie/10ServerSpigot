@@ -59,6 +59,7 @@ import java.util.*;
 public final class Server extends JavaPlugin {
 
     private static Server plugin;
+    private ConfigManager configManager;
 
     public SkinsRestorer skinsRestorer;
 
