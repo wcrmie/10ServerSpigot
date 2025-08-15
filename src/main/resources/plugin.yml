@@ -87,3 +87,6 @@ commands:
   say:
     description: An alternative to just typing in chat like a normal person
     usage: /<command> <message>
+  report:
+    description: Open the report menu, or send a report in chat
+    usage: /<command> <player>
