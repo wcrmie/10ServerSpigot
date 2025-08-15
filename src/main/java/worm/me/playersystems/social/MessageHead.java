@@ -1,6 +1,7 @@
 package worm.me.playersystems.social;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
@@ -147,35 +148,35 @@ public class MessageHead {
         return newLines.get(a) != null;
     }
 
-    public void messageQueue(Player p, String m){
+    public void messageQueue(Player sender, String msg){
 
         // Create temp queue
         Queue<String> messageQ = new LinkedList<>();
         // If map doesn't have anything, add it
-        if (map.get(p) != null) {
-            messageQ = map.get(p);
+        if (map.get(sender) != null) {
+            messageQ = map.get(sender);
         }
-        messageQ.offer(m);
-        map.put(p, messageQ);
+        messageQ.offer(msg);
+        map.put(sender, messageQ);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            double distance = player.getLocation().distance(p.getLocation());
+            double distance = player.getLocation().distance(sender.getLocation());
 
             int color = distance == 0 ? 255 : (int) Math.round(255 - 255 * (distance / (player.getWorld().getWorldBorder().getSize() + 50)));
             if (color < 50) color = 50;
             String hexColor = String.format("#%02x%02x%02x", color, color, color);
 
-            String message = m;
+            String message = msg;
             if (message.contains(player.getName())) {
                 message = message.replace(player.getName(), ChatColor.YELLOW + "@" + player.getName() + ChatColor.RESET);
                 player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
             }
 
-            net.kyori.adventure.text.TextComponent msg = Component.text(p.getName() + ": " + message).color(TextColor.fromHexString(hexColor));
+            net.kyori.adventure.text.TextComponent component = Component.text(sender.getName() + ": " + message).color(TextColor.fromHexString(hexColor));
 
             if (message.contains("[i]") || message.contains("[item]")) {
 
-                ItemStack item = p.getInventory().getItemInMainHand();
+                ItemStack item = sender.getInventory().getItemInMainHand();
 
                 String itemName = item.getType().toString();
 
@@ -185,20 +186,30 @@ public class MessageHead {
 
                 message = message.replaceAll("\\[i]", ChatColor.AQUA + "[" + itemName + " x" + item.getAmount() + "]" + ChatColor.RESET).replaceAll("\\[item]", ChatColor.AQUA + "[" + itemName + " x" + item.getAmount() + "]" + ChatColor.RESET);
 
-                msg = Component.text(p.getName() + ": " + message).color(TextColor.fromHexString(hexColor));
+                component = Component.text(sender.getName() + ": " + message).color(TextColor.fromHexString(hexColor));
 
-                msg = msg.hoverEvent(item.asHoverEvent());
+                component = component.hoverEvent(item.asHoverEvent());
 
             }
 
-            player.sendMessage(msg);
+            if (message.contains("hack") || message.contains("cheat") || message.contains("hax")) {
+                Server.pluginMessage(NamedTextColor.RED + "If you think someone is hacking, please report them using /report <player>.", player);
+                sender.playSound(sender, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+            }
+
+            if (message.contains("how") && (message.contains("stone") || message.contains("tools") || message.contains("pickaxe") || message.contains("axe") || message.contains("shovel") || message.contains("sword"))) {
+                Server.pluginMessage(NamedTextColor.GREEN + "Hover your tools in your inventory to see how to upgrade them!", player);
+                sender.playSound(sender, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+            }
+
+            player.sendMessage(component);
 
         }
 
         BotInteractions botInteractions = new BotInteractions();
 
-        m = m.replace("@", "◘");
-        botInteractions.gameMessage(p.getName() + ": " + m);
+        msg = msg.replace("@", "◘");
+        botInteractions.gameMessage(sender.getName() + ": " + msg);
     }
 
     public void messageTeleport(Player p) {

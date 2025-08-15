@@ -149,7 +149,6 @@ public final class Server extends JavaPlugin {
         this.getCommand("discord").setExecutor(new DiscordCommand());
         this.getCommand("link").setExecutor(new DiscordLinkCommand());
         this.getCommand("togglegens").setExecutor(new ToggleGensCommand());
-        this.getCommand("testannouncement").setExecutor(new announcementTest());
         this.getCommand("hat").setExecutor(new HatCommand());
         this.getCommand("say").setExecutor(new SayCommand());
         this.getCommand("voicemute").setExecutor(new VoiceMuteCommand());
