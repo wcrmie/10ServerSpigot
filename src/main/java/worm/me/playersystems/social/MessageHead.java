@@ -192,16 +192,6 @@ public class MessageHead {
 
             }
 
-            if (message.contains("hack") || message.contains("cheat") || message.contains("hax")) {
-                Server.pluginMessage(NamedTextColor.RED + "If you think someone is hacking, please report them using /report <player>.", player);
-                sender.playSound(sender, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
-            }
-
-            if (message.contains("how") && (message.contains("stone") || message.contains("tools") || message.contains("pickaxe") || message.contains("axe") || message.contains("shovel") || message.contains("sword"))) {
-                Server.pluginMessage(NamedTextColor.GREEN + "Hover your tools in your inventory to see how to upgrade them!", player);
-                sender.playSound(sender, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
-            }
-
             player.sendMessage(component);
 
         }
