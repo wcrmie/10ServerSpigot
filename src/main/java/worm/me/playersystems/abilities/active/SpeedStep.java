@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class SpeedStep {
     private final Map<UUID, DashInfo> activeDashes = new ConcurrentHashMap<>();
-    private final int DASH_DURATION = 10;
+    private final int DASH_DURATION = 13;
     private final int POST_DASH_DURATION = 5;
     private final double DASH_SPEED = 1.07;
     private final float INITIAL_SCALE = 0.27f;
@@ -80,6 +80,9 @@ public class SpeedStep {
                     if (ticks >= DASH_DURATION) {
                         isDashing = false;
                         p.setGravity(true);
+                        Vector v = p.getVelocity();
+                        v.multiply(0.3);
+                        p.setVelocity(v);
                         Levels.addExp(5L, Levels.skillTranslation("Agility"), p);
                     }
                 }

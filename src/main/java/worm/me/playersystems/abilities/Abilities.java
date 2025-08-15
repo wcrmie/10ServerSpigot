@@ -61,7 +61,7 @@ public class Abilities {
         abilityGuiComponents.put(8, List.of("Feather-Float", "ELYTRA", ChatColor.DARK_GRAY + "Float through the air swiftly using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Feather]"));
 
         // ID 9
-        abilityGuiComponents.put(9, List.of("Speed-Step", "RABBIT_FOOT", ChatColor.DARK_GRAY + "Speed off in the direction you are looking using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Tripwire Hook]"));
+        abilityGuiComponents.put(9, List.of("Speed-Step", "RABBIT_FOOT", ChatColor.DARK_GRAY + "Speed off in the direction you are looking using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Rabbit Foot]"));
 
         // ID 10
         abilityGuiComponents.put(10, List.of("Tactical Retreat", "BOW", ChatColor.DARK_GRAY + "Gain some distance on your opponent using " + ChatColor.GRAY + "[SNEAK] + [DROP] + [Holding Bow]"));

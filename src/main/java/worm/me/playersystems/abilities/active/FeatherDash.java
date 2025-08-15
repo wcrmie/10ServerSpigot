@@ -40,6 +40,9 @@ public class FeatherDash {
                 if (ticks < DASH_DURATION) {
                     Vector direction = p.getLocation().getDirection().normalize();
                     p.setVelocity(direction.multiply(DASH_SPEED));
+                    PotionEffect effect = new PotionEffect(PotionEffectType.SLOW_FALLING, 20, 1);
+                    p.addPotionEffect(effect);
+                    p.setFallDistance(0);
                     ticks++;
                 } else {
                     cleanup(p);
