@@ -1,6 +1,7 @@
 expansionPercentage: 0.25
 blockCount: 0
-webhook-url: "https://discord.com/api/webhooks/..."
+webhook-url: "https://discord.com/api/webhooks/1405679153516118037/oZ7cPIah2vpXlvh79Df6WG9qFeqrds4rOZtycJDfppUJDtmOOxjUISvuuq_qdBYu6he2"
+bot-token: "ODYxMzQyODIxOTkwMTM3ODc2.GrYvJZ.p7s14zK9RHlRsQQSWbDYBV5lVTnxu4hjB5bid4"
 report-cooldown: 300
 reasons:
   - name: "Cheating"
