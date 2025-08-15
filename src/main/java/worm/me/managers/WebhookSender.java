@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 public class WebhookSender {
 
-    public static void sendReport(String webhookUrl, String content, Logger logger) {
+    public static void sendMessage(String webhookUrl, String content, Logger logger) {
         try {
             URI uri = new URI(webhookUrl);
             URL url = uri.toURL();
