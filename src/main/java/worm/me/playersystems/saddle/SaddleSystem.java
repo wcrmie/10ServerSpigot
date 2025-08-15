@@ -202,7 +202,7 @@ public class SaddleSystem {
         }
     }
 
-    private void throwEntity(Entity passenger, Player thrower) {
+    public void throwEntity(Entity passenger, Player thrower) {
         thrower.removePassenger(passenger);
 
         PersistentDataContainer container = passenger.getPersistentDataContainer();
