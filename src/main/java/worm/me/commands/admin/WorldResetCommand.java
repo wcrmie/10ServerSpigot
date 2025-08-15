@@ -10,6 +10,7 @@ import worm.me.gamesystems.worldreset.WorldReset;
 public class WorldResetCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (sender instanceof Player && !sender.isOp()) {
             sender.sendMessage(ChatColor.RED + "you dont have permission to use this command");
             return true;
