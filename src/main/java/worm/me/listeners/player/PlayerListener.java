@@ -179,6 +179,21 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler
+    public void onPlayerSwing(PlayerArmSwingEvent event) {
+
+        Player player = event.getPlayer();
+
+        if (player.isSneaking() && !player.getPassengers().isEmpty()) {
+
+            Entity passenger = player.getPassengers().getFirst();
+
+            SaddleSystem ss = new SaddleSystem(plugin);
+            ss.throwEntity(passenger, player);
+
+        }
+    }
+
+    @EventHandler
     public void onEntityDamage(EntityDamageEvent e){
         if (e.getEntity() instanceof Player player) {
             if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
