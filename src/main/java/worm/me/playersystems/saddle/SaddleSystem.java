@@ -116,10 +116,6 @@ public class SaddleSystem {
                 }
             }.runTaskTimer(plugin, 1L, 1L);
     }
-    
-    public void leftClick(Entity thrower, Player rider) {
-        throwEntity(thrower, rider);
-    }
 
     private void applySpecialEffects(Entity entity, Player player, boolean apply) {
         switch (entity.getType()) {
