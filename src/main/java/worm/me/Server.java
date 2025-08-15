@@ -144,6 +144,9 @@ public final class Server extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new QuestListener(), this);
 
         // Allows Command classes to register commands
+        configManager = new ConfigManager(this);
+
+        this.getCommand("report").setExecutor(new ReportCommand(this));
         this.getCommand("islandspawn").setExecutor(new IslandSpawnCommand(this));
         this.getCommand("setVoice").setExecutor(new SetVoiceCommand(this));
         this.getCommand("setGens").setExecutor(new SetGensCommand(this));
