@@ -90,7 +90,7 @@ public class BotInteractions {
 
     }
 
-    public void announcementTest() {
+    public EmbedBuilder embedMapReset() {
 
         MessageChannel announcementChannel = BotInitialize.announcementChannel;
 
