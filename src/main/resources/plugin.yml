@@ -90,3 +90,7 @@ commands:
   report:
     description: Open the report menu, or send a report in chat
     usage: /<command> <player>
+  voicemute:
+    description: Mute players who are abusing voice chat
+    usage: /<command> <player>
+    permission: 10VS.voicemute

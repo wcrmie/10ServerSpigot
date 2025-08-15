@@ -152,6 +152,7 @@ public final class Server extends JavaPlugin {
         this.getCommand("testannouncement").setExecutor(new announcementTest());
         this.getCommand("hat").setExecutor(new HatCommand());
         this.getCommand("say").setExecutor(new SayCommand());
+        this.getCommand("voicemute").setExecutor(new VoiceMuteCommand());
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 
