@@ -85,15 +85,8 @@ public class BotInteractions {
     public void announceMapReset() {
 
         MessageChannel announcementChannel = BotInitialize.announcementChannel;
-
-        EmbedBuilder embed = new EmbedBuilder();
-        embed.setTitle("Map Reset NOW!");
-        embed.setImage("https://cdn.discordapp.com/attachments/862798464046727209/1384728089531256832/guy_falling.gif?ex=68537c07&is=68522a87&hm=4645e0585e202470fabca2314ab8a2974ce1ed252035555bcf89c8bd0b97b734&");
-        embed.setFooter("This could be you!");
-        embed.setColor(Color.ORANGE);
-
-        announcementChannel.sendMessageEmbeds(embed.build()).queue();
-        announcementChannel.sendMessage("||@everyone||").queue();
+        announcementChannel.sendMessageEmbeds(embedMapReset().build()).queue();
+        announcementChannel.sendMessage("||<@&1405687316613173430>||").queue();
 
     }
 
