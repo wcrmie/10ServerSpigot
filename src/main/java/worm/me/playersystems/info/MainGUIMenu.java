@@ -141,7 +141,7 @@ public class MainGUIMenu {
 
     private static long calculateTotalBlocksForReset(WorldBorderSizeHandler borderHandler) {
         double expansionPercentage = borderHandler.getExpansionPercentage() / 100.0;
-        return (long) ((501 * 501 * 60) * expansionPercentage);
+        return (long) ((201 * 201 * 60) * expansionPercentage);
     }
 
     private static String formatTime(long seconds) {
