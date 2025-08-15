@@ -89,9 +89,8 @@ public class WorldListener implements Listener {
             VoidPlayer.registerStats(event.getPlayer(), 1);
         }
 
-        if (event.getBlock().getType().equals(Material.ICE)) {
-
-
+        if (event.getBlock().getType().equals(Material.ICE) || event.getBlock().getType().equals(Material.PACKED_ICE) || event.getBlock().getType().equals(Material.BLUE_ICE)) {
+            event.getBlock().getLocation().getWorld().dropItem(event.getBlock().getLocation(), new ItemStack(event.getBlock().getType()));
 
         }
 
