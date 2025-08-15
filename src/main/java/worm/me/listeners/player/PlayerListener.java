@@ -227,13 +227,6 @@ public class PlayerListener implements Listener {
             if (region.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
                 e.setCancelled(true);
             }
-
-            if (e.getDamageSource().getCausingEntity() instanceof Player attacker && attacker.getPassengers().contains(player)) {
-
-                SaddleSystem ss = new SaddleSystem(plugin);
-                ss.leftClick(player, attacker);
-
-            }
         }
     }
 
