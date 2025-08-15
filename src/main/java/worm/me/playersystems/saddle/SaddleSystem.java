@@ -116,8 +116,8 @@ public class SaddleSystem {
                 }
             }.runTaskTimer(plugin, 1L, 1L);
     }
-
-    public void leftClick(Player thrower, Player rider) {
+    
+    public void leftClick(Entity thrower, Player rider) {
         throwEntity(thrower, rider);
     }
 
