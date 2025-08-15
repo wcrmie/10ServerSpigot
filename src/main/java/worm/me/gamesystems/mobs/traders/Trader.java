@@ -33,6 +33,8 @@ public class Trader {
 
     public static void addGenetics(Villager villager, int[] genetics) {
 
+        if (villager.getProfession().equals(Villager.Profession.NITWIT)) villager.setProfession(Villager.Profession.NONE);
+
         int[] newGenetics = getGenetics(villager);
 
         for (int i = 0; i < genetics.length; i++) {
