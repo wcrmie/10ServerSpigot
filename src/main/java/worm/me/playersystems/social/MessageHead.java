@@ -206,6 +206,16 @@ public class MessageHead {
 
         }
 
+        if (msg.contains("hack") || msg.contains("cheat") || msg.contains("hax")) {
+            Server.pluginMessage(ChatColor.RED + "If you think someone is hacking, please report them using /report <player>.", sender);
+            sender.playSound(sender, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+        }
+
+        if (msg.contains("how") && (msg.contains("stone") || msg.contains("tool") || msg.contains("pickaxe") || msg.contains("axe") || msg.contains("shovel") || msg.contains("sword"))) {
+            Server.pluginMessage(ChatColor.GREEN + "Hover your tools in your inventory to see how to upgrade them!", sender);
+            sender.playSound(sender, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+        }
+
         BotInteractions botInteractions = new BotInteractions();
 
         msg = msg.replace("@", "◘");
