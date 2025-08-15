@@ -262,8 +262,6 @@ public class PlayerListener implements Listener {
 
         if (((Damageable) e.getItem().getItemMeta()).getDamage() + e.getDamage() >= e.getItem().getType().getMaxDurability()) {
 
-            e.setCancelled(true);
-
             String tool = e.getItem().getType().toString().toLowerCase();
 
             for (String s : worm.me.Server.tools.keySet()) {
