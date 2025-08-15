@@ -2,7 +2,6 @@ package worm.me.managers;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
-import saturn.report.Report;
 import worm.me.Server;
 
 import java.util.List;
