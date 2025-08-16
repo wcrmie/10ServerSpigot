@@ -22,6 +22,7 @@ public class WorldReset {
     private boolean oneHourWarn = false;
     private boolean fiveMinWarn = false;
     private boolean oneMinWarn = false;
+    private boolean resetNow = false;
 
 
     public static WorldReset getInstance() {
@@ -57,6 +58,7 @@ public class WorldReset {
 
 
     public void scoreAdder(){
+        loadData();
 
         Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
@@ -84,6 +86,13 @@ public class WorldReset {
                         saveData();
                     }
                 }
+
+                if (scoreNeededForReset <= resetScore && !resetNow){
+                    WorldReset.getInstance().triggerReset(null);
+                    resetNow = true;
+                    saveData();
+                }
+
             }
         }, 0L, 20L);
 
@@ -94,9 +103,6 @@ public class WorldReset {
             }
         }, 0L, 15*60*20L);
 
-        if (scoreNeededForReset <= resetScore){
-            WorldReset.getInstance().triggerReset(null);
-        }
     }
 
 
@@ -128,6 +134,11 @@ public class WorldReset {
 
         Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "WORLD RESET COMPLETE!");
 
+        oneHourWarn = false;
+        fiveMinWarn = false;
+        oneMinWarn = false;
+        resetNow = false;
+
         saveData();
     }
 
@@ -137,6 +148,7 @@ public class WorldReset {
         config.set("worldReset.oneHourWarn", oneHourWarn);
         config.set("worldReset.fiveMinWarn", fiveMinWarn);
         config.set("worldReset.oneMinWarn", oneMinWarn);
+        config.set("worldReset.resetNow", resetNow);
         plugin.saveConfig();
     }
 
@@ -146,6 +158,6 @@ public class WorldReset {
         oneHourWarn = config.getBoolean("worldReset.oneHourWarn", false);
         fiveMinWarn = config.getBoolean("worldReset.fiveMinWarn", false);
         oneMinWarn = config.getBoolean("worldReset.oneMinWarn", false);
-
+        resetNow = config.getBoolean("worldReset.resetNow", false);
     }
 }
