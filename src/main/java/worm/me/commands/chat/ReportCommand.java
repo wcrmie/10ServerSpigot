@@ -79,6 +79,8 @@ public class ReportCommand implements CommandExecutor {
             if (reportTimes[i] < System.currentTimeMillis()) {
 
                 reportTimes[i] = System.currentTimeMillis() + config.getReportCooldown() * 1000L;
+
+                pdc.set(new NamespacedKey(plugin, "reportTimes"), PersistentDataType.LONG_ARRAY, reportTimes);
                 break;
 
             }
