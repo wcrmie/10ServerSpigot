@@ -9,6 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.GuiConstructor;
 import worm.me.Server;
+import worm.me.utils.Item;
 
 import java.util.*;
 
@@ -19,10 +20,10 @@ public class ShapelessRecipes {
     public void addRecipes(){
 
         // ID 0
-        shapelessRecipeMap.put(GuiConstructor.createGuiItem(Material.COOKED_MUTTON, ChatColor.WHITE + "Salted Jerky"), List.of(List.of(new ItemStack(Material.ROTTEN_FLESH), GuiConstructor.createGuiItem(Material.QUARTZ, ChatColor.WHITE + "Salt")), List.of(GuiConstructor.createGuiItem(Material.STONE, "SALTED_JERKY"))));
+        shapelessRecipeMap.put(Item.create(Material.COOKED_MUTTON, ChatColor.WHITE + "Salted Jerky"), List.of(List.of(new ItemStack(Material.ROTTEN_FLESH), Item.create(Material.QUARTZ, ChatColor.WHITE + "Salt")), List.of(Item.create(Material.STONE, "SALTED_JERKY"))));
 
         // ID 1
-        shapelessRecipeMap.put(new ItemStack(Material.STRING, 4), List.of(List.of(new ItemStack(Material.WHITE_WOOL)), List.of(GuiConstructor.createGuiItem(Material.STONE, "STRING"))));
+        shapelessRecipeMap.put(new ItemStack(Material.STRING, 4), List.of(List.of(new ItemStack(Material.WHITE_WOOL)), List.of(Item.create(Material.STONE, "STRING"))));
 
         shapelessRecipes(shapelessRecipeMap);
 

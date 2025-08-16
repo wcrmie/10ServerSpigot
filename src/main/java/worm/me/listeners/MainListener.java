@@ -23,6 +23,7 @@ import worm.me.playersystems.info.GuideBook;
 //import worm.me.playersystems.social.skins.SkinGui;
 import worm.me.gamesystems.gear.tools.ToolsEvents;
 import worm.me.playersystems.info.MainGUIMenu;
+import worm.me.utils.Item;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -139,7 +140,7 @@ public class MainListener implements org.bukkit.event.Listener {
         if (e.getSlotType() == InventoryType.SlotType.ARMOR){
         }
 
-        if (Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).isSimilar(GuiConstructor.createGuiItem(Material.BARRIER, ChatColor.RED + "Close Menu", " ", ChatColor.GRAY + "Close this menu."))) player.closeInventory();
+        if (Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).isSimilar(Item.create(Material.BARRIER, ChatColor.RED + "Close Menu", " ", ChatColor.GRAY + "Close this menu."))) player.closeInventory();
 
         if (Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).getType() == Material.SPECTRAL_ARROW && e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Go Back")){
             GuiConstructor guiConstructor = new GuiConstructor();

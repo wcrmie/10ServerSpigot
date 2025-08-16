@@ -34,6 +34,8 @@ import worm.me.discord.bot.BotInteractions;
 import worm.me.gamesystems.blocks.ArtBlocks;
 import worm.me.gamesystems.fishing.FishingTables;
 import worm.me.gamesystems.gear.armor.ArmorBreak;
+import worm.me.gamesystems.mobs.traders.Trader;
+import worm.me.gamesystems.mobs.traders.VillagerProfession;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
 import worm.me.playersystems.abilities.active.FeatherDash;
@@ -55,6 +57,7 @@ import worm.me.playersystems.quests.QuestGui;
 import worm.me.playersystems.quests.QuestProgressEvent;
 import worm.me.playersystems.quests.Quests;
 import worm.me.playersystems.saddle.SaddleSystem;
+import worm.me.utils.Item;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -153,8 +156,27 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerRightClick(PlayerInteractEntityEvent e){
+
+        Player player = e.getPlayer();
+
         SaddleSystem sshandler = new SaddleSystem(plugin);
         sshandler.rightClick(e);
+
+        if (player.getInventory().getItemInMainHand().getType().equals(Material.KNOWLEDGE_BOOK)) {
+
+            // dont delete the item
+            e.setCancelled(true);
+
+            if (e.getRightClicked() instanceof Villager villager && villager.getProfession().equals(Villager.Profession.NITWIT)) {
+
+                ItemStack tome = player.getInventory().getItemInMainHand();
+
+                PersistentDataContainer pdc = tome.getItemMeta().getPersistentDataContainer();
+                int[] genetics = pdc.getOrDefault(new NamespacedKey(Server.getPlugin(), "genetics"), PersistentDataType.INTEGER_ARRAY, new int[VillagerProfession.values().length]);
+
+                Trader.addGenetics(villager, genetics);
+            }
+        }
     }
 
     @EventHandler
@@ -476,7 +498,7 @@ public class PlayerListener implements Listener {
         }
 
         if (e.getEntity().getType() == EntityType.PLAYER) {
-            e.getDrops().add(GuiConstructor.createGuiItem(Material.ROTTEN_FLESH, ChatColor.WHITE + "Player Flesh", ChatColor.GRAY + "A Player's flesh."));
+            e.getDrops().add(Item.create(Material.ROTTEN_FLESH, ChatColor.WHITE + "Player Flesh", ChatColor.GRAY + "A Player's flesh."));
         }
 
         e.getDrops().removeIf(item -> !Tools.toolType(item.getType()).equals("none"));

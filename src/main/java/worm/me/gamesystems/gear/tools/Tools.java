@@ -8,6 +8,7 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import worm.me.GuiConstructor;
 import worm.me.Server;
+import worm.me.utils.Item;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,10 +24,10 @@ public class Tools {
         // Create tools
         List<ItemStack> tools = new ArrayList<>();
 
-        tools.add(GuiConstructor.createGuiItem(Material.WOODEN_PICKAXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
-        tools.add(GuiConstructor.createGuiItem(Material.WOODEN_AXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
-        tools.add(GuiConstructor.createGuiItem(Material.WOODEN_SWORD, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
-        tools.add(GuiConstructor.createGuiItem(Material.WOODEN_SHOVEL, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
+        tools.add(Item.create(Material.WOODEN_PICKAXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
+        tools.add(Item.create(Material.WOODEN_AXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
+        tools.add(Item.create(Material.WOODEN_SWORD, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
+        tools.add(Item.create(Material.WOODEN_SHOVEL, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
 
         ItemMeta toolMeta = tools.getFirst().getItemMeta();
 

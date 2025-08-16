@@ -30,6 +30,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import worm.me.Server;
 import worm.me.gamesystems.SnowballKnockback;
+import worm.me.gamesystems.mobs.traders.Trader;
+import worm.me.gamesystems.mobs.traders.VillagerProfession;
 import worm.me.gamesystems.mobs.traders.Wandering;
 import worm.me.gamesystems.worldreset.WorldReset;
 import worm.me.playersystems.data.VoidPlayer;
@@ -127,6 +129,22 @@ public class WorldListener implements Listener {
                         }
 
                     });
+
+
+            Location loc = e.getLocation();
+            for (int x = loc.getBlockX() - 2; x < loc.getBlockX() + 2; x++){
+                for (int z = loc.getBlockZ() - 2; z < loc.getBlockZ() + 2; z++){
+                    for (int y = loc.getBlockY() - 2; y < loc.getBlockY(); y++){
+                        Block block = loc.getWorld().getBlockAt(x, y, z);
+                        if (block.getType() == Material.DIRT && block.getRelative(0, 1, 0).getType() == Material.AIR){
+                            int RNG = ThreadLocalRandom.current().nextInt(0, 25);
+                            if (RNG == 0) block.setType(Material.MYCELIUM);
+                        }
+                    }
+
+                }
+            }
+
         } else if (e.getSpecies() == TreeType.BROWN_MUSHROOM) {
 
             e.getLocation().getNearbyEntities(5, 5, 5).stream()
@@ -144,6 +162,21 @@ public class WorldListener implements Listener {
                         }
 
                     });
+
+            Location loc = e.getLocation();
+            for (int x = loc.getBlockX() - 2; x < loc.getBlockX() + 2; x++){
+                for (int z = loc.getBlockZ() - 2; z < loc.getBlockZ() + 2; z++){
+                    for (int y = loc.getBlockY() - 2; y < loc.getBlockY(); y++){
+                        Block block = loc.getWorld().getBlockAt(x, y, z);
+                        if (block.getType() == Material.DIRT && block.getRelative(0, 1, 0).getType() == Material.AIR){
+                            int RNG = ThreadLocalRandom.current().nextInt(0, 25);
+                            if (RNG == 0) block.setType(Material.MYCELIUM);
+                        }
+                    }
+
+                }
+            }
+
         }
     }
 
@@ -380,7 +413,9 @@ public class WorldListener implements Listener {
 
     public ItemStack generateKnowledgeTome() {
 
-        String profession = determineProfession();
+        VillagerProfession profession = determineProfession();
+
+        int[] genetics = new Trader.GeneticsBuilder().addGenetic(profession).build();
 
         ItemStack tome = new ItemStack(Material.KNOWLEDGE_BOOK);
 
@@ -388,12 +423,12 @@ public class WorldListener implements Listener {
 
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
 
-        pdc.set(new NamespacedKey(Server.getPlugin(), "profession"), PersistentDataType.STRING, profession);
+        pdc.set(new NamespacedKey(Server.getPlugin(), "genetics"), PersistentDataType.INTEGER_ARRAY, genetics);
 
         meta.setDisplayName(ChatColor.GOLD + "Villager Knowledge Tome");
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + "Right click this on a villager to train them how to use a workstation.");
-        lore.add(ChatColor.GRAY + "" + ChatColor.BOLD + "PROFESSION: " + ChatColor.RESET + profession);
+        lore.add(ChatColor.GRAY + "" + ChatColor.BOLD + "PROFESSION: " + ChatColor.RESET + profession.getName());
         meta.setLore(lore);
         tome.setItemMeta(meta);
 
@@ -401,40 +436,10 @@ public class WorldListener implements Listener {
 
     }
 
-    public String determineProfession() {
+    public VillagerProfession determineProfession() {
 
-        switch (ThreadLocalRandom.current().nextInt(0, 12)) {
-            case 0:
-                return "Armorer";
-            case 1:
-                return "Toolsmith";
-            case 2:
-                return "Weaponsmith";
-            case 3:
-                return "Librarian";
-            case 4:
-                return "Cleric";
-            case 5:
-                return "Butcher";
-            case 6:
-                return "Fletcher";
-            case 7:
-                return "Leatherworker";
-            case 8:
-                return "Cartographer";
-            case 9:
-                return "Shepherd";
-            case 10:
-                return "Farmer";
-            case 11:
-                return "Fisherman";
-            case 12:
-                return "Mason";
-            default:
-                return "Nitwit -- REPORT TO WORM";
-
-        }
-
+        int RNG = ThreadLocalRandom.current().nextInt(0, VillagerProfession.values().length - 1);
+        return VillagerProfession.values()[RNG];
 
     }
 

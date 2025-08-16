@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import worm.me.GuiConstructor;
 import worm.me.playersystems.info.MainGUIMenu;
+import worm.me.utils.Item;
 
 public class RecipesGUI {
 
@@ -17,13 +18,13 @@ public class RecipesGUI {
 
         if (page > 1){
 
-            gui.setItem(48, GuiConstructor.createGuiItem(Material.ARROW, ChatColor.GRAY + "Previous Page"));
+            gui.setItem(48, Item.create(Material.ARROW, ChatColor.GRAY + "Previous Page"));
 
         }
 
-        gui.setItem(50, GuiConstructor.createGuiItem(Material.ARROW, ChatColor.GRAY + "Next Page"));
+        gui.setItem(50, Item.create(Material.ARROW, ChatColor.GRAY + "Next Page"));
 
-        gui.setItem(4, GuiConstructor.createGuiItem(Material.CRAFTING_TABLE, ChatColor.GRAY + "Recipes"));
+        gui.setItem(4, Item.create(Material.CRAFTING_TABLE, ChatColor.GRAY + "Recipes"));
 
         ShapedRecipes shapedRecipes = new ShapedRecipes();
 
@@ -55,7 +56,7 @@ public class RecipesGUI {
     public void openRecipeGUI(Player p, ItemStack recipe){
         Inventory gui = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Recipe of " + recipe.getTranslationKey(), 45);
 
-        gui.setItem(23, GuiConstructor.createGuiItem(Material.CRAFTING_TABLE, " "));
+        gui.setItem(23, Item.create(Material.CRAFTING_TABLE, " "));
 
         int slot = 9;
 
@@ -96,7 +97,7 @@ public class RecipesGUI {
         } else if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Previous Page")){
             openMainGUI((Player) e.getWhoClicked(), page - 1);
 
-        } else if (e.getCurrentItem().equals(GuiConstructor.createGuiItem(Material.SPECTRAL_ARROW, ChatColor.GRAY + "Go Back"))){
+        } else if (e.getCurrentItem().equals(Item.create(Material.SPECTRAL_ARROW, ChatColor.GRAY + "Go Back"))){
 
             MainGUIMenu.openMainMenu((Player) e.getWhoClicked());
 
@@ -111,7 +112,7 @@ public class RecipesGUI {
     public void eventHandlerRecipe(InventoryClickEvent e){
         e.setCancelled(true);
 
-        if (e.getCurrentItem().equals(GuiConstructor.createGuiItem(Material.SPECTRAL_ARROW, ChatColor.GRAY + "Go Back"))) {
+        if (e.getCurrentItem().equals(Item.create(Material.SPECTRAL_ARROW, ChatColor.GRAY + "Go Back"))) {
 
             openMainGUI((Player) e.getWhoClicked(), 1);
         }

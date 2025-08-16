@@ -12,6 +12,7 @@ import org.bukkit.persistence.PersistentDataType;
 import worm.me.GuiConstructor;
 import worm.me.Server;
 import worm.me.gamesystems.fishing.rods.BreezeRod;
+import worm.me.utils.Item;
 
 import java.util.*;
 
@@ -23,15 +24,15 @@ public class ShapedRecipes {
 
         // ID 0
         shapedRecipeMap.put(new ItemStack(Material.RAIL, 4), List.of(List.of(new ItemStack(Material.STICK), new ItemStack(Material.AIR), new ItemStack(Material.STICK), new ItemStack(Material.STICK), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.STICK),
-                new ItemStack(Material.STICK), new ItemStack(Material.AIR), new ItemStack(Material.STICK)), List.of(GuiConstructor.createGuiItem(Material.STONE, "CHEAP_RAILS"))));
+                new ItemStack(Material.STICK), new ItemStack(Material.AIR), new ItemStack(Material.STICK)), List.of(Item.create(Material.STONE, "CHEAP_RAILS"))));
 
         // ID 1
         shapedRecipeMap.put(new ItemStack(Material.POWERED_RAIL, 2), List.of(List.of(new ItemStack(Material.STICK), new ItemStack(Material.REDSTONE), new ItemStack(Material.STICK), new ItemStack(Material.STICK), new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.STICK),
-               new ItemStack(Material.STICK), new ItemStack(Material.AIR), new ItemStack(Material.STICK)), List.of(GuiConstructor.createGuiItem(Material.STONE, "CHEAP_POWERED_RAILS"))));
+               new ItemStack(Material.STICK), new ItemStack(Material.AIR), new ItemStack(Material.STICK)), List.of(Item.create(Material.STONE, "CHEAP_POWERED_RAILS"))));
 
         // ID 2
         shapedRecipeMap.put(new ItemStack(Material.OAK_SAPLING, 1), List.of(List.of(new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.STICK), new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.STICK), new ItemStack(Material.DIRT), new ItemStack(Material.STICK),
-                new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.WATER_BUCKET), new ItemStack(Material.WHEAT_SEEDS)), List.of(GuiConstructor.createGuiItem(Material.STONE, "OAK_SAPLING"))));
+                new ItemStack(Material.WHEAT_SEEDS), new ItemStack(Material.WATER_BUCKET), new ItemStack(Material.WHEAT_SEEDS)), List.of(Item.create(Material.STONE, "OAK_SAPLING"))));
         shapedRecipeMap.put(
                 createSlimeBoots(),
                 List.of(
@@ -46,20 +47,20 @@ public class ShapedRecipes {
                                 new ItemStack(Material.AIR),
                                 new ItemStack(Material.SLIME_BLOCK)
                         ),
-                        List.of(GuiConstructor.createGuiItem(Material.STONE, "SLIME_BOOTS"))
+                        List.of(Item.create(Material.STONE, "SLIME_BOOTS"))
                 )
         );
 
 
         // ID 3, 4, and 5
         shapedRecipeMap.put(new ItemStack(Material.CHAINMAIL_CHESTPLATE, 1), List.of(List.of(new ItemStack(Material.IRON_INGOT), new ItemStack(Material.AIR), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET),
-                new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_INGOT)), List.of(GuiConstructor.createGuiItem(Material.STONE, "CHAINMAIL_CHESTPLATE"))));
+                new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_INGOT)), List.of(Item.create(Material.STONE, "CHAINMAIL_CHESTPLATE"))));
 
         shapedRecipeMap.put(new ItemStack(Material.CHAINMAIL_LEGGINGS, 1), List.of(List.of(new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.AIR), new ItemStack(Material.IRON_NUGGET),
-                new ItemStack(Material.IRON_INGOT), new ItemStack(Material.AIR), new ItemStack(Material.IRON_INGOT)), List.of(GuiConstructor.createGuiItem(Material.STONE, "CHAINMAIL_LEGGINGS"))));
+                new ItemStack(Material.IRON_INGOT), new ItemStack(Material.AIR), new ItemStack(Material.IRON_INGOT)), List.of(Item.create(Material.STONE, "CHAINMAIL_LEGGINGS"))));
 
         shapedRecipeMap.put(new ItemStack(Material.CHAINMAIL_BOOTS, 1), List.of(List.of(new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.AIR), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.AIR), new ItemStack(Material.IRON_INGOT),
-                new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "CHAINMAIL_BOOTS"))));
+                new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "CHAINMAIL_BOOTS"))));
 
         // ID 6, 7, 8
         ItemStack emeraldChestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
@@ -75,26 +76,26 @@ public class ShapedRecipes {
         emeraldChestplate.setItemMeta(meta);
 
         shapedRecipeMap.put(emeraldChestplate, List.of(List.of(new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD),
-                new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD)), List.of(GuiConstructor.createGuiItem(Material.STONE, "EMERALD_CHESTPLATE"))));
+                new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD)), List.of(Item.create(Material.STONE, "EMERALD_CHESTPLATE"))));
 
         meta.setDisplayName(ChatColor.GREEN + "Emerald Leggings");
 
         emeraldLeggings.setItemMeta(meta);
 
         shapedRecipeMap.put(emeraldLeggings, List.of(List.of(new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD),
-                new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD)), List.of(GuiConstructor.createGuiItem(Material.STONE, "EMERALD_LEGGINGS"))));
+                new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD)), List.of(Item.create(Material.STONE, "EMERALD_LEGGINGS"))));
 
         meta.setDisplayName(ChatColor.GREEN + "Emerald Boots");
 
         emeraldBoots.setItemMeta(meta);
 
         shapedRecipeMap.put(emeraldBoots, List.of(List.of(new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD),
-                new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "EMERALD_BOOTS"))));
+                new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "EMERALD_BOOTS"))));
 
         // ID 9
         shapedRecipeMap.put(new ItemStack(Material.JUKEBOX), List.of(List.of(new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),
                 new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.IRON_INGOT),new ItemStack(Material.OAK_PLANKS),
-                new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS)), List.of(GuiConstructor.createGuiItem(Material.STONE, "JUKEBOX"))));
+                new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS)), List.of(Item.create(Material.STONE, "JUKEBOX"))));
 
         shapedRecipeMap.put(
                 (new ItemStack(Material.MINECART, 1)),
@@ -110,7 +111,7 @@ public class ShapedRecipes {
                                 new ItemStack(Material.IRON_NUGGET),
                                 new ItemStack(Material.IRON_NUGGET)
                         ),
-                        List.of(GuiConstructor.createGuiItem(Material.STONE, "MINECART"))
+                        List.of(Item.create(Material.STONE, "MINECART"))
                 )
         );
 
@@ -128,7 +129,7 @@ public class ShapedRecipes {
                                 new ItemStack(Material.AIR),
                                 new ItemStack(Material.AIR)
                         ),
-                        List.of(GuiConstructor.createGuiItem(Material.STONE, "AMETHYST_SHARD"))
+                        List.of(Item.create(Material.STONE, "AMETHYST_SHARD"))
                 )
         );
 
@@ -146,7 +147,7 @@ public class ShapedRecipes {
                                 new ItemStack(Material.AMETHYST_BLOCK),
                                 new ItemStack(Material.AMETHYST_SHARD)
                         ),
-                        List.of(GuiConstructor.createGuiItem(Material.STONE, "BUDDING_AMETHYST"))
+                        List.of(Item.create(Material.STONE, "BUDDING_AMETHYST"))
                 )
         );
 
@@ -164,7 +165,7 @@ public class ShapedRecipes {
                                 new ItemStack(Material.IRON_NUGGET),
                                 new ItemStack(Material.AIR)
                         ),
-                        List.of(GuiConstructor.createGuiItem(Material.STONE, "HOPPER"))
+                        List.of(Item.create(Material.STONE, "HOPPER"))
                 )
         );
 
@@ -182,7 +183,7 @@ public class ShapedRecipes {
                                 new ItemStack(Material.GOLD_BLOCK),
                                 new ItemStack(Material.GOLD_BLOCK)
                         ),
-                        List.of(GuiConstructor.createGuiItem(Material.STONE, "ENCHANTED_GOLDEN_APPLE"))
+                        List.of(Item.create(Material.STONE, "ENCHANTED_GOLDEN_APPLE"))
                 )
         );
 
@@ -200,7 +201,7 @@ public class ShapedRecipes {
                                 new ItemStack(Material.CARROT),
                                 new ItemStack(Material.GOLD_NUGGET)
                         ),
-                        List.of(GuiConstructor.createGuiItem(Material.STONE, "GOLDEN_CARROT"))
+                        List.of(Item.create(Material.STONE, "GOLDEN_CARROT"))
                 )
         );
 
@@ -218,7 +219,7 @@ public class ShapedRecipes {
                                 new ItemStack(Material.KELP),
                                 new ItemStack(Material.KELP)
                         ),
-                        List.of(GuiConstructor.createGuiItem(Material.STONE, "IM_SPUNCHPOP"))
+                        List.of(Item.create(Material.STONE, "IM_SPUNCHPOP"))
                 )
         );
 
@@ -232,17 +233,17 @@ public class ShapedRecipes {
 
         snowball.setItemMeta(snowmeta);
 
-        shapedRecipeMap.put(snowball, List.of(List.of(new ItemStack(Material.AIR), new ItemStack(Material.CARVED_PUMPKIN), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.SNOW_BLOCK), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.SNOW_BLOCK), new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "PORTABLE_SNOWMAN"))));
+        shapedRecipeMap.put(snowball, List.of(List.of(new ItemStack(Material.AIR), new ItemStack(Material.CARVED_PUMPKIN), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.SNOW_BLOCK), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.SNOW_BLOCK), new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "PORTABLE_SNOWMAN"))));
 
         shapedRecipeMap.put(new ItemStack(Material.TNT), List.of(List.of(new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.GUNPOWDER),
-                new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.SAND)), List.of(GuiConstructor.createGuiItem(Material.STONE, "TNT"))));
+                new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.SAND)), List.of(Item.create(Material.STONE, "TNT"))));
 
-        shapedRecipeMap.put(GuiConstructor.createGuiItem(Material.WOODEN_PICKAXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "WOODEN_PICKAXE"))));
-        shapedRecipeMap.put(GuiConstructor.createGuiItem(Material.WOODEN_AXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "WOODEN_AXE"))));
-        shapedRecipeMap.put(GuiConstructor.createGuiItem(Material.WOODEN_SWORD, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "WOODEN_SWORD"))));
-        shapedRecipeMap.put(GuiConstructor.createGuiItem(Material.WOODEN_SHOVEL, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(GuiConstructor.createGuiItem(Material.STONE, "WOODEN_SHOVEL"))));
+        shapedRecipeMap.put(Item.create(Material.WOODEN_PICKAXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "WOODEN_PICKAXE"))));
+        shapedRecipeMap.put(Item.create(Material.WOODEN_AXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "WOODEN_AXE"))));
+        shapedRecipeMap.put(Item.create(Material.WOODEN_SWORD, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "WOODEN_SWORD"))));
+        shapedRecipeMap.put(Item.create(Material.WOODEN_SHOVEL, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "WOODEN_SHOVEL"))));
 
-        shapedRecipeMap.put(BreezeRod.createBreezeRod(), List.of(List.of(new ItemStack(Material.AIR), new ItemStack(Material.AIR),new ItemStack(Material.BREEZE_ROD),new ItemStack(Material.AIR),new ItemStack(Material.BREEZE_ROD),new ItemStack(Material.STRING),new ItemStack(Material.BREEZE_ROD),new ItemStack(Material.AIR),new ItemStack(Material.STRING)), List.of(GuiConstructor.createGuiItem(Material.STONE, "BREEZE_FISHING_ROD"))));
+        shapedRecipeMap.put(BreezeRod.createBreezeRod(), List.of(List.of(new ItemStack(Material.AIR), new ItemStack(Material.AIR),new ItemStack(Material.BREEZE_ROD),new ItemStack(Material.AIR),new ItemStack(Material.BREEZE_ROD),new ItemStack(Material.STRING),new ItemStack(Material.BREEZE_ROD),new ItemStack(Material.AIR),new ItemStack(Material.STRING)), List.of(Item.create(Material.STONE, "BREEZE_FISHING_ROD"))));
 
         shapedRecipes(shapedRecipeMap);
 

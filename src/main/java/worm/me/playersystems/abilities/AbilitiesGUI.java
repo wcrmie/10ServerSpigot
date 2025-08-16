@@ -10,6 +10,7 @@ import org.bukkit.persistence.PersistentDataType;
 import worm.me.GuiConstructor;
 import worm.me.Server;
 import worm.me.playersystems.data.Unlocks;
+import worm.me.utils.Item;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,30 +32,30 @@ public class AbilitiesGUI {
             String abilityName = Abilities.abilityGuiComponents.get(active[0]).getFirst();
             String abilityMaterial = Abilities.abilityGuiComponents.get(active[0]).get(1);
             String abilityDescription = Abilities.abilityGuiComponents.get(active[0]).get(2);
-            gui.setItem(11, GuiConstructor.createGuiItem(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
+            gui.setItem(11, Item.create(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
         } catch (Exception e){
-            gui.setItem(11, GuiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
+            gui.setItem(11, Item.create(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
         }
 
         try {
             String abilityName = Abilities.abilityGuiComponents.get(active[1]).getFirst();
             String abilityMaterial = Abilities.abilityGuiComponents.get(active[1]).get(1);
             String abilityDescription = Abilities.abilityGuiComponents.get(active[1]).get(2);
-            gui.setItem(13, GuiConstructor.createGuiItem(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
+            gui.setItem(13, Item.create(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
         } catch (Exception e){
 
             Server.pluginMessage("Error: " + e, p);
 
-            gui.setItem(13, GuiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
+            gui.setItem(13, Item.create(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
         }
 
         try {
             String abilityName = Abilities.abilityGuiComponents.get(active[2]).getFirst();
             String abilityMaterial = Abilities.abilityGuiComponents.get(active[2]).get(1);
             String abilityDescription = Abilities.abilityGuiComponents.get(active[2]).get(2);
-            gui.setItem(15, GuiConstructor.createGuiItem(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
+            gui.setItem(15, Item.create(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
         } catch (Exception e){
-            gui.setItem(15, GuiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
+            gui.setItem(15, Item.create(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
         }
 
         p.openInventory(gui);
@@ -109,12 +110,12 @@ public class AbilitiesGUI {
             if (Unlocks.hasAbilityUnlocked(p, i) || p.isOp()){
 
                 // Construct item
-                gui.setItem(slotNum, GuiConstructor.createGuiItem(Material.valueOf(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
+                gui.setItem(slotNum, Item.create(Material.valueOf(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
 
             } else {
 
                 // If the ability is not unlocked, add a red glass pane
-                gui.setItem(slotNum, GuiConstructor.createGuiItem(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + abilityName, Unlocks.requirementsTranslation(Abilities.abilityRequirements.get(i))));
+                gui.setItem(slotNum, Item.create(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + abilityName, Unlocks.requirementsTranslation(Abilities.abilityRequirements.get(i))));
 
             }
 

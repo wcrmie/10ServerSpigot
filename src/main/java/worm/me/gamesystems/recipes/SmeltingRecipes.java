@@ -9,6 +9,7 @@ import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.SmokingRecipe;
 import worm.me.GuiConstructor;
+import worm.me.utils.Item;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class SmeltingRecipes {
         smeltingRecipes.put(new ItemStack(Material.CHAINMAIL_BOOTS), new ItemStack(Material.IRON_NUGGET, 3));
         smeltingRecipes.put(new ItemStack(Material.RAW_IRON), new ItemStack(Material.IRON_NUGGET));
         smeltingRecipes.put(new ItemStack(Material.IRON_ORE), new ItemStack(Material.IRON_NUGGET, 2));
-        smeltingRecipes.put(new ItemStack(Material.ROTTEN_FLESH), GuiConstructor.createGuiItem(Material.DRIED_KELP, ChatColor.WHITE + "Gamey Meat"));
+        smeltingRecipes.put(new ItemStack(Material.ROTTEN_FLESH), Item.create(Material.DRIED_KELP, ChatColor.WHITE + "Gamey Meat"));
         smeltingRecipes.put(new ItemStack(Material.BELL), new ItemStack(Material.GOLD_NUGGET, 2));
         smeltingRecipes.put(new ItemStack(Material.RAW_GOLD), new ItemStack(Material.GOLD_NUGGET));
 

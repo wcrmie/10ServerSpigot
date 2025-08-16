@@ -9,6 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.GuiConstructor;
+import worm.me.utils.Item;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class QuestGui {
 
         for (int i = 0; i < 3; i++){
 
-            ItemStack item = GuiConstructor.createGuiItem(getQuestMaterial(p, i), ChatColor.GRAY + getQuestName(p, i)," ",
+            ItemStack item = Item.create(getQuestMaterial(p, i), ChatColor.GRAY + getQuestName(p, i)," ",
                     ChatColor.DARK_GRAY + getQuestDescription(p, i),
                     ChatColor.LIGHT_PURPLE + "Progress: " +
                             (container.getOrDefault(questAssign.dailyprogress, PersistentDataType.INTEGER_ARRAY, new int[3])[i] == -1 ? getQuestRequiredProgress(p, i) : container.getOrDefault(questAssign.dailyprogress, PersistentDataType.INTEGER_ARRAY, new int[3])[i]) +

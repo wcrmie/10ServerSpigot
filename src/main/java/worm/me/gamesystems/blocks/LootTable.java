@@ -5,12 +5,13 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import worm.me.GuiConstructor;
+import worm.me.utils.Item;
 
 import java.util.Map;
 
 public enum LootTable {
 
-    DIRT(Map.of(new ItemStack(Material.DIRT), 25, (GuiConstructor.createGuiItem(Material.QUARTZ, ChatColor.WHITE + "Salt")), 15, new ItemStack(Material.WHEAT_SEEDS), 10));
+    DIRT(Map.of(new ItemStack(Material.DIRT), 25, (Item.create(Material.QUARTZ, ChatColor.WHITE + "Salt")), 15, new ItemStack(Material.WHEAT_SEEDS), 10));
 
     private final Map<ItemStack, Integer> weights;
 

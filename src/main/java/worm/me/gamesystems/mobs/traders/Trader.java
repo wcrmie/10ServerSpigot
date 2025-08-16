@@ -8,9 +8,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Trader {
 
@@ -33,7 +31,7 @@ public class Trader {
 
     public static void addGenetics(Villager villager, int[] genetics) {
 
-        if (villager.getProfession().equals(Villager.Profession.NITWIT)) villager.setProfession(Villager.Profession.NONE);
+        //if (villager.getProfession().equals(Villager.Profession.NITWIT) && !Arrays.equals(genetics, new int[VillagerProfession.values().length])) villager.setProfession(Villager.Profession.NONE);
 
         int[] newGenetics = getGenetics(villager);
 
