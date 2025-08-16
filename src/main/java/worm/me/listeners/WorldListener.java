@@ -201,6 +201,34 @@ public class WorldListener implements Listener {
     }
 
     @EventHandler
+    public void onVillagerBreed(EntityBreedEvent event){
+
+        if (event.getEntity() instanceof Villager child){
+
+            Villager mother = (Villager) event.getMother();
+            Villager father = (Villager) event.getFather();
+
+            int[] motherGenetics = Trader.getGenetics(mother);
+            int[] fatherGenetics = Trader.getGenetics(father);
+
+            Trader.addGenetics(child, motherGenetics);
+            Trader.addGenetics(child, fatherGenetics);
+
+        }
+    }
+
+    @EventHandler
+    public void onVillagerEmploy(VillagerCareerChangeEvent event) {
+
+        Villager villager = event.getEntity();
+
+        if (!villager.getProfession().equals(Villager.Profession.NONE)) event.setCancelled(true);
+
+        if (Trader.getGenetics(villager)[VillagerProfession.valueOf(event.getProfession().toString()).ordinal()] != 1) event.setCancelled(true);
+
+    }
+
+    @EventHandler
     public void onEntitySpawn(EntitySpawnEvent event) {
 
         if (event.getEntity() instanceof Player) return;
