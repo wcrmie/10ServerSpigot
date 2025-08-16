@@ -34,6 +34,8 @@ public class WorldResetBlocks {
         this.isResetting = true;
 
         taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Server.getPlugin(), this::processLayer, 0L, 1L);
+
+
     }
 
     private void processLayer() {
@@ -72,10 +74,4 @@ public class WorldResetBlocks {
         WorldReset.getInstance().completeReset();
     }
 
-    public void cancelReset() {
-        if (isResetting) {
-            Bukkit.getScheduler().cancelTask(taskId);
-            isResetting = false;
-        }
-    }
 }

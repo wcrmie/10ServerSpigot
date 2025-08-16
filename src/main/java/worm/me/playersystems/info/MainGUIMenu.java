@@ -21,6 +21,8 @@ import worm.me.playersystems.data.PlayerProfileGUI;
 //import worm.me.playersystems.social.skins.SkinGui;
 import worm.me.Server;
 
+import static com.ibm.icu.lang.UCharacter.GraphemeClusterBreak.L;
+
 public class MainGUIMenu {
 
     public static void openMainMenu(Player p){
@@ -99,10 +101,7 @@ public class MainGUIMenu {
         long currentBlocks = borderHandler.getBlockCount();
         double currentSize = borderHandler.getWorldBorderSize();
 
-        long totalBlocksForReset = calculateTotalBlocksForReset(borderHandler);
-        long blocksPlacedTowardsReset = Math.min(currentBlocks, totalBlocksForReset);
-        double percentageToReset = currentSize >= 201 ? 100 :
-                (double) blocksPlacedTowardsReset / totalBlocksForReset * 100;
+        double percentageToReset = (double) ((long) worldReset.resetScore() / worldReset.scoreNeededForReset()) *100;
 
         long blocksForNextIncrease = (long) (borderHandler.calculateWorldBlockSize() *
                 (borderHandler.getExpansionPercentage() / 100.0));
@@ -110,8 +109,8 @@ public class MainGUIMenu {
         double percentageToNext = blocksForNextIncrease == 0 ? 0 :
                 (double) (currentBlocks % blocksForNextIncrease) / blocksForNextIncrease * 100;
 
-        String timerStatus = worldReset.getTimeUntilReset() > 0 ?
-                ChatColor.GRAY + "Time until reset: " + ChatColor.WHITE + formatTime(worldReset.getTimeUntilReset()) :
+        String timerStatus = worldReset.projectedTimeTillReset() > 0 ?
+                ChatColor.GRAY + "Time until reset: " + ChatColor.WHITE + formatTime((long) (worldReset.projectedTimeTillReset())) :
                 ChatColor.GRAY + "No timer active";
 
         ItemStack book = GuiConstructor.createGuiItem(
@@ -120,12 +119,13 @@ public class MainGUIMenu {
                 " ",
                 ChatColor.DARK_AQUA + "" + ChatColor.UNDERLINE + "World Reset",
                 timerStatus,
-                ChatColor.GRAY + "Progress: " + ChatColor.WHITE + blocksPlacedTowardsReset + "/" + totalBlocksForReset,
+                ChatColor.GRAY + "Progress: " + ChatColor.WHITE + (long) worldReset.resetScore() + "/" + (long) worldReset.scoreNeededForReset(),
                 ChatColor.GRAY + "Completed: " + ChatColor.WHITE + String.format("%.1f", percentageToReset) + "%",
                 " ",
                 ChatColor.DARK_AQUA + "" + ChatColor.UNDERLINE + "Border Size",
                 ChatColor.GRAY + "Current: " + ChatColor.WHITE + String.format("%.1f", currentSize),
                 ChatColor.GRAY + "Next at: " + ChatColor.WHITE + (blocksForNextIncrease - blocksRemainingToNext) + "/" + blocksForNextIncrease,
+                ChatColor.GRAY + "Blocks needed for Next: " + ChatColor.WHITE + (blocksRemainingToNext),
                 ChatColor.GRAY + "Progress: " + ChatColor.WHITE + String.format("%.1f", percentageToNext) + "%"
         );
 

@@ -8,17 +8,21 @@ import worm.me.Server;
 import worm.me.discord.bot.BotInteractions;
 
 public class WorldReset {
+    private long scoreNeededForReset = 60*60*48;
     private static WorldReset instance;
     private final Server plugin;
     private final World world;
     private final WorldBorder worldBorder;
-    private long blocksUntilReset;
-    private long resetTime;
-    private boolean resetInProgress = false;
-    private boolean blockPlacingDisabled = false;
+    private float resetScore;
+    private boolean isBlockPlacingDisabled = false;
     private WorldResetBlocks resetBlocks;
     private int originalBorderSize;
     private Location originalCenter;
+    private float addPerSecScore = 1;
+    private boolean oneHourWarn = false;
+    private boolean fiveMinWarn = false;
+    private boolean oneMinWarn = false;
+
 
     public static WorldReset getInstance() {
         if (instance == null) {
@@ -36,46 +40,72 @@ public class WorldReset {
         loadData();
     }
 
-    public void startResetTimer() {
-        if (resetInProgress) return;
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-
-            Server.pluginMessage(ChatColor.RED + "The world will reset in 1 hour!", player);
-
-        }
-
-        resetInProgress = true;
-        resetTime = System.currentTimeMillis() / 1000L + 3600;
-
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            triggerReset(null);
-        }, 3600 * 20L);
-
-        saveData();
+    public float projectedTimeTillReset(){
+        float projectedTimeTillReset = (scoreNeededForReset - resetScore)/addPerSecScore;
+        return projectedTimeTillReset;
     }
 
-    public void triggerReset(Player initiator) {
-        if (resetInProgress) return;
+    public float resetScore(){
+        float presetScore = resetScore;
+        return presetScore;
+    }
 
-        resetInProgress = true;
-        blockPlacingDisabled = true;
+    public float scoreNeededForReset(){
+        float pscoreNeededForReset = scoreNeededForReset;
+        return pscoreNeededForReset;
+    }
 
-        this.resetTime = 0;
-        this.blocksUntilReset = 0;
 
+    public void scoreAdder(){
+
+        Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
+            @Override
+            public void run() {
+                resetScore += addPerSecScore;
+
+                if(resetScore >= (scoreNeededForReset-(60L *60/addPerSecScore)) && !oneHourWarn){
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        Server.pluginMessage(ChatColor.RED + "The world is projected to reset in 1 hour!", player);
+                        oneHourWarn = true;
+                        saveData();
+                    }
+                }
+                if(resetScore >= (scoreNeededForReset-(60L *5/addPerSecScore)) && !fiveMinWarn){
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        Server.pluginMessage(ChatColor.RED + "The world is projected to reset in 5 minute!", player);
+                        fiveMinWarn = true;
+                        saveData();
+                    }
+                }
+                if(resetScore >= (scoreNeededForReset-(60L / addPerSecScore)) && !oneMinWarn){
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        Server.pluginMessage(ChatColor.RED + "The world is projected to reset in 1 minute!", player);
+                        oneMinWarn = true;
+                        saveData();
+                    }
+                }
+            }
+        }, 0L, 20L);
+
+        Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
+            @Override
+            public void run() {
+                saveData();
+            }
+        }, 0L, 15*60*20L);
+
+        if (scoreNeededForReset <= resetScore){
+            WorldReset.getInstance().triggerReset(null);
+        }
+    }
+
+
+    public void triggerReset(Player p){
+        isBlockPlacingDisabled = true;
+        Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "WORLD RESET STARTING!");
         this.originalBorderSize = (int) worldBorder.getSize();
         this.originalCenter = worldBorder.getCenter().clone();
 
-        Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "WORLD RESET STARTING!");
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "custom_spawn"),
-                    PersistentDataType.BOOLEAN,
-                    false
-            );
-        }
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.getGameMode() != GameMode.CREATIVE) {
@@ -83,80 +113,39 @@ public class WorldReset {
             }
         }
 
-        worldBorder.setSize(99);
         Server.getPlugin().getWorldBorderHandler().setBlockCount(0);
+        worldBorder.setSize(99);
         resetBlocks.startBlockReset(originalBorderSize, originalCenter);
+    }
 
-        BotInteractions botInteractions = new BotInteractions();
-        botInteractions.announceMapReset();
-
-        saveData();
+    public boolean isBlockPlacingDisabled(){
+        return (isBlockPlacingDisabled);
     }
 
     public void completeReset() {
-        blockPlacingDisabled = false;
-
-        this.resetTime = 0;
-        this.blocksUntilReset = 0;
+        isBlockPlacingDisabled = false;
+        this.resetScore = 0;
 
         Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "WORLD RESET COMPLETE!");
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "custom_spawn"),
-                    PersistentDataType.BOOLEAN,
-                    true
-            );
-        }
-
-        resetInProgress = false;
         saveData();
     }
 
-    public boolean isBlockPlacingDisabled() {
-        return blockPlacingDisabled;
-    }
-
-    public long getBlocksUntilReset() {
-        return blocksUntilReset;
-    }
-
-    public void setBlocksUntilReset(long blocks) {
-        this.blocksUntilReset = blocks;
-        saveData();
-    }
-
-    public long getTimeUntilReset() {
-        if (resetTime == 0) return -1;
-        return resetTime - (System.currentTimeMillis() / 1000L);
-    }
-
-    public boolean isResetting() {
-        return resetInProgress;
-    }
-
-    private void saveData() {
+    public void saveData() {
         FileConfiguration config = plugin.getConfig();
-        config.set("worldReset.blocksUntilReset", blocksUntilReset);
-        config.set("worldReset.resetTime", resetTime);
-        config.set("worldReset.resetInProgress", resetInProgress);
-        config.set("worldReset.blockPlacingDisabled", blockPlacingDisabled);
-        config.set("worldReset.originalBorderSize", originalBorderSize);
-        config.set("worldReset.originalCenter", originalCenter);
+        config.set("worldReset.resetTime", resetScore);
+        config.set("worldReset.oneHourWarn", oneHourWarn);
+        config.set("worldReset.fiveMinWarn", fiveMinWarn);
+        config.set("worldReset.oneMinWarn", oneMinWarn);
         plugin.saveConfig();
     }
 
-    private void loadData() {
+    public void loadData() {
         FileConfiguration config = plugin.getConfig();
-        blocksUntilReset = config.getLong("worldReset.blocksUntilReset", 0);
-        resetTime = config.getLong("worldReset.resetTime", 0);
-        resetInProgress = config.getBoolean("worldReset.resetInProgress", false);
-        blockPlacingDisabled = config.getBoolean("worldReset.blockPlacingDisabled", false);
-        originalBorderSize = config.getInt("worldReset.originalBorderSize", 0);
-        originalCenter = config.getLocation("worldReset.originalCenter");
+        resetScore = config.getLong("worldReset.resetTime", 0);
+        oneHourWarn = config.getBoolean("worldReset.oneHourWarn", false);
+        fiveMinWarn = config.getBoolean("worldReset.fiveMinWarn", false);
+        oneMinWarn = config.getBoolean("worldReset.oneMinWarn", false);
 
-        if (resetInProgress) {
-            completeReset();
-        }
     }
 }

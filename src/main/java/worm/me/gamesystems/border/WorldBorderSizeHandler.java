@@ -43,11 +43,6 @@ public class WorldBorderSizeHandler {
         this.expansionPercentage = config.getDouble(EXPANSION_PERCENTAGE_CONFIG_KEY, 0.25);
     }
 
-    public void checkForResetTrigger() {
-        if (worldBorder.getSize() >= 201) {
-            WorldReset.getInstance().startResetTimer();
-        }
-    }
 
     public void adjustWorldBorder() {
         long worldBlockSize = calculateWorldBlockSize();
@@ -57,7 +52,6 @@ public class WorldBorderSizeHandler {
                 newSize += 1;
             }
             worldBorder.setSize(newSize);
-            checkForResetTrigger();
         }
     }
 
