@@ -1,5 +1,7 @@
 package worm.me.utils;
 
+import io.papermc.paper.datacomponent.DataComponentType;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -28,16 +30,32 @@ public class Item {
         return item;
     }
 
-    public static class Enchanter {
+    public static class ItemBuilder {
 
         private final ItemStack item;
 
-        public Enchanter(ItemStack item) {
+        public ItemBuilder(ItemStack item) {
             this.item = item;
         }
 
-        public Enchanter addEnchantment(Enchantment enchantment, int level) {
+        public ItemBuilder addEnchantment(Enchantment enchantment, int level) {
             item.addUnsafeEnchantment(enchantment, level);
+            return this;
+        }
+
+        public <T> ItemBuilder addComponent(DataComponentType.Valued<T> type, T value) {
+
+            item.setData(type, value);
+            return this;
+
+        }
+
+        public ItemBuilder setName(String name) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null) {
+                meta.setDisplayName(name);
+                item.setItemMeta(meta);
+            }
             return this;
         }
 

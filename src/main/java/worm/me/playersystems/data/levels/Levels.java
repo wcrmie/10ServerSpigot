@@ -172,7 +172,7 @@ public class Levels {
 
             if (Server.getPlugin().combatMobs.containsKey(event.getEntityType())) {
 
-                if (getLevel(1, p) >= 7) {
+                if (getLevel(Skill.COMBAT.ordinal(), p) >= 7) {
                     if (event.getEntity().getKiller() != null) {
                         int goldChance = getGoldChance(p);
                         int chance = ThreadLocalRandom.current().nextInt(0, 80);
