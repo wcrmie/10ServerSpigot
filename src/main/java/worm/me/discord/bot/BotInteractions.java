@@ -100,6 +100,7 @@ public class BotInteractions {
         embed.setFooter("This could be you!");
         embed.setColor(Color.ORANGE);
         return embed;
+        return null;
     }
 
     public static void reportMessage(String reporter, String reported) {

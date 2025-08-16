@@ -21,6 +21,7 @@ import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.gamesystems.recipes.SmeltingRecipes;
 import worm.me.gamesystems.structure.generation.TreasureChests;
+import worm.me.gamesystems.worldreset.WorldReset;
 import worm.me.listeners.MainListener;
 import worm.me.listeners.QuestListener;
 import worm.me.listeners.WorldListener;
@@ -117,6 +118,8 @@ public final class Server extends JavaPlugin {
         getCommand("blockcount").setExecutor(new BlockCountCommand(WorldBorderSizeHandler));
         getCommand("expansionpercentage").setExecutor(new ExpansionPercentageCommand(WorldBorderSizeHandler));
 
+        // start worldreset score adder
+        WorldReset.getInstance().scoreAdder();
 
 
         // Allows listeners to receive events.
@@ -393,6 +396,7 @@ public final class Server extends JavaPlugin {
             playerspawning.removeAllBlocks();
         }
 
+        WorldReset.getInstance().saveData();
         JDA jda = BotInitialize.api;
 
         BotInitialize.channel.sendMessage("`Server is shutting down.`").queue();
