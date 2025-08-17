@@ -6,10 +6,7 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.persistence.PersistentDataType;
-import worm.me.GuiConstructor;
 import worm.me.Server;
 import worm.me.gamesystems.fishing.rods.BreezeRod;
 import worm.me.utils.Item;
@@ -244,6 +241,11 @@ public class ShapedRecipes {
         shapedRecipeMap.put(Item.create(Material.WOODEN_SHOVEL, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "WOODEN_SHOVEL"))));
 
         shapedRecipeMap.put(BreezeRod.createBreezeRod(), List.of(List.of(new ItemStack(Material.AIR), new ItemStack(Material.AIR),new ItemStack(Material.BREEZE_ROD),new ItemStack(Material.AIR),new ItemStack(Material.BREEZE_ROD),new ItemStack(Material.STRING),new ItemStack(Material.BREEZE_ROD),new ItemStack(Material.AIR),new ItemStack(Material.STRING)), List.of(Item.create(Material.STONE, "BREEZE_FISHING_ROD"))));
+
+        shapedRecipeMap.put(new ItemStack(Material.PISTON), List.of(List.of(new ItemStack(Material.OAK_PLANKS), new ItemStack(Material.OAK_PLANKS), new ItemStack(Material.OAK_PLANKS),
+                new ItemStack(Material.COBBLESTONE), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.COBBLESTONE),
+                new ItemStack(Material.COBBLESTONE), new ItemStack(Material.REDSTONE), new ItemStack(Material.COBBLESTONE)), List.of(Item.create(Material.STONE, "PISTON"))));
+
 
         shapedRecipes(shapedRecipeMap);
 

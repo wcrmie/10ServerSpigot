@@ -7,10 +7,8 @@ import org.bukkit.WorldBorder;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import worm.me.gamesystems.structure.generation.IslandSpawning;
-import worm.me.gamesystems.structure.generation.TreasureChests;
+import worm.me.gamesystems.structure.generation.Island;
 import worm.me.Server;
-import worm.me.gamesystems.worldreset.WorldReset;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -60,7 +58,7 @@ public class WorldBorderSizeHandler {
         if ((blockCount % 5000)==0 && blockCount != lastSpawnDone) {
             lastSpawnDone = (int) blockCount;
 
-            IslandSpawning IslandSpawningH = new IslandSpawning(plugin);
+            Island IslandSpawningH = new Island(plugin);
             IslandSpawningH.IslandSpawn(null);
         }
     }

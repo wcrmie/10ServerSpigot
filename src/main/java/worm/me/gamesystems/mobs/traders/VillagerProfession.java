@@ -50,7 +50,7 @@ public enum VillagerProfession {
                     .newTrade(new Item.ItemBuilder(new ItemStack(Material.IRON_LEGGINGS)).addEnchantment(Enchantment.PROTECTION, 1).build(), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
                     .newTrade(new Item.ItemBuilder(new ItemStack(Material.IRON_CHESTPLATE)).addEnchantment(Enchantment.PROTECTION, 1).build(), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
                     .newTrade(new ItemStack(Material.BLAST_FURNACE), new ItemStack(Material.GOLD_INGOT, 3), 3, 5)
-                    .newTrade(new ItemStack(Material.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE), new ItemStack(Material.EMERALD, 1), 1, 10)
+                    .newTrade(new ItemStack(Material.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE), new ItemStack(Material.EMERALD, 1), 3, 10)
                     .build()),
 
     BUTCHER("Butcher",
@@ -81,16 +81,14 @@ public enum VillagerProfession {
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.BLAST_FURNACE), new ItemStack(Material.GOLD_INGOT, 3), 3, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.COOKED_BEEF, 8)).addComponent(DataComponentTypes.FOOD, FoodProperties.food().nutrition(10).saturation(14).build()).setName(ChatColor.WHITE + "Ribeye Steak").build(), new ItemStack(Material.EMERALD, 1), 1, 10)
+                    .newTrade(new ItemStack(Material.RABBIT_FOOT), new ItemStack(Material.GOLD_INGOT, 3), 3, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.COOKED_BEEF, 8)).addComponent(DataComponentTypes.FOOD, FoodProperties.food().nutrition(10).saturation(14).build()).setName(ChatColor.WHITE + "Filet Mignon").build(), new ItemStack(Material.EMERALD, 1), 5, 10)
                     .build()),
 
     CARTOGRAPHER("Cartographer",
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.CHAINMAIL_LEGGINGS), new ItemStack(Material.GOLD_INGOT), 3, 10)
-                    .newTrade(new ItemStack(Material.CHAINMAIL_BOOTS), new ItemStack(Material.GOLD_NUGGET, 6), 3, 10)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 3), new ItemStack(Material.PAPER, 12), 5, 50)
+                    .newTrade(new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.COMPASS), 2, 10)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.COAL, 4), 5, 50)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET, 3), new ItemStack(Material.RAW_IRON, 6), 5, 20)
                     .newTrade(new ItemStack(Material.GOLDEN_BOOTS), new ItemStack(Material.GOLD_NUGGET, 5), 1, 5)

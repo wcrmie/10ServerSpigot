@@ -5,7 +5,6 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import io.papermc.paper.event.player.PlayerArmSwingEvent;
-import net.coreprotect.CoreProtectAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
@@ -28,7 +27,6 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
-import worm.me.GuiConstructor;
 import worm.me.Server;
 import worm.me.discord.bot.BotInteractions;
 import worm.me.gamesystems.blocks.ArtBlocks;
@@ -61,7 +59,6 @@ import worm.me.utils.Item;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -173,6 +170,8 @@ public class PlayerListener implements Listener {
 
                 PersistentDataContainer pdc = tome.getItemMeta().getPersistentDataContainer();
                 int[] genetics = pdc.getOrDefault(new NamespacedKey(Server.getPlugin(), "genetics"), PersistentDataType.INTEGER_ARRAY, new int[VillagerProfession.values().length]);
+
+                e.getPlayer().getInventory().remove(tome);
 
                 Trader.addGenetics(villager, genetics);
             }

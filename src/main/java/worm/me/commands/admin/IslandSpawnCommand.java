@@ -3,14 +3,14 @@ package worm.me.commands.admin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import worm.me.gamesystems.structure.generation.IslandSpawning;
+import worm.me.gamesystems.structure.generation.Island;
 import worm.me.Server;
 
 public class IslandSpawnCommand implements CommandExecutor {
-    private final IslandSpawning islandSpawningHandler;
+    private final Island islandSpawningHandler;
 
     public IslandSpawnCommand(Server plugin) {
-        this.islandSpawningHandler = new IslandSpawning(plugin);
+        this.islandSpawningHandler = new Island(plugin);
     }
 
     @Override

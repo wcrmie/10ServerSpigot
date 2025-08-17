@@ -12,7 +12,7 @@
 //import org.bukkit.inventory.ItemStack;
 //import org.bukkit.inventory.meta.ItemMeta;
 //import org.bukkit.persistence.PersistentDataType;
-//import worm.me.GuiConstructor;
+//import worm.me.utils.GuiConstructor;
 //import worm.me.Server;
 //
 //public class Hats {

@@ -7,8 +7,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.BlastingRecipe;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.SmokingRecipe;
-import worm.me.GuiConstructor;
 import worm.me.utils.Item;
 
 import java.util.HashMap;

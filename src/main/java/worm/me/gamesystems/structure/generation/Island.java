@@ -27,9 +27,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
 
-public class IslandSpawning {
-
-
+public class Island {
 
     public static class SchematicInfo {
         String name;
@@ -54,7 +52,7 @@ public class IslandSpawning {
     private static final Map<Location, Boolean> blocksToRemove = new HashMap<>();
     private final WorldBorderSizeHandler worldBorderSizeHandler;
 
-    public IslandSpawning(Server plugin) {
+    public Island(Server plugin) {
         this.plugin = plugin;
         this.world = Bukkit.getWorld("ul_Void");
         this.worldBorder = world.getWorldBorder();
@@ -270,9 +268,9 @@ public class IslandSpawning {
     }
 
     private static final List<SchematicInfo> SCHEMATICS = new ArrayList<>() {{
-        add(new SchematicInfo("Island1", 5, 6, 5,56));
-        add(new SchematicInfo("Island2", 9, 12, 9,206));
-        add(new SchematicInfo("Island3", 18, 14, 18,632));
+        add(new SchematicInfo("Island1", 5, 6, 5, 56));
+        add(new SchematicInfo("Island2", 9, 12, 9, 206));
+        add(new SchematicInfo("Island3", 18, 14, 18, 632));
     }};
 
 }

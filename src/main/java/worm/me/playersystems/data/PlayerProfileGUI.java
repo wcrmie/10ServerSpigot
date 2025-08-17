@@ -8,7 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import worm.me.GuiConstructor;
+import worm.me.utils.GuiConstructor;
 import worm.me.playersystems.data.levels.LevelsGUI;
 import worm.me.utils.Item;
 

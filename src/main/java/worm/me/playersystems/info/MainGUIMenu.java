@@ -12,7 +12,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.gamesystems.border.WorldBorderSizeHandler;
 import worm.me.gamesystems.recipes.RecipesGUI;
-import worm.me.GuiConstructor;
+import worm.me.utils.GuiConstructor;
 import worm.me.gamesystems.worldreset.WorldReset;
 import worm.me.playersystems.abilities.AbilitiesGUI;
 import worm.me.playersystems.generator.GeneratorEdit;
@@ -21,8 +21,6 @@ import worm.me.playersystems.data.PlayerProfileGUI;
 //import worm.me.playersystems.social.skins.SkinGui;
 import worm.me.Server;
 import worm.me.utils.Item;
-
-import static com.ibm.icu.lang.UCharacter.GraphemeClusterBreak.L;
 
 public class MainGUIMenu {
 

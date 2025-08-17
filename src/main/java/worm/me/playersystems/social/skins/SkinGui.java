@@ -9,7 +9,7 @@
 //import org.bukkit.inventory.ItemStack;
 //import org.bukkit.inventory.meta.SkullMeta;
 //import org.bukkit.inventory.meta.ItemMeta;
-//import worm.me.GuiConstructor;
+//import worm.me.utils.GuiConstructor;
 //import net.skinsrestorer.api.exception.DataRequestException;
 //import net.skinsrestorer.api.exception.MineSkinException;
 //import net.skinsrestorer.api.property.InputDataResult;

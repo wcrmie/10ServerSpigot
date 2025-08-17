@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import worm.me.GuiConstructor;
+import worm.me.utils.GuiConstructor;
 import worm.me.Server;
 import worm.me.gamesystems.recipes.RecipesGUI;
 import worm.me.playersystems.abilities.AbilitiesGUI;
