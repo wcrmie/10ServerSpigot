@@ -11,6 +11,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.checkerframework.checker.units.qual.N;
 import org.jetbrains.annotations.NotNull;
 import worm.me.Server;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
 
 public class ToggleGensCommand implements CommandExecutor {
     @Override
@@ -23,10 +25,11 @@ public class ToggleGensCommand implements CommandExecutor {
 
             if (currentVal == 0) {
                 container.set(new NamespacedKey(Server.getPlugin(), "togglegens"), PersistentDataType.INTEGER, 1);
-                Server.pluginMessage(ChatColor.GREEN + "Generators are now DISABLED.", p);
+                p.sendMessage(Message.create(MessageType.SUCCESS, "Generators are now DISABLED."));
             } else {
                 container.set(new NamespacedKey(Server.getPlugin(), "togglegens"), PersistentDataType.INTEGER, 0);
-                Server.pluginMessage(ChatColor.GREEN + "Generators are now ENABLED.", p);
+                p.sendMessage(Message.create(MessageType.SUCCESS, "Generators are now ENABLED."));
+
             }
             return true;
 

@@ -11,6 +11,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import worm.me.Server;
 import worm.me.playersystems.social.MessageHead;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
 
 public class VoiceMuteCommand implements CommandExecutor {
     @Override
@@ -25,15 +27,15 @@ public class VoiceMuteCommand implements CommandExecutor {
 
                      PermissionAttachment attachment = p.addAttachment(Server.getPlugin(), "voicechat.speak", false);
                      p.recalculatePermissions();
-                     commandSender.sendMessage(ChatColor.RED + p.getName() + " has been voice muted.");
-                     Server.pluginMessage(ChatColor.RED + "You have been voice muted.", p);
+                     commandSender.sendMessage(Message.create(MessageType.SUCCESS, p.getName() + " has been voice muted."));
+                     p.sendMessage(Message.create(MessageType.GENERIC, "You have been voice muted."));
 
                  } else {
 
                      PermissionAttachment attachment = p.addAttachment(Server.getPlugin(), "voicechat.speak", true);
                      p.recalculatePermissions();
-                     Server.pluginMessage(ChatColor.GREEN + "You are no longer voice muted.", p);
-                     commandSender.sendMessage(ChatColor.GREEN + p.getName() + " is no longer voice muted.");
+                     p.sendMessage(Message.create(MessageType.GENERIC, "You are no longer voice muted."));
+                     commandSender.sendMessage(Message.create(MessageType.SUCCESS, p.getName() + " is no longer voice muted."));
 
                  }
             }

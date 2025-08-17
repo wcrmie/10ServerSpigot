@@ -56,6 +56,8 @@ import worm.me.playersystems.quests.QuestProgressEvent;
 import worm.me.playersystems.quests.Quests;
 import worm.me.playersystems.saddle.SaddleSystem;
 import worm.me.utils.Item;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -187,7 +189,7 @@ public class PlayerListener implements Listener {
         if (Objects.requireNonNull(e.getBlock().getLocation().getWorld()).getName().equals("ul_Void_nether")) return;
         if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < 220){
             e.setCancelled(true);
-            Server.pluginMessage(ChatColor.RED + "The build area is between y = 220 and y = 280.", p);
+            p.sendMessage(Message.create(MessageType.FAIL, "The build area is between y = 220 and y = 280."));
         }
     }
 

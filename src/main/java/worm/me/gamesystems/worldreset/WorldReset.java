@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
 import worm.me.discord.bot.BotInteractions;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
 
 public class WorldReset {
     private long scoreNeededForReset = 60*60*48;
@@ -66,32 +68,26 @@ public class WorldReset {
                 resetScore += addPerSecScore;
 
                 if(resetScore >= (scoreNeededForReset-(60L *60/addPerSecScore)) && !oneHourWarn){
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        Server.pluginMessage(ChatColor.RED + "The world is projected to reset in 1 hour!", player);
-                        oneHourWarn = true;
-                        saveData();
-                    }
+                    Message.sendAll(Message.create(MessageType.GENERIC, "The world is projected to reset in 1 hour!"));
+                    oneHourWarn = true;
+                    saveData();
                 }
                 if(resetScore >= (scoreNeededForReset-(60L *5/addPerSecScore)) && !fiveMinWarn){
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        Server.pluginMessage(ChatColor.RED + "The world is projected to reset in 5 minute!", player);
-                        fiveMinWarn = true;
-                        saveData();
-                    }
+                    Message.sendAll(Message.create(MessageType.GENERIC, "The world is projected to reset in 5 minutes!"));
+                    fiveMinWarn = true;
+                    saveData();
                 }
                 if(resetScore >= (scoreNeededForReset-(60L / addPerSecScore)) && !oneMinWarn){
-                    for (Player player : Bukkit.getOnlinePlayers()) {
-                        Server.pluginMessage(ChatColor.RED + "The world is projected to reset in 1 minute!", player);
-                        oneMinWarn = true;
-                        saveData();
-                    }
+                    Message.sendAll(Message.create(MessageType.GENERIC, "The world is projected to reset in 1 minute!"));
+                    oneMinWarn = true;
+                    saveData();
                 }
 
                 if (scoreNeededForReset <= resetScore && !resetNow){
                     WorldReset.getInstance().triggerReset(null);
-                    resetNow = true;
-                    saveData();
                 }
+                resetNow = true;
+                saveData();
 
             }
         }, 0L, 20L);

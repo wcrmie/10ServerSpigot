@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import worm.me.playersystems.data.PlayerProfileGUI;
 import worm.me.Server;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
 
 public class OpenProfileGUICommand implements CommandExecutor {
 
@@ -24,7 +26,7 @@ public class OpenProfileGUICommand implements CommandExecutor {
                 try {
                     playerProfileGUI.openProfile(p.getServer().getPlayer(args[0]), p);
                 } catch (NullPointerException e){
-                    Server.pluginMessage(ChatColor.RED + "Player not found!", p);
+                    p.sendMessage(Message.create(MessageType.ERROR, "Player not found!"));
                     return false;
                 }
                 return true;
