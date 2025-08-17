@@ -353,6 +353,17 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler
+    public void onSnowballThrow(ProjectileLaunchEvent event) {
+        Projectile projectile = event.getEntity();
+
+        if (projectile instanceof Snowball snowball) {
+            if (snowball.getShooter() instanceof Player player) {
+                player.setCooldown(Material.SNOWBALL, 1);
+            }
+        }
+    }
+
+    @EventHandler
     public void onSwapHands(PlayerSwapHandItemsEvent e){
         Player p = e.getPlayer();
         if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
