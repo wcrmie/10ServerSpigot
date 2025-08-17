@@ -14,6 +14,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import worm.me.Server;
 import worm.me.discord.bot.BotInteractions;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
 
 import java.util.*;
 
@@ -197,12 +199,12 @@ public class MessageHead {
         }
 
         if (msg.contains("hack") || msg.contains("cheat") || msg.contains("hax")) {
-            Server.pluginMessage(ChatColor.RED + "If you think someone is hacking, please report them using /report <player>.", sender);
+            sender.sendMessage(Message.create(MessageType.GENERIC, "If you think someone is hacking, please report them using /report <player>."));
             sender.playSound(sender, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
         }
 
         if (msg.contains("how") && (msg.contains("stone") || msg.contains("tool") || msg.contains("pickaxe") || msg.contains("axe") || msg.contains("shovel") || msg.contains("sword"))) {
-            Server.pluginMessage(ChatColor.GREEN + "Hover your tools in your inventory to see how to upgrade them!", sender);
+            sender.sendMessage(Message.create(MessageType.GENERIC, "Hover your tools in your inventory to see how to upgrade them!"));
             sender.playSound(sender, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
         }
 

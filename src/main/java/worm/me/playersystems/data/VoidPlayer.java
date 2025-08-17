@@ -15,6 +15,8 @@ import worm.me.playersystems.social.MessageHead;
 import worm.me.gamesystems.gear.tools.Tools;
 import worm.me.playersystems.quests.QuestAssign;
 import worm.me.Server;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
 
 public class VoidPlayer {
 
@@ -149,7 +151,7 @@ public class VoidPlayer {
             container.set(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY, new long[]{System.currentTimeMillis()/1000L, 0});
         } else if (container.get(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY)[0] <= ((System.currentTimeMillis()/1000L) - 3600)) {
             container.set(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY, new long[]{System.currentTimeMillis()/1000L, 0});
-            Server.pluginMessage(ChatColor.RED + "Your reputation session has reset!", player);
+            player.sendMessage(Message.create(MessageType.GENERIC, "Your reputation session has reset!"));
         }
 
         if (!container.has(new NamespacedKey(Server.getPlugin(), "10stats"), PersistentDataType.INTEGER_ARRAY)) {

@@ -21,6 +21,8 @@ import worm.me.playersystems.data.PlayerProfileGUI;
 //import worm.me.playersystems.social.skins.SkinGui;
 import worm.me.Server;
 import worm.me.utils.Item;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
 
 public class MainGUIMenu {
 
@@ -63,14 +65,14 @@ public class MainGUIMenu {
         if (e.getSlot() == 11) {
             GuideBook.guideBook(p);
         } else if (e.getSlot() == 12) {
-            Server.pluginMessage(ChatColor.RED + "This feature is no longer available.", p);
+            p.sendMessage(Message.create(MessageType.FAIL, "This feature is no longer available."));
         } else if (e.getSlot() == 13) {
             PlayerProfileGUI playerProfileGUI = new PlayerProfileGUI();
             playerProfileGUI.openProfile(p, p);
         } else if (e.getSlot() == 14) {
-            Server.pluginMessage(ChatColor.RED + "Hats are no longer in this menu. To put something on your head, use /hat.", p);
+            p.sendMessage(Message.create(MessageType.FAIL, "Hats are no longer in this menu. To put something on your head, use /hat."));
         } else if (e.getSlot() == 15) {
-            Server.pluginMessage(ChatColor.RED + "This feature is not yet available.", p);
+            p.sendMessage(Message.create(MessageType.FAIL, "This feature is not yet available."));
         } else if (e.getSlot() == 20) {
             ItemStack clickedItem = e.getCurrentItem();
             if (clickedItem != null && clickedItem.hasItemMeta()) {

@@ -3,25 +3,31 @@ package worm.me.utils.chat;
 import org.bukkit.ChatColor;
 
 public enum MessageType {
-    FAIL(ChatColor.RED, "❌"),
-    ERROR(ChatColor.GOLD, "⚠"),
-    SUCCESS(ChatColor.GREEN, "✔"),
-    GENERIC(ChatColor.BLUE, "ℹ"),
-    ANNOUNCEMENT(ChatColor.YELLOW, "ANNOUNCEMENT");
+    FAIL(ChatColor.RED, "❌", ChatColor.RED),
+    ERROR(ChatColor.GOLD, "⚠", ChatColor.YELLOW),
+    SUCCESS(ChatColor.GREEN, "✔", ChatColor.GREEN),
+    GENERIC(ChatColor.BLUE, "ℹ", ChatColor.WHITE),
+    ANNOUNCEMENT(ChatColor.GOLD, "ANNOUNCEMENT", ChatColor.YELLOW);
 
-    final ChatColor color;
+    final ChatColor iconColor;
     final String icon;
+    final ChatColor color;
 
-    MessageType(ChatColor color, String icon) {
-        this.color = color;
+     MessageType(ChatColor iconColor, String icon, ChatColor msgColor) {
+        this.iconColor = iconColor;
         this.icon = icon;
+        this.color = msgColor;
     }
 
-    public ChatColor getColor() {
-        return color;
+    public ChatColor getIconColor() {
+        return iconColor;
     }
 
     public String getIcon() {
         return icon;
+    }
+
+    public ChatColor getMsgColor() {
+        return color;
     }
 }

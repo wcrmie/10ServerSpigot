@@ -16,6 +16,8 @@ import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
 import worm.me.gamesystems.blocks.LootTable;
 import worm.me.gamesystems.blocks.RollTable;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -108,7 +110,7 @@ public class Levels {
         Bukkit.getServer().getPluginManager().callEvent(event);
 
         setLevel(skill, player, level);
-        Server.pluginMessage(ChatColor.AQUA + "You have reached level " + level + " in " + skills.get(skill) + "!", player);
+        player.sendMessage(Message.create(MessageType.GENERIC, "You have reached level " + level + " in " + skills.get(skill) + "!"));
         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 0.8F);
     }
 

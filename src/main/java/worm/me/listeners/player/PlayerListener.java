@@ -197,7 +197,7 @@ public class PlayerListener implements Listener {
     public void onWaterPlace(PlayerBucketEmptyEvent e) {
         if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < 220) {
             e.setCancelled(true);
-            Server.pluginMessage(ChatColor.RED + "The build area is between y = 220 and y = 280.", e.getPlayer());
+            e.getPlayer().sendMessage(Message.create(MessageType.FAIL, "The build area is between y = 220 and y = 280."));
         }
     }
 
@@ -436,9 +436,9 @@ public class PlayerListener implements Listener {
         Player p = e.getPlayer();
 
         if (e.getUnlockType().equals("Ability")) {
-            worm.me.Server.pluginMessage(ChatColor.GREEN + "You have unlocked the " + Abilities.abilityGuiComponents.get(Integer.parseInt(e.getUnlock())).getFirst() + " " + e.getUnlockType(), p);
+            p.sendMessage(Message.create(MessageType.GENERIC, "You have unlocked the " + Abilities.abilityGuiComponents.get(Integer.parseInt(e.getUnlock())).getFirst() + " " + e.getUnlockType()));
         } else {
-            worm.me.Server.pluginMessage(ChatColor.GREEN + "You have unlocked the " + e.getUnlock() + " " + e.getUnlockType(), p);
+            p.sendMessage(Message.create(MessageType.GENERIC, "You have unlocked the " + e.getUnlock() + " " + e.getUnlockType()));
         }
     }
 
@@ -458,7 +458,7 @@ public class PlayerListener implements Listener {
                 if (chance < 10) {
                     e.getBlock().getLocation().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.RAW_GOLD));
                     player.playSound(player, Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 0.1F);
-                    Server.pluginMessage(ChatColor.GOLD + "Your Midas' Touch allowed you to uncover a chunk of raw gold!", player);
+                    player.sendMessage(Message.create(MessageType.GENERIC, "Your Midas' Touch allowed you to uncover a chunk of raw gold!"));
                 }
             }
         }
@@ -596,15 +596,15 @@ public class PlayerListener implements Listener {
     public void onAbilityAttempt(AbilityAttemptEvent e){
 
         Abilities ability = new Abilities();
+        Player player = e.getPlayer();
 
-        PersistentDataContainer container = e.getPlayer().getPersistentDataContainer();
+        PersistentDataContainer container = player.getPersistentDataContainer();
 
-        if (ability.isActive(e.getPlayer(), e.getAbilityID())){
-            if (Objects.requireNonNullElse(container.get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])[ability.getAbilitySlot(e.getPlayer(), e.getAbilityID())] <= System.currentTimeMillis()/1000L) {
-                ability.handleAbility(e.getPlayer(), e.getAbilityID());
+        if (ability.isActive(player, e.getAbilityID())){
+            if (Objects.requireNonNullElse(container.get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])[ability.getAbilitySlot(player, e.getAbilityID())] <= System.currentTimeMillis()/1000L) {
+                ability.handleAbility(player, e.getAbilityID());
             } else {
-
-                worm.me.Server.pluginMessage(ChatColor.RED + "Your " + Abilities.abilityGuiComponents.get(e.getAbilityID()).getFirst() + " is on cooldown for " + (container.get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY)[ability.getAbilitySlot(e.getPlayer(), e.getAbilityID())] - (System.currentTimeMillis()/1000)) + " seconds.", e.getPlayer());
+                player.sendMessage(Message.create(MessageType.FAIL, "Your " + Abilities.abilityGuiComponents.get(e.getAbilityID()).getFirst() + " is on cooldown for " + (container.get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY)[ability.getAbilitySlot(e.getPlayer(), e.getAbilityID())] - (System.currentTimeMillis()/1000)) + " seconds."));
                 e.setCancelled(true);
             }
         }

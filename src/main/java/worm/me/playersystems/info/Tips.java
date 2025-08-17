@@ -4,6 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import worm.me.Server;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -28,7 +30,7 @@ public class Tips {
 
     public void sendTip(int i, Player p){
         String tip = getTip(i);
-        Server.pluginMessage(ChatColor.GRAY + tip, p);
+        p.sendMessage(Message.create(MessageType.GENERIC, tip));
     }
 
     public void beginTipSending(Player p){
