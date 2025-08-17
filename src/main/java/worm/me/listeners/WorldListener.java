@@ -29,6 +29,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import worm.me.Server;
+import worm.me.gamesystems.items.ExperienceBottle;
 import worm.me.gamesystems.items.SnowballKnockback;
 import worm.me.gamesystems.mobs.traders.Trader;
 import worm.me.gamesystems.mobs.traders.VillagerProfession;
@@ -239,6 +240,8 @@ public class WorldListener implements Listener {
                 item.getItemStack().setData(DataComponentTypes.MAX_STACK_SIZE, 20);
             } else if (item.getItemStack().getType().equals(Material.DIRT)) {
                 item.getItemStack().setData(DataComponentTypes.MAX_STACK_SIZE, 99);
+            } else if (item.getItemStack().getType().equals(Material.GLASS_BOTTLE)) {
+                item.setItemStack(new worm.me.utils.Item.ItemBuilder(ExperienceBottle.emptyBottle).setAmount(item.getItemStack().getAmount()).build());
             }
         }
 
