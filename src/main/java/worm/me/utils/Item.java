@@ -30,6 +30,14 @@ public class Item {
         return item;
     }
 
+    public static void giveOrDrop(ItemStack item, org.bukkit.entity.Player player) {
+        if (player.getInventory().firstEmpty() != -1) {
+            player.getInventory().addItem(item);
+        } else {
+            player.getWorld().dropItemNaturally(player.getLocation(), item);
+        }
+    }
+
     public static class ItemBuilder {
 
         private final ItemStack item;
