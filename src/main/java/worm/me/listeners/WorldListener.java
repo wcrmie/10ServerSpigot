@@ -28,8 +28,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import worm.me.Server;
 import worm.me.gamesystems.SnowballKnockback;
 import worm.me.gamesystems.mobs.traders.Trader;
@@ -43,7 +42,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class WorldListener implements Listener {
 
-    private static final Logger log = LoggerFactory.getLogger(WorldListener.class);
     private final Server plugin;
 
     private static List<LivingEntity> tickList = new ArrayList<>();
