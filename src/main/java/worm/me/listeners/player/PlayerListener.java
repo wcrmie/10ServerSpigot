@@ -32,6 +32,7 @@ import worm.me.discord.bot.BotInteractions;
 import worm.me.gamesystems.blocks.ArtBlocks;
 import worm.me.gamesystems.fishing.FishingTables;
 import worm.me.gamesystems.gear.armor.ArmorBreak;
+import worm.me.gamesystems.items.ExperienceBottle;
 import worm.me.gamesystems.mobs.traders.Trader;
 import worm.me.gamesystems.mobs.traders.VillagerProfession;
 import worm.me.playersystems.abilities.Abilities;
@@ -637,6 +638,8 @@ public class PlayerListener implements Listener {
                 if (e.getItemStack().getType().equals(Material.KNOWLEDGE_BOOK)) {
                     e.setCancelled(true);
                 }
+
+                if (e.getItemStack().getType().equals(Material.GLASS_BOTTLE) && p.isSneaking()) ExperienceBottle.fillBottle(p);
 
                 if (p.getInventory().getItemInMainHand().toString().toLowerCase().contains("sword")) {
                     if (p.isSneaking()){

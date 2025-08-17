@@ -5,6 +5,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import worm.me.gamesystems.border.WorldBorderSizeHandler;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
 
 public class BlockCountCommand implements CommandExecutor {
     private final WorldBorderSizeHandler borderHandler;
@@ -28,18 +30,18 @@ public class BlockCountCommand implements CommandExecutor {
         String blockCountStr = args[0];
 
         if (!isValidNumber(blockCountStr)) {
-            sender.sendMessage(ChatColor.RED + "Invalid number format! Please provide a valid number.");
+            sender.sendMessage(Message.create(MessageType.ERROR, "Invalid number format! Please provide a valid number."));
             return false;
         }
 
         int newBlockCount = Integer.parseInt(blockCountStr);
         if (newBlockCount < 0) {
-            sender.sendMessage(ChatColor.RED + "Block count cannot be negative!");
+            sender.sendMessage(Message.create(MessageType.ERROR, "Block count cannot be negative!"));
             return false;
         }
 
         borderHandler.setBlockCount(newBlockCount);
-        sender.sendMessage(ChatColor.GREEN + "Block count set to: " + ChatColor.GOLD + newBlockCount);
+        sender.sendMessage(Message.create(MessageType.SUCCESS, "Block count set to: " + newBlockCount));
         return true;
     }
 
@@ -47,8 +49,8 @@ public class BlockCountCommand implements CommandExecutor {
         long blockCount = borderHandler.getBlockCount();
         double worldBorderSize = borderHandler.getWorldBorderSize();
 
-        sender.sendMessage(ChatColor.GREEN + "Current block count: " + ChatColor.GOLD + blockCount);
-        sender.sendMessage(ChatColor.GREEN + "Current world border size: " + ChatColor.GOLD + worldBorderSize);
+        sender.sendMessage(Message.create(MessageType.GENERIC, "Current block count: " + ChatColor.GOLD + blockCount));
+        sender.sendMessage(Message.create(MessageType.GENERIC, "Current world border size: " + ChatColor.GOLD + worldBorderSize));
     }
 
     private boolean isValidNumber(String str) {

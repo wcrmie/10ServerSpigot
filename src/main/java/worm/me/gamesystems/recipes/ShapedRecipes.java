@@ -1,5 +1,6 @@
 package worm.me.gamesystems.recipes;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
@@ -9,6 +10,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
 import worm.me.gamesystems.fishing.rods.BreezeRod;
+import worm.me.gamesystems.items.ExperienceBottle;
 import worm.me.utils.Item;
 
 import java.util.*;
@@ -246,6 +248,11 @@ public class ShapedRecipes {
                 new ItemStack(Material.COBBLESTONE), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.COBBLESTONE),
                 new ItemStack(Material.COBBLESTONE), new ItemStack(Material.REDSTONE), new ItemStack(Material.COBBLESTONE)), List.of(Item.create(Material.STONE, "PISTON"))));
 
+        shapedRecipeMap.put(new Item.ItemBuilder(ExperienceBottle.emptyBottle).setAmount(3).build(), List.of(List.of(new ItemStack(Material.GLASS), new ItemStack(Material.AIR), new ItemStack(Material.GLASS),
+                new ItemStack(Material.AIR), new ItemStack(Material.GLASS), new ItemStack(Material.AIR),
+                new ItemStack(Material.GLASS), new ItemStack(Material.AIR), new ItemStack(Material.GLASS))
+                , List.of(Item.create(Material.STONE, "GLASS_BOTTLE"))));
+
 
         shapedRecipes(shapedRecipeMap);
 
@@ -318,6 +325,8 @@ public class ShapedRecipes {
 
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "golden_carrot"));
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "tnt"));
+        Bukkit.removeRecipe(new NamespacedKey("minecraft", "piston"));
+        Bukkit.removeRecipe(new NamespacedKey("minecraft", "glass_bottle"));
 
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "hopper"));
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "minecart"));

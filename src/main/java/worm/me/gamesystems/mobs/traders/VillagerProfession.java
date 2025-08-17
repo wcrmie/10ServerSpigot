@@ -165,9 +165,9 @@ public enum VillagerProfession {
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.CHAINMAIL_LEGGINGS), new ItemStack(Material.GOLD_INGOT), 3, 10)
                     .newTrade(new ItemStack(Material.CHAINMAIL_BOOTS), new ItemStack(Material.GOLD_NUGGET, 6), 3, 10)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.COAL, 4), 5, 50)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 3), new ItemStack(Material.RAW_IRON, 6), 5, 20)
-                    .newTrade(new ItemStack(Material.GOLDEN_BOOTS), new ItemStack(Material.GOLD_NUGGET, 5), 1, 5)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.WHEAT, 8), 5, 50)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.POTATO, 18), 5, 20)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.CARROT, 5), 1, 5)
                     .build(),
 
             new Trader.TradeBuilder()

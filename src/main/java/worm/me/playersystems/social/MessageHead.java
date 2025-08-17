@@ -127,7 +127,6 @@ public class MessageHead {
             messageNewLine(newLines.get(a), world);
             newLines.get(a).setCustomName(a.getCustomName());
         }
-
     }
 
     public void messageNewLineTp(ArmorStand a, ArmorStand nl){

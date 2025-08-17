@@ -11,6 +11,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import worm.me.Server;
+import worm.me.utils.chat.Message;
 
 public class ShoutCommand implements CommandExecutor {
 
@@ -34,7 +35,7 @@ public class ShoutCommand implements CommandExecutor {
                 } else {
                     container.set(shoutCd, PersistentDataType.LONG, System.currentTimeMillis()/1000L + 300);
                 }
-                plugin.broadcast(ChatColor.GOLD + "[SHOUT] " + ChatColor.YELLOW + p.getName() + ": " + Joiner.on(" ").join(args));
+                Message.sendAll(ChatColor.GOLD + "[SHOUT] " + ChatColor.YELLOW + p.getName() + ": " + Joiner.on(" ").join(args));
                 return true;
             } else return false;
         }

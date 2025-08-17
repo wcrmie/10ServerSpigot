@@ -29,7 +29,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import worm.me.Server;
-import worm.me.gamesystems.SnowballKnockback;
+import worm.me.gamesystems.items.SnowballKnockback;
 import worm.me.gamesystems.mobs.traders.Trader;
 import worm.me.gamesystems.mobs.traders.VillagerProfession;
 import worm.me.gamesystems.mobs.traders.Wandering;

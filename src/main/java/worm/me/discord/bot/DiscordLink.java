@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import worm.me.Server;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -30,14 +32,14 @@ public class DiscordLink {
         int code = generateRandomCode();
         linking.put(code, player);
 
-        player.sendMessage(ChatColor.GREEN + "Your linking code is: " + code + ". This may be used with /link in the Discord.");
+        player.sendMessage(Message.create(MessageType.SUCCESS, "Your linking code is: " + code + ". This may be used with /link in the Discord."));
 
         new BukkitRunnable() {
             @Override
             public void run() {
                 if (linking.containsKey(code)) {
                     linking.remove(code);
-                    player.sendMessage(ChatColor.RED + "Your linking code has expired. Please generate a new one.");
+                    player.sendMessage(Message.create(MessageType.FAIL, "Your linking code has expired. Please generate a new one."));
                 }
             }
         }.runTaskLater(Server.getPlugin(), 12000L);
@@ -54,7 +56,7 @@ public class DiscordLink {
 
             BotInitialize.guild.retrieveMemberById(discordId).queue(member -> {
 
-                player.sendMessage(ChatColor.GREEN + "You have successfully linked your Discord account with" + member.getUser().getName());
+                player.sendMessage(Message.create(MessageType.SUCCESS, "You have successfully linked your Discord account with" + member.getUser().getName()));
                 linking.remove(code);
 
             });

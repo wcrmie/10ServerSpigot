@@ -6,6 +6,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.jetbrains.annotations.NotNull;
 import worm.me.gamesystems.fishing.rods.RodHandler;
+import worm.me.gamesystems.items.ExperienceBottle;
 import worm.me.playersystems.data.levels.Levels;
 import org.bukkit.inventory.ItemStack;
 
@@ -22,25 +23,25 @@ public class FishingTables {
             .add(PufferFish.class, 13, 5)
             .build();
 
-    private final Map<Material, List<Integer>> lootTable2 = new TableBuilder<Material>()
-            .add(Material.NAME_TAG, 8, 5)
-            .add(Material.SADDLE, 7, 10)
-            .add(Material.TRIPWIRE_HOOK, 1, 5)
-            .add(Material.STRING, 12, 5)
-            .add(Material.BELL, 4, 15)
-            .add(Material.ANGLER_POTTERY_SHERD, 2, 20)
-            .add(Material.MUSIC_DISC_13, 5, 10)
-            .add(Material.LEATHER, 8, 5)
-            .add(Material.LEAD, 7, 5)
-            .add(Material.ROTTEN_FLESH, 5, 5)
-            .add(Material.BONE, 5, 5)
-            .add(Material.EXPERIENCE_BOTTLE, 4, 15)
-            .add(Material.KELP, 5, 10)
-            .add(Material.SEA_PICKLE, 5, 10)
-            .add(Material.SEAGRASS, 2, 5)
-            .add(Material.SPONGE, 1, 25)
-            .add(Material.FISHING_ROD, 1, 25)
-            .add(Material.TIDE_ARMOR_TRIM_SMITHING_TEMPLATE,1 ,25 )
+    private final Map<ItemStack, List<Integer>> lootTable2 = new TableBuilder<ItemStack>()
+            .add(new ItemStack(Material.NAME_TAG), 8, 5)
+            .add(ItemStack.of(Material.SADDLE), 7, 10)
+            .add(ItemStack.of(Material.TRIPWIRE_HOOK), 1, 5)
+            .add(ItemStack.of(Material.STRING), 12, 5)
+            .add(ItemStack.of(Material.BELL), 4, 15)
+            .add(ItemStack.of(Material.ANGLER_POTTERY_SHERD), 2, 20)
+            .add(ItemStack.of(Material.MUSIC_DISC_13), 5, 10)
+            .add(ItemStack.of(Material.LEATHER), 8, 5)
+            .add(ItemStack.of(Material.LEAD), 7, 5)
+            .add(ItemStack.of(Material.ROTTEN_FLESH), 5, 5)
+            .add(ItemStack.of(Material.BONE), 5, 5)
+            .add(ExperienceBottle.fullBottle, 4, 15)
+            .add(ItemStack.of(Material.KELP), 5, 10)
+            .add(ItemStack.of(Material.SEA_PICKLE), 5, 10)
+            .add(ItemStack.of(Material.SEAGRASS), 2, 5)
+            .add(ItemStack.of(Material.SPONGE), 1, 25)
+            .add(ItemStack.of(Material.FISHING_ROD), 1, 25)
+            .add(ItemStack.of(Material.TIDE_ARMOR_TRIM_SMITHING_TEMPLATE),1 ,25 )
             .build();
 
     private final Map<Class<? extends Entity>, List<Integer>> seaCreatureTable = new TableBuilder<Class<? extends Entity>>()
@@ -190,7 +191,7 @@ public class FishingTables {
         }
     }
 
-    public ItemStack generateFishingItem(Map<Material, List<Integer>> lootTable) {
+    public ItemStack generateFishingItem(Map<ItemStack, List<Integer>> lootTable) {
 
 
         int totalWeight = 0;
@@ -203,10 +204,10 @@ public class FishingTables {
         int randomWeight = ThreadLocalRandom.current().nextInt(totalWeight);
 
         int currentWeight = 0;
-        for (Map.Entry<Material, List<Integer>> entry : lootTable.entrySet()) {
+        for (Map.Entry<ItemStack, List<Integer>> entry : lootTable.entrySet()) {
             currentWeight += entry.getValue().getFirst();
             if (randomWeight < currentWeight) {
-                return new ItemStack(entry.getKey());
+                return entry.getKey();
             }
         }
         return new ItemStack(Material.AIR);
