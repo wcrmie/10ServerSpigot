@@ -59,6 +59,11 @@ public class Item {
             return this;
         }
 
+        public ItemBuilder setAmount(int amount) {
+            item.setAmount(amount);
+            return this;
+        }
+
         public ItemStack build() {
             return item;
         }
