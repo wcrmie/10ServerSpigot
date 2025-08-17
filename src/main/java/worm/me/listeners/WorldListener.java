@@ -62,7 +62,7 @@ public class WorldListener implements Listener {
             return;
         }
 
-        plugin.getWorldBorderHandler().incrementBlockCount(event);
+        if (!event.isCancelled()) plugin.getWorldBorderHandler().incrementBlockCount(event);
         if (event.getPlayer() != null) {
             VoidPlayer.registerStats(event.getPlayer(), 0);
         }
