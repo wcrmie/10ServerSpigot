@@ -5,9 +5,9 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import worm.me.playersystems.abilities.active.AgilityDash;
-import worm.me.playersystems.abilities.active.AgilityDoubleJump;
-import worm.me.playersystems.abilities.active.AgilityLeap;
+import worm.me.playersystems.abilities.active.Dash;
+import worm.me.playersystems.abilities.active.DoubleJump;
+import worm.me.playersystems.abilities.active.Leap;
 import worm.me.playersystems.abilities.active.*;
 import worm.me.Server;
 import worm.me.playersystems.abilities.passive.SlimeBoots;
@@ -128,9 +128,9 @@ public class Abilities {
 
     }
 
-    public void handleAbility(Player p, int abilityID){
+    public void handleAbility(Player player, int abilityID){
 
-        PersistentDataContainer container = p.getPersistentDataContainer();
+        PersistentDataContainer container = player.getPersistentDataContainer();
 
         long[] cooldowns = Objects.requireNonNullElse(container.get(abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3]);
 
@@ -139,24 +139,23 @@ public class Abilities {
 
         } else if (abilityID == 1){
 
-            AgilityDoubleJump doubleJump = new AgilityDoubleJump();
-            doubleJump.doubleJump(p);
+            DoubleJump.doubleJump(player);
 
-            cooldowns[getAbilitySlot(p, 1)] = System.currentTimeMillis()/1000L + 10;
+            cooldowns[getAbilitySlot(player, 1)] = System.currentTimeMillis()/1000L + 10;
 
         } else if (abilityID == 2){
 
-            AgilityDash agilityDash = new AgilityDash();
-            agilityDash.dash(p);
+            Dash dash = new Dash();
+            dash.dash(player);
 
-            cooldowns[getAbilitySlot(p, 2)] = System.currentTimeMillis()/1000L + 10;
+            cooldowns[getAbilitySlot(player, 2)] = System.currentTimeMillis()/1000L + 10;
 
         } else if (abilityID == 3){
 
-            AgilityLeap leap = new AgilityLeap();
-            leap.leap(p);
+            Leap leap = new Leap();
+            leap.leap(player);
 
-            cooldowns[getAbilitySlot(p, 3)] = System.currentTimeMillis()/1000L + 10;
+            cooldowns[getAbilitySlot(player, 3)] = System.currentTimeMillis()/1000L + 10;
 
         } else if (abilityID == 4){
 
@@ -165,38 +164,38 @@ public class Abilities {
 
         } else if (abilityID == 5){
 
-            AbliityScream AbliityScream = new AbliityScream();
-            AbliityScream.scream(p);
+            Scream Scream = new Scream();
+            Scream.scream(player);
 
-            cooldowns[getAbilitySlot(p, 5)] = System.currentTimeMillis()/1000L + 15;
+            cooldowns[getAbilitySlot(player, 5)] = System.currentTimeMillis()/1000L + 15;
 
         } else if (abilityID == 6){
 
             ShadowStep ShadowStep = new ShadowStep();
-            ShadowStep.shadowStep(p);
+            ShadowStep.shadowStep(player);
 
-            cooldowns[getAbilitySlot(p, 6)] = System.currentTimeMillis()/1000L + 20;
+            cooldowns[getAbilitySlot(player, 6)] = System.currentTimeMillis()/1000L + 20;
 
         } else if (abilityID == 7) {
             SlimeBoots SlimeBoots = new SlimeBoots();
-            SlimeBoots.bounce(p);
+            SlimeBoots.bounce(player);
 
         } else if (abilityID == 8){
             FeatherDash featherDash = new FeatherDash();
-            featherDash.featherDash(p);
-            cooldowns[getAbilitySlot(p, 8)] = System.currentTimeMillis()/1000L + 15;
+            featherDash.featherDash(player);
+            cooldowns[getAbilitySlot(player, 8)] = System.currentTimeMillis()/1000L + 15;
         } else if (abilityID == 9){
             SpeedStep SpeedStep = new SpeedStep();
-            SpeedStep.SpeedStep(p);
-            cooldowns[getAbilitySlot(p, 9)] = System.currentTimeMillis()/1000L + 20;
+            SpeedStep.SpeedStep(player);
+            cooldowns[getAbilitySlot(player, 9)] = System.currentTimeMillis()/1000L + 20;
         } else if (abilityID == 10){
             TacticalRetreat TacticalRetreat = new TacticalRetreat();
-            TacticalRetreat.retreat(p);
-            cooldowns[getAbilitySlot(p, 10)] = System.currentTimeMillis()/1000L + 10;
+            TacticalRetreat.retreat(player);
+            cooldowns[getAbilitySlot(player, 10)] = System.currentTimeMillis()/1000L + 10;
         } else if (abilityID == 11) {
             RideArrow RideArrow = new RideArrow();
-            RideArrow.shootRiddenArrow(p);
-            cooldowns[getAbilitySlot(p, 11)] = System.currentTimeMillis()/1000L + 20;
+            RideArrow.shootRiddenArrow(player);
+            cooldowns[getAbilitySlot(player, 11)] = System.currentTimeMillis()/1000L + 20;
         }
 
 
@@ -204,7 +203,7 @@ public class Abilities {
         container.set(abilityCooldown, PersistentDataType.LONG_ARRAY, cooldowns);
 
         CooldownDisplay cd = new CooldownDisplay();
-        cd.UpdateScoreboard(p);
+        cd.UpdateScoreboard(player);
 
 
     }

@@ -8,18 +8,18 @@ import org.bukkit.util.Vector;
 import worm.me.playersystems.data.levels.Levels;
 
 
-public class AgilityLeap {
+public class Dash {
 
-    public void leap(Player p){
+    public void dash(Player p){
         Vector direction = p.getLocation().getDirection();
-        direction.multiply(0.1);
-        direction.setY(1.25);
+        direction.multiply(1.3);
+        direction.setY(0.5);
         p.setVelocity(direction);
         Levels.addExp(5L, Levels.skillTranslation("Agility"), p);
 
         World world = p.getWorld();
-        world.spawnParticle(Particle.GUST_EMITTER_SMALL, p.getLocation(), 1, 0.3, 0.00001, 0.3, 0.05);
-        world.playSound(p.getLocation(), Sound.ITEM_TRIDENT_RIPTIDE_1, .8f, 2f);
+        world.spawnParticle(Particle.SWEEP_ATTACK, p.getLocation(), 5, 0.3, 0.00001, 0.3, 0.05);
+        world.playSound(p.getLocation(), Sound.ITEM_TRIDENT_THROW, .8f, 1.5f);
 
         p.swingMainHand();
 

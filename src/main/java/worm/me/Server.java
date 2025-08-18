@@ -28,7 +28,7 @@ import worm.me.listeners.WorldListener;
 import worm.me.listeners.player.PlayerListener;
 import worm.me.managers.ConfigManager;
 import worm.me.playersystems.abilities.Abilities;
-import worm.me.playersystems.abilities.active.AgilityDoubleJump;
+import worm.me.playersystems.abilities.active.DoubleJump;
 import worm.me.playersystems.abilities.active.FeatherDash;
 import worm.me.playersystems.abilities.active.ShadowStep;
 import worm.me.playersystems.abilities.active.SpeedStep;
@@ -416,7 +416,7 @@ public final class Server extends JavaPlugin {
         featherDash.cleanupAll();
         speedStep.cleanupAll();
 
-        AgilityDoubleJump.cancelAllPlatforms();
+        DoubleJump.cancelAllPlatforms();
     }
 
     private void setupChestSpawnSchedule() {

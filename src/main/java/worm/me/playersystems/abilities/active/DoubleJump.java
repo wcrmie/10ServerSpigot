@@ -21,10 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class AgilityDoubleJump {
+public class DoubleJump {
     private static final Map<UUID, JumpPlatformInfo> activePlatforms = new HashMap<>();
 
-    public void doubleJump(Player p) {
+    public static void doubleJump(Player p) {
         cancelPlatform(p.getUniqueId());
 
         BlockDisplay platform = createJumpPlatform(p);
@@ -101,7 +101,7 @@ public class AgilityDoubleJump {
         Levels.addExp(5L, Levels.skillTranslation("Agility"), p);
     }
 
-    private BlockDisplay createJumpPlatform(Player player) {
+    private static BlockDisplay createJumpPlatform(Player player) {
         Location playerLoc = player.getLocation().clone();
 
         Location platformLocation = new Location(

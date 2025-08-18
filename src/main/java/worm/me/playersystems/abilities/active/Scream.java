@@ -5,7 +5,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import worm.me.playersystems.abilities.Abilities;
 
-public class AbliityScream {
+public class Scream {
 
     private final Abilities ability = new Abilities();
 
