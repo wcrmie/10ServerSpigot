@@ -12,6 +12,7 @@ public class SuicideCommand implements CommandExecutor {
 
         if (commandSender instanceof Player p) {
             p.setHealth(0);
+            return true;
         }
 
         return false;

@@ -29,6 +29,7 @@ public class VoiceMuteCommand implements CommandExecutor {
                      p.recalculatePermissions();
                      commandSender.sendMessage(Message.create(MessageType.SUCCESS, p.getName() + " has been voice muted."));
                      p.sendMessage(Message.create(MessageType.GENERIC, "You have been voice muted."));
+                     return true;
 
                  } else {
 
@@ -36,6 +37,7 @@ public class VoiceMuteCommand implements CommandExecutor {
                      p.recalculatePermissions();
                      p.sendMessage(Message.create(MessageType.GENERIC, "You are no longer voice muted."));
                      commandSender.sendMessage(Message.create(MessageType.SUCCESS, p.getName() + " is no longer voice muted."));
+                     return true;
 
                  }
             }
