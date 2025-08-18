@@ -9,6 +9,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -221,9 +222,7 @@ public class PlayerListener implements Listener {
     public void onEntityDamage(EntityDamageEvent e){
         if (e.getEntity() instanceof Player player) {
             if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
-                Abilities ability = new Abilities();
-                if (ability.isActive(player, 7) && !player.isSneaking()) {
-
+                if (!player.isSneaking()) {
                     if (player.getInventory().getBoots() != null) {
                         ItemStack item = player.getInventory().getBoots();
                         if (player.getInventory().getBoots().hasItemMeta()) {
@@ -234,8 +233,6 @@ public class PlayerListener implements Listener {
                                 if (data.has(key, PersistentDataType.STRING)) {
                                     SlimeBoots slimeBoots = new SlimeBoots();
                                     slimeBoots.bounce(player);
-                                    Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(7, player));
-
                                     e.setCancelled(true);
                                 }
                             }
@@ -368,6 +365,23 @@ public class PlayerListener implements Listener {
         Player p = e.getPlayer();
         if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onSneak(PlayerToggleSneakEvent event) {
+
+        if (event.isSneaking()) {
+            Player player = event.getPlayer();
+            Location playerLoc = player.getLocation();
+            BlockFace blockFace = Objects.requireNonNullElse(player.getTargetBlockFace(1), BlockFace.UP);
+            if (blockFace.equals(BlockFace.UP) || blockFace.equals(BlockFace.DOWN)) {
+                return;
+            }
+
+
+
+
         }
     }
 

@@ -9,7 +9,7 @@ import worm.me.playersystems.abilities.Abilities;
 
 public class SlimeBoots {
 
-    public void bounce(Player p) {
+    public static void bounce(Player p) {
 
         float fallDistance = p.getFallDistance();
 
