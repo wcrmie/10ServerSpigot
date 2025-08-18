@@ -127,7 +127,7 @@ public class FishingTables {
     public void handleFishing(PlayerFishEvent event) {
         if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
 
-            ItemStack rodItem = event.getPlayer().getInventory().getItem(event.getHand());
+            ItemStack rodItem = event.getPlayer().getInventory().getItem(Objects.requireNonNull(event.getHand()));
 
 
 
@@ -153,7 +153,7 @@ public class FishingTables {
 
                     item.setItemStack(itemStack);
 
-                    Levels.addExp(lootTable2.get(itemStack.getType()).get(1), 3, event.getPlayer());
+                    Levels.addExp(lootTable2.get(itemStack).get(1), 3, event.getPlayer());
 
                 } else if (rng < config.getLootTable1Weight() + config.getLootTable2Weight() + config.getSeaCreatureWeight() ) {
 
@@ -198,7 +198,7 @@ public class FishingTables {
 
         for (int i = 0; i < lootTable.size(); i++){
 
-            totalWeight += lootTable.get(lootTable.keySet().toArray(new Material[2])[i]).getFirst();
+            totalWeight += lootTable.get(lootTable.keySet().toArray(new ItemStack[2])[i]).getFirst();
 
         }
         int randomWeight = ThreadLocalRandom.current().nextInt(totalWeight);
