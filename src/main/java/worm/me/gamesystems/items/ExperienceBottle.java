@@ -20,9 +20,11 @@ public class ExperienceBottle {
     public static void fillBottle(Player player) {
 
         if (hasEnoughExperience(player)) {
-            player.setTotalExperience(player.getTotalExperience() - 10);
+            player.setExperienceLevelAndProgress(player.getTotalExperience() - 10);
 
-            player.getInventory().remove(Material.GLASS_BOTTLE);
+            int slot = player.getInventory().first(Material.GLASS_BOTTLE);
+
+            player.getInventory().setItem(slot, new Item.ItemBuilder(player.getInventory().getItem(slot)).setAmount(player.getInventory().getItem(slot).getAmount() - 1).build());
 
             Item.giveOrDrop(fullBottle, player);
 

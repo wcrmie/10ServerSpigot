@@ -250,7 +250,7 @@ public class ShapedRecipes {
 
         shapedRecipeMap.put(new Item.ItemBuilder(ExperienceBottle.emptyBottle).setAmount(3).build(), List.of(List.of(new ItemStack(Material.GLASS), new ItemStack(Material.AIR), new ItemStack(Material.GLASS),
                 new ItemStack(Material.AIR), new ItemStack(Material.GLASS), new ItemStack(Material.AIR),
-                new ItemStack(Material.GLASS), new ItemStack(Material.AIR), new ItemStack(Material.GLASS))
+                new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR))
                 , List.of(Item.create(Material.STONE, "GLASS_BOTTLE"))));
 
 
@@ -385,7 +385,7 @@ public class ShapedRecipes {
         );
 
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "You must have the slime boot ability to use this");
+        lore.add(ChatColor.GRAY + "All fall damage is nullified while wearing these. [SNEAK] to cancel a bounce.");
         meta.setLore(lore);
 
         boots.setItemMeta(meta);
