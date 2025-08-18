@@ -197,12 +197,12 @@ public class MessageHead {
 
         }
 
-        if (msg.contains("hack") || msg.contains("cheat") || msg.contains("hax")) {
+        if (msg.toLowerCase().contains("hack") || msg.toLowerCase().contains("cheat") || msg.toLowerCase().contains("hax")) {
             sender.sendMessage(Message.create(MessageType.GENERIC, "If you think someone is hacking, please report them using /report <player>."));
             sender.playSound(sender, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
         }
 
-        if (msg.contains("how") && (msg.contains("stone") || msg.contains("tool") || msg.contains("pickaxe") || msg.contains("axe") || msg.contains("shovel") || msg.contains("sword"))) {
+        if (msg.toLowerCase().contains("how") && (msg.toLowerCase().contains("stone") || msg.toLowerCase().contains("tool") || msg.toLowerCase().contains("pick") || msg.toLowerCase().contains("axe") || msg.toLowerCase().contains("shovel") || msg.toLowerCase().contains("sword"))) {
             sender.sendMessage(Message.create(MessageType.GENERIC, "Hover your tools in your inventory to see how to upgrade them!"));
             sender.playSound(sender, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
         }
