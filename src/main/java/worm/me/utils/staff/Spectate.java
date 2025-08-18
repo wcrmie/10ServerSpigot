@@ -2,6 +2,7 @@ package worm.me.utils.staff;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -24,6 +25,10 @@ public class Spectate {
     }
 
     public static void start(Player moderator, Player suspect) {
+
+        if (!moderator.getPassengers().isEmpty()) {
+            moderator.getPassengers().forEach(Entity::leaveVehicle);
+        }
 
         if (!spectators.containsKey(moderator)) {
             spectators.put(moderator, moderator.getLocation());
