@@ -4,11 +4,12 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Spectate {
 
-    public static Map<Player, Location> spectators;
+    public static Map<Player, Location> spectators = new HashMap<>();
 
     public static boolean stop(Player player) {
 

@@ -24,7 +24,7 @@ public class SpectateCommand implements CommandExecutor {
             }
 
             String arg = strings[0];
-            if (!arg.equalsIgnoreCase("stop")) {
+            if (arg.equalsIgnoreCase("stop")) {
                 if (!Spectate.stop(moderator)) {
                     moderator.sendMessage(Message.create(MessageType.ERROR, "You are not currently spectating anyone."));
                     return true;
