@@ -82,7 +82,7 @@ public class BotInteractions {
         channel.sendMessageEmbeds(embed.build()).queue();
     }
 
-    public void announceMapReset() {
+    public static void announceMapReset() {
 
         MessageChannel announcementChannel = BotInitialize.announcementChannel;
         announcementChannel.sendMessageEmbeds(embedMapReset().build()).queue();
@@ -90,7 +90,7 @@ public class BotInteractions {
 
     }
 
-    public EmbedBuilder embedMapReset() {
+    public static EmbedBuilder embedMapReset() {
 
         MessageChannel announcementChannel = BotInitialize.announcementChannel;
 

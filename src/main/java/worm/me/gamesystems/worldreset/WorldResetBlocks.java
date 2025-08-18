@@ -3,6 +3,7 @@ package worm.me.gamesystems.worldreset;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import worm.me.Server;
+import worm.me.discord.bot.BotInteractions;
 
 public class WorldResetBlocks {
     private final World world;
@@ -17,7 +18,7 @@ public class WorldResetBlocks {
     private final int minExcludeX = -4;
     private final int maxExcludeX = 4;
     private final int minExcludeY = 218;
-    private final int maxExcludeY = 225;
+    private final int maxExcludeY = 224;
     private final int minExcludeZ = -4;
     private final int maxExcludeZ = 4;
 
@@ -72,6 +73,7 @@ public class WorldResetBlocks {
         Bukkit.getScheduler().cancelTask(taskId);
         isResetting = false;
         WorldReset.getInstance().completeReset();
+        BotInteractions.announceMapReset();
     }
 
 }

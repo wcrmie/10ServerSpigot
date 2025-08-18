@@ -83,7 +83,8 @@ public class WorldReset {
                     saveData();
                 }
 
-                if (scoreNeededForReset <= resetScore && !resetNow){
+                if (scoreNeededForReset <= resetScore){
+                    resetScore = 0;
                     WorldReset.getInstance().triggerReset(null);
                 }
                 resetNow = true;
