@@ -33,12 +33,12 @@ public class PlayerSpawning {
         zMoreThan = (int) ((center.getZ() - (borderSize / 2)))/3;
         zLessThan = (int) ((center.getZ() + (borderSize / 2)) - 1)/3;
 
-        yMoreThan = Math.max(world.getMinHeight(), 220);
+        yMoreThan = Math.max(world.getMinHeight(), 219);
         yLessThan = Math.min(world.getMaxHeight(), 280);
     }
 
     public Location worldBorderGetRandomBlock() {
-        Location spawnCenter = new Location(world, 0.5, 240, 0.5);
+        Location spawnCenter = new Location(world, 0.5, 220, 0.5);
         int excludeRadius = 10;
 
         Location randomLocation;

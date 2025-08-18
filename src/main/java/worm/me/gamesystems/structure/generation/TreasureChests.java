@@ -66,12 +66,12 @@ public class TreasureChests {
         xLessThan = (int) (borderSize / 2) - 1;
         zMoreThan = (int) ((borderSize / 2) * -1);
         zLessThan = (int) (borderSize / 2) - 1;
-        yMoreThan = 220;
+        yMoreThan = 219;
         yLessThan = 280;
     }
 
     public Location worldBorderGetRandomBlock() {
-        Location spawnCenter = new Location(world, 0.5, 240, 0.5);
+        Location spawnCenter = new Location(world, 0.5, 220, 0.5);
         int excludeRadius = 20;
 
         Location randomLocation;

@@ -66,12 +66,12 @@ public class Island {
         xLessThan = (int) (center.getX() + (borderSize / 2)-edgeBufferX);
         zMoreThan = (int) (center.getZ() - (borderSize / 2)+edgeBufferZ);
         zLessThan = (int) (center.getZ() + (borderSize / 2)-edgeBufferZ);
-        yMoreThan = Math.max(world.getMinHeight(), 220+edgeBufferY);
+        yMoreThan = Math.max(world.getMinHeight(), 219+edgeBufferY);
         yLessThan = Math.min(world.getMaxHeight(), 280-edgeBufferY);
     }
 
     public Location worldBorderGetRandomBlock(int maxSizeNum) {
-        Location spawnCenter = new Location(world, 0.5, 240, 0.5);
+        Location spawnCenter = new Location(world, 0.5, 220, 0.5);
         int excludeRadius = maxSizeNum + 20;
 
         Location randomLocation;

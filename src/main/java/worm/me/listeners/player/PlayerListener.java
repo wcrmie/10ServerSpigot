@@ -188,7 +188,7 @@ public class PlayerListener implements Listener {
         // Height limit for building
         if (p.getGameMode() == GameMode.CREATIVE) return;
         if (Objects.requireNonNull(e.getBlock().getLocation().getWorld()).getName().equals("ul_Void_nether")) return;
-        if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < 220){
+        if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < 219){
             e.setCancelled(true);
             p.sendMessage(Message.create(MessageType.FAIL, "The build area is between y = 220 and y = 280."));
         }
@@ -196,7 +196,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onWaterPlace(PlayerBucketEmptyEvent e) {
-        if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < 220) {
+        if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < 219) {
             e.setCancelled(true);
             e.getPlayer().sendMessage(Message.create(MessageType.FAIL, "The build area is between y = 220 and y = 280."));
         }
@@ -650,7 +650,10 @@ public class PlayerListener implements Listener {
                     e.setCancelled(true);
                 }
 
-                if (e.getItemStack().getType().equals(Material.GLASS_BOTTLE) && p.isSneaking()) ExperienceBottle.fillBottle(p);
+                if (e.getItemStack().getType().equals(Material.GLASS_BOTTLE) && p.isSneaking()) {
+                    e.setCancelled(true);
+                    ExperienceBottle.fillBottle(p);
+                }
 
                 if (p.getInventory().getItemInMainHand().toString().toLowerCase().contains("sword")) {
                     if (p.isSneaking()){
@@ -826,7 +829,7 @@ public class PlayerListener implements Listener {
             player.teleport(
                     new Location(
                             Bukkit.getWorld("ul_Void"),
-                            0.5, 240, 0.5,
+                            0.5, 220, 0.5,
                             0, 0
                     ));
 
@@ -869,7 +872,7 @@ public class PlayerListener implements Listener {
 
             event.setRespawnLocation(new Location(
                     Bukkit.getWorld("ul_Void"),
-                    0.5, 240, 0.5,
+                    0.5, 220, 0.5,
                     0, 0
             ));
 

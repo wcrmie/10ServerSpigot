@@ -8,7 +8,7 @@ public class WorldResetBlocks {
     private final World world;
     private int originalBorderSize;
     private final int worldHeightTop = 280+40;
-    private final int worldHeightBottom = 220-10;
+    private final int worldHeightBottom = 219-10;
     private int currentLayer;
     private static boolean isResetting = false;
     private int taskId = -1;
@@ -16,8 +16,8 @@ public class WorldResetBlocks {
 
     private final int minExcludeX = -4;
     private final int maxExcludeX = 4;
-    private final int minExcludeY = 238;
-    private final int maxExcludeY = 245;
+    private final int minExcludeY = 218;
+    private final int maxExcludeY = 225;
     private final int minExcludeZ = -4;
     private final int maxExcludeZ = 4;
 
