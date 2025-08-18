@@ -94,3 +94,7 @@ commands:
     description: Mute players who are abusing voice chat
     usage: /<command> <player>
     permission: 10VS.voicemute
+  spectate:
+    description: Spectate players who may be breaking the rules
+    usage: /<command> <player/stop>
+    permission: 10VS.spectate

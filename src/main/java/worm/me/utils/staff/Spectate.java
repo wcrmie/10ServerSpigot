@@ -1,0 +1,34 @@
+package worm.me.utils.staff;
+
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+import java.util.Map;
+
+public class Spectate {
+
+    public static Map<Player, Location> spectators;
+
+    public static boolean stop(Player player) {
+
+        if (!spectators.containsKey(player)) {
+            return false; // Player is not spectating
+        }
+
+        player.teleport(spectators.get(player));
+        player.setGameMode(GameMode.SURVIVAL);
+        spectators.remove(player);
+        return true;
+    }
+
+    public static void start(Player moderator, Player suspect) {
+
+        if (!spectators.containsKey(moderator)) {
+            spectators.put(moderator, moderator.getLocation());
+        }
+        moderator.setGameMode(GameMode.SPECTATOR);
+        moderator.teleport(suspect.getLocation());
+    }
+
+}
