@@ -59,7 +59,7 @@ public class ChatModeration {
 
     public static String filterMessage(String message) {
 
-        return message.toLowerCase().replaceAll("1", "i").replaceAll("3", "e").replaceAll("4", "a").replaceAll("5", "s").replaceAll("8", "b").replaceAll("!", "i").replaceAll("9", "g"); // Return the filtered message
+        return message.toLowerCase().replaceAll("1", "i").replaceAll("3", "e").replaceAll("4", "a").replaceAll("5", "s").replaceAll("8", "b").replaceAll("!", "i").replaceAll("9", "g").replaceAll("0", "o"); // Return the filtered message
     }
 
     public static void notifyStaff(String message, Player player) {
