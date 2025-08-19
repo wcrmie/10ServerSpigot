@@ -66,6 +66,8 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static worm.me.utils.staff.ChatModeration.*;
+
 public class PlayerListener implements Listener {
 
     private final Server plugin;
@@ -430,8 +432,15 @@ public class PlayerListener implements Listener {
 
         if (msgLength == 0) {
             p.sendMessage(Message.create(MessageType.FAIL, "You are currently muted. You may appeal on discord by making a ticket."));
+            return;
+        }
 
+        if (filterFlagged(m)) {
 
+            mute(p);
+            notifyStaff(m, p);
+            event.setCancelled(true);
+            return;
         }
 
         if (m.length() > msgLength){

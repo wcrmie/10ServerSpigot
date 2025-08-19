@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 import worm.me.utils.player.Online;
-import worm.me.utils.staff.ChatLimit;
+import worm.me.utils.staff.ChatModeration;
 
 public class MuteCommand implements CommandExecutor {
     @Override
@@ -27,12 +27,12 @@ public class MuteCommand implements CommandExecutor {
             return true;
         }
 
-        if (ChatLimit.getChatLimit(player) == 0) {
+        if (ChatModeration.getChatLimit(player) == 0) {
             sender.sendMessage(Message.create(MessageType.FAIL, player.getName() + " is already muted."));
             return true;
         }
 
-        ChatLimit.mute(player);
+        ChatModeration.mute(player);
         sender.sendMessage(Message.create(MessageType.SUCCESS, player.getName() + " has been muted."));
         return true;
     }

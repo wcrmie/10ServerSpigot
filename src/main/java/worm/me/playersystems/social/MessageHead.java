@@ -33,11 +33,11 @@ public class MessageHead {
 
     public static final Map<ArmorStand, ArmorStand> newLines = new HashMap<>();
 
-    public final NamespacedKey armorStandExists = new NamespacedKey("10server", "armorstandexists");
+    public static final NamespacedKey armorStandExists = new NamespacedKey("10server", "armorstandexists");
 
-    public final NamespacedKey voice = new NamespacedKey("10server", "voice");
+    public static final NamespacedKey voice = new NamespacedKey("10server", "voice");
 
-    public final NamespacedKey voicePitch = new NamespacedKey("10server", "pitch");
+    public static final NamespacedKey voicePitch = new NamespacedKey("10server", "pitch");
 
     public static final NamespacedKey msgLength = new NamespacedKey("10server", "msglength");
 
@@ -56,7 +56,7 @@ public class MessageHead {
 
         // Associate a specific armor stand with the player
         map.get(p).remove();
-        this.playerArmorStand.put(p, chat);
+        playerArmorStand.put(p, chat);
         container.set(armorStandExists, PersistentDataType.BOOLEAN, true);
 
         // Set armor stand properties
