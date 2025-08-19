@@ -86,6 +86,7 @@ public class WorldReset {
                 if (scoreNeededForReset <= resetScore){
                     resetScore = 0;
                     WorldReset.getInstance().triggerReset(null);
+                    resetNow = true;
                 }
                 resetNow = true;
                 saveData();
