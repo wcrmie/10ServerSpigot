@@ -39,7 +39,7 @@ public class MessageHead {
 
     public final NamespacedKey voicePitch = new NamespacedKey("10server", "pitch");
 
-    public final NamespacedKey msgLength = new NamespacedKey("10server", "msglength");
+    public static final NamespacedKey msgLength = new NamespacedKey("10server", "msglength");
 
     public void messageDisplay(Player p, String m) {
 

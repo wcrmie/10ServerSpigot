@@ -1,4 +1,4 @@
-package worm.me.managers;
+package worm.me.utils.managers;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;

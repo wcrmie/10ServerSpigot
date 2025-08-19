@@ -19,16 +19,12 @@ import worm.me.gamesystems.gear.tools.Tools;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static worm.me.utils.player.Online.hasEmptySlot;
+
 public class Generator {
 
-    private final Server plugin;
 
-    public Generator(Server plugin) {
-        this.plugin = plugin;
-    }
-
-
-    public void generateItem(Player player){
+    public static void generateItem(Player player){
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -51,30 +47,19 @@ public class Generator {
                     }
                 } else cancel();
             }
-        }.runTaskTimer(plugin, 200, 200);
-    }
-
-    // Check if the player has an empty slot
-    public boolean hasEmptySlot(Player player) {
-        Inventory inventory = player.getInventory();
-        for (ItemStack item : inventory.getContents()) {
-            if (item == null || item.getType() == Material.AIR) {
-                return true;
-            }
-        }
-        return false;
+        }.runTaskTimer(Server.getPlugin(), 200, 200);
     }
 
     // Declares randomItem variable
-    private Material randomItem;
+    private static Material randomItem;
 
     // Allows the setting of a random item.
-    private void setRandomItem(Material m){
+    private static void setRandomItem(Material m){
         randomItem = m;
     }
 
     // Generates the random item the player is given
-    public ItemStack randomItem(Player p){
+    public static ItemStack randomItem(Player p){
         PersistentDataContainer container = p.getPersistentDataContainer();
         GeneratorEdit genEdit = new GeneratorEdit();
         int RNG = ThreadLocalRandom.current().nextInt(0,100);

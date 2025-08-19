@@ -1,4 +1,4 @@
-package worm.me.managers;
+package worm.me.utils.managers;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -11,19 +11,14 @@ import java.util.stream.Collectors;
 @SuppressWarnings("deprecation")
 public class ConfigManager {
 
-    private final Server plugin;
     private List<Map<String, Object>> reasons; // List of reason maps
     private String webhookUrl;
     private long reportCooldown;
-
-    public ConfigManager(Server plugin) {
-        this.plugin = plugin;
-        loadConfig();
-    }
+    private List<String> blacklistedWords;
 
     public void loadConfig() {
-        plugin.reloadConfig();
-        FileConfiguration config = plugin.getConfig();
+        Server.getPlugin().reloadConfig();
+        FileConfiguration config = Server.getPlugin().getConfig();
 
         reportCooldown = config.getLong("report-cooldown");
 
@@ -51,6 +46,8 @@ public class ConfigManager {
                     return reasonMap;
                 })
                 .collect(Collectors.toList());
+
+        blacklistedWords = config.getStringList("blacklisted-words");
     }
 
     public List<Map<String, Object>> getReasons() {
