@@ -13,35 +13,36 @@ import worm.me.Server;
 import worm.me.playersystems.social.MessageHead;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
+import worm.me.utils.player.Online;
 
 public class VoiceMuteCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] strings) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args) {
 
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            if (p.getName().equals(strings[0])) {
+        Player p = Online.find(args[0]);
 
-
-
-                 if (p.hasPermission("voicechat.speak")) {
-
-                     PermissionAttachment attachment = p.addAttachment(Server.getPlugin(), "voicechat.speak", false);
-                     p.recalculatePermissions();
-                     commandSender.sendMessage(Message.create(MessageType.SUCCESS, p.getName() + " has been voice muted."));
-                     p.sendMessage(Message.create(MessageType.GENERIC, "You have been voice muted."));
-                     return true;
-
-                 } else {
-
-                     PermissionAttachment attachment = p.addAttachment(Server.getPlugin(), "voicechat.speak", true);
-                     p.recalculatePermissions();
-                     p.sendMessage(Message.create(MessageType.GENERIC, "You are no longer voice muted."));
-                     commandSender.sendMessage(Message.create(MessageType.SUCCESS, p.getName() + " is no longer voice muted."));
-                     return true;
-
-                 }
-            }
+        if (p == null) {
+            commandSender.sendMessage(Message.create(MessageType.ERROR, "Player not found!"));
+            commandSender.sendMessage(Message.create(MessageType.ERROR, "Usage: /voicemute <player>"));
+            return true;
         }
-        return false;
+
+        if (p.hasPermission("voicechat.speak")) {
+
+            PermissionAttachment attachment = p.addAttachment(Server.getPlugin(), "voicechat.speak", false);
+            p.recalculatePermissions();
+            commandSender.sendMessage(Message.create(MessageType.SUCCESS, p.getName() + " has been voice muted."));
+            p.sendMessage(Message.create(MessageType.GENERIC, "You have been voice muted."));
+            return true;
+
+        } else {
+
+            PermissionAttachment attachment = p.addAttachment(Server.getPlugin(), "voicechat.speak", true);
+            p.recalculatePermissions();
+            p.sendMessage(Message.create(MessageType.GENERIC, "You are no longer voice muted."));
+            commandSender.sendMessage(Message.create(MessageType.SUCCESS, p.getName() + " is no longer voice muted."));
+            return true;
+
+        }
     }
 }
