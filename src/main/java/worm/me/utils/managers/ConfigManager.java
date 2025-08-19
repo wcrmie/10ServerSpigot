@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 @SuppressWarnings("deprecation")
 public class ConfigManager {
 
-    private List<Map<String, Object>> reasons; // List of reason maps
-    private String webhookUrl;
-    private long reportCooldown;
-    private List<String> blacklistedWords;
+    private static List<Map<String, Object>> reasons; // List of reason maps
+    private static String webhookUrl;
+    private static long reportCooldown;
+    private static List<String> blacklistedWords;
 
     public void loadConfig() {
         Server.getPlugin().reloadConfig();
@@ -50,15 +50,19 @@ public class ConfigManager {
         blacklistedWords = config.getStringList("blacklisted-words");
     }
 
-    public List<Map<String, Object>> getReasons() {
+    public static List<Map<String, Object>> getReasons() {
         return reasons;
     }
 
-    public String getWebhookUrl() {
+    public static String getWebhookUrl() {
         return webhookUrl;
     }
 
-    public long getReportCooldown() {
+    public static long getReportCooldown() {
         return reportCooldown;
+    }
+
+    public static List<String> getBlacklistedWords() {
+        return blacklistedWords;
     }
 }

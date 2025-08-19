@@ -27,7 +27,12 @@ public class UnmuteCommand implements CommandExecutor {
             return true;
         }
 
-        ChatLimit.setChatLimit(player, 192);
+        if (ChatLimit.getChatLimit(player) != 0) {
+            sender.sendMessage(Message.create(MessageType.FAIL, player.getName() + " is not currently muted."));
+            return true;
+        }
+
+        ChatLimit.unmute(player);
         sender.sendMessage(Message.create(MessageType.SUCCESS, player.getName() + " has been unmuted."));
         return true;
     }

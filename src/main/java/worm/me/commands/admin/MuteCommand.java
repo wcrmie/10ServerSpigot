@@ -27,7 +27,12 @@ public class MuteCommand implements CommandExecutor {
             return true;
         }
 
-        ChatLimit.setChatLimit(player, 0);
+        if (ChatLimit.getChatLimit(player) == 0) {
+            sender.sendMessage(Message.create(MessageType.FAIL, player.getName() + " is already muted."));
+            return true;
+        }
+
+        ChatLimit.mute(player);
         sender.sendMessage(Message.create(MessageType.SUCCESS, player.getName() + " has been muted."));
         return true;
     }

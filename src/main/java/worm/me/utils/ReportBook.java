@@ -16,11 +16,7 @@ import java.util.*;
 
 public class ReportBook {
 
-    private static final Map<UUID, String> playerTokens = new HashMap<>();
-
-    public static void openReportBook(Player player, String reportedName, ConfigManager configManager) {
-        String token = UUID.randomUUID().toString();
-        playerTokens.put(player.getUniqueId(), token);
+    public static void openReportBook(Player player, String reportedName) {
 
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta meta = (BookMeta) book.getItemMeta();
@@ -35,7 +31,7 @@ public class ReportBook {
                 .append(Component.text(reportedName, NamedTextColor.RED, TextDecoration.BOLD))
                 .append(Component.text("?\n\n", NamedTextColor.WHITE)));
 
-        List<Map<String, Object>> reasons = configManager.getReasons();
+        List<Map<String, Object>> reasons = ConfigManager.getReasons();
 
         for (int i = 0; i < reasons.size(); i++) {
             Map<String, Object> reason = reasons.get(i);

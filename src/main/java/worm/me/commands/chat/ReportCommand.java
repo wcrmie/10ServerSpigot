@@ -35,7 +35,7 @@ public class ReportCommand implements CommandExecutor {
             return true;
         }
 
-        ConfigManager config = plugin.getConfigManager();
+        ConfigManager config = Server.getConfigManager();
 
         if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
             if (!reporter.hasPermission("report.reload")) {
@@ -59,7 +59,7 @@ public class ReportCommand implements CommandExecutor {
                 return true;
             }
 
-            ReportBook.openReportBook(reporter, reported.getName(), config);
+            ReportBook.openReportBook(reporter, reported.getName());
 
             return true;
         }
@@ -78,7 +78,7 @@ public class ReportCommand implements CommandExecutor {
         for (int i = 0; i < reportTimes.length; i++) {
             if (reportTimes[i] < System.currentTimeMillis()) {
 
-                reportTimes[i] = System.currentTimeMillis() + config.getReportCooldown() * 1000L;
+                reportTimes[i] = System.currentTimeMillis() + ConfigManager.getReportCooldown() * 1000L;
 
                 pdc.set(new NamespacedKey(plugin, "reportTimes"), PersistentDataType.LONG_ARRAY, reportTimes);
                 break;
@@ -112,7 +112,7 @@ public class ReportCommand implements CommandExecutor {
             }
         }
 
-        String webhookUrl = config.getWebhookUrl();
+        String webhookUrl = ConfigManager.getWebhookUrl();
 
         if (webhookUrl == null || webhookUrl.isEmpty()) {
             reporter.sendMessage(Component.text("⚠ Webhook URL is not configured!", NamedTextColor.RED));
