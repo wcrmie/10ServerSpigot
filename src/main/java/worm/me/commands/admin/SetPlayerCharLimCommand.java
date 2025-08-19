@@ -10,32 +10,46 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import worm.me.playersystems.social.MessageHead;
 import worm.me.Server;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
+import worm.me.utils.player.Online;
+import worm.me.utils.staff.ChatLimit;
 
 public class SetPlayerCharLimCommand implements CommandExecutor {
 
-    private final Server plugin;
-
-    public SetPlayerCharLimCommand(Server plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            if (p.getName().equals(args[0])) {
-                if (Integer.parseInt(args[1]) >= 0) {
-                    MessageHead messageHead = new MessageHead(this.plugin);
-                    p.getPersistentDataContainer().set(messageHead.msgLength, PersistentDataType.INTEGER, Integer.parseInt(args[1]));
-                    plugin.pluginMessage(ChatColor.RED + "Your character limit for messages has been set to " + args[1], p);
-                    plugin.pluginMessage(ChatColor.GREEN + "Character limit for " + args[0] + " has been set to " + args[1], (Player) sender);
-                    return true;
-                } else {
-                    plugin.pluginMessage(ChatColor.RED + "Character limit can't be negative.", (Player) sender);
-                    return false;
-                }
-            }
+
+        if (args.length < 2) {
+            sender.sendMessage(Message.create(MessageType.ERROR, "Usage: /setcharlimit <player> <limit>"));
+            return true;
         }
-        plugin.pluginMessage(ChatColor.RED + "Player not found!", (Player) sender);
-        return false;
+
+        Player player = Online.find(args[0]);
+
+        if (player == null) {
+            sender.sendMessage(Message.create(MessageType.ERROR, "Player not found!"));
+            sender.sendMessage(Message.create(MessageType.ERROR, "Usage: /setcharlimit <player> <limit>"));
+            return true;
+        }
+
+        int limit = Integer.parseInt(args[1]);
+
+        if (limit > 0) {
+
+            ChatLimit.setChatLimit(player, limit);
+            sender.sendMessage(Message.create(MessageType.SUCCESS, "Character limit for " + player.getName() + " has been set to " + args[1]));
+            return true;
+
+        } else if (limit == 0) {
+
+            ChatLimit.setChatLimit(player, limit);
+            sender.sendMessage(Message.create(MessageType.SUCCESS, player.getName() + " has been muted."));
+            return true;
+
+        } else {
+            sender.sendMessage(Message.create(MessageType.ERROR, "Character limits cannot be negative."));
+            return true;
+        }
     }
 }
