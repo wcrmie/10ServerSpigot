@@ -426,8 +426,16 @@ public class PlayerListener implements Listener {
 
         PersistentDataContainer c = p.getPersistentDataContainer();
 
-        if (m.length() > c.getOrDefault(messageHead.msgLength, PersistentDataType.INTEGER, 192)){
-            p.sendMessage(ChatColor.RED + String.format("Your messages must be %d characters or less.", c.getOrDefault(messageHead.msgLength, PersistentDataType.INTEGER, 192)));
+        int msgLength = c.getOrDefault(new NamespacedKey(plugin, "messagehead_msg_length"), PersistentDataType.INTEGER, 192);
+
+        if (msgLength == 0) {
+            p.sendMessage(Message.create(MessageType.FAIL, "You are currently muted. You may appeal on discord by making a ticket."));
+
+
+        }
+
+        if (m.length() > msgLength){
+            p.sendMessage(Message.create(MessageType.FAIL, String.format("Your messages must be %d characters or less.", msgLength)));
             event.setCancelled(true);
             return;
         }
@@ -817,8 +825,7 @@ public class PlayerListener implements Listener {
 
         // Give the player a random item every 10 seconds
         worm.me.Server.getPlugin().generating.add(event.getPlayer());
-        Generator generator = new Generator(plugin);
-        generator.generateItem(player);
+        Generator.generateItem(player);
 
         Tips tips = new Tips();
         tips.beginTipSending(player);

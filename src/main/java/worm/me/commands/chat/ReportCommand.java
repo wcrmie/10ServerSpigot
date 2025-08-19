@@ -12,8 +12,8 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import worm.me.Server;
-import worm.me.managers.ConfigManager;
-import worm.me.managers.WebhookSender;
+import worm.me.utils.managers.ConfigManager;
+import worm.me.utils.managers.WebhookSender;
 import worm.me.utils.ReportBook;
 
 import java.util.logging.Logger;

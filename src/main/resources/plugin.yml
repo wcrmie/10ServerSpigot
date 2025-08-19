@@ -98,3 +98,11 @@ commands:
     description: Spectate players who may be breaking the rules
     usage: /<command> <player/stop>
     permission: 10VS.spectate
+  mute:
+    description: Mute players who are being naughty in chat
+    usage: /<command> <player>
+    permission: 10VS.mute
+  unmute:
+    description: Unmute players who have previously been muted
+    usage: /<command> <player>
+    permission: 10VS.unmute

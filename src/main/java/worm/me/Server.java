@@ -26,7 +26,7 @@ import worm.me.listeners.MainListener;
 import worm.me.listeners.QuestListener;
 import worm.me.listeners.WorldListener;
 import worm.me.listeners.player.PlayerListener;
-import worm.me.managers.ConfigManager;
+import worm.me.utils.managers.ConfigManager;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.DoubleJump;
 import worm.me.playersystems.abilities.active.FeatherDash;
@@ -128,9 +128,6 @@ public final class Server extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new WorldListener(this), this);
         getServer().getPluginManager().registerEvents(new QuestListener(), this);
 
-        // Allows Command classes to register commands
-        configManager = new ConfigManager(this);
-
         this.getCommand("report").setExecutor(new ReportCommand(this));
         this.getCommand("islandspawn").setExecutor(new IslandSpawnCommand(this));
         this.getCommand("setVoice").setExecutor(new SetVoiceCommand(this));
@@ -138,7 +135,7 @@ public final class Server extends JavaPlugin {
         this.getCommand("shout").setExecutor(new ShoutCommand(this));
         this.getCommand("rules").setExecutor(new RulesCommand());
         this.getCommand("sit").setExecutor(new SitCommand(this));
-        this.getCommand("setCharLimit").setExecutor(new SetPlayerCharLimCommand(this));
+        this.getCommand("setCharLimit").setExecutor(new SetPlayerCharLimCommand());
         this.getCommand("abilities").setExecutor(new OpenAbilitiesGUICommand());
         //this.getCommand("hats").setExecutor(new HatsCommand());
         this.getCommand("levels").setExecutor(new OpenLevelsGUICommand(this));
@@ -156,6 +153,8 @@ public final class Server extends JavaPlugin {
         this.getCommand("say").setExecutor(new SayCommand());
         this.getCommand("voicemute").setExecutor(new VoiceMuteCommand());
         this.getCommand("spectate").setExecutor(new SpectateCommand());
+        this.getCommand("mute").setExecutor(new MuteCommand());
+        this.getCommand("unmute").setExecutor(new UnmuteCommand());
 
         this.skinsRestorer = SkinsRestorerProvider.get();
 
@@ -384,8 +383,7 @@ public final class Server extends JavaPlugin {
 
         for (Player p : Bukkit.getOnlinePlayers()){
             generating.add(p);
-            Generator generator = new Generator(this);
-            generator.generateItem(p);
+            Generator.generateItem(p);
         }
 
     }
