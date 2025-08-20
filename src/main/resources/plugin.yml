@@ -48,10 +48,6 @@ commands:
   menu:
     description: Opens the main menu for the player.
     usage: /<command>
-  islandspawn:
-    description: spawns an island, name of island.
-    usage: /<command> [string]
-    permission: 10VS.islandspawn
   profile:
     description: Opens the player's profile.
     usage: /<command> [Player]
@@ -98,3 +94,19 @@ commands:
     description: Spectate players who may be breaking the rules
     usage: /<command> <player/stop>
     permission: 10VS.spectate
+  structuresmake:
+    usage: /structuresmake <x1> <y1> <z1> <x2> <y2> <z2> <name>
+    description: Save a structure
+    permission: 10VS.structuresmake
+  structuresplace:
+      usage: /structuresplace <name> <x> <y> <z>
+      description: Place a saved structure
+      permission: 10VS.structuresplace
+  structureslist:
+      usage: /structureslist
+      description: List all saved structures
+      permission: 10VS.structureslist
+  islandtype:
+    usage: /islandtype
+    description: crates an island of given type in the world
+    permission: 10VS.islandtype

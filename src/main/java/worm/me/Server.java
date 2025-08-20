@@ -20,6 +20,8 @@ import worm.me.discord.bot.BotInitialize;
 import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.gamesystems.recipes.SmeltingRecipes;
+import worm.me.gamesystems.structure.generation.Generate;
+import worm.me.gamesystems.structure.generation.Island;
 import worm.me.gamesystems.structure.generation.TreasureChests;
 import worm.me.gamesystems.worldreset.WorldReset;
 import worm.me.listeners.MainListener;
@@ -112,15 +114,21 @@ public final class Server extends JavaPlugin {
         smeltingRecipes.initializeSmeltingRecipes();
 
 
+        Generate generate = new Generate(this);
+        Island.init(this);
+
         // Register commands
 
         getCommand("resetworld").setExecutor(new WorldResetCommand());
         getCommand("blockcount").setExecutor(new BlockCountCommand(WorldBorderSizeHandler));
         getCommand("expansionpercentage").setExecutor(new ExpansionPercentageCommand(WorldBorderSizeHandler));
+        getCommand("structuresmake").setExecutor(new StructuresMakeCommand(generate));
+        getCommand("structuresplace").setExecutor(new StructuresPlaceCommand(generate));
+        getCommand("structureslist").setExecutor(new StructuresListCommand(generate));
+        getCommand("islandtype").setExecutor(new IslandTypeCommand());
 
         // start worldreset score adder
         WorldReset.getInstance().scoreAdder();
-
 
         // Allows listeners to receive events.
         getServer().getPluginManager().registerEvents(new MainListener(this), this);
@@ -132,7 +140,6 @@ public final class Server extends JavaPlugin {
         configManager = new ConfigManager(this);
 
         this.getCommand("report").setExecutor(new ReportCommand(this));
-        this.getCommand("islandspawn").setExecutor(new IslandSpawnCommand(this));
         this.getCommand("setVoice").setExecutor(new SetVoiceCommand(this));
         this.getCommand("setGens").setExecutor(new SetGensCommand(this));
         this.getCommand("shout").setExecutor(new ShoutCommand(this));
