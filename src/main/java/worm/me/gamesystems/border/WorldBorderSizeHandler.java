@@ -58,8 +58,7 @@ public class WorldBorderSizeHandler {
         if ((blockCount % 5000)==0 && blockCount != lastSpawnDone) {
             lastSpawnDone = (int) blockCount;
 
-            Island IslandSpawningH = new Island(plugin);
-            IslandSpawningH.IslandSpawn(null);
+            Island.spawnIslandType("DEFAULT");
         }
     }
 
