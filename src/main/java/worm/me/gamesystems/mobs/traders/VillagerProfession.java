@@ -9,6 +9,8 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import worm.me.gamesystems.items.ExperienceBottle;
 import worm.me.utils.Item;
 
@@ -232,29 +234,22 @@ public enum VillagerProfession {
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.STICK, 24), 5, 10)
                     .newTrade(new ItemStack(Material.ARROW, 24), new ItemStack(Material.GOLD_NUGGET), 3, 10)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.COAL, 4), 5, 50)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 3), new ItemStack(Material.RAW_IRON, 6), 5, 20)
-                    .newTrade(new ItemStack(Material.GOLDEN_BOOTS), new ItemStack(Material.GOLD_NUGGET, 5), 1, 5)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.FLINT, 12), 5, 50)
                     .build(),
 
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.STRING, 6), 5, 10)
-                    .newTrade(new ItemStack(Material.CHAINMAIL_CHESTPLATE), new ItemStack(Material.GOLD_NUGGET, 12), 3, 10)
-                    .newTrade(new ItemStack(Material.GOLDEN_LEGGINGS), new ItemStack(Material.GOLD_NUGGET, 8), 1, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 4), new ItemStack(Material.SMOOTH_STONE, 12), 5, 20)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 2), new ItemStack(Material.ARMOR_STAND, 1), 5, 15)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.FEATHER, 8), 5, 10)
+                    .newTrade(new ItemStack(Material.BOW), new ItemStack(Material.GOLD_NUGGET, 1), 1, 5)
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.GOLDEN_CHESTPLATE), new ItemStack(Material.GOLD_INGOT), 1, 5)
-                    .newTrade(new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.GOLD_INGOT, 3), 3, 10)
-                    .newTrade(new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.GOLD_INGOT, 3), 3, 7)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 4), new ItemStack(Material.IRON_INGOT, 1), 5, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 1), new ItemStack(Material.COPPER_INGOT, 4), 10, 15)
+                    .newTrade(new ItemStack(Material.CROSSBOW), new ItemStack(Material.GOLD_NUGGET, 3), 1, 5)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.TRIPWIRE_HOOK, 2), 3, 10)
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
+                    .newTrade(new Item.PotionBuilder(new ItemStack(Material.TIPPED_ARROW, 8)).addEffect(new PotionEffect(PotionEffectType.INSTANT_DAMAGE, 1, 1)).build(), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.EMERALD), 5, 10)
                     .newTrade(new ItemStack(Material.BELL), new ItemStack(Material.GOLD_NUGGET, 2), 3, 10)
                     .newTrade(new ItemStack(Material.IRON_NUGGET, 2), new ItemStack(Material.GOLD_NUGGET, 1), 5, 5)

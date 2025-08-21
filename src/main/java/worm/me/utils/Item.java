@@ -7,6 +7,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 
 import java.util.Arrays;
 
@@ -76,6 +77,26 @@ public class Item {
             return item;
         }
 
+
+    }
+
+    public static class PotionBuilder extends ItemBuilder {
+
+        ItemStack item;
+
+        public PotionBuilder(ItemStack item) {
+            super(item);
+            this.item = item;
+        }
+
+        public PotionBuilder addEffect(org.bukkit.potion.PotionEffect effect) {
+            PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
+            if (potionMeta != null) {
+                potionMeta.addCustomEffect(effect, true);
+                item.setItemMeta(potionMeta);
+            }
+            return this;
+        }
 
     }
 
