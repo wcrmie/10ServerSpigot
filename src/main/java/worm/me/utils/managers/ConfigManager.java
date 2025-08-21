@@ -11,10 +11,12 @@ import java.util.stream.Collectors;
 @SuppressWarnings("deprecation")
 public class ConfigManager {
 
-    private static List<Map<String, Object>> reasons; // List of reason maps
-    private static String webhookUrl;
-    private static long reportCooldown;
-    private static List<String> blacklistedWords;
+    private List<Map<String, Object>> reasons; // List of reason maps
+    private String reportWebhook;
+    private String moderatorWebhook;
+    private long reportCooldown;
+    private List<String> blacklistedWords;
+    private List<String> filteredWords;
 
     public void loadConfig() {
         Server.getPlugin().reloadConfig();
@@ -22,7 +24,8 @@ public class ConfigManager {
 
         reportCooldown = config.getLong("report-cooldown");
 
-        webhookUrl = config.getString("webhook-url");
+        reportWebhook = config.getString("report-webhook-url");
+        moderatorWebhook = config.getString("moderator-webhook-url");
 
         // Get raw list of maps with unknown generics
         List<Map<?, ?>> rawList = config.getMapList("reasons");
@@ -47,22 +50,32 @@ public class ConfigManager {
                 })
                 .collect(Collectors.toList());
 
-        blacklistedWords = config.getStringList("blacklisted-words");
+        blacklistedWords = config.getStringList("automute-words");
+        filteredWords = config.getStringList("filtered-words");
+
     }
 
-    public static List<Map<String, Object>> getReasons() {
+    public List<Map<String, Object>> getReasons() {
         return reasons;
     }
 
-    public static String getWebhookUrl() {
-        return webhookUrl;
+    public String getReportWebhook() {
+        return reportWebhook;
     }
 
-    public static long getReportCooldown() {
+    public long getReportCooldown() {
         return reportCooldown;
     }
 
-    public static List<String> getBlacklistedWords() {
+    public List<String> getBlacklistedWords() {
         return blacklistedWords;
+    }
+
+    public List<String> getFilteredWords() {
+        return filteredWords;
+    }
+
+    public String getModeratorWebhook() {
+        return moderatorWebhook;
     }
 }

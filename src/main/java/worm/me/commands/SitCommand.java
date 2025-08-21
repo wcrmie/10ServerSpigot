@@ -9,6 +9,8 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import worm.me.Server;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
 
 public class SitCommand implements CommandExecutor {
 
@@ -32,7 +34,7 @@ public class SitCommand implements CommandExecutor {
                 a.setMarker(true);
                 a.addPassenger(p);
             } else {
-                plugin.pluginMessage(ChatColor.RED + "You can't sit on air. :/", p);
+                p.sendMessage(Message.create(MessageType.FAIL, "You can't sit on air."));
             }
             return true;
         } else {

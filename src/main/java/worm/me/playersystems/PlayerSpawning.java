@@ -186,40 +186,40 @@ public class PlayerSpawning {
     }
 
 
-    public void playerSpawn(Player player) {
-        updateBorderValues();
-        Location location = validSpawnLocation();
-
-        if (location == null) {
-            player.teleport(world.getSpawnLocation());
-            return;
-        }
-
-        Block block = world.getBlockAt(location);
-        block.setType(Material.BEDROCK);
-        blocksToRemove.put(block.getLocation(), true);
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                player.teleport(location.clone().add(0.5, 1, 0.5));
-            }
-        }.runTaskLater(plugin, 5L);
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (player.getLocation().distance(location) >= 5 || !player.isOnline()) {
-                    Block block = world.getBlockAt(location);
-                    if (block.getType() == Material.BEDROCK) {
-                        block.setType(Material.AIR);
-                        blocksToRemove.remove(location);
-                    }
-                    cancel();
-                }
-            }
-        }.runTaskTimer(plugin, 10 * 20L, 10 * 20L);
-    }
+//    public void playerSpawn(Player player) {
+//        updateBorderValues();
+//        Location location = validSpawnLocation();
+//
+//        if (location == null) {
+//            player.teleport(world.getSpawnLocation());
+//            return;
+//        }
+//
+//        Block block = world.getBlockAt(location);
+//        block.setType(Material.BEDROCK);
+//        blocksToRemove.put(block.getLocation(), true);
+//
+//        new BukkitRunnable() {
+//            @Override
+//            public void run() {
+//                player.teleport(location.clone().add(0.5, 1, 0.5));
+//            }
+//        }.runTaskLater(plugin, 5L);
+//
+//        new BukkitRunnable() {
+//            @Override
+//            public void run() {
+//                if (player.getLocation().distance(location) >= 5 || !player.isOnline()) {
+//                    Block block = world.getBlockAt(location);
+//                    if (block.getType() == Material.BEDROCK) {
+//                        block.setType(Material.AIR);
+//                        blocksToRemove.remove(location);
+//                    }
+//                    cancel();
+//                }
+//            }
+//        }.runTaskTimer(plugin, 10 * 20L, 10 * 20L);
+//    }
 
     public void removeAllBlocks() {
         for (Location location : blocksToRemove.keySet()) {

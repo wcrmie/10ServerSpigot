@@ -33,13 +33,13 @@ public class MessageHead {
 
     public static final Map<ArmorStand, ArmorStand> newLines = new HashMap<>();
 
-    public static final NamespacedKey armorStandExists = new NamespacedKey("10server", "armorstandexists");
+    public final NamespacedKey armorStandExists = new NamespacedKey("10server", "armorstandexists");
 
-    public static final NamespacedKey voice = new NamespacedKey("10server", "voice");
+    public final NamespacedKey voice = new NamespacedKey("10server", "voice");
 
-    public static final NamespacedKey voicePitch = new NamespacedKey("10server", "pitch");
+    public final NamespacedKey voicePitch = new NamespacedKey("10server", "pitch");
 
-    public static final NamespacedKey msgLength = new NamespacedKey("10server", "msglength");
+    public final NamespacedKey msgLength = new NamespacedKey("10server", "msglength");
 
     public void messageDisplay(Player p, String m) {
 
@@ -87,7 +87,9 @@ public class MessageHead {
                 if (!("" + character).equals(" ")) world.playSound(newLoc, VoiceTranslate(getVoice(p)), 0.5F, getVoicePitch(p));
 
                 // Teleport armor stand to player
-                messageTeleport(p);
+                if (!messageTeleport(p)) {
+                    cancel();
+                }
 
                 // When loop is finished
                 if (finalI[0] + 1 >= m.length()) {
@@ -213,21 +215,24 @@ public class MessageHead {
         botInteractions.gameMessage(sender.getName() + ": " + msg);
     }
 
-    public void messageTeleport(Player p) {
+    public boolean messageTeleport(Player p) {
         if (!(map.get(p) == null)){
             ArmorStand a = playerArmorStand.get(p);
             a.teleport(p.getLocation().add(0, 2, 0));
             if (messageHasLines(a)) {
                 messageNewLineTp(a, newLines.get(a));
             }
-        }
+            return true;
+        } else return false;
     }
 
     public void messageFade(ArmorStand a, Player p){
         BukkitTask balls = new BukkitRunnable(){
             @Override
             public void run(){
-                messageTeleport(p);
+                if (!messageTeleport(p)) {
+                    cancel();
+                }
             }
         }.runTaskTimer(plugin, 1, 1);
         new BukkitRunnable(){
@@ -239,7 +244,9 @@ public class MessageHead {
                 playerArmorStand.remove(p);
                 PersistentDataContainer container = p.getPersistentDataContainer();
                 container.set(armorStandExists, PersistentDataType.BOOLEAN, false);
-                if (map.get(p).peek() != null) messageDisplay(p, map.get(p).peek());
+                if (map.get(p).peek() != null) {
+                    messageDisplay(p, map.get(p).peek());
+                } else cancel();
             }
         }.runTaskLater(plugin, 60L);
     }

@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import worm.me.playersystems.social.MessageHead;
 import worm.me.Server;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
 
 public class SetVoiceCommand implements CommandExecutor {
 
@@ -26,7 +28,7 @@ public class SetVoiceCommand implements CommandExecutor {
             try {
                 int voiceVal = Integer.parseInt(voice);
                 if (voiceVal >= plugin.sounds.size()){
-                    plugin.pluginMessage(String.format("Invalid Sound ID. Sound IDs range from 0-%d", plugin.sounds.size() - 1), p);
+                    p.sendMessage(Message.create(MessageType.ERROR, String.format("Invalid Sound ID. Sound IDs range from 0-%d", plugin.sounds.size() - 1)));
                     return false;
                 }
                 MessageHead voiceHandler = new MessageHead(plugin);
@@ -36,18 +38,18 @@ public class SetVoiceCommand implements CommandExecutor {
                     try {
                         float pitchVal = Float.parseFloat(pitch);
                         voiceHandler.setVoicePitch(p, pitchVal);
-                        plugin.pluginMessage(String.format("Your voice has been changed to %s and your pitch has been changed to %f.", voiceHandler.VoiceTranslate(voiceVal), pitchVal), p);
+                        p.sendMessage(Message.create(MessageType.SUCCESS, String.format("Your voice has been changed to %s and your pitch has been changed to %f.", voiceHandler.VoiceTranslate(voiceVal), pitchVal)));
                         return true;
                     } catch (NumberFormatException exception){
-                        plugin.pluginMessage(ChatColor.RED + "The second argument must be a double. (anything between 0.0 and 2.0, i.e., 0.8 or 1.6)", p);
+                        p.sendMessage(Message.create(MessageType.ERROR, "The second argument must be a double. (anything between 0.0 and 2.0, i.e., 0.8 or 1.6)"));
                         return false;
                     }
                 } else{
-                    p.sendMessage("You must declare the pitch value.");
+                    p.sendMessage(Message.create(MessageType.FAIL, "You must declare the pitch value."));
                     return false;
                 }
             } catch (NumberFormatException exception){
-                p.sendMessage(ChatColor.RED + "The first argument must be a whole number. (0, 1, 2, 3, 4)");
+                p.sendMessage(Message.create(MessageType.ERROR, "The first argument must be a whole number. (0, 1, 2, 3, 4)"));
                 return false;
             }
         }

@@ -12,16 +12,11 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import worm.me.Server;
 import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
 
 public class ShoutCommand implements CommandExecutor {
 
     private NamespacedKey shoutCd = new NamespacedKey("10server", "shoutcooldown");
-
-    private final Server plugin;
-
-    public ShoutCommand(Server plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -30,7 +25,7 @@ public class ShoutCommand implements CommandExecutor {
             if (args != null){
                 PersistentDataContainer container = p.getPersistentDataContainer();
                 if (container.get(shoutCd, PersistentDataType.LONG) != null && container.get(shoutCd, PersistentDataType.LONG) > System.currentTimeMillis()/1000L && !p.isOp()) {
-                    plugin.pluginMessage(String.format(ChatColor.RED + "Your /shout is on cooldown for %s seconds.", container.get(shoutCd, PersistentDataType.LONG) - System.currentTimeMillis()/1000L), p);
+                    p.sendMessage(Message.create(MessageType.FAIL, String.format("Your /shout is on cooldown for %s seconds.", container.get(shoutCd, PersistentDataType.LONG) - System.currentTimeMillis()/1000L)));
                     return true;
                 } else {
                     container.set(shoutCd, PersistentDataType.LONG, System.currentTimeMillis()/1000L + 300);

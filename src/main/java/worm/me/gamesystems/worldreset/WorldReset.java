@@ -88,7 +88,6 @@ public class WorldReset {
                     WorldReset.getInstance().triggerReset(null);
                     resetNow = true;
                 }
-                resetNow = true;
                 saveData();
 
             }

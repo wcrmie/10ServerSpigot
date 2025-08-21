@@ -60,6 +60,7 @@ import worm.me.playersystems.saddle.SaddleSystem;
 import worm.me.utils.Item;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
+import worm.me.utils.staff.ChatModeration;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -241,6 +242,12 @@ public class PlayerListener implements Listener {
                         }
                     }
                 }
+            }
+
+            if (player.getInventory().getHelmet().getType().equals(Material.BELL)) {
+
+                player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BELL_USE, 1F, 2F);
+
             }
 
             ProtectedRegion region = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld())).getRegion("spawn");
@@ -426,17 +433,15 @@ public class PlayerListener implements Listener {
 
         // message character limit
 
-        PersistentDataContainer c = p.getPersistentDataContainer();
-
-        int msgLength = c.getOrDefault(new NamespacedKey(plugin, "messagehead_msg_length"), PersistentDataType.INTEGER, 192);
+        int msgLength = ChatModeration.getChatLimit(p);
 
         if (msgLength == 0) {
             p.sendMessage(Message.create(MessageType.FAIL, "You are currently muted. You may appeal on discord by making a ticket."));
+            event.setCancelled(true);
             return;
         }
 
-        if (filterFlagged(m)) {
-
+        if (blacklistFlagged(m)) {
             mute(p);
             notifyStaff(m, p);
             event.setCancelled(true);
@@ -450,8 +455,8 @@ public class PlayerListener implements Listener {
         }
 
         // queue messages to be sent above head
-        messageHead.messageQueue(p, m);
-        messageHead.messageDisplay(p, m);
+        messageHead.messageQueue(p, ChatModeration.filteredMessage(m));
+        messageHead.messageDisplay(p, ChatModeration.filteredMessage(m));
         event.setCancelled(true);
 
 
@@ -602,28 +607,6 @@ public class PlayerListener implements Listener {
             e.getPlayer().setAllowFlight(false);
             e.getPlayer().setFlying(false);
         }
-/*      FROGGRAB IS A HISTORICAL, ARCHIVED ABILITY
-        if (FrogGrab.isPlayerMovementRestricted(player.getUniqueId())) {
-            Location from = e.getFrom();
-            Location to = e.getTo();
-
-            if (to != null) {
-                if (from.getX() != to.getX() || from.getY() != to.getY() || from.getZ() != to.getZ()) {
-                    Location newLocation = new Location(
-                            from.getWorld(),
-                            from.getX(),
-                            from.getY(),
-                            from.getZ(),
-                            to.getYaw(),
-                            to.getPitch()
-                    );
-
-                    e.setTo(newLocation);
-                }
-            }
-        }
-
- */
 
         if (Objects.requireNonNull(e.getTo()).getY() < 200) e.getPlayer().damage(1000000);
 
@@ -761,25 +744,6 @@ public class PlayerListener implements Listener {
                     Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(6, player));
                 }
             }
-
-            /*
-            if (e.getPlayer().getInventory().getItemInMainHand().getType() == Material.PINK_CONCRETE_POWDER && e.getPlayer().isSneaking()) {
-                ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
-                if (item.hasItemMeta()) {
-                    ItemMeta meta = item.getItemMeta();
-                    if (meta != null) {
-                        PersistentDataContainer data = meta.getPersistentDataContainer();
-                        NamespacedKey key = new NamespacedKey(plugin, "tongue");
-                        if (data.has(key, PersistentDataType.STRING)) {
-                            String tagValue = data.get(key, PersistentDataType.STRING);
-                            Bukkit.getServer().getPluginManager().callEvent(new AbilityAttemptEvent(5, e.getPlayer()));
-                        }
-                    }
-                }
-            }
-            */
-
-
         }
 
         if (e.getHand() != EquipmentSlot.HAND) {
@@ -907,20 +871,6 @@ public class PlayerListener implements Listener {
             ));
 
         }
-
-
-        /*
-        if (!event.isBedSpawn()) {
-            NamespacedKey customSpawnKey = new NamespacedKey(plugin, "custom_spawn");
-            if (event.getPlayer().getPersistentDataContainer().has(customSpawnKey, PersistentDataType.BOOLEAN)) {
-                if (event.getPlayer().getPersistentDataContainer().get(customSpawnKey, PersistentDataType.BOOLEAN) == true) {
-                    PlayerSpawning handler = new PlayerSpawning(plugin);
-                    handler.playerSpawn(event.getPlayer());
-                }
-            }
-        }
-        */
-
     }
 
 }

@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import worm.me.Server;
 import worm.me.utils.managers.ConfigManager;
 
 import java.util.*;
@@ -31,7 +32,7 @@ public class ReportBook {
                 .append(Component.text(reportedName, NamedTextColor.RED, TextDecoration.BOLD))
                 .append(Component.text("?\n\n", NamedTextColor.WHITE)));
 
-        List<Map<String, Object>> reasons = ConfigManager.getReasons();
+        List<Map<String, Object>> reasons = Server.getPlugin().getConfigManager().getReasons();
 
         for (int i = 0; i < reasons.size(); i++) {
             Map<String, Object> reason = reasons.get(i);

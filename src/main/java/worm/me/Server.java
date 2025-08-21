@@ -25,6 +25,7 @@ import worm.me.gamesystems.worldreset.WorldReset;
 import worm.me.listeners.MainListener;
 import worm.me.listeners.QuestListener;
 import worm.me.listeners.WorldListener;
+import worm.me.listeners.mobs.CustomMobsListener;
 import worm.me.listeners.player.PlayerListener;
 import worm.me.utils.managers.ConfigManager;
 import worm.me.playersystems.abilities.Abilities;
@@ -127,12 +128,17 @@ public final class Server extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new WorldListener(this), this);
         getServer().getPluginManager().registerEvents(new QuestListener(), this);
+        getServer().getPluginManager().registerEvents(new CustomMobsListener(), this);
+
+        // Allows Command classes to register commands
+        configManager = new ConfigManager();
+        configManager.loadConfig();
 
         this.getCommand("report").setExecutor(new ReportCommand(this));
         this.getCommand("islandspawn").setExecutor(new IslandSpawnCommand(this));
         this.getCommand("setVoice").setExecutor(new SetVoiceCommand(this));
         this.getCommand("setGens").setExecutor(new SetGensCommand(this));
-        this.getCommand("shout").setExecutor(new ShoutCommand(this));
+        this.getCommand("shout").setExecutor(new ShoutCommand());
         this.getCommand("rules").setExecutor(new RulesCommand());
         this.getCommand("sit").setExecutor(new SitCommand(this));
         this.getCommand("setCharLimit").setExecutor(new SetPlayerCharLimCommand());
@@ -441,12 +447,6 @@ public final class Server extends JavaPlugin {
             getConfig().set(LAST_CHEST_SPAWN_KEY, System.currentTimeMillis());
             saveConfig();
         }, initialDelayTicks, CHEST_SPAWN_INTERVAL);
-    }
-
-    public void broadcast(String message){
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            p.sendMessage(message);
-        }
     }
 
     public static void pluginMessage(String message, Player p){
