@@ -228,7 +228,7 @@ public enum VillagerProfession {
                     .newTrade(new ItemStack(Material.GOLD_INGOT, 3), new ItemStack(Material.AXOLOTL_BUCKET), 1, 5)
                     .newTrade(new ItemStack(Material.GOLD_INGOT, 3), new ItemStack(Material.TADPOLE_BUCKET, 5), 1, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.OAK_BOAT, 1), 3, 5)
-                    .newTrade(new ItemStack(Material.HEART_OF_THE_SEA), new ItemStack(Material.EMERALD, 4), 1, 50)
+                    .newTrade(new ItemStack(Material.HEART_OF_THE_SEA), new ItemStack(Material.EMERALD, 16), 1, 50)
                     .build()),
     FLETCHER("Fletcher",
             new Trader.TradeBuilder()
@@ -249,22 +249,20 @@ public enum VillagerProfession {
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new Item.PotionBuilder(new ItemStack(Material.TIPPED_ARROW, 8)).addEffect(new PotionEffect(PotionEffectType.INSTANT_DAMAGE, 1, 1)).build(), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.EMERALD), 5, 10)
-                    .newTrade(new ItemStack(Material.BELL), new ItemStack(Material.GOLD_NUGGET, 2), 3, 10)
-                    .newTrade(new ItemStack(Material.IRON_NUGGET, 2), new ItemStack(Material.GOLD_NUGGET, 1), 5, 5)
+                    .newTrade(new Item.PotionBuilder(new ItemStack(Material.TIPPED_ARROW, 8)).addEffect(new PotionEffect(PotionEffectType.INSTANT_DAMAGE, 1, 1)).build(), new ItemStack(Material.GOLD_NUGGET, 3), 1, 5)
+                    .newTrade(new Item.PotionBuilder(new ItemStack(Material.TIPPED_ARROW, 8)).addEffect(new PotionEffect(PotionEffectType.POISON, 15, 1)).build(), new ItemStack(Material.GOLD_NUGGET, 3), 1, 5)
+                    .newTrade(new Item.PotionBuilder(new ItemStack(Material.TIPPED_ARROW, 8)).addEffect(new PotionEffect(PotionEffectType.NAUSEA, 15, 1)).build(), new ItemStack(Material.GOLD_NUGGET, 3), 1, 5)
+                    .newTrade(new Item.PotionBuilder(new ItemStack(Material.TIPPED_ARROW, 8)).addEffect(new PotionEffect(PotionEffectType.SLOWNESS, 15, 1)).build(), new ItemStack(Material.GOLD_NUGGET, 3), 1, 5)
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.BLAST_FURNACE), new ItemStack(Material.GOLD_INGOT, 3), 3, 5)
-                    .newTrade(new ItemStack(Material.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE), new ItemStack(Material.EMERALD, 1), 1, 10)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.GUNPOWDER, 10), 5, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.CROSSBOW)).addEnchantment(Enchantment.MULTISHOT, 1).build(), new ItemStack(Material.EMERALD, 5), 1, 10)
                     .build()),
     LEATHERWORKER("Leatherworker",
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.CHAINMAIL_LEGGINGS), new ItemStack(Material.GOLD_INGOT), 3, 10)
-                    .newTrade(new ItemStack(Material.CHAINMAIL_BOOTS), new ItemStack(Material.GOLD_NUGGET, 6), 3, 10)
+                    .newTrade(new ItemStack(Material.BUNDLE), new ItemStack(Material.GOLD_NUGGET, 3), 3, 10)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.LEATHER, 2), 3, 10)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.COAL, 4), 5, 50)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET, 3), new ItemStack(Material.RAW_IRON, 6), 5, 20)
                     .newTrade(new ItemStack(Material.GOLDEN_BOOTS), new ItemStack(Material.GOLD_NUGGET, 5), 1, 5)
