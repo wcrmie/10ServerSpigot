@@ -1,7 +1,7 @@
 package worm.me.utils;
 
 import io.papermc.paper.datacomponent.DataComponentType;
-import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.DataComponentType;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -99,5 +99,4 @@ public class Item {
         }
 
     }
-
 }
