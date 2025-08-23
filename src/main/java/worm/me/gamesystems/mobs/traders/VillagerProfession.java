@@ -91,41 +91,23 @@ public enum VillagerProfession {
 
     CARTOGRAPHER("Cartographer",
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 3), new ItemStack(Material.PAPER, 12), 5, 50)
-                    .newTrade(new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.COMPASS), 2, 10)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.COAL, 4), 5, 50)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 3), new ItemStack(Material.RAW_IRON, 6), 5, 20)
-                    .newTrade(new ItemStack(Material.GOLDEN_BOOTS), new ItemStack(Material.GOLD_NUGGET, 5), 1, 5)
+
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.GOLD_INGOT, 2), 3, 10)
-                    .newTrade(new ItemStack(Material.CHAINMAIL_CHESTPLATE), new ItemStack(Material.GOLD_NUGGET, 12), 3, 10)
-                    .newTrade(new ItemStack(Material.GOLDEN_LEGGINGS), new ItemStack(Material.GOLD_NUGGET, 8), 1, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 4), new ItemStack(Material.SMOOTH_STONE, 12), 5, 20)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 2), new ItemStack(Material.ARMOR_STAND, 1), 5, 15)
+
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.GOLDEN_CHESTPLATE), new ItemStack(Material.GOLD_INGOT), 1, 5)
-                    .newTrade(new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.GOLD_INGOT, 3), 3, 10)
-                    .newTrade(new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.GOLD_INGOT, 3), 3, 7)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 4), new ItemStack(Material.IRON_INGOT, 1), 5, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 1), new ItemStack(Material.COPPER_INGOT, 4), 10, 15)
+
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.EMERALD), 5, 10)
-                    .newTrade(new ItemStack(Material.BELL), new ItemStack(Material.GOLD_NUGGET, 2), 3, 10)
-                    .newTrade(new ItemStack(Material.IRON_NUGGET, 2), new ItemStack(Material.GOLD_NUGGET, 1), 5, 5)
+
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.BLAST_FURNACE), new ItemStack(Material.GOLD_INGOT, 3), 3, 5)
-                    .newTrade(new ItemStack(Material.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE), new ItemStack(Material.EMERALD, 1), 1, 10)
+
                     .build()),
     CLERIC("Cleric",
             new Trader.TradeBuilder()
@@ -261,117 +243,70 @@ public enum VillagerProfession {
                     .build()),
     LEATHERWORKER("Leatherworker",
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.BUNDLE), new ItemStack(Material.GOLD_NUGGET, 3), 3, 10)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.LEATHER, 2), 3, 10)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.COAL, 4), 5, 50)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 3), new ItemStack(Material.RAW_IRON, 6), 5, 20)
-                    .newTrade(new ItemStack(Material.GOLDEN_BOOTS), new ItemStack(Material.GOLD_NUGGET, 5), 1, 5)
+                    .newTrade(new ItemStack(Material.BUNDLE), new ItemStack(Material.GOLD_NUGGET, 3), 3, 100)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.RABBIT_HIDE, 8), 6, 10)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.LEATHER, 4), 6, 10)
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.GOLD_INGOT, 2), 3, 10)
-                    .newTrade(new ItemStack(Material.CHAINMAIL_CHESTPLATE), new ItemStack(Material.GOLD_NUGGET, 12), 3, 10)
-                    .newTrade(new ItemStack(Material.GOLDEN_LEGGINGS), new ItemStack(Material.GOLD_NUGGET, 8), 1, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 4), new ItemStack(Material.SMOOTH_STONE, 12), 5, 20)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 2), new ItemStack(Material.ARMOR_STAND, 1), 5, 15)
+                    .newTrade(new ItemStack(Material.SADDLE, 1), new ItemStack(Material.GOLD_NUGGET, 5), 5, 100)
+                    .newTrade(new ItemStack(Material.LEATHER_HELMET, 1), new ItemStack(Material.GOLD_NUGGET, 2), 5, 1)
+                    .newTrade(new ItemStack(Material.LEATHER_CHESTPLATE, 1), new ItemStack(Material.GOLD_NUGGET, 2), 5, 1)
+                    .newTrade(new ItemStack(Material.LEATHER_LEGGINGS, 1), new ItemStack(Material.GOLD_NUGGET, 2), 5, 1)
+                    .newTrade(new ItemStack(Material.LEATHER_BOOTS, 1), new ItemStack(Material.GOLD_NUGGET, 2), 5, 1)
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.GOLDEN_CHESTPLATE), new ItemStack(Material.GOLD_INGOT), 1, 5)
-                    .newTrade(new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.GOLD_INGOT, 3), 3, 10)
-                    .newTrade(new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.GOLD_INGOT, 3), 3, 7)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 4), new ItemStack(Material.IRON_INGOT, 1), 5, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 1), new ItemStack(Material.COPPER_INGOT, 4), 10, 15)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 3), new ItemStack(Material.TURTLE_SCUTE, 2), 5, 10)
+                    .newTrade(new ItemStack(Material.LEATHER_HORSE_ARMOR, 1), new ItemStack(Material.GOLD_NUGGET, 5), 5, 10)
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.EMERALD), 5, 10)
-                    .newTrade(new ItemStack(Material.BELL), new ItemStack(Material.GOLD_NUGGET, 2), 3, 10)
-                    .newTrade(new ItemStack(Material.IRON_NUGGET, 2), new ItemStack(Material.GOLD_NUGGET, 1), 5, 5)
+
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.BLAST_FURNACE), new ItemStack(Material.GOLD_INGOT, 3), 3, 5)
-                    .newTrade(new ItemStack(Material.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE), new ItemStack(Material.EMERALD, 1), 1, 10)
+
                     .build()),
     LIBRARIAN("Librarian",
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.CHAINMAIL_LEGGINGS), new ItemStack(Material.GOLD_INGOT), 3, 10)
-                    .newTrade(new ItemStack(Material.CHAINMAIL_BOOTS), new ItemStack(Material.GOLD_NUGGET, 6), 3, 10)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.COAL, 4), 5, 50)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 3), new ItemStack(Material.RAW_IRON, 6), 5, 20)
-                    .newTrade(new ItemStack(Material.GOLDEN_BOOTS), new ItemStack(Material.GOLD_NUGGET, 5), 1, 5)
+
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.GOLD_INGOT, 2), 3, 10)
-                    .newTrade(new ItemStack(Material.CHAINMAIL_CHESTPLATE), new ItemStack(Material.GOLD_NUGGET, 12), 3, 10)
-                    .newTrade(new ItemStack(Material.GOLDEN_LEGGINGS), new ItemStack(Material.GOLD_NUGGET, 8), 1, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 4), new ItemStack(Material.SMOOTH_STONE, 12), 5, 20)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 2), new ItemStack(Material.ARMOR_STAND, 1), 5, 15)
+
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.GOLDEN_CHESTPLATE), new ItemStack(Material.GOLD_INGOT), 1, 5)
-                    .newTrade(new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.GOLD_INGOT, 3), 3, 10)
-                    .newTrade(new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.GOLD_INGOT, 3), 3, 7)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 4), new ItemStack(Material.IRON_INGOT, 1), 5, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 1), new ItemStack(Material.COPPER_INGOT, 4), 10, 15)
+
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.EMERALD), 5, 10)
-                    .newTrade(new ItemStack(Material.BELL), new ItemStack(Material.GOLD_NUGGET, 2), 3, 10)
-                    .newTrade(new ItemStack(Material.IRON_NUGGET, 2), new ItemStack(Material.GOLD_NUGGET, 1), 5, 5)
+
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.BLAST_FURNACE), new ItemStack(Material.GOLD_INGOT, 3), 3, 5)
-                    .newTrade(new ItemStack(Material.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE), new ItemStack(Material.EMERALD, 1), 1, 10)
+
                     .build()),
     MASON("Mason",
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.CHAINMAIL_LEGGINGS), new ItemStack(Material.GOLD_INGOT), 3, 10)
-                    .newTrade(new ItemStack(Material.CHAINMAIL_BOOTS), new ItemStack(Material.GOLD_NUGGET, 6), 3, 10)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.COAL, 4), 5, 50)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 3), new ItemStack(Material.RAW_IRON, 6), 5, 20)
-                    .newTrade(new ItemStack(Material.GOLDEN_BOOTS), new ItemStack(Material.GOLD_NUGGET, 5), 1, 5)
+
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.GOLD_INGOT, 2), 3, 10)
-                    .newTrade(new ItemStack(Material.CHAINMAIL_CHESTPLATE), new ItemStack(Material.GOLD_NUGGET, 12), 3, 10)
-                    .newTrade(new ItemStack(Material.GOLDEN_LEGGINGS), new ItemStack(Material.GOLD_NUGGET, 8), 1, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 4), new ItemStack(Material.SMOOTH_STONE, 12), 5, 20)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 2), new ItemStack(Material.ARMOR_STAND, 1), 5, 15)
+
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.GOLDEN_CHESTPLATE), new ItemStack(Material.GOLD_INGOT), 1, 5)
-                    .newTrade(new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.GOLD_INGOT, 3), 3, 10)
-                    .newTrade(new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.GOLD_INGOT, 3), 3, 7)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 4), new ItemStack(Material.IRON_INGOT, 1), 5, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 1), new ItemStack(Material.COPPER_INGOT, 4), 10, 15)
+
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.EMERALD), 5, 10)
-                    .newTrade(new ItemStack(Material.BELL), new ItemStack(Material.GOLD_NUGGET, 2), 3, 10)
-                    .newTrade(new ItemStack(Material.IRON_NUGGET, 2), new ItemStack(Material.GOLD_NUGGET, 1), 5, 5)
+
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.GOLD_INGOT, 5), 1, 5)
-                    .newTrade(new ItemStack(Material.BLAST_FURNACE), new ItemStack(Material.GOLD_INGOT, 3), 3, 5)
-                    .newTrade(new ItemStack(Material.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE), new ItemStack(Material.EMERALD, 1), 1, 10)
+
                     .build()),
     SHEPHERD("Shepherd",
             new Trader.TradeBuilder()
@@ -446,40 +381,6 @@ public enum VillagerProfession {
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.GOLDEN_SWORD)).addEnchantment(Enchantment.LOOTING, 2).build(), new ItemStack(Material.GOLD_INGOT, 2), 2, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.GOLDEN_AXE)).addEnchantment(Enchantment.SHARPNESS, 3).build(), new ItemStack(Material.GOLD_INGOT, 3), 2, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.STONE_SWORD)).addEnchantment(Enchantment.SHARPNESS, 2).build(), new ItemStack(Material.GOLD_INGOT, 1), 2, 5)
-                    .newTrade(new ItemStack(Material.ARMOR_STAND, 2), new ItemStack(Material.GOLD_NUGGET, 2), 5, 15)
-                    .build(),
-
-            new Trader.TradeBuilder()
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.IRON_SWORD)).addEnchantment(Enchantment.SHARPNESS, 2).build(), new ItemStack(Material.GOLD_INGOT, 10), 2, 10)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.GOLDEN_SWORD)).addEnchantment(Enchantment.UNBREAKING, 2).build(), new ItemStack(Material.GOLD_INGOT, 1), 2, 10)
-                    .newTrade(new ItemStack(Material.ARMOR_STAND, 2), new ItemStack(Material.GOLD_NUGGET, 2), 5, 10)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 2), new ItemStack(Material.FLINT, 12), 8, 10)
-                    .build(),
-
-            new Trader.TradeBuilder()
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.IRON_SWORD)).addEnchantment(Enchantment.FIRE_ASPECT, 1).build(), new ItemStack(Material.GOLD_BLOCK, 3), 1, 10)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.IRON_SWORD)).addEnchantment(Enchantment.UNBREAKING, 1).build(), new ItemStack(Material.GOLD_BLOCK, 3), 1, 10)
-                    .newTrade(new ItemStack(Material.GOLD_INGOT, 2), new ItemStack(Material.EMERALD, 2), 8, 20)
-                    .build(),
-
-            new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.DIAMOND_AXE, 2), new ItemStack(Material.EMERALD_BLOCK, 5), 1, 10)
-                    .newTrade(new ItemStack(Material.DIAMOND_SHOVEL, 2), new ItemStack(Material.EMERALD_BLOCK, 5), 1, 10)
-                    .newTrade(new ItemStack(Material.DIAMOND_PICKAXE, 2), new ItemStack(Material.EMERALD_BLOCK, 5), 1, 10)
-                    .newTrade(new ItemStack(Material.DIAMOND_HOE, 2), new ItemStack(Material.EMERALD_BLOCK, 5), 1, 10)
-                    .build()),
-
-    WEAPONSMITH("Weaponsmith",
-            new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.STONE_SWORD), new ItemStack(Material.GOLD_NUGGET, 5), 2, 20)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.COAL, 4), 5, 15)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.IRON_NUGGET, 5), 4, 10)
-                    .build(),
-
-            new Trader.TradeBuilder()
                     .newTrade(new Item.ItemBuilder(new ItemStack(Material.GOLDEN_PICKAXE)).addEnchantment(Enchantment.EFFICIENCY, 4).build(), new ItemStack(Material.GOLD_INGOT, 2), 2, 5)
                     .newTrade(new Item.ItemBuilder(new ItemStack(Material.GOLDEN_PICKAXE)).addEnchantment(Enchantment.SILK_TOUCH, 3).build(), new ItemStack(Material.GOLD_BLOCK, 3), 2, 5)
                     .newTrade(new Item.ItemBuilder(new ItemStack(Material.GOLDEN_PICKAXE)).addEnchantment(Enchantment.EFFICIENCY, 4).build(), new ItemStack(Material.GOLD_INGOT, 2), 2, 5)
@@ -507,6 +408,41 @@ public enum VillagerProfession {
                     .newTrade(new Item.ItemBuilder(new ItemStack(Material.IRON_SHOVEL)).addEnchantment(Enchantment.EFFICIENCY, 2).build(), new ItemStack(Material.EMERALD_BLOCK, 1), 1, 5)
                     .newTrade(new ItemStack(Material.GOLD_INGOT, 2), new ItemStack(Material.EMERALD, 2), 8, 20)
                     .build(),
+
+            new Trader.TradeBuilder()
+                    .newTrade(new ItemStack(Material.DIAMOND_AXE, 2), new ItemStack(Material.EMERALD_BLOCK, 5), 1, 10)
+                    .newTrade(new ItemStack(Material.DIAMOND_SHOVEL, 2), new ItemStack(Material.EMERALD_BLOCK, 5), 1, 10)
+                    .newTrade(new ItemStack(Material.DIAMOND_PICKAXE, 2), new ItemStack(Material.EMERALD_BLOCK, 5), 1, 10)
+                    .newTrade(new ItemStack(Material.DIAMOND_HOE, 2), new ItemStack(Material.EMERALD_BLOCK, 5), 1, 10)
+                    .build()),
+
+    WEAPONSMITH("Weaponsmith",
+            new Trader.TradeBuilder()
+                    .newTrade(new ItemStack(Material.STONE_SWORD), new ItemStack(Material.GOLD_NUGGET, 5), 2, 20)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.COAL, 4), 5, 15)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.IRON_NUGGET, 5), 4, 10)
+                    .build(),
+
+            new Trader.TradeBuilder()
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.GOLDEN_SWORD)).addEnchantment(Enchantment.LOOTING, 2).build(), new ItemStack(Material.GOLD_INGOT, 2), 2, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.GOLDEN_AXE)).addEnchantment(Enchantment.SHARPNESS, 3).build(), new ItemStack(Material.GOLD_INGOT, 3), 2, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.STONE_SWORD)).addEnchantment(Enchantment.SHARPNESS, 2).build(), new ItemStack(Material.GOLD_INGOT, 1), 2, 5)
+                    .newTrade(new ItemStack(Material.ARMOR_STAND, 2), new ItemStack(Material.GOLD_NUGGET, 2), 5, 15)
+                    .build(),
+
+            new Trader.TradeBuilder()
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.IRON_SWORD)).addEnchantment(Enchantment.SHARPNESS, 2).build(), new ItemStack(Material.GOLD_INGOT, 10), 2, 10)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.GOLDEN_SWORD)).addEnchantment(Enchantment.UNBREAKING, 2).build(), new ItemStack(Material.GOLD_INGOT, 1), 2, 10)
+                    .newTrade(new ItemStack(Material.ARMOR_STAND, 2), new ItemStack(Material.GOLD_NUGGET, 2), 5, 10)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 2), new ItemStack(Material.FLINT, 12), 8, 10)
+                    .build(),
+
+            new Trader.TradeBuilder()
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.IRON_SWORD)).addEnchantment(Enchantment.FIRE_ASPECT, 1).build(), new ItemStack(Material.GOLD_BLOCK, 3), 1, 10)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.IRON_SWORD)).addEnchantment(Enchantment.UNBREAKING, 1).build(), new ItemStack(Material.GOLD_BLOCK, 3), 1, 10)
+                    .newTrade(new ItemStack(Material.GOLD_INGOT, 2), new ItemStack(Material.EMERALD, 2), 8, 20)
+                    .build(),
+
 
             new Trader.TradeBuilder()
                     .newTrade(new Item.ItemBuilder(new ItemStack(Material.IRON_SWORD)).addEnchantment(Enchantment.LOOTING, 1).build(), new ItemStack(Material.EMERALD_BLOCK, 1), 1, 10)
