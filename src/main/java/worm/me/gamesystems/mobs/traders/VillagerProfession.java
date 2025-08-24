@@ -250,23 +250,52 @@ public enum VillagerProfession {
 
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.SADDLE, 1), new ItemStack(Material.GOLD_NUGGET, 5), 5, 100)
-                    .newTrade(new ItemStack(Material.LEATHER_HELMET, 1), new ItemStack(Material.GOLD_NUGGET, 2), 5, 1)
                     .newTrade(new ItemStack(Material.LEATHER_CHESTPLATE, 1), new ItemStack(Material.GOLD_NUGGET, 2), 5, 1)
                     .newTrade(new ItemStack(Material.LEATHER_LEGGINGS, 1), new ItemStack(Material.GOLD_NUGGET, 2), 5, 1)
                     .newTrade(new ItemStack(Material.LEATHER_BOOTS, 1), new ItemStack(Material.GOLD_NUGGET, 2), 5, 1)
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 3), new ItemStack(Material.TURTLE_SCUTE, 2), 5, 10)
-                    .newTrade(new ItemStack(Material.LEATHER_HORSE_ARMOR, 1), new ItemStack(Material.GOLD_NUGGET, 5), 5, 10)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 3), new ItemStack(Material.TURTLE_SCUTE, 2), 5, 16)
+                    .newTrade(new ItemStack(Material.LEATHER_HORSE_ARMOR, 1), new ItemStack(Material.GOLD_NUGGET, 3), 5, 16)
+                    .newTrade(new ItemStack(Material.WHITE_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
+                    .newTrade(new ItemStack(Material.ORANGE_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
+                    .newTrade(new ItemStack(Material.MAGENTA_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
+                    .newTrade(new ItemStack(Material.LIGHT_BLUE_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
+                    .newTrade(new ItemStack(Material.YELLOW_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
+                    .newTrade(new ItemStack(Material.LIME_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
+                    .newTrade(new ItemStack(Material.PINK_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
+                    .newTrade(new ItemStack(Material.GRAY_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
+                    .newTrade(new ItemStack(Material.LIGHT_GRAY_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
+                    .newTrade(new ItemStack(Material.CYAN_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
+                    .newTrade(new ItemStack(Material.PURPLE_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
+                    .newTrade(new ItemStack(Material.BLUE_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
+                    .newTrade(new ItemStack(Material.BROWN_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
+                    .newTrade(new ItemStack(Material.GREEN_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
+                    .newTrade(new ItemStack(Material.RED_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
+                    .newTrade(new ItemStack(Material.BLACK_DYE, 2), new ItemStack(Material.GOLD_NUGGET, 4), 6, 1)
                     .build(),
 
             new Trader.TradeBuilder()
-
+                    .newTrade(new ItemStack(Material.CAULDRON, 1), new ItemStack(Material.GOLD_INGOT, 1), 10, 20)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.LEATHER_BOOTS)).addEnchantment(Enchantment.UNBREAKING, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 2, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.LEATHER_LEGGINGS)).addEnchantment(Enchantment.UNBREAKING, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 2, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.LEATHER_CHESTPLATE)).addEnchantment(Enchantment.UNBREAKING, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 2, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.LEATHER_BOOTS)).addEnchantment(Enchantment.PROTECTION, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 2, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.LEATHER_LEGGINGS)).addEnchantment(Enchantment.PROTECTION, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 2, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.LEATHER_CHESTPLATE)).addEnchantment(Enchantment.PROTECTION, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 2, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.LEATHER_BOOTS)).addEnchantment(Enchantment.FEATHER_FALLING, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 2, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.LEATHER_BOOTS)).addEnchantment(Enchantment.DEPTH_STRIDER, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 2, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.LEATHER_BOOTS)).addEnchantment(Enchantment.SOUL_SPEED, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 2, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.LEATHER_LEGGINGS)).addEnchantment(Enchantment.SWIFT_SNEAK, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 2, 5)
                     .build(),
 
             new Trader.TradeBuilder()
-
+                    .newTrade(new ItemStack(Material.IRON_HORSE_ARMOR, 1), new ItemStack(Material.GOLD_INGOT, 1), 2, 1)
+                    .newTrade(new ItemStack(Material.GOLDEN_HORSE_ARMOR, 1), new ItemStack(Material.GOLD_INGOT, 3), 2, 1)
+                    .newTrade(new ItemStack(Material.DIAMOND_HORSE_ARMOR, 1), new ItemStack(Material.GOLD_INGOT, 5), 2, 1)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.RABBIT_HIDE, 4), 10, 3)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.LEATHER, 2), 10, 3)
                     .build()),
     LIBRARIAN("Librarian",
             new Trader.TradeBuilder()
