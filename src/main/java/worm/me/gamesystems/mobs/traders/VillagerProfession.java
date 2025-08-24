@@ -299,11 +299,9 @@ public enum VillagerProfession {
                     .build()),
     LIBRARIAN("Librarian",
             new Trader.TradeBuilder()
-
                     .build(),
 
             new Trader.TradeBuilder()
-
                     .build(),
 
             new Trader.TradeBuilder()
@@ -319,23 +317,75 @@ public enum VillagerProfession {
                     .build()),
     MASON("Mason",
             new Trader.TradeBuilder()
-
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.CLAY_BALL, 16), 4, 10)
+                    .newTrade(new ItemStack(Material.BRICK,16), new ItemStack(Material.GOLD_NUGGET, 4), 4, 10)
                     .build(),
 
             new Trader.TradeBuilder()
-
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 2), new ItemStack(Material.STONE, 16), 7, 10)
+                    .newTrade(new ItemStack(Material.ANDESITE, 16), new ItemStack(Material.GOLD_NUGGET, 2), 7, 5)
+                    .newTrade(new ItemStack(Material.DIORITE, 16), new ItemStack(Material.GOLD_NUGGET, 2), 7, 5)
+                    .newTrade(new ItemStack(Material.GRANITE, 16), new ItemStack(Material.GOLD_NUGGET, 2), 7, 5)
                     .build(),
 
             new Trader.TradeBuilder()
-
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 1), new ItemStack(Material.TERRACOTTA, 16), 4, 16)
+                    .newTrade(new ItemStack(Material.WHITE_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.ORANGE_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.MAGENTA_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.LIGHT_BLUE_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.YELLOW_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.LIME_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.PINK_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.GRAY_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.LIGHT_GRAY_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 4, 1)
+                    .newTrade(new ItemStack(Material.CYAN_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.PURPLE_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.BLUE_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.BROWN_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.GREEN_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.RED_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.BLACK_CONCRETE_POWDER, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
                     .build(),
 
             new Trader.TradeBuilder()
-
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 1), new ItemStack(Material.QUARTZ_BLOCK, 8), 4, 20)
+                    .newTrade(new ItemStack(Material.WHITE_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.ORANGE_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.MAGENTA_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.LIGHT_BLUE_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.YELLOW_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.LIME_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.PINK_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.GRAY_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.LIGHT_GRAY_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.CYAN_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.PURPLE_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.BLUE_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.BROWN_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.GREEN_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.RED_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.BLACK_GLAZED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
                     .build(),
 
             new Trader.TradeBuilder()
-
+                    .newTrade(new ItemStack(Material.QUARTZ_BLOCK, 6), new ItemStack(Material.GOLD_NUGGET, 1), 4, 20)
+                    .newTrade(new ItemStack(Material.WHITE_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.ORANGE_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.MAGENTA_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.LIGHT_BLUE_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.YELLOW_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.LIME_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.PINK_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.GRAY_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.LIGHT_GRAY_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 4, 1)
+                    .newTrade(new ItemStack(Material.CYAN_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.PURPLE_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.BLUE_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.BROWN_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.GREEN_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.RED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
+                    .newTrade(new ItemStack(Material.BLACK_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1)
                     .build()),
     SHEPHERD("Shepherd",
             new Trader.TradeBuilder()
