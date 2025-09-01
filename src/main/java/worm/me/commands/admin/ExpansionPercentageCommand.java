@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import worm.me.gamesystems.border.WorldBorderSizeHandler;
+import worm.me.gamesystems.world.border.WorldBorderSizeHandler;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 

@@ -8,13 +8,11 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import worm.me.Server;
-import worm.me.gamesystems.gear.tools.Tools;
 
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;

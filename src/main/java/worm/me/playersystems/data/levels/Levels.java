@@ -14,8 +14,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
-import worm.me.gamesystems.blocks.LootTable;
-import worm.me.gamesystems.blocks.RollTable;
+import worm.me.gamesystems.world.blocks.LootTable;
+import worm.me.gamesystems.world.blocks.RollTable;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 

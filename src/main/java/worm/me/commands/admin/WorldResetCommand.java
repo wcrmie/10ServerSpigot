@@ -5,7 +5,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import worm.me.gamesystems.worldreset.WorldReset;
+import worm.me.gamesystems.world.reset.WorldReset;
 
 public class WorldResetCommand implements CommandExecutor {
     @Override

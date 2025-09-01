@@ -1,7 +1,6 @@
 package worm.me.playersystems.data;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -11,80 +10,13 @@ import org.bukkit.scoreboard.Team;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.CooldownDisplay;
 import worm.me.playersystems.social.MessageHead;
-//import worm.me.playersystems.social.legacyhats.Hats;
-import worm.me.gamesystems.gear.tools.Tools;
+import worm.me.gamesystems.items.gear.tools.Tools;
 import worm.me.playersystems.quests.QuestAssign;
 import worm.me.Server;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 
 public class VoidPlayer {
-
-    // We will eventually add all getters and setters for VoidPlayers here, in order to clean stuff up
-
-//    public static List<ItemStack> getTools(Player p){
-//
-//        if (Tools.playerTools.get(p) != null) return Tools.playerTools.get(p);
-//
-//        PersistentDataContainer pdc = p.getPersistentDataContainer();
-//
-//        String encodedData = pdc.get(new NamespacedKey(Server.getPlugin(), "tools"), PersistentDataType.STRING);
-//
-//        ArrayList<ItemStack> items = new ArrayList<>();
-//
-//        if (!encodedData.isEmpty()){
-//            byte[] rawData = Base64.getDecoder().decode(encodedData);
-//
-//            try {
-//                ByteArrayInputStream io = new ByteArrayInputStream(rawData);
-//                BukkitObjectInputStream is = new BukkitObjectInputStream(io);
-//
-//                for (int i = 0; i < 4; i++) {
-//
-//                    items.add((ItemStack) is.readObject());
-//
-//                }
-//
-//                is.close();
-//
-//                return items;
-//
-//            } catch (IOException | ClassNotFoundException e) {
-//                Bukkit.getLogger().info(e.getMessage());
-//            }
-//        }
-//        return items;
-//    }
-
-//    public static void setTools(List<ItemStack> tools, Player p){
-//
-//        Tools.playerTools.put(p, tools);
-//
-//        PersistentDataContainer pdc = p.getPersistentDataContainer();
-//
-//        try {
-//            ByteArrayOutputStream io = new ByteArrayOutputStream();
-//            BukkitObjectOutputStream os = new BukkitObjectOutputStream(io);
-//
-//            for (ItemStack item : tools) {
-//                os.writeObject(item);
-//            }
-//
-//            os.flush();
-//
-//            byte[] rawData = io.toByteArray();
-//
-//            String encodedData = Base64.getEncoder().encodeToString(rawData);
-//
-//            pdc.set(new NamespacedKey(Server.getPlugin(), "tools"), PersistentDataType.STRING, encodedData);
-//
-//            os.close();
-//
-//        } catch (IOException e) {
-//            Bukkit.getLogger().info(e.getMessage());
-//        }
-//
-//    }
 
     public static void initializeData(Player player){
 
@@ -138,14 +70,6 @@ public class VoidPlayer {
         if (!container.has(new NamespacedKey(plugin, "10stats"), PersistentDataType.INTEGER_ARRAY)) {
             container.set(new NamespacedKey(plugin, "10stats"), PersistentDataType.INTEGER_ARRAY, new int[50]);
         }
-
-//        if (!container.has(new NamespacedKey(plugin, "hatsUnlocked"), PersistentDataType.INTEGER_ARRAY)) {
-//            container.set(new NamespacedKey(plugin, "hatsUnlocked"), PersistentDataType.INTEGER_ARRAY, new int[2700]);
-//            Hats hats = new Hats();
-//            hats.unequipHat(player);
-//            hats.unlockHat(player, 0);
-//
-//        }
 
         if (!container.has(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY)) {
             container.set(new NamespacedKey(plugin, "repsess"), PersistentDataType.LONG_ARRAY, new long[]{System.currentTimeMillis()/1000L, 0});

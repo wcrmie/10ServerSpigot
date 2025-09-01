@@ -20,14 +20,18 @@ import worm.me.discord.bot.BotInitialize;
 import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.gamesystems.recipes.SmeltingRecipes;
-import worm.me.gamesystems.structure.generation.Generate;
-import worm.me.gamesystems.structure.generation.Island;
-import worm.me.gamesystems.structure.generation.TreasureChests;
-import worm.me.gamesystems.worldreset.WorldReset;
+import worm.me.gamesystems.world.structure.generation.Generate;
+import worm.me.gamesystems.world.structure.Island;
+import worm.me.gamesystems.world.structure.TreasureChests;
+import worm.me.gamesystems.world.reset.WorldReset;
 import worm.me.listeners.MainListener;
 import worm.me.listeners.player.*;
-import worm.me.listeners.WorldListener;
-import worm.me.listeners.mobs.CustomMobsListener;
+import worm.me.listeners.world.WorldListener;
+import worm.me.listeners.world.mobs.CustomMobsListener;
+import worm.me.listeners.player.custom.AbilitiesListener;
+import worm.me.listeners.player.custom.LevellingListener;
+import worm.me.listeners.player.custom.QuestListener;
+import worm.me.listeners.world.mobs.VillagerListener;
 import worm.me.utils.managers.ConfigManager;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.DoubleJump;
@@ -38,7 +42,7 @@ import worm.me.playersystems.data.levels.Reqs;
 import worm.me.playersystems.generator.Generator;
 import worm.me.playersystems.quests.QuestInitialize;
 import worm.me.playersystems.PlayerSpawning;
-import worm.me.gamesystems.border.WorldBorderSizeHandler;
+import worm.me.gamesystems.world.border.WorldBorderSizeHandler;
 import java.util.*;
 
 public final class Server extends JavaPlugin {
@@ -143,6 +147,7 @@ public final class Server extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new WorldListener(this), this);
         getServer().getPluginManager().registerEvents(new QuestListener(), this);
         getServer().getPluginManager().registerEvents(new CustomMobsListener(), this);
+        getServer().getPluginManager().registerEvents(new VillagerListener(), this);
 
         // Allows Command classes to register commands
         configManager = new ConfigManager();
