@@ -25,10 +25,9 @@ import worm.me.gamesystems.structure.generation.Island;
 import worm.me.gamesystems.structure.generation.TreasureChests;
 import worm.me.gamesystems.worldreset.WorldReset;
 import worm.me.listeners.MainListener;
-import worm.me.listeners.QuestListener;
+import worm.me.listeners.player.*;
 import worm.me.listeners.WorldListener;
 import worm.me.listeners.mobs.CustomMobsListener;
-import worm.me.listeners.player.PlayerListener;
 import worm.me.utils.managers.ConfigManager;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.DoubleJump;
@@ -133,7 +132,14 @@ public final class Server extends JavaPlugin {
 
         // Allows listeners to receive events.
         getServer().getPluginManager().registerEvents(new MainListener(this), this);
-        getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+
+        // Player Listeners
+        getServer().getPluginManager().registerEvents(new AbilitiesListener(), this);
+        getServer().getPluginManager().registerEvents(new ChatListener(), this);
+        getServer().getPluginManager().registerEvents(new GameplayListener(), this);
+        getServer().getPluginManager().registerEvents(new InitializationsListener(), this);
+        getServer().getPluginManager().registerEvents(new LevellingListener(), this);
+
         getServer().getPluginManager().registerEvents(new WorldListener(this), this);
         getServer().getPluginManager().registerEvents(new QuestListener(), this);
         getServer().getPluginManager().registerEvents(new CustomMobsListener(), this);

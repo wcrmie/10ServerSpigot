@@ -1,11 +1,9 @@
-package worm.me.listeners;
+package worm.me.listeners.player;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
-import worm.me.playersystems.quests.QuestInitialize;
 import worm.me.playersystems.quests.QuestProgressEvent;
 import worm.me.playersystems.quests.Quests;
 
