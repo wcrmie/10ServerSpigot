@@ -230,6 +230,22 @@ public class WorldListener implements Listener {
     }
 
     @EventHandler
+    public void onVillagerLevel(VillagerAcquireTradeEvent event) {
+
+        Villager villager = (Villager) event.getEntity();
+
+        Villager.Profession profession = villager.getProfession();
+
+        VillagerProfession villagerProfession = VillagerProfession.valueOf(profession.toString());
+
+        int level = villager.getVillagerLevel();
+
+
+
+
+    }
+
+    @EventHandler
     public void onEntitySpawn(EntitySpawnEvent event) {
 
         if (event.getEntity() instanceof Player) return;
