@@ -94,7 +94,9 @@ public class ReportCommand implements CommandExecutor {
         String message = String.format(
                 """
                 **✨ New Player Report ✨**
-            
+                
+                # SERVER: VOID SURVIVAL
+                
                 🕵️‍♂️ **Reporter:** %s (`%s`)
                 🚩 **Reported:** %s (`%s`)
                 📋 **Reason:** %s
