@@ -18,7 +18,7 @@ public class PlayerReputation {
         long playtime = Objects.requireNonNull(container.get(new NamespacedKey(Server.getPlugin(), "repsess"), PersistentDataType.LONG_ARRAY))[1];
 
 
-        int GBVal = Math.round(255F - ((18000 * (playtime == 0 ? 1 : playtime) / ((float) (System.currentTimeMillis()/1000) - Objects.requireNonNull(container.get(new NamespacedKey(Server.getPlugin(), "repsess"), PersistentDataType.LONG_ARRAY))[0]) /20)));
+        int GBVal = Math.round(255F - ((18000 * (playtime <= 1 ? 1 : playtime) / ((float) (System.currentTimeMillis()/1000) - Objects.requireNonNull(container.get(new NamespacedKey(Server.getPlugin(), "repsess"), PersistentDataType.LONG_ARRAY))[0]) /20)));
         if (GBVal < 0) GBVal = 0;
 
         // Convert from RGB to hex and return
