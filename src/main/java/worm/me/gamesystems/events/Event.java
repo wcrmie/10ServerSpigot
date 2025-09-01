@@ -1,25 +1,17 @@
 package worm.me.gamesystems.events;
 
-import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-public enum Event {
-    KOTH("King of the Hill", 300, 60);
+@RequiredArgsConstructor
+@Getter
+public class Event {
 
-    Event(String name, int runTime, int weight) {
+    private final EventType type;
 
-    }
 
-    public static class EventRewardsBuilder {
 
-        private HashMap<ItemStack, Integer> rewards = new HashMap<>();
 
-        public EventRewardsBuilder addReward(ItemStack item, int weight) {
-            rewards.put(item, weight);
-            return this;
-        }
-
-    }
 
 }
