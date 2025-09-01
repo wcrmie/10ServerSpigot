@@ -151,7 +151,6 @@ public final class Server extends JavaPlugin {
         this.getCommand("report").setExecutor(new ReportCommand(this));
         this.getCommand("setVoice").setExecutor(new SetVoiceCommand(this));
         this.getCommand("setGens").setExecutor(new SetGensCommand(this));
-        this.getCommand("shout").setExecutor(new ShoutCommand());
         this.getCommand("rules").setExecutor(new RulesCommand());
         this.getCommand("sit").setExecutor(new SitCommand(this));
         this.getCommand("setCharLimit").setExecutor(new SetPlayerCharLimCommand());

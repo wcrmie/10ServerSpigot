@@ -12,9 +12,6 @@ commands:
   setGens:
     description: Allows the player to choose which blocks are generated for them every 10 seconds via a GUI.
     usage: /<command>
-  shout:
-    description: Allows the player to send a message to everyone on the Server once every 5 minutes
-    usage: /<command> <message>
   rules:
     description: Displays the rules to the player.
     usage: /<command>
@@ -110,3 +107,11 @@ commands:
     usage: /islandtype
     description: crates an island of given type in the world
     permission: 10VS.islandtype
+  mute:
+    description: Mute a player
+    usage: /<command> <player>
+    permission: 10VS.mute
+  unmute:
+    description: Unmute a player
+    usage: /<command> <player>
+    permission: 10VS.unmute
