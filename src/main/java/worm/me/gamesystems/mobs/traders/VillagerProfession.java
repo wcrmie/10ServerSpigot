@@ -257,7 +257,8 @@ public enum VillagerProfession {
 
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.GUNPOWDER, 10), 5, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.CROSSBOW)).addEnchantment(Enchantment.MULTISHOT, 1).build(), new ItemStack(Material.EMERALD, 5), 1, 10)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.BOW)).addEnchantment(Enchantment.INFINITY, 1).build(), new ItemStack(Material.EMERALD, 12), 1, 10)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.CROSSBOW)).addEnchantment(Enchantment.MULTISHOT, 1).build(), new ItemStack(Material.EMERALD, 10), 1, 10)
                     .build()),
     LEATHERWORKER("Leatherworker",
             new Trader.TradeBuilder()
@@ -451,19 +452,16 @@ public enum VillagerProfession {
                     .build()),
     WEAPONSMITH("Weaponsmith",
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.CHAINMAIL_LEGGINGS), new ItemStack(Material.GOLD_INGOT), 3, 10)
-                    .newTrade(new ItemStack(Material.CHAINMAIL_BOOTS), new ItemStack(Material.GOLD_NUGGET, 6), 3, 10)
+                    .newTrade(new ItemStack(Material.STONE_SWORD), new ItemStack(Material.GOLD_NUGGET), 3, 10)
+                    .newTrade(new ItemStack(Material.STONE_AXE), new ItemStack(Material.GOLD_NUGGET), 3, 10)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.COAL, 4), 5, 50)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET, 3), new ItemStack(Material.RAW_IRON, 6), 5, 20)
-                    .newTrade(new ItemStack(Material.GOLDEN_BOOTS), new ItemStack(Material.GOLD_NUGGET, 5), 1, 5)
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_BOOTS), new ItemStack(Material.GOLD_INGOT, 2), 3, 10)
-                    .newTrade(new ItemStack(Material.CHAINMAIL_CHESTPLATE), new ItemStack(Material.GOLD_NUGGET, 12), 3, 10)
-                    .newTrade(new ItemStack(Material.GOLDEN_LEGGINGS), new ItemStack(Material.GOLD_NUGGET, 8), 1, 5)
+                    .newTrade(new ItemStack(Material.IRON_SWORD), new ItemStack(Material.GOLD_NUGGET, 5), 3, 10)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET, 4), new ItemStack(Material.SMOOTH_STONE, 12), 5, 20)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 2), new ItemStack(Material.ARMOR_STAND, 1), 5, 15)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET, 1), new ItemStack(Material.FLINT, 16), 5, 15)
                     .build(),
 
             new Trader.TradeBuilder()
@@ -510,22 +508,22 @@ public enum VillagerProfession {
     }
 
     public Map<MerchantRecipe, Integer> getFirstTrades() {
-        return null;
+        return firstTrades;
     }
 
     public Map<MerchantRecipe, Integer> getSecondTrades() {
-        return null;
+        return secondTrades;
     }
 
     public Map<MerchantRecipe, Integer> getThirdTrades() {
-        return null;
+        return thirdTrades;
     }
 
     public Map<MerchantRecipe, Integer> getFourthTrades() {
-        return null;
+        return fourthTrades;
     }
 
     public Map<MerchantRecipe, Integer> getFifthTrades() {
-        return null;
+        return fifthTrades;
     }
 }
