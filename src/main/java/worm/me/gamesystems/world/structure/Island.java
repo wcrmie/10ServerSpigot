@@ -2,6 +2,8 @@ package worm.me.gamesystems.world.structure;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.WorldBorder;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.structure.Structure;
 import org.bukkit.structure.StructureManager;
@@ -17,6 +19,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Island {
 
     private static JavaPlugin plugin;
+    private static World world;
+    private static WorldBorder worldBorder;
 
     public static void init(JavaPlugin pluginInstance) {
         plugin = pluginInstance;
@@ -78,6 +82,60 @@ public class Island {
         spawnIsland(structureName);
     }
 
+    public static void forceSpawnIslandType(String typeName) {
+        IslandType type;
+        try {
+            type = IslandType.valueOf(typeName.toUpperCase()); // Convert string to enum
+        } catch (IllegalArgumentException e) {
+            Bukkit.getLogger().warning("[Island] Invalid island type: " + typeName);
+            return;
+        }
+
+        File folder = new File(plugin.getDataFolder(), "structures");
+        if (!folder.exists()) {
+            Bukkit.getLogger().warning("[Island] No structures folder found");
+            return;
+        }
+
+        File[] files = folder.listFiles((dir, name) ->
+                name.startsWith(type.name() + "_") && name.endsWith(".nbt"));
+
+        if (files == null || files.length == 0) {
+            Bukkit.getLogger().warning("[Island] No structures found for type: " + type);
+            return;
+        }
+
+        IslandSize size;
+        List<File> candidates = new ArrayList<>();
+
+        int attempts = 0;
+        int maxAttempts = 20;
+
+        while (attempts < maxAttempts) {
+            size = pickWeightedSize();
+
+            candidates.clear();
+            for (File f : files) {
+                if (f.getName().contains("_" + size.name())) {
+                    candidates.add(f);
+                }
+            }
+
+            if (!candidates.isEmpty()) break;
+            attempts++;
+        }
+
+        if (candidates.isEmpty()) {
+            Bukkit.getLogger().warning("[Island] No structures found for type: " + type + " in any size");
+            return;
+        }
+
+        File chosen = candidates.get(ThreadLocalRandom.current().nextInt(candidates.size()));
+        String structureName = chosen.getName().replace(".nbt", "");
+
+        forceSpawnIsland(structureName);
+    }
+
 
     public static void spawnIsland(String name) {
         try {
@@ -112,6 +170,47 @@ public class Island {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void forceSpawnIsland(String name) {
+        try {
+            for (int i = 1; i <= 50 ; i++) {
+                File file = new File(plugin.getDataFolder(), "structures/" + name + ".nbt");
+                if (!file.exists()) {
+                    Bukkit.getLogger().warning("[Island] Structure not found: " + name);
+                    return;
+                }
+
+                Structure structure = structureManager.loadStructure(file);
+                if (structure == null) {
+                    Bukkit.getLogger().warning("[Island] Failed to load: " + name);
+                    return;
+                }
+
+                Vector size = structure.getSize();
+                int xSize = size.getBlockX();
+                int ySize = size.getBlockY();
+                int zSize = size.getBlockZ();
+                int maxSize = Math.max(xSize, Math.max(ySize, zSize));
+
+                Location loc = PlayArea.validSpawnLocation(xSize, ySize, zSize, maxSize);
+                if (loc == null) {
+                    world = Bukkit.getWorld("ul_Void");
+                    worldBorder = world.getWorldBorder();
+                    worldBorder.setSize((worldBorder.getSize()+2));
+                    continue;
+                }
+
+                if (Generate.placeStructureStatic(loc, name)) {
+                    Bukkit.getLogger().info("[Island] Spawned island: " + name + " at " + loc);
+                } else {
+                    Bukkit.getLogger().warning("[Island] Failed to place island: " + name);
+                }
+                return;
+            }
+        } catch(Exception e){
             e.printStackTrace();
         }
     }
