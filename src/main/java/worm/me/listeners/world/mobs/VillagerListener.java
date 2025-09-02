@@ -10,6 +10,8 @@ import org.bukkit.event.entity.VillagerCareerChangeEvent;
 import worm.me.gamesystems.world.mobs.traders.Trader;
 import worm.me.gamesystems.world.mobs.traders.VillagerProfession;
 
+import java.util.Arrays;
+
 public class VillagerListener implements Listener {
 
     @EventHandler
@@ -17,6 +19,8 @@ public class VillagerListener implements Listener {
 
         if (event.getEntity() instanceof Villager villy) {
             villy.setProfession(Villager.Profession.NITWIT);
+
+            if (!Arrays.equals(Trader.getGenetics(villy), new int[VillagerProfession.values().length])) villy.setProfession(Villager.Profession.NONE);
         }
 
     }
@@ -43,7 +47,10 @@ public class VillagerListener implements Listener {
 
         Villager villager = event.getEntity();
 
-        if (!villager.getProfession().equals(Villager.Profession.NONE)) event.setCancelled(true);
+        if (event.getProfession() == Villager.Profession.NONE) {
+            event.setCancelled(true);
+            return;
+        }
 
         if (Trader.getGenetics(villager)[VillagerProfession.valueOf(event.getProfession().toString()).ordinal()] != 1) event.setCancelled(true);
 
@@ -54,11 +61,11 @@ public class VillagerListener implements Listener {
 
         Villager villager = (Villager) event.getEntity();
 
-        Villager.Profession profession = villager.getProfession();
-
-        VillagerProfession villagerProfession = VillagerProfession.valueOf(profession.toString());
-
         int level = villager.getVillagerLevel();
+
+        event.setCancelled(true);
+
+        Trader.replaceTrade(villager, event.getRecipe(), level);
 
 
     }

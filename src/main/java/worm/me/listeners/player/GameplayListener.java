@@ -145,6 +145,7 @@ public class GameplayListener implements Listener {
                 e.getPlayer().getInventory().remove(tome);
 
                 Trader.addGenetics(villager, genetics);
+                villager.setProfession(Villager.Profession.NONE);
             }
         }
     }

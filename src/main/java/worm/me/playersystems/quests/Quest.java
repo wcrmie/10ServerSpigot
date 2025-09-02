@@ -5,8 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-@RequiredArgsConstructor
-@Getter
 public enum Quest {
     MINE_STONE("Mine Cobblestone", Material.COBBLESTONE, "Mine 512 Cobblestone.", 512),
     COLLECT_IRON("I prefer Forge.", Material.BLAST_FURNACE, "Smelt 64 iron nuggets.", 64),
@@ -24,4 +22,26 @@ public enum Quest {
     final int progressNeeded;
 
 
+    Quest(String name, Material icon, String description, int progressNeeded) {
+        this.name = name;
+        this.icon = icon;
+        this.description = description;
+        this.progressNeeded = progressNeeded;
+    }
+
+    public ItemStack getIcon() {
+        return new ItemStack(icon);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getProgressNeeded() {
+        return progressNeeded;
+    }
 }

@@ -1,7 +1,5 @@
 package worm.me;
 import net.dv8tion.jda.api.JDA;
-import net.skinsrestorer.api.SkinsRestorer;
-import net.skinsrestorer.api.SkinsRestorerProvider;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -49,8 +47,6 @@ public final class Server extends JavaPlugin {
 
     private static Server plugin;
     private ConfigManager configManager;
-
-    public SkinsRestorer skinsRestorer;
 
     private WorldBorderSizeHandler WorldBorderSizeHandler;
     private PlayerSpawning playerspawning;
@@ -178,8 +174,6 @@ public final class Server extends JavaPlugin {
         this.getCommand("spectate").setExecutor(new SpectateCommand());
         this.getCommand("mute").setExecutor(new MuteCommand());
         this.getCommand("unmute").setExecutor(new UnmuteCommand());
-
-        this.skinsRestorer = SkinsRestorerProvider.get();
 
         // Create Map for tools
         List<Material> pickaxes = new ArrayList<>();

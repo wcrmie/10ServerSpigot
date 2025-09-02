@@ -1,5 +1,6 @@
 package worm.me.gamesystems.world.mobs.traders;
 
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
@@ -9,6 +10,7 @@ import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Trader {
 
@@ -16,8 +18,8 @@ public class Trader {
 
         private final Map<MerchantRecipe, Integer> trades = new HashMap<>();
 
-        public TradeBuilder newTrade(ItemStack selling, ItemStack buying, int maxUses, int weight) {
-            MerchantRecipe recipe = new MerchantRecipe(selling, maxUses);
+        public TradeBuilder newTrade(ItemStack selling, ItemStack buying, int maxUses, int weight, boolean experienceReward, int villagerExperience) {
+            MerchantRecipe recipe = new MerchantRecipe(selling, 0, maxUses, experienceReward, villagerExperience, 0.05F);
             recipe.addIngredient(buying);
             trades.put(recipe, weight);
             return this;
@@ -27,6 +29,62 @@ public class Trader {
             return Collections.unmodifiableMap(trades);
         }
 
+    }
+
+    public static void replaceTrade(Villager villager, MerchantRecipe recipe, int level) {
+
+        Villager.Profession profession = villager.getProfession();
+
+        VillagerProfession villagerProfession = VillagerProfession.valueOf(profession.toString());
+
+        List<MerchantRecipe> trades = new ArrayList<>(villager.getRecipes());
+
+        for (int i = 0; i < 1; i++) {
+
+            MerchantRecipe newRecipe = getRandomTrade(villagerProfession.getTrades().get(level - 1));
+
+            if (trades.contains(newRecipe)) {
+                newRecipe = null;
+            }
+
+            if (newRecipe != null) {
+                trades.add(newRecipe);
+            } else {
+                Bukkit.getLogger().warning("TRADE IS NULL");
+                i--;
+            }
+
+        }
+
+        trades.remove(recipe);
+
+        villager.setRecipes(trades);
+
+    }
+
+    public static MerchantRecipe getRandomTrade(Map<MerchantRecipe, Integer> trades){
+
+        int totalWeight = 0;
+
+        for (int weight : trades.values()){
+            totalWeight += weight;
+        }
+
+        int weight = ThreadLocalRandom.current().nextInt(0, totalWeight);
+
+        int tempWeight = 0;
+
+        for (MerchantRecipe recipe : trades.keySet()){
+
+            tempWeight += trades.get(recipe);
+            if (weight < tempWeight) {
+                return recipe;
+            }
+
+        }
+
+        Bukkit.getLogger().warning("TRADE CREATION FAILED");
+        return null;
     }
 
     public static void addGenetics(Villager villager, int[] genetics) {

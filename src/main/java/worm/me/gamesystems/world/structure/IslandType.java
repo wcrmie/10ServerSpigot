@@ -1,8 +1,5 @@
 package worm.me.gamesystems.world.structure;
 
-import lombok.Getter;
-
-@Getter
 public enum IslandType {
     DEFAULT("Plains"),
     DESERT("Desert"),
@@ -20,5 +17,9 @@ public enum IslandType {
 
     IslandType(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 }

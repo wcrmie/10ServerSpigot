@@ -19,8 +19,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-@RequiredArgsConstructor
-@Getter
 public class VoidBobber {
 
     private final Player angler;
@@ -29,8 +27,8 @@ public class VoidBobber {
     private final Integer luckLevel;
     private static final List<VoidBobber> activeBobbers = new ArrayList<>();
 
-    @Setter
     private VoidFishState state;
+
     private final long beganFishingTime = System.currentTimeMillis();
 
     public enum VoidFishState {
@@ -40,6 +38,39 @@ public class VoidBobber {
         FISH_BITE,
         FISH_CAUGHT,
         FAILED_CATCH;
+
+    }
+
+    public VoidBobber(Player angler, FishHook bobber, Integer lureLevel, Integer luckLevel) {
+        this.angler = angler;
+        this.bobber = bobber;
+        this.luckLevel = luckLevel;
+        this.lureLevel = lureLevel;
+    }
+
+    public Player getAngler() {
+        return this.angler;
+    }
+
+    public FishHook getBobber(){
+        return this.bobber;
+    }
+
+    public Integer getLureLevel() {
+        return this.lureLevel;
+    }
+
+    public Integer getLuckLevel(){
+        return this.luckLevel;
+    }
+
+    public void setState(VoidFishState state) {
+        this.state = state;
+    }
+
+    public VoidFishState getState() {
+
+        return this.state;
 
     }
 
