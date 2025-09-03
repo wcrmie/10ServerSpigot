@@ -18,7 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CartographerCompass {
 
-    public ItemStack createCompass(IslandType type) {
+    public static ItemStack createCompass(IslandType type) {
 
         ItemStack compass = new ItemStack(org.bukkit.Material.COMPASS);
 
@@ -38,7 +38,7 @@ public class CartographerCompass {
         return compass;
     }
 
-    public String determineFileName(IslandType type) {
+    public static String determineFileName(IslandType type) {
 
         String island = type.toString();
 
@@ -46,14 +46,28 @@ public class CartographerCompass {
 
         switch ((int) size) {
 
-            case 1 -> island += "_xl";
-            case 2 -> island += "_l";
-            case 3 -> island += "_m";
-            case 4 -> island += "_s";
+            case 1 -> island += "_EXTRA_LARGE";
+            case 2 -> island += "_LARGE";
+            case 3 -> island += "_MEDIUM";
+            case 4 -> island += "_SMALL";
 
         }
 
         return island;
+    }
+
+    public static IslandType getTypeFromCompass(ItemStack compass) {
+
+        PersistentDataContainer pdc = compass.getItemMeta().getPersistentDataContainer();
+
+        try {
+            String typeString = pdc.get(new NamespacedKey(Server.getPlugin(), "island_type"), PersistentDataType.STRING);
+            return IslandType.valueOf(typeString);
+        }
+
+        catch (Exception e) {
+            return null;
+        }
     }
 
 

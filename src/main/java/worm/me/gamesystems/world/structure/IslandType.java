@@ -11,6 +11,7 @@ public enum IslandType {
     TAIGA("Taiga"),
     SNOWY("Snowy Taiga"),
     DUNGEON("Dungeon"),
+    VILLAGE("Village"),
     TRIAL("Trial Chamber");
 
     private final String name;

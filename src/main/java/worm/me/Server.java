@@ -93,7 +93,7 @@ public final class Server extends JavaPlugin {
         BotInitialize.initialize();
 
 
-        World world = Bukkit.getWorld("world");
+        World world = Bukkit.getWorld("ul_Void");
         assert world != null;
         WorldBorderSizeHandler = new WorldBorderSizeHandler(this);
         playerspawning = new PlayerSpawning(this);

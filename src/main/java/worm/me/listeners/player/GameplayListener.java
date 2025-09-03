@@ -27,6 +27,7 @@ import worm.me.gamesystems.items.gear.armor.ArmorBreak;
 import worm.me.gamesystems.items.gear.tools.ToolsEvents;
 import worm.me.gamesystems.world.mobs.traders.Trader;
 import worm.me.gamesystems.world.mobs.traders.VillagerProfession;
+import worm.me.gamesystems.world.structure.generation.CartographerCompass;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
 import worm.me.playersystems.abilities.passive.SlimeBoots;
 import worm.me.playersystems.data.Vault;
@@ -130,7 +131,7 @@ public class GameplayListener implements Listener {
         SaddleSystem sshandler = new SaddleSystem(Server.getPlugin());
         sshandler.rightClick(e);
 
-        if (player.getInventory().getItemInMainHand().getType().equals(Material.KNOWLEDGE_BOOK)) {
+        if (player.getInventory().getItemInMainHand().getType().equals(Material.KNOWLEDGE_BOOK) || player.getInventory().getItemInOffHand().getType().equals(Material.KNOWLEDGE_BOOK)) {
 
             // dont delete the item
             e.setCancelled(true);
@@ -147,6 +148,19 @@ public class GameplayListener implements Listener {
                 Trader.addGenetics(villager, genetics);
                 villager.setProfession(Villager.Profession.NONE);
             }
+        }
+
+        if (player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)) {
+
+            ItemStack compass = player.getInventory().getItemInMainHand();
+
+            if (CartographerCompass.getTypeFromCompass(compass) != null) {
+
+                // make an island spawn
+
+            }
+
+
         }
     }
 
@@ -372,13 +386,24 @@ public class GameplayListener implements Listener {
 
         ItemStack result = event.getResult();
 
+        if (result.getItemMeta().isUnbreakable()) {
+            event.setResult(null);
+            return;
+        }
+
         Enchantment[] enchantments = result.getEnchantments().keySet().toArray(new Enchantment[0]);
 
         for (Enchantment ench : enchantments) {
-            if ((ench.equals(Enchantment.SHARPNESS) || ench.equals(Enchantment.POWER)) && result.getEnchantments().get(ench) > 3) {
+            if ((ench.equals(Enchantment.SHARPNESS) || ench.equals(Enchantment.POWER) || ench.equals(Enchantment.PROTECTION) || ench.equals(Enchantment.FEATHER_FALLING)) && result.getEnchantments().get(ench) > 3) {
                 event.getResult().removeEnchantment(ench);
                 event.getResult().addUnsafeEnchantment(ench, 3);
             }
+
+            if ((ench.equals(Enchantment.UNBREAKING)) && result.getEnchantments().get(ench) > 1) {
+                event.getResult().removeEnchantment(ench);
+                event.getResult().addUnsafeEnchantment(ench, 1);
+            }
+
         }
 
 
