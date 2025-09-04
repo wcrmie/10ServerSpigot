@@ -4,42 +4,46 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Logger;
 
 public class WebhookSender {
 
     public static void sendMessage(String webhookUrl, String content, Logger logger) {
-        try {
-            URI uri = new URI(webhookUrl);
-            URL url = uri.toURL();
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            connection.setRequestMethod("POST");
-            connection.addRequestProperty("Content-Type", "application/json");
-            connection.setDoOutput(true);
+        CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+            try {
+                URI uri = new URI(webhookUrl);
+                URL url = uri.toURL();
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            // Escape JSON special characters
-            String safeContent = content
-                    .replace("\\", "\\\\")
-                    .replace("\"", "\\\"")
-                    .replace("\n", "\\n")
-                    .replace("\r", "\\r");
+                connection.setRequestMethod("POST");
+                connection.addRequestProperty("Content-Type", "application/json");
+                connection.setDoOutput(true);
 
-            String payload = "{ \"content\": \"" + safeContent + "\" }";
+                // Escape JSON special characters
+                String safeContent = content
+                        .replace("\\", "\\\\")
+                        .replace("\"", "\\\"")
+                        .replace("\n", "\\n")
+                        .replace("\r", "\\r");
 
-            try (OutputStream stream = connection.getOutputStream()) {
-                stream.write(payload.getBytes());
-                stream.flush();
+                String payload = "{ \"content\": \"" + safeContent + "\" }";
+
+                try (OutputStream stream = connection.getOutputStream()) {
+                    stream.write(payload.getBytes());
+                    stream.flush();
+                }
+
+                int responseCode = connection.getResponseCode(); // trigger the request
+                if (responseCode >= 400) {
+                    logger.warning("Webhook returned HTTP error code: " + responseCode);
+                }
+
+            } catch (Exception e) {
+                logger.severe("Failed to send webhook report: " + e.getMessage());
             }
-
-            int responseCode = connection.getResponseCode(); // trigger the request
-            if (responseCode >= 400) {
-                logger.warning("Webhook returned HTTP error code: " + responseCode);
-            }
-
-        } catch (Exception e) {
-            logger.severe("Failed to send webhook report: " + e.getMessage());
-        }
+        }).orTimeout(3, java.util.concurrent.TimeUnit.SECONDS);
     }
 
     public static void sendEmbed(String webhookUrl, String embed, Logger logger) {

@@ -3,6 +3,7 @@ package worm.me.gamesystems.world.mobs.traders;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.FoodProperties;
+import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -87,7 +88,11 @@ public enum VillagerProfession {
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.RABBIT_FOOT), new ItemStack(Material.GOLD_INGOT, 3), 3, 5, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.RABBIT_FOOT))
+                            .addComponent(DataComponentTypes.FOOD, FoodProperties.food().nutrition(3).saturation(2).build())
+                            .addComponent(DataComponentTypes.CONSUMABLE, Consumable.consumable().addEffect(ConsumeEffect.applyStatusEffects(List.of(new PotionEffect(PotionEffectType.LUCK, 60, 1)), 1f)).consumeSeconds(2).build())
+                            .build(),
+                            new ItemStack(Material.GOLD_INGOT, 3), 3, 5, true, 5)
                     .newTrade(new Item.ItemBuilder(new ItemStack(Material.COOKED_BEEF, 8)).addComponent(DataComponentTypes.FOOD, FoodProperties.food().nutrition(10).saturation(14).build()).setName(ChatColor.WHITE + "Filet Mignon").build(), new ItemStack(Material.EMERALD, 1), 5, 10, true, 5)
                     .build())),
 

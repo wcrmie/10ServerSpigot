@@ -288,8 +288,6 @@ public class ShapedRecipes {
 
                 shapedRecipe.shape(shape.split(","));
 
-                System.out.println(Arrays.toString(shape.split(",")));
-
                 for (int i = 0; i < 9; i++) {
                     if (values.getFirst().get(i).getType() != Material.AIR){
 

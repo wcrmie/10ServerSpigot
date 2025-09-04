@@ -47,8 +47,6 @@ public class BotListener extends ListenerAdapter {
 
             if (discordLink.linkPlayer(event.getInteraction().getOption("code").getAsInt(), event.getUser().getId())) {
 
-                System.out.println(event.getUser().getId());
-
                 EmbedBuilder embed = new EmbedBuilder();
 
                 String playerName = DiscordLink.linking.get(event.getInteraction().getOption("code").getAsInt()).getName();

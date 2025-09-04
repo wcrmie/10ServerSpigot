@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import worm.me.Server;
 
 public class BotInitialize {
 
@@ -43,10 +44,9 @@ public class BotInitialize {
 
             channel.sendMessage("`Server is starting up.`").queue();
 
-            System.out.println("Discord bot initialized successfully.");
+            Server.getPlugin().getLogger().info("Discord bot initialized successfully.");
         } catch (Exception e) {
-            System.err.println("Failed to initialize Discord bot: " + e.getMessage());
-            e.printStackTrace();
+            Server.getPlugin().getLogger().warning("Failed to initialize Discord bot: " + e.getMessage());
         }
 
     }
