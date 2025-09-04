@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.structure.Structure;
 import org.bukkit.structure.StructureManager;
 import org.bukkit.util.Vector;
+import worm.me.Server;
 import worm.me.gamesystems.world.structure.generation.Generate;
 import worm.me.gamesystems.world.PlayArea;
 
@@ -22,6 +23,9 @@ public class Island {
     private static World world;
     private static WorldBorder worldBorder;
 
+    public Island(Server server) {
+    }
+
     public static void init(JavaPlugin pluginInstance) {
         plugin = pluginInstance;
     }
@@ -33,7 +37,7 @@ public class Island {
         try {
             type = IslandType.valueOf(typeName.toUpperCase()); // Convert string to enum
         } catch (IllegalArgumentException e) {
-            Bukkit.getLogger().warning("[Island] Invalid island type: " + typeName);
+            Bukkit.getLogger().warning("[Island] Invalid island type: " + typeName.toUpperCase());
             return;
         }
 
@@ -62,7 +66,7 @@ public class Island {
 
             candidates.clear();
             for (File f : files) {
-                if (f.getName().contains("_" + size.name())) {
+                if (f.getName().contains(size.name())) {
                     candidates.add(f);
                 }
             }
@@ -87,7 +91,7 @@ public class Island {
         try {
             type = IslandType.valueOf(typeName.toUpperCase()); // Convert string to enum
         } catch (IllegalArgumentException e) {
-            Bukkit.getLogger().warning("[Island] Invalid island type: " + typeName);
+            Bukkit.getLogger().warning("[Island] Invalid island type: " + typeName.toUpperCase());
             return;
         }
 
@@ -116,7 +120,7 @@ public class Island {
 
             candidates.clear();
             for (File f : files) {
-                if (f.getName().contains("_" + size.name())) {
+                if (f.getName().contains(size.name())) {
                     candidates.add(f);
                 }
             }
@@ -155,9 +159,8 @@ public class Island {
             int xSize = size.getBlockX();
             int ySize = size.getBlockY();
             int zSize = size.getBlockZ();
-            int maxSize = Math.max(xSize, Math.max(ySize, zSize));
 
-            Location loc = PlayArea.validSpawnLocation(xSize, ySize, zSize, maxSize);
+            Location loc = PlayArea.validSpawnLocation(xSize, ySize, zSize);
             if (loc == null) {
                 Bukkit.getLogger().warning("[Island] Could not find valid location for: " + name);
                 return;
@@ -193,13 +196,12 @@ public class Island {
                 int xSize = size.getBlockX();
                 int ySize = size.getBlockY();
                 int zSize = size.getBlockZ();
-                int maxSize = Math.max(xSize, Math.max(ySize, zSize));
 
-                Location loc = PlayArea.validSpawnLocation(xSize, ySize, zSize, maxSize);
+                Location loc = PlayArea.validSpawnLocation(xSize, ySize, zSize);
                 if (loc == null) {
                     world = Bukkit.getWorld("ul_Void");
                     worldBorder = world.getWorldBorder();
-                    worldBorder.setSize((worldBorder.getSize()+2));
+                    worldBorder.setSize((worldBorder.getSize() + 2));
                     continue;
                 }
 
@@ -208,9 +210,8 @@ public class Island {
                 } else {
                     Bukkit.getLogger().warning("[Island] Failed to place island: " + name);
                 }
-                return;
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

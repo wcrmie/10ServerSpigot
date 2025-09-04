@@ -103,10 +103,10 @@ commands:
       usage: /structureslist
       description: List all saved structures
       permission: 10VS.structureslist
-  islandtype:
-    usage: /islandtype
+  structuresplacetype:
+    usage: /structuresplacetype
     description: crates an island of given type in the world
-    permission: 10VS.islandtype
+    permission: 10VS.structuresplacetype
   mute:
     description: Mute a player
     usage: /<command> <player>

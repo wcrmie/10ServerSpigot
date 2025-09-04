@@ -79,7 +79,7 @@ public class Generate {
             if (structure == null) return false;
 
             int sizeX = structure.getSize().getBlockX();
-            int sizeY = structure.getSize().getBlockY()+1;
+            int sizeY = structure.getSize().getBlockY();
             int sizeZ = structure.getSize().getBlockZ();
 
             Location centered = location.clone().subtract(sizeX / 2.0, sizeY / 2.0, sizeZ / 2.0);
@@ -120,8 +120,9 @@ public class Generate {
             Structure structure = Bukkit.getStructureManager().loadStructure(file);
             if (structure == null) return false;
 
+
             int sizeX = structure.getSize().getBlockX();
-            int sizeY = structure.getSize().getBlockY() + 1;
+            int sizeY = structure.getSize().getBlockY();
             int sizeZ = structure.getSize().getBlockZ();
 
             Location centered = location.clone().subtract(sizeX / 2.0, sizeY / 2.0, sizeZ / 2.0);
