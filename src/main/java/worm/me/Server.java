@@ -115,6 +115,7 @@ public final class Server extends JavaPlugin {
 
 
         Generate generate = new Generate(this);
+        Island Island = new Island(this);
         Island.init(this);
 
         // Register commands
@@ -124,8 +125,8 @@ public final class Server extends JavaPlugin {
         getCommand("expansionpercentage").setExecutor(new ExpansionPercentageCommand(WorldBorderSizeHandler));
         getCommand("structuresmake").setExecutor(new StructuresMakeCommand(generate));
         getCommand("structuresplace").setExecutor(new StructuresPlaceCommand(generate));
+        getCommand("structuresplacetype").setExecutor(new StructuresPlaceTypeCommand());
         getCommand("structureslist").setExecutor(new StructuresListCommand(generate));
-        getCommand("islandtype").setExecutor(new IslandTypeCommand());
 
         // start worldreset score adder
         WorldReset.getInstance().scoreAdder();

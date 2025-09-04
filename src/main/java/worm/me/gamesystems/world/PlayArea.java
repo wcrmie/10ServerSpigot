@@ -31,24 +31,28 @@ public class PlayArea {
         zMoreThan = (int) (center.getZ() - (borderSize / 2) + edgeBufferZ);
         zLessThan = (int) (center.getZ() + (borderSize / 2) - edgeBufferZ);
 
-        yMoreThan = Math.max(world.getMinHeight(), 220 + edgeBufferY);
-        yLessThan = Math.min(world.getMaxHeight(), 280 - edgeBufferY);
+        yMoreThan = 220 + edgeBufferY;
+        yLessThan = 280 - edgeBufferY;
     }
 
     public static Location worldBorderGetRandomBlock(int xSize, int ySize, int zSize) {
         PlayArea.updateBorderValues(2,2,2);
-        Location spawnCenter = new Location(world, 0.5, 240, 0.5);
-        int excludeRadius = Math.max(xSize, zSize) + 30;
+        Location spawnCenter = new Location(world, 0.5, 220, 0.5);
+        int excludeRadius = Math.max(ySize, Math.max(xSize, zSize)) + 10;
 
         Location randomLocation;
         int attempts = 0;
         do {
-            int xCord = ThreadLocalRandom.current().nextInt(xMoreThan + xSize, xLessThan - xSize);
-            int yCord = ThreadLocalRandom.current().nextInt(yMoreThan + ySize, yLessThan - ySize);
-            int zCord = ThreadLocalRandom.current().nextInt(zMoreThan + zSize, zLessThan - zSize);
+            try {
+                int xCord = ThreadLocalRandom.current().nextInt(xMoreThan + (xSize/2+1), xLessThan - (xSize/2+1));
+                int yCord = ThreadLocalRandom.current().nextInt(yMoreThan + (ySize/2+1), yLessThan - (ySize/2+1));
+                int zCord = ThreadLocalRandom.current().nextInt(zMoreThan + (zSize/2+1), zLessThan - (zSize/2+1));
 
-            randomLocation = new Location(world, xCord, yCord, zCord);
-            attempts++;
+                randomLocation = new Location(world, xCord, yCord, zCord);
+                attempts++;
+            }catch (Exception e){
+                return null;
+            }
 
             if (attempts > 1000) break;
 
@@ -58,84 +62,70 @@ public class PlayArea {
     }
 
 
-    private static Location findValidLocation(int xSize, int ySize, int zSize, int maxAttempts, String successMessage, boolean vc, int maxSizeNum) {
+    private static Location findValidLocation(int xSize, int ySize, int zSize, int maxAttempts, String successMessage) {
         PlayArea.updateBorderValues(2,2,2);
         int attempts = 0;
         while (attempts < maxAttempts) {
             Location baseLocation = worldBorderGetRandomBlock(xSize, ySize, zSize);
-            int baseX = baseLocation.getBlockX();
-            int baseY = baseLocation.getBlockY();
-            int baseZ = baseLocation.getBlockZ();
-            boolean isValid = true;
+            if (baseLocation != null) {
+                int baseX = baseLocation.getBlockX();
+                int baseY = baseLocation.getBlockY();
+                int baseZ = baseLocation.getBlockZ();
+                boolean isValid = true;
 
-            for (int x = baseX - xSize; x <= baseX + xSize && isValid; x++) {
-                for (int y = baseY - ySize; y <= baseY + ySize && isValid; y++) {
-                    for (int z = baseZ - zSize; z <= baseZ + zSize && isValid; z++) {
-                        if (y < world.getMinHeight() || y > world.getMaxHeight()) continue;
-                        if (!isAir(x, y, z)) {
-                            isValid = false;
-                            break;
+                for (int x = baseX - xSize; x <= baseX + xSize && isValid; x++) {
+                    for (int y = baseY - ySize; y <= baseY + ySize && isValid; y++) {
+                        for (int z = baseZ - zSize; z <= baseZ + zSize && isValid; z++) {
+                            if (!validBLock(x, y, z)) {
+                                isValid = false;
+                                break;
+                            }
                         }
                     }
                 }
-            }
 
-            if (!isValid) {
-                attempts++;
-                continue;
-            }
-
-            if (!vc) {
-                for (int y = baseY - 1; y >= Math.max(baseY - 100, world.getMinHeight()) && isValid; y--) {
-                    if (!isAir(baseX, y, baseZ)) {
-                        isValid = false;
-                        break;
-                    }
-                }
-                for (int y = baseY + 1; y <= Math.min(baseY + 100, world.getMaxHeight()) && isValid; y++) {
-                    if (!isAir(baseX, y, baseZ)) {
-                        isValid = false;
-                        break;
-                    }
-                }
                 if (!isValid) {
                     attempts++;
                     continue;
                 }
+                return new Location(world, baseX, baseY, baseZ);
             }
-            return new Location(world, baseX, baseY, baseZ);
+            else {
+                attempts += 10000000;
+            }
         }
         return null;
     }
 
-    private static boolean isAir(int x, int y, int z) {
-        if (y < world.getMinHeight() || y > world.getMaxHeight()) {
-            return true;
+    private static boolean validBLock(int x, int y, int z) {
+        if (y > yMoreThan && y < yLessThan && x > xMoreThan && x < xLessThan && z > zMoreThan && z < zLessThan) {
+            Block block = world.getBlockAt(x, y, z);
+            if (block.isEmpty()) {
+                return true;
+            }
         }
-        Block block = world.getBlockAt(x, y, z);
-        Material type = block.getType();
-        return type == Material.AIR || type == Material.CAVE_AIR || type == Material.VOID_AIR;
+        return false;
     }
 
-    public static Location validSpawnLocation(int xsize, int ysize, int zsize, int maxSizeNum) {
+    public static Location validSpawnLocation(int xsize, int ysize, int zsize) {
         Location location;
-        location = findValidLocation(6 * xsize, 6 * ysize, 6 * zsize, 10, "Extra Extra big", false, maxSizeNum);
+        location = findValidLocation(6 * xsize, 6 * ysize, 6 * zsize, 10, "Extra Extra big");
         if (location != null) return location;
 
-        location = findValidLocation(5 * xsize, 5 * ysize, 5 * zsize, 20, "Extra big", false, maxSizeNum);
+        location = findValidLocation(5 * xsize, 5 * ysize, 5 * zsize, 20, "Extra big");
         if (location != null) return location;
 
-        location = findValidLocation(4 * xsize, 4 * ysize, 4 * zsize, 30, "Big", false, maxSizeNum);
+        location = findValidLocation(4 * xsize, 4 * ysize, 4 * zsize, 30, "Big");
         if (location != null) return location;
 
-        location = findValidLocation(3 * xsize, 3 * ysize, 3 * zsize, 100, "Medium", false, maxSizeNum);
+        location = findValidLocation(3 * xsize, 3 * ysize, 3 * zsize, 100, "Medium");
         if (location != null) return location;
 
-        location = findValidLocation(2 * xsize, 2 * ysize, 2 * zsize, 500, "Small", false, maxSizeNum);
+        location = findValidLocation(2 * xsize, 2 * ysize, 2 * zsize, 500, "Small");
         if (location != null) return location;
 
         location = findValidLocation((int) (1.2 * xsize), (int) (1.2 * ysize), (int) (1.2 * zsize),
-                2000, "Extra Small", true, maxSizeNum);
+                2000, "Extra Small");
 
         return location;
     }
