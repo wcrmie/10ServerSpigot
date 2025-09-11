@@ -12,7 +12,6 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
-import worm.me.discord.bot.BotInteractions;
 import worm.me.playersystems.abilities.active.FeatherDash;
 import worm.me.playersystems.data.VoidPlayer;
 import worm.me.playersystems.generator.Generator;
@@ -23,9 +22,6 @@ public class InitializationsListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
-
-        BotInteractions botInteractions = new BotInteractions();
-        botInteractions.joinMessage(event.getPlayer());
 
         // Set player variable
         Player player = event.getPlayer();
@@ -73,9 +69,6 @@ public class InitializationsListener implements Listener {
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent e){
         Player p = e.getPlayer();
-
-        BotInteractions botInteractions = new BotInteractions();
-        botInteractions.leaveMessage(p);
 
         worm.me.Server.getPlugin().generating.remove(e.getPlayer());
 

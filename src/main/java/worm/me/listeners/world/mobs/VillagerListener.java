@@ -59,6 +59,8 @@ public class VillagerListener implements Listener {
     @EventHandler
     public void onVillagerLevel(VillagerAcquireTradeEvent event) {
 
+        // TODO: create custom event when trades are acquired, void trades for the same level.
+
         Villager villager = (Villager) event.getEntity();
 
         int level = villager.getVillagerLevel();

@@ -40,6 +40,7 @@ import worm.me.utils.chat.MessageType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameplayListener implements Listener {
 
@@ -113,6 +114,18 @@ public class GameplayListener implements Listener {
         if (e.getEntity() instanceof Player shooter) {
             e.getProjectile().getPersistentDataContainer().set(new NamespacedKey(Server.getPlugin(), "arrow"), PersistentDataType.STRING, "arrow");
             VoidPlayer.registerStats(shooter, 3);
+
+            if (e.getBow().containsEnchantment(Enchantment.INFINITY)) {
+
+                int RNG = ThreadLocalRandom.current().nextInt(0, 1);
+                if (RNG == 0) {
+
+                    e.setConsumeItem(true);
+
+                }
+
+            }
+
         }
     }
 
@@ -156,7 +169,9 @@ public class GameplayListener implements Listener {
 
             if (CartographerCompass.getTypeFromCompass(compass) != null) {
 
-                // make an island spawn
+                player.sendMessage(Message.create(MessageType.FAIL, "This item is currently disabled."));
+
+                // TODO: make island spawn
 
             }
 

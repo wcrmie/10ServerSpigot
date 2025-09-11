@@ -3,7 +3,6 @@ package worm.me.gamesystems.world.reset;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import worm.me.Server;
-import worm.me.discord.bot.BotInteractions;
 
 public class WorldResetBlocks {
     private final World world;
@@ -73,7 +72,5 @@ public class WorldResetBlocks {
         Bukkit.getScheduler().cancelTask(taskId);
         isResetting = false;
         WorldReset.getInstance().completeReset();
-        BotInteractions.announceMapReset();
     }
-
 }

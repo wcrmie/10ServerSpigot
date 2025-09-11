@@ -1,16 +1,17 @@
 package worm.me.listeners.player;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
-import worm.me.Server;
-import worm.me.playersystems.social.MessageHead;
+import org.bukkit.inventory.ItemStack;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
-import worm.me.utils.staff.ChatModeration;
-
-import static worm.me.utils.staff.ChatModeration.*;
 
 public class ChatListener implements Listener {
 
@@ -19,40 +20,59 @@ public class ChatListener implements Listener {
     @EventHandler
     public void onChat(PlayerChatEvent event){
 
-        // For messages above head
-        MessageHead messageHead = new MessageHead(Server.getPlugin());
-
         // initialize variables
-        Player p = event.getPlayer();
-        String m = event.getMessage();
-
-        // message character limit
-
-        int msgLength = ChatModeration.getChatLimit(p);
-
-        if (msgLength == 0) {
-            p.sendMessage(Message.create(MessageType.FAIL, "You are currently muted. You may appeal on discord by making a ticket."));
-            event.setCancelled(true);
-            return;
-        }
-
-        if (blacklistFlagged(m)) {
-            mute(p);
-            notifyStaff(m, p);
-            event.setCancelled(true);
-            return;
-        }
-
-        if (m.length() > msgLength){
-            p.sendMessage(Message.create(MessageType.FAIL, String.format("Your messages must be %d characters or less.", msgLength)));
-            event.setCancelled(true);
-            return;
-        }
+        Player sender = event.getPlayer();
+        String msg = event.getMessage();
 
         // queue messages to be sent above head
-        messageHead.messageQueue(p, ChatModeration.filteredMessage(m));
-        messageHead.messageDisplay(p, ChatModeration.filteredMessage(m));
-        event.setCancelled(true);
+        event.getRecipients().clear();
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            double distance = player.getLocation().distance(sender.getLocation());
+
+            int color = distance == 0 ? 255 : (int) Math.round(255 - 255 * (distance / (player.getWorld().getWorldBorder().getSize() + 50)));
+            if (color < 50) color = 50;
+            String hexColor = String.format("#%02x%02x%02x", color, color, color);
+
+            String message = msg;
+            if (message.contains(player.getName())) {
+                message = message.replace(player.getName(), ChatColor.YELLOW + "@" + player.getName() + ChatColor.RESET);
+                player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+            }
+
+            net.kyori.adventure.text.TextComponent component = Component.text(sender.getName() + ": " + message).color(TextColor.fromHexString(hexColor));
+
+            if (message.contains("[i]") || message.contains("[item]")) {
+
+                ItemStack item = sender.getInventory().getItemInMainHand();
+
+                String itemName = item.getType().toString();
+
+                if (itemName.isEmpty()) {
+                    itemName = item.getType().toString();
+                }
+
+                message = message.replaceAll("\\[i]", ChatColor.AQUA + "[" + itemName + " x" + item.getAmount() + "]" + ChatColor.RESET).replaceAll("\\[item]", ChatColor.AQUA + "[" + itemName + " x" + item.getAmount() + "]" + ChatColor.RESET);
+
+                component = Component.text(sender.getName() + ": " + message).color(TextColor.fromHexString(hexColor));
+
+                component = component.hoverEvent(item.asHoverEvent());
+
+            }
+
+            player.sendMessage(component);
+
+        }
+
+        if (msg.toLowerCase().contains("hack") || msg.toLowerCase().contains("cheat") || msg.toLowerCase().contains("hax")) {
+            sender.sendMessage(Message.create(MessageType.GENERIC, "If you think someone is hacking, please report them using /report <player>."));
+            sender.playSound(sender, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+        }
+
+        if (msg.toLowerCase().contains("how") && (msg.toLowerCase().contains("stone") || msg.toLowerCase().contains("tool") || msg.toLowerCase().contains("pick") || msg.toLowerCase().contains("axe") || msg.toLowerCase().contains("shovel") || msg.toLowerCase().contains("sword"))) {
+            sender.sendMessage(Message.create(MessageType.GENERIC, "Hover your tools in your inventory to see how to upgrade them!"));
+            sender.playSound(sender, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+        }
 
 
     }

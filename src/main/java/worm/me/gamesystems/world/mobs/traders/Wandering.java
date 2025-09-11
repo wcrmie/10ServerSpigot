@@ -81,15 +81,15 @@ public class Wandering {
             .build();
 
     private final Map<MerchantRecipe, Integer> blocks = new Trader.TradeBuilder()
-            .newTrade(new ItemStack(Material.BLACKSTONE, 16), new ItemStack(Material.GOLD_NUGGET, 4), 15, 5, false, 0)
-            .newTrade(new ItemStack(Material.CALCITE, 16), new ItemStack(Material.GOLD_NUGGET, 4), 15, 5, false, 0)
-            .newTrade(new ItemStack(Material.ICE, 16), new ItemStack(Material.GOLD_NUGGET, 4), 15, 4, false, 0)
-            .newTrade(new ItemStack(Material.SOUL_SAND, 16), new ItemStack(Material.GOLD_NUGGET, 10), 15, 4, false, 0)
-            .newTrade(new ItemStack(Material.SOUL_SOIL, 16), new ItemStack(Material.GOLD_NUGGET, 7), 15, 4, false, 0)
-            .newTrade(new ItemStack(Material.MOSSY_COBBLESTONE, 16), new ItemStack(Material.GOLD_NUGGET, 4), 15, 5, false, 0)
-            .newTrade(new ItemStack(Material.DARK_PRISMARINE, 16), new ItemStack(Material.GOLD_NUGGET, 4), 15, 6, false, 0)
-            .newTrade(new ItemStack(Material.SEA_LANTERN, 16), new ItemStack(Material.GOLD_NUGGET, 4), 15, 4, false, 0)
-            .newTrade(new ItemStack(Material.PURPUR_BLOCK, 16), new ItemStack(Material.GOLD_NUGGET, 4), 15, 2, false, 0)
+            .newTrade(new ItemStack(Material.BLACKSTONE, 16), new ItemStack(Material.GOLD_NUGGET, 2), 15, 5, false, 0)
+            .newTrade(new ItemStack(Material.CALCITE, 16), new ItemStack(Material.GOLD_NUGGET, 2), 15, 5, false, 0)
+            .newTrade(new ItemStack(Material.ICE, 16), new ItemStack(Material.GOLD_NUGGET, 2), 15, 4, false, 0)
+            .newTrade(new ItemStack(Material.SOUL_SAND, 16), new ItemStack(Material.GOLD_NUGGET, 5), 15, 4, false, 0)
+            .newTrade(new ItemStack(Material.SOUL_SOIL, 16), new ItemStack(Material.GOLD_NUGGET, 4), 15, 4, false, 0)
+            .newTrade(new ItemStack(Material.MOSSY_COBBLESTONE, 16), new ItemStack(Material.GOLD_NUGGET, 2), 15, 5, false, 0)
+            .newTrade(new ItemStack(Material.DARK_PRISMARINE, 16), new ItemStack(Material.GOLD_NUGGET, 2), 15, 6, false, 0)
+            .newTrade(new ItemStack(Material.SEA_LANTERN, 16), new ItemStack(Material.GOLD_NUGGET, 2), 15, 4, false, 0)
+            .newTrade(new ItemStack(Material.PURPUR_BLOCK, 16), new ItemStack(Material.GOLD_NUGGET, 2), 15, 2, false, 0)
             .build();
 
     public void newTrades(org.bukkit.entity.WanderingTrader trader){

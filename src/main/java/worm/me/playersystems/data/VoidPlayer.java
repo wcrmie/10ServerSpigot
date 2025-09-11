@@ -9,7 +9,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.CooldownDisplay;
-import worm.me.playersystems.social.MessageHead;
 import worm.me.gamesystems.items.gear.tools.Tools;
 import worm.me.playersystems.quests.QuestAssign;
 import worm.me.Server;
@@ -89,9 +88,6 @@ public class VoidPlayer {
         if (!container.has(new NamespacedKey(Server.getPlugin(), "questclaimed"), PersistentDataType.INTEGER_ARRAY)) {
             container.set(new NamespacedKey(Server.getPlugin(), "questclaimed"), PersistentDataType.INTEGER_ARRAY, new int[3]);
         }
-
-        MessageHead messageHead = new MessageHead(plugin);
-        player.getPersistentDataContainer().set(messageHead.armorStandExists, PersistentDataType.BOOLEAN, false);
 
         // Hide the player's nametag
         Scoreboard score = Bukkit.getScoreboardManager().getMainScoreboard();

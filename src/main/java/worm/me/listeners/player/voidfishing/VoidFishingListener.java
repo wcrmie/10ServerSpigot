@@ -25,6 +25,9 @@ public class VoidFishingListener implements Listener {
                     // Successful catch
                     bobber.setState(VoidBobber.VoidFishState.FISH_CAUGHT);
                     Bukkit.getPluginManager().callEvent(new VoidFishEvent(player, bobber, VoidBobber.VoidFishState.FISH_CAUGHT));
+
+                    event.getHook().setHookedEntity(null); // set it later
+
                     bobber.remove();
 
                 } else {

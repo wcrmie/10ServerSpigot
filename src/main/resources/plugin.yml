@@ -6,9 +6,6 @@ authors: [ worm, clem, Boolean ]
 depend: [WorldGuard]
 softdepend: [SkinsRestorer]
 commands:
-  setVoice:
-    description: Changes a player's voice and pitch for when their message is displayed above their head.
-    usage: /<command> <integer> <double>
   setGens:
     description: Allows the player to choose which blocks are generated for them every 10 seconds via a GUI.
     usage: /<command>
@@ -59,17 +56,11 @@ commands:
     description: Initiates a complete world reset
     usage: /resetworld
     permission: 10VS.worldreset
-  discord:
-    description: Get the discord link
-    usage: /discord
   suicide:
     description: Kills the player
     usage: /<command>
   toggleGens:
     description: Toggles the generator on or off
-    usage: /<command>
-  link:
-    description: Links your minecraft account to your discord
     usage: /<command>
   testannouncement:
     description: test announcement
@@ -77,20 +68,6 @@ commands:
   hat:
     description: Switches your main hand and hat slots
     usage: /<command>
-  say:
-    description: An alternative to just typing in chat like a normal person
-    usage: /<command> <message>
-  report:
-    description: Open the report menu, or send a report in chat
-    usage: /<command> <player>
-  voicemute:
-    description: Mute players who are abusing voice chat
-    usage: /<command> <player>
-    permission: 10VS.voicemute
-  spectate:
-    description: Spectate players who may be breaking the rules
-    usage: /<command> <player/stop>
-    permission: 10VS.spectate
   structuresmake:
     usage: /structuresmake <x1> <y1> <z1> <x2> <y2> <z2> <name>
     description: Save a structure
@@ -107,11 +84,3 @@ commands:
     usage: /structuresplacetype
     description: crates an island of given type in the world
     permission: 10VS.structuresplacetype
-  mute:
-    description: Mute a player
-    usage: /<command> <player>
-    permission: 10VS.mute
-  unmute:
-    description: Unmute a player
-    usage: /<command> <player>
-    permission: 10VS.unmute

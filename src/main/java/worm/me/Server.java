@@ -9,12 +9,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import worm.me.commands.*;
 import worm.me.commands.admin.*;
 import worm.me.commands.chat.*;
-import worm.me.commands.discord.DiscordCommand;
-import worm.me.commands.discord.DiscordLinkCommand;
 import worm.me.commands.gui.*;
 import worm.me.commands.gui.OpenAbilitiesGUICommand;
 import worm.me.commands.gui.OpenLevelsGUICommand;
-import worm.me.discord.bot.BotInitialize;
 import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.gamesystems.recipes.SmeltingRecipes;
@@ -90,9 +87,6 @@ public final class Server extends JavaPlugin {
         saveDefaultConfig();
         getLogger().info("Plugin enabled");
 
-        BotInitialize.initialize();
-
-
         World world = Bukkit.getWorld("ul_Void");
         assert world != null;
         WorldBorderSizeHandler = new WorldBorderSizeHandler(this);
@@ -150,31 +144,17 @@ public final class Server extends JavaPlugin {
         configManager = new ConfigManager();
         configManager.loadConfig();
 
-        this.getCommand("report").setExecutor(new ReportCommand(this));
-        this.getCommand("setVoice").setExecutor(new SetVoiceCommand(this));
         this.getCommand("setGens").setExecutor(new SetGensCommand(this));
         this.getCommand("rules").setExecutor(new RulesCommand());
         this.getCommand("sit").setExecutor(new SitCommand(this));
-        this.getCommand("setCharLimit").setExecutor(new SetPlayerCharLimCommand());
         this.getCommand("abilities").setExecutor(new OpenAbilitiesGUICommand());
-        //this.getCommand("hats").setExecutor(new HatsCommand());
         this.getCommand("levels").setExecutor(new OpenLevelsGUICommand(this));
-        //this.getCommand("setSkin").setExecutor(new OpenSkinGUICommand());
         this.getCommand("menu").setExecutor(new MenuCommand());
         this.getCommand("profile").setExecutor(new OpenProfileGUICommand());
-        //this.getCommand("hatstorage").setExecutor(new EditHatsCommand());
-        this.getCommand("rename").setExecutor(new RenameCommand());
         this.getCommand("recipes").setExecutor(new OpenRecipesGUICommand());
         this.getCommand("suicide").setExecutor(new SuicideCommand());
-        this.getCommand("discord").setExecutor(new DiscordCommand());
-        this.getCommand("link").setExecutor(new DiscordLinkCommand());
         this.getCommand("togglegens").setExecutor(new ToggleGensCommand());
         this.getCommand("hat").setExecutor(new HatCommand());
-        this.getCommand("say").setExecutor(new SayCommand());
-        this.getCommand("voicemute").setExecutor(new VoiceMuteCommand());
-        this.getCommand("spectate").setExecutor(new SpectateCommand());
-        this.getCommand("mute").setExecutor(new MuteCommand());
-        this.getCommand("unmute").setExecutor(new UnmuteCommand());
 
         // Create Map for tools
         List<Material> pickaxes = new ArrayList<>();
@@ -414,11 +394,6 @@ public final class Server extends JavaPlugin {
         }
 
         WorldReset.getInstance().saveData();
-        JDA jda = BotInitialize.api;
-
-        BotInitialize.channel.sendMessage("`Server is shutting down.`").queue();
-
-        jda.shutdown();
 
         FileConfiguration config = getConfig();
         WorldBorderSizeHandler WorldBorderSizeHandler = new WorldBorderSizeHandler(this);
