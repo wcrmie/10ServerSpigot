@@ -9,11 +9,9 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
 
-import java.util.List;
-
 public class HotRod {
 
-    public static ItemStack createHotRod() {
+    public static ItemStack createItem() {
         ItemStack hotRod = new ItemStack(Material.FISHING_ROD);
         ItemMeta meta = hotRod.getItemMeta();
 
@@ -22,7 +20,7 @@ public class HotRod {
         PersistentDataContainer pdc = meta.getPersistentDataContainer();
 
         pdc.set(new NamespacedKey(Server.getPlugin(), "rod"), PersistentDataType.STRING, "hot_rod");
-        pdc.set(new NamespacedKey(Server.getPlugin(), "boss_spawned"), PersistentDataType.BOOLEAN, Boolean.FALSE);
+        pdc.set(new NamespacedKey(Server.getPlugin(), "void_rod"), PersistentDataType.BOOLEAN, Boolean.TRUE);
 
         hotRod.setItemMeta(meta);
 

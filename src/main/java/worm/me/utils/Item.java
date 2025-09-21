@@ -52,15 +52,6 @@ public class Item {
             return this;
         }
 
-        public ItemBuilder storeEnchant(Enchantment enchantment, int level) {
-            ItemMeta meta = item.getItemMeta();
-            if (meta != null) {
-                meta.addEnchant(enchantment, level, true);
-                item.setItemMeta(meta);
-            }
-            return this;
-        }
-
         public <T> ItemBuilder addComponent(DataComponentType.Valued<T> type, T value) {
 
             item.setData(type, value);

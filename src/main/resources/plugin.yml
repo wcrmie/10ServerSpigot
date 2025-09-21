@@ -3,7 +3,7 @@ version: '${project.version}'
 main: worm.me.Server
 api-version: '1.21'
 authors: [ worm, clem, Boolean ]
-depend: [WorldGuard]
+depend: [WorldGuard, MessageHead]
 softdepend: [SkinsRestorer]
 commands:
   setGens:
@@ -26,10 +26,6 @@ commands:
     description: Set the percentage of blocks needed for world border expansion
     usage: /<command> <float>
     permission: 10VS.expansionpercentage
-  setCharLimit:
-    description: Set the character limit for chat messages for a specific player
-    usage: /<command> <Player> <integer>
-    permission: 10VS.setCharLimit
   abilities:
     description: Opens the ability selection GUI for the player.
     usage: /<command>
@@ -45,10 +41,6 @@ commands:
   profile:
     description: Opens the player's profile.
     usage: /<command> [Player]
-  rename:
-    description: Rename held item.
-    usage: /<command> <string>
-    permission: 10VS.rename
   recipes:
     description: Opens the recipes GUI for the player.
     usage: /<command>
@@ -84,3 +76,7 @@ commands:
     usage: /structuresplacetype
     description: crates an island of given type in the world
     permission: 10VS.structuresplacetype
+  givebook:
+    usage: /<command>
+    description: gives cleric book
+    permission: 10VS.givebook

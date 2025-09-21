@@ -15,7 +15,7 @@ import worm.me.playersystems.data.levels.Reqs;
 
 import java.util.*;
 
-public class Abilities {
+public final class Abilities {
 
     public static final NamespacedKey abilitiesUnlocked = new NamespacedKey(Server.getPlugin(), "unlockedabilities");
 
@@ -27,7 +27,7 @@ public class Abilities {
 
     public static final Map<Integer, int[]> abilityRequirements = new HashMap<>();
 
-    public void abilitiesInit(){
+    public static void abilitiesInit(){
         // Initialize the GUI Components for the abilities.
         // We should initialize stuff in their related classes like this
         // instead of clogging up the Server class.
@@ -70,7 +70,7 @@ public class Abilities {
         abilityGuiComponents.put(11, List.of("Ability 11", "ARROW", ChatColor.DARK_GRAY + "Shoot a weak arrow and ride it using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Bow]"));
     }
 
-    public void initializeRequirements(){
+    public static void initializeRequirements(){
 
         // Format: abilityRequirements.put(abilityID, new int[]{combat, farming, crafting, fishing, smithing, mining, agility, foraging});
         abilityRequirements.put(0, new Reqs.RequirementBuilder().combat(1).build());
@@ -87,7 +87,7 @@ public class Abilities {
         abilityRequirements.put(11, new int[]{10,  1, 0, 0,  0, 2, 10, 2});
     }
 
-    public List<Integer> getActiveAbilities(Player p){
+    public static List<Integer> getActiveAbilities(Player p){
         PersistentDataContainer container = p.getPersistentDataContainer();
 
         List<Integer> active = new ArrayList<>();
@@ -101,11 +101,11 @@ public class Abilities {
         return active;
     }
 
-    public boolean isActive(Player p, int abilityID){
+    public static boolean isActive(Player p, int abilityID){
         return getActiveAbilities(p).contains(abilityID);
     }
 
-    public int getAbilitySlot(Player p, int abilityID){
+    public static int getAbilitySlot(Player p, int abilityID){
         List<Integer> active = getActiveAbilities(p);
 
         for (int i = 0; i < active.size(); i++){
@@ -117,7 +117,7 @@ public class Abilities {
         return -1;
     }
 
-    public boolean hasAbilityOnCooldown(Player p){
+    public static boolean hasAbilityOnCooldown(Player p){
 
         for (long i : Objects.requireNonNullElse(p.getPersistentDataContainer().get(abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])){
             if (i > System.currentTimeMillis()/1000L){
@@ -128,7 +128,7 @@ public class Abilities {
 
     }
 
-    public void handleAbility(Player player, int abilityID){
+    public static void handleAbility(Player player, int abilityID){
 
         PersistentDataContainer container = player.getPersistentDataContainer();
 

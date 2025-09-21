@@ -20,6 +20,8 @@ public class ChatListener implements Listener {
     @EventHandler
     public void onChat(PlayerChatEvent event){
 
+        if (event.isCancelled()) return;
+
         // initialize variables
         Player sender = event.getPlayer();
         String msg = event.getMessage();

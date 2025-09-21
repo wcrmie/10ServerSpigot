@@ -149,17 +149,28 @@ public class GameplayListener implements Listener {
             // dont delete the item
             e.setCancelled(true);
 
-            if (e.getRightClicked() instanceof Villager villager && villager.getProfession().equals(Villager.Profession.NITWIT)) {
+            if (e.getRightClicked() instanceof Villager villager && (villager.getProfession().equals(Villager.Profession.NITWIT) || villager.getProfession().equals(Villager.Profession.NONE))) {
 
                 ItemStack tome = player.getInventory().getItemInMainHand();
 
                 PersistentDataContainer pdc = tome.getItemMeta().getPersistentDataContainer();
                 int[] genetics = pdc.getOrDefault(new NamespacedKey(Server.getPlugin(), "genetics"), PersistentDataType.INTEGER_ARRAY, new int[VillagerProfession.values().length]);
 
-                e.getPlayer().getInventory().remove(tome);
+                player.getInventory().setItem(e.getHand(), new ItemStack(Material.AIR));
 
-                Trader.addGenetics(villager, genetics);
-                villager.setProfession(Villager.Profession.NONE);
+                villager.getWorld().spawn(villager.getLocation(), Villager.class, villager1 -> {
+
+                   Trader.addGenetics(villager1, Trader.getGenetics(villager));
+                   Trader.addGenetics(villager1, genetics);
+                   villager1.setProfession(Villager.Profession.NONE);
+                   if (!villager.isAdult()) {
+                       villager1.setBaby();
+                   }
+
+                });
+
+                villager.remove();
+
             }
         }
 

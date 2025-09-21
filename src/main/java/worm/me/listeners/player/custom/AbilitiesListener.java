@@ -35,19 +35,17 @@ public class AbilitiesListener implements Listener {
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent e){
 
-        Abilities ability = new Abilities();
-
         if (e.getFrom() == e.getTo()) return;
 
-        if (!ability.isActive(e.getPlayer(), 1) && e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
+        if (!Abilities.isActive(e.getPlayer(), 1) && e.getPlayer().getGameMode() == GameMode.SURVIVAL) {
             e.getPlayer().setAllowFlight(false);
             e.getPlayer().setFlying(false);
         }
 
         if (Objects.requireNonNull(e.getTo()).getY() < 200) e.getPlayer().damage(1000000);
 
-        if (ability.getAbilitySlot(e.getPlayer(), 1) != -1){
-            if (Objects.requireNonNullElse(e.getPlayer().getPersistentDataContainer().get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])[ability.getAbilitySlot(e.getPlayer(), 1)] <= System.currentTimeMillis()/1000L && ability.isActive(e.getPlayer(), 1)){
+        if (Abilities.getAbilitySlot(e.getPlayer(), 1) != -1){
+            if (Objects.requireNonNullElse(e.getPlayer().getPersistentDataContainer().get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])[Abilities.getAbilitySlot(e.getPlayer(), 1)] <= System.currentTimeMillis()/1000L && Abilities.isActive(e.getPlayer(), 1)){
                 e.getPlayer().setAllowFlight(true);
                 e.getPlayer().setFlyingFallDamage(TriState.TRUE);
             }
@@ -57,16 +55,15 @@ public class AbilitiesListener implements Listener {
     @EventHandler
     public void onAbilityAttempt(AbilityAttemptEvent e){
 
-        Abilities ability = new Abilities();
         Player player = e.getPlayer();
 
         PersistentDataContainer container = player.getPersistentDataContainer();
 
-        if (ability.isActive(player, e.getAbilityID())){
-            if (Objects.requireNonNullElse(container.get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])[ability.getAbilitySlot(player, e.getAbilityID())] <= System.currentTimeMillis()/1000L) {
-                ability.handleAbility(player, e.getAbilityID());
+        if (Abilities.isActive(player, e.getAbilityID())){
+            if (Objects.requireNonNullElse(container.get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])[Abilities.getAbilitySlot(player, e.getAbilityID())] <= System.currentTimeMillis()/1000L) {
+                Abilities.handleAbility(player, e.getAbilityID());
             } else {
-                player.sendMessage(Message.create(MessageType.FAIL, "Your " + Abilities.abilityGuiComponents.get(e.getAbilityID()).getFirst() + " is on cooldown for " + (container.get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY)[ability.getAbilitySlot(e.getPlayer(), e.getAbilityID())] - (System.currentTimeMillis()/1000)) + " seconds."));
+                player.sendMessage(Message.create(MessageType.FAIL, "Your " + Abilities.abilityGuiComponents.get(e.getAbilityID()).getFirst() + " is on cooldown for " + (Objects.requireNonNull(container.get(Abilities.abilityCooldown, PersistentDataType.LONG_ARRAY))[Abilities.getAbilitySlot(e.getPlayer(), e.getAbilityID())] - (System.currentTimeMillis()/1000)) + " seconds."));
                 e.setCancelled(true);
             }
         }

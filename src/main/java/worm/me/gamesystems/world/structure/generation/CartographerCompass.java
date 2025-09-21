@@ -30,7 +30,7 @@ public class CartographerCompass {
         pdc.set(new NamespacedKey(Server.getPlugin(), "island_type"), PersistentDataType.STRING, type.toString());
 
         meta.lore(List.of(Component.text("[RIGHT-CLICK]").color(NamedTextColor.GRAY).append(
-                Component.text("to create a new" + type.getName() + " island.").color(NamedTextColor.YELLOW)
+                Component.text(" to create a new " + type.getName() + " island.").color(NamedTextColor.YELLOW)
         )));
 
         compass.setItemMeta(meta);

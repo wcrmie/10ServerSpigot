@@ -31,7 +31,7 @@ public class Trader {
 
     }
 
-    public static void replaceTrade(Villager villager, MerchantRecipe recipe, int level) {
+    public static MerchantRecipe replaceTrade(Villager villager, int level) {
 
         Villager.Profession profession = villager.getProfession();
 
@@ -39,26 +39,27 @@ public class Trader {
 
         List<MerchantRecipe> trades = new ArrayList<>(villager.getRecipes());
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 1000; i++) {
 
             MerchantRecipe newRecipe = getRandomTrade(villagerProfession.getTrades().get(level - 1));
 
-            if (trades.contains(newRecipe)) {
-                newRecipe = null;
+            for (MerchantRecipe trade : trades) {
+
+                if (trade.getIngredients().equals(newRecipe.getIngredients()) && trade.getResult().equals(newRecipe.getResult())) {
+
+                    newRecipe = null;
+
+                }
             }
 
             if (newRecipe != null) {
-                trades.add(newRecipe);
-            } else {
-                Bukkit.getLogger().warning("TRADE IS NULL");
-                i--;
+
+                return newRecipe;
+
             }
 
         }
-
-        trades.remove(recipe);
-
-        villager.setRecipes(trades);
+        return null;
 
     }
 
@@ -88,8 +89,6 @@ public class Trader {
     }
 
     public static void addGenetics(Villager villager, int[] genetics) {
-
-        //if (villager.getProfession().equals(Villager.Profession.NITWIT) && !Arrays.equals(genetics, new int[VillagerProfession.values().length])) villager.setProfession(Villager.Profession.NONE);
 
         int[] newGenetics = getGenetics(villager);
 
