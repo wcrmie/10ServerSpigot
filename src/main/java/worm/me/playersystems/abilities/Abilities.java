@@ -208,4 +208,26 @@ public class Abilities {
 
     }
 
+    public void setAllCooldowns(Player player) {
+        PersistentDataContainer container = player.getPersistentDataContainer();
+        int[] active = container.getOrDefault(abilitiesActive, PersistentDataType.INTEGER_ARRAY, new int[3]);
+        long[] cooldowns = new long[active.length];
+        long now = System.currentTimeMillis() / 1000L;
+
+        for (int i = 0; i < active.length; i++) {
+            int abilityId = active[i];
+
+            if (abilityId >= 0 && abilityId < Ability.values().length) {
+                Ability ability = Ability.values()[abilityId];
+                cooldowns[i] = ability.hasCooldown() ? now + ability.getCooldownSeconds() : 0;
+            } else {
+                cooldowns[i] = 0;
+            }
+        }
+
+        container.set(abilityCooldown, PersistentDataType.LONG_ARRAY, cooldowns);
+        new CooldownDisplay().UpdateScoreboard(player);
+    }
+
+
 }

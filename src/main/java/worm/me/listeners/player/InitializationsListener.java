@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
+import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.FeatherDash;
 import worm.me.playersystems.data.VoidPlayer;
 import worm.me.playersystems.generator.Generator;
@@ -31,6 +32,9 @@ public class InitializationsListener implements Listener {
         // Give the player a random item every 10 seconds
         worm.me.Server.getPlugin().generating.add(event.getPlayer());
         Generator.generateItem(player);
+
+        Abilities abilities = new Abilities();
+        abilities.setAllCooldowns(player);
 
         Tips tips = new Tips();
         tips.beginTipSending(player);
