@@ -1,7 +1,8 @@
 package worm.me.playersystems.abilities;
 
 public enum AbilityType {
-    SWORD,
-    AXE,
-    MISC;
+    DOUBLE_SPACE,
+    HORIZONTAL,
+    VERTICAL,
+    OTHER
 }

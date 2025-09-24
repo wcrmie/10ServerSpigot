@@ -5,157 +5,199 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.utils.GuiConstructor;
 import worm.me.Server;
 import worm.me.playersystems.data.Unlocks;
-import worm.me.utils.Item;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class AbilitiesGUI {
 
-    public void abilitiesActive(Player p){
+    public void abilitiesActive(Player p) {
         PersistentDataContainer container = p.getPersistentDataContainer();
         Inventory gui = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Your Active Abilities", 27);
 
         int[] active = Objects.requireNonNullElse(container.get(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY), new int[3]);
 
-        try {
-            String abilityName = Abilities.abilityGuiComponents.get(active[0]).getFirst();
-            String abilityMaterial = Abilities.abilityGuiComponents.get(active[0]).get(1);
-            String abilityDescription = Abilities.abilityGuiComponents.get(active[0]).get(2);
-            gui.setItem(11, Item.create(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
-        } catch (Exception e){
-            gui.setItem(11, Item.create(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
-        }
+        gui.setItem(1, createItemStack(Material.BOOK, ChatColor.GRAY + "Slot 1 Info",
+                " ",
+                ChatColor.GRAY + "Type: " + ChatColor.WHITE + "Basic",
+                ChatColor.GRAY + "Trigger: " + ChatColor.WHITE + "Double tap spacebar",
+                " ",
+                ChatColor.YELLOW + "Click slot below to change"));
 
-        try {
-            String abilityName = Abilities.abilityGuiComponents.get(active[1]).getFirst();
-            String abilityMaterial = Abilities.abilityGuiComponents.get(active[1]).get(1);
-            String abilityDescription = Abilities.abilityGuiComponents.get(active[1]).get(2);
-            gui.setItem(13, Item.create(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
-        } catch (Exception e){
+        gui.setItem(4, createItemStack(Material.BOOK, ChatColor.GRAY + "Slot 2 Info",
+                " ",
+                ChatColor.GRAY + "Type: " + ChatColor.WHITE + "Horizontal Movement",
+                ChatColor.GRAY + "Trigger: " + ChatColor.WHITE + "Sneak + Right Click + Sword",
+                " ",
+                ChatColor.YELLOW + "Click slot below to change"));
 
-            p.sendMessage(Message.create(MessageType.ERROR, "Error: " + e));
+        gui.setItem(7, createItemStack(Material.BOOK, ChatColor.GRAY + "Slot 3 Info",
+                " ",
+                ChatColor.GRAY + "Type: " + ChatColor.WHITE + "Vertical Movement",
+                ChatColor.GRAY + "Trigger: " + ChatColor.WHITE + "Sneak + Right Click + Axe",
+                " ",
+                ChatColor.YELLOW + "Click slot below to change"));
 
-            gui.setItem(13, Item.create(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
-        }
-
-        try {
-            String abilityName = Abilities.abilityGuiComponents.get(active[2]).getFirst();
-            String abilityMaterial = Abilities.abilityGuiComponents.get(active[2]).get(1);
-            String abilityDescription = Abilities.abilityGuiComponents.get(active[2]).get(2);
-            gui.setItem(15, Item.create(Material.getMaterial(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
-        } catch (Exception e){
-            gui.setItem(15, Item.create(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty"));
-        }
+        gui.setItem(10, createAbilitySlotItem(active[0]));
+        gui.setItem(13, createAbilitySlotItem(active[1]));
+        gui.setItem(16, createAbilitySlotItem(active[2]));
 
         p.openInventory(gui);
     }
 
-    public void abilitiesSelect(Player p, int slot){
+    private ItemStack createAbilitySlotItem(int abilityId) {
+        Ability ability = Ability.getById(abilityId);
+        if (ability != null && ability.getId() != 0) {
+            return createItemStack(ability.getIcon(), ChatColor.GRAY + ability.getDisplayName(), ability.getDescription());
+        } else {
+            return createItemStack(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + "Empty Slot", "This slot is empty");
+        }
+    }
 
+    private String colorize(String input) {
+        if (input == null) return "";
+        return ChatColor.translateAlternateColorCodes('&',
+                input.replace("<dark_gray>", "&8")
+                        .replace("</dark_gray>", "&r"));
+    }
+
+    public void abilitiesSelect(Player p, int slot) {
         String title;
+        AbilityType requiredType;
 
         if (slot == 0) {
             title = "First";
-        } else if (slot == 1){
+            requiredType = AbilityType.DOUBLE_SPACE;
+        } else if (slot == 1) {
             title = "Second";
-        } else{
+            requiredType = AbilityType.HORIZONTAL;
+        } else {
             title = "Third";
-
+            requiredType = AbilityType.VERTICAL;
         }
 
-        // Create the GUI
-        Inventory gui = GuiConstructor.chestInventory( ChatColor.DARK_GRAY + title + " Ability Slot", 54);
-
-        // for each item
-
+        Inventory gui = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + title + " Ability Slot", 54);
         int slotNum = 10;
 
-        for (int i = 0; i < Abilities.abilityGuiComponents.size(); i++){
+        gui.setItem(slotNum, createItemStack(
+                Ability.EMPTY.getIcon(),
+                ChatColor.GRAY + Ability.EMPTY.getDisplayName(),
+                Ability.EMPTY.getDescription()
+        ));
+        slotNum++;
 
-            // Get the ability name, material, and description
-            String abilityName = Abilities.abilityGuiComponents.get(i).get(0);
-            String abilityMaterial = Abilities.abilityGuiComponents.get(i).get(1);
-            String abilityDescription = Abilities.abilityGuiComponents.get(i).get(2);
+        for (Ability ability : Ability.values()) {
+            if (ability == Ability.EMPTY) continue;
 
-            List<String> abilityReqs = new java.util.ArrayList<>(List.of(""));
-
-            // For each extra requirement, add a lore line. Not all abilities have the same
-            // amount of requirements, so we need to loop through the list and add them.
-            for (int j = 3; j < Abilities.abilityGuiComponents.get(i).size(); j++){
-                abilityReqs.add(Abilities.abilityGuiComponents.get(i).get(j));
-            }
-
-            // Make sure the slot, or the slot + 1 is not divisible by 9. (we don't want stuff on the edges of the gui)
-
+            if (ability.getType() != requiredType) continue;
 
             if ((slotNum + 1) % 9 == 0) slotNum += 2;
 
+            if (slotNum > 44) break;
 
-            // Never have more than 28 items in the GUI
-            if (i > 28 || i > Abilities.abilityGuiComponents.size()){
-                break;
-            }
-
-            if (Unlocks.hasAbilityUnlocked(p, i) || p.isOp()){
-
-                // Construct item
-                gui.setItem(slotNum, Item.create(Material.valueOf(abilityMaterial), ChatColor.GRAY + abilityName, abilityDescription));
-
+            if (Unlocks.hasAbilityUnlocked(p, ability.getId()) || p.isOp()) {
+                gui.setItem(slotNum, createItemStack(
+                        ability.getIcon(),
+                        ChatColor.GRAY + ability.getDisplayName(),
+                        colorize(ability.getDescription())
+                ));
             } else {
+                List<String> requirementsLore = List.of(Unlocks.requirementsTranslation(ability.getSkillRequirements()));
+                List<String> lore = new ArrayList<>();
+                lore.add(ChatColor.RED + "Locked Ability");
+                for (String req : requirementsLore) {
+                    lore.add(ChatColor.DARK_GRAY + " - " + ChatColor.WHITE + req);
+                }
 
-                // If the ability is not unlocked, add a red glass pane
-                gui.setItem(slotNum, Item.create(Material.RED_STAINED_GLASS_PANE, ChatColor.GRAY + abilityName, Unlocks.requirementsTranslation(Abilities.abilityRequirements.get(i))));
-
+                gui.setItem(slotNum, createItemStack(
+                        Material.RED_STAINED_GLASS_PANE,
+                        ChatColor.GRAY + ability.getDisplayName(),
+                        lore.toArray(new String[0])
+                ));
             }
 
             slotNum++;
-            // Open inventory to player.
         }
+
         p.openInventory(gui);
     }
 
-    public void activateAbility(Player p, int slot, InventoryClickEvent e){
-        // Handle the GUI events here
+    public void activateAbility(Player p, int slot, InventoryClickEvent e) {
         PersistentDataContainer container = p.getPersistentDataContainer();
 
         int slotID = slot - 10;
 
-        if (slot < 9 || slot > 44){
-
-            if (slot == 49){
-                abilitiesActive(p);
-            }
-
+        if (slot < 9 || slot > 44) {
+            if (slot == 49) abilitiesActive(p);
             return;
         }
+        if (slot % 9 == 0 || (slot + 1) % 9 == 0) return;
 
-        if (slot % 9 == 0){
-            return;
-        } else if ((slot + 1) % 9 == 0){
-            return;
-        }
-
-        for (int i = 0; i <= 9; i++){
-            if (slotID - (i * 9) < 9){
+        for (int i = 0; i <= 9; i++) {
+            if (slotID - (i * 9) < 9) {
                 slotID = slotID - (i * 2);
                 break;
             }
+        }
 
+        AbilityType requiredType = null;
+        int targetSlot = -1;
+        if (e.getView().getTitle().contains("First")) {
+            requiredType = AbilityType.DOUBLE_SPACE;
+            targetSlot = 0;
+        } else if (e.getView().getTitle().contains("Second")) {
+            requiredType = AbilityType.HORIZONTAL;
+            targetSlot = 1;
+        } else if (e.getView().getTitle().contains("Third")) {
+            requiredType = AbilityType.VERTICAL;
+            targetSlot = 2;
+        }
+        if (requiredType == null) return;
+
+        List<Ability> validAbilities = new ArrayList<>();
+        validAbilities.add(Ability.EMPTY);
+        for (Ability ability : Ability.values()) {
+            if (ability.getType() == requiredType && ability.getId() != 0) {
+                validAbilities.add(ability);
+            }
+        }
+
+        if (slotID >= validAbilities.size() || slotID < 0) return;
+        Ability selectedAbility = validAbilities.get(slotID);
+
+        int[] active = Objects.requireNonNullElse(
+                container.get(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY),
+                new int[3]
+        );
+
+        if (selectedAbility == Ability.EMPTY) {
+            active[targetSlot] = 0;
+            container.set(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
+            p.sendMessage(Message.create(MessageType.SUCCESS, "Cleared ability slot!"));
+            abilitiesActive(p);
+            return;
+        }
+
+        if (active[targetSlot] == selectedAbility.getId()) {
+            p.sendMessage(Message.create(MessageType.FAIL, "This ability is already equipped in this slot!"));
+            return;
         }
 
         Abilities abilities = new Abilities();
 
-        if (abilities.getActiveAbilities(p).contains(slotID) && slotID != 0){
-            p.sendMessage(Message.create(MessageType.FAIL, "You already have this ability active!"));
+        if (abilities.getActiveAbilities(p).contains(selectedAbility.getId()) && selectedAbility.getId() != 0) {
+            p.sendMessage(Message.create(MessageType.FAIL, "You already have this ability active in another slot!"));
             return;
         }
 
@@ -164,33 +206,33 @@ public class AbilitiesGUI {
             return;
         }
 
-        if (Unlocks.hasAbilityUnlocked(p, slotID) || p.isOp()){
-            int[] active = Objects.requireNonNullElse(container.get(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY), new int[3]);
-            if (e.getView().getTitle().contains("First")){
-                active[0] = slotID;
-                container.set(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
-            }
-            if (e.getView().getTitle().contains("Second")){
-                active[1] = slotID;
-                container.set(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
-            }
-            if (e.getView().getTitle().contains("Third")){
-                active[2] = slotID;
-                container.set(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
-            }
+        if (Unlocks.hasAbilityUnlocked(p, selectedAbility.getId()) || p.isOp()) {
+            active[targetSlot] = selectedAbility.getId();
+            container.set(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
+            p.sendMessage(Message.create(MessageType.SUCCESS, "Equipped " + selectedAbility.getDisplayName() + "!"));
+            abilitiesActive(p);
+        } else {
+            p.sendMessage(Message.create(MessageType.FAIL, "You haven't unlocked this ability yet!"));
         }
-
-        abilitiesActive(p);
-
     }
 
-    public void initializeAbilitySelection(Player p, InventoryClickEvent e){
-
-        if (e.getSlot() == 11) abilitiesSelect(p, 0);
+    public void initializeAbilitySelection(Player p, InventoryClickEvent e) {
+        if (e.getSlot() == 10) abilitiesSelect(p, 0);
         if (e.getSlot() == 13) abilitiesSelect(p, 1);
-        if (e.getSlot() == 15) abilitiesSelect(p, 2);
+        if (e.getSlot() == 16) abilitiesSelect(p, 2);
         e.setCancelled(true);
-
     }
 
+    private ItemStack createItemStack(Material material, String displayName, String... lore) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName(displayName);
+            if (lore.length > 0) {
+                meta.setLore(Arrays.asList(lore));
+            }
+            item.setItemMeta(meta);
+        }
+        return item;
+    }
 }

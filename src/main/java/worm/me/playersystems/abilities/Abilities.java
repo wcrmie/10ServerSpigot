@@ -101,6 +101,45 @@ public class Abilities {
         return active;
     }
 
+    public void triggerSlot1(Player player) {
+        triggerSlot(player, 0);
+    }
+
+    public void triggerSlot2(Player player) {
+        triggerSlot(player, 1);
+    }
+
+    public void triggerSlot3(Player player) {
+        triggerSlot(player, 2);
+    }
+
+    private void triggerSlot(Player player, int slot) {
+        PersistentDataContainer container = player.getPersistentDataContainer();
+        int[] active = container.getOrDefault(abilitiesActive, PersistentDataType.INTEGER_ARRAY, new int[3]);
+        long[] cooldowns = container.getOrDefault(abilityCooldown, PersistentDataType.LONG_ARRAY, new long[3]);
+
+        if (slot >= active.length) return;
+        int abilityId = active[slot];
+        if (abilityId == 0) {
+            player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "X" + ChatColor.DARK_GRAY + "] " +
+                    ChatColor.RED + "No ability in this slot.");
+            return;
+        }
+
+        long now = System.currentTimeMillis();
+        if (slot < cooldowns.length && cooldowns[slot] > now) {
+            long secondsLeft = (cooldowns[slot] - now) / 1000;
+            String abilityName = Ability.getById(abilityId).getDisplayName();
+
+            player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "X" + ChatColor.DARK_GRAY + "] " +
+                    ChatColor.RED + "Your " + abilityName + " is on cooldown for " + secondsLeft + "s.");
+            return;
+        }
+
+        handleAbility(player, abilityId);
+    }
+
+
     public boolean isActive(Player p, int abilityID){
         return getActiveAbilities(p).contains(abilityID);
     }
@@ -117,117 +156,95 @@ public class Abilities {
         return -1;
     }
 
-    public boolean hasAbilityOnCooldown(Player p){
+    public boolean hasAbilityOnCooldown(Player p) {
+        long now = System.currentTimeMillis();
+        long[] cooldowns = Objects.requireNonNullElse(
+                p.getPersistentDataContainer().get(abilityCooldown, PersistentDataType.LONG_ARRAY),
+                new long[3]
+        );
 
-        for (long i : Objects.requireNonNullElse(p.getPersistentDataContainer().get(abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3])){
-            if (i > System.currentTimeMillis()/1000L){
+        for (long cd : cooldowns) {
+            if (cd > now) {
                 return true;
             }
         }
         return false;
-
     }
 
-    public void handleAbility(Player player, int abilityID){
+    public void handleAbility(Player player, int abilityID) {
+        Ability ability = Ability.getById(abilityID);
+        if (ability == null || abilityID == 0) return;
 
+        ability.execute(player);
+        setCooldownForAbility(player, abilityID);
+    }
+
+    public void setCooldownForAbility(Player player, int abilityID) {
         PersistentDataContainer container = player.getPersistentDataContainer();
+        int[] active = container.getOrDefault(abilitiesActive, PersistentDataType.INTEGER_ARRAY, new int[3]);
+        long[] cooldowns = container.getOrDefault(abilityCooldown, PersistentDataType.LONG_ARRAY, new long[3]);
+        long now = System.currentTimeMillis();
 
-        long[] cooldowns = Objects.requireNonNullElse(container.get(abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3]);
-
-        if (abilityID == 0){
-            return;
-
-        } else if (abilityID == 1){
-
-            DoubleJump.doubleJump(player);
-
-            cooldowns[getAbilitySlot(player, 1)] = System.currentTimeMillis()/1000L + 10;
-
-        } else if (abilityID == 2){
-
-            Dash dash = new Dash();
-            dash.dash(player);
-
-            cooldowns[getAbilitySlot(player, 2)] = System.currentTimeMillis()/1000L + 10;
-
-        } else if (abilityID == 3){
-
-            Leap leap = new Leap();
-            leap.leap(player);
-
-            cooldowns[getAbilitySlot(player, 3)] = System.currentTimeMillis()/1000L + 10;
-
-        } else if (abilityID == 4){
-
-            // not implemented
-            return;
-
-        } else if (abilityID == 5){
-
-            Scream Scream = new Scream();
-            Scream.scream(player);
-
-            cooldowns[getAbilitySlot(player, 5)] = System.currentTimeMillis()/1000L + 15;
-
-        } else if (abilityID == 6){
-
-            ShadowStep ShadowStep = new ShadowStep();
-            ShadowStep.shadowStep(player);
-
-            cooldowns[getAbilitySlot(player, 6)] = System.currentTimeMillis()/1000L + 20;
-
-        } else if (abilityID == 7) {
-            SlimeBoots SlimeBoots = new SlimeBoots();
-            SlimeBoots.bounce(player);
-
-        } else if (abilityID == 8){
-            FeatherDash featherDash = new FeatherDash();
-            featherDash.featherDash(player);
-            cooldowns[getAbilitySlot(player, 8)] = System.currentTimeMillis()/1000L + 15;
-        } else if (abilityID == 9){
-            SpeedStep SpeedStep = new SpeedStep();
-            SpeedStep.SpeedStep(player);
-            cooldowns[getAbilitySlot(player, 9)] = System.currentTimeMillis()/1000L + 20;
-        } else if (abilityID == 10){
-            TacticalRetreat TacticalRetreat = new TacticalRetreat();
-            TacticalRetreat.retreat(player);
-            cooldowns[getAbilitySlot(player, 10)] = System.currentTimeMillis()/1000L + 10;
-        } else if (abilityID == 11) {
-            RideArrow RideArrow = new RideArrow();
-            RideArrow.shootRiddenArrow(player);
-            cooldowns[getAbilitySlot(player, 11)] = System.currentTimeMillis()/1000L + 20;
+        for (int i = 0; i < active.length; i++) {
+            if (active[i] == abilityID) {
+                Ability ability = Ability.getById(active[i]);
+                if (ability != null && ability.hasCooldown()) {
+                    cooldowns[i] = now + (ability.getCooldownSeconds() * 1000L); // milliseconds
+                } else {
+                    cooldowns[i] = 0;
+                }
+            }
         }
 
-
-
         container.set(abilityCooldown, PersistentDataType.LONG_ARRAY, cooldowns);
-
-        CooldownDisplay cd = new CooldownDisplay();
-        cd.UpdateScoreboard(player);
-
-
+        CooldownDisplay.getInstance().refresh(player);
     }
 
     public void setAllCooldowns(Player player) {
         PersistentDataContainer container = player.getPersistentDataContainer();
         int[] active = container.getOrDefault(abilitiesActive, PersistentDataType.INTEGER_ARRAY, new int[3]);
         long[] cooldowns = new long[active.length];
-        long now = System.currentTimeMillis() / 1000L;
+        long now = System.currentTimeMillis();
 
         for (int i = 0; i < active.length; i++) {
-            int abilityId = active[i];
-
-            if (abilityId >= 0 && abilityId < Ability.values().length) {
-                Ability ability = Ability.values()[abilityId];
-                cooldowns[i] = ability.hasCooldown() ? now + ability.getCooldownSeconds() : 0;
+            Ability ability = Ability.getById(active[i]);
+            if (ability != null && ability.hasCooldown()) {
+                cooldowns[i] = now + (ability.getCooldownSeconds() * 1000L);
             } else {
                 cooldowns[i] = 0;
             }
         }
 
         container.set(abilityCooldown, PersistentDataType.LONG_ARRAY, cooldowns);
-        new CooldownDisplay().UpdateScoreboard(player);
+        CooldownDisplay.getInstance().refresh(player);
     }
 
+    public static void validateAllAbilitySlots(Player player) {
+        AbilityType[] slotTypes = {
+                AbilityType.DOUBLE_SPACE,
+                AbilityType.HORIZONTAL,
+                AbilityType.VERTICAL
+        };
+
+        for (int i = 0; i < slotTypes.length; i++) {
+            validateAbilitySlot(player, i, slotTypes[i]);
+        }
+    }
+
+
+    public static void validateAbilitySlot(Player player, int slot, AbilityType requiredType) {
+        PersistentDataContainer container = player.getPersistentDataContainer();
+        int[] active = container.getOrDefault(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, new int[3]);
+
+        if (slot < 0 || slot >= active.length) return;
+
+        int abilityId = active[slot];
+        Ability ability = Ability.getById(abilityId);
+
+        if (ability == null || ability == Ability.EMPTY || ability.getType() != requiredType) {
+            active[slot] = Ability.EMPTY.getId();
+            container.set(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
+        }
+    }
 
 }

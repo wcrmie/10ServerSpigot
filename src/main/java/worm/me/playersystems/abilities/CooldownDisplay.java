@@ -13,113 +13,97 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import worm.me.Server;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static worm.me.playersystems.abilities.Abilities.abilityCooldown;
 
 public class CooldownDisplay {
 
-    public static Map<Player, Boolean> cooldownDisplay = new java.util.HashMap<>();
+    private static final CooldownDisplay INSTANCE = new CooldownDisplay();
+    public static CooldownDisplay getInstance() {
+        return INSTANCE;
+    }
 
-    public void UpdateScoreboard(Player p) {
+    private final Map<Player, BukkitRunnable> activeTasks = new ConcurrentHashMap<>();
 
-        if (cooldownDisplay.get(p) != null && cooldownDisplay.get(p)) {
-            return;
+    private CooldownDisplay() {}
+
+    public void updateScoreboard(Player player) {
+        PersistentDataContainer container = player.getPersistentDataContainer();
+
+        int[] abilityIDs = Objects.requireNonNullElse(
+                container.get(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY),
+                new int[]{0, 0, 0}
+        );
+
+        long[] cooldowns = Objects.requireNonNullElse(
+                container.get(abilityCooldown, PersistentDataType.LONG_ARRAY),
+                new long[]{0, 0, 0}
+        );
+
+        if (activeTasks.containsKey(player)) {
+            activeTasks.get(player).cancel();
         }
 
-        PersistentDataContainer container = p.getPersistentDataContainer();
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        Scoreboard board = manager.getNewScoreboard();
 
-        long[] cooldowns = Objects.requireNonNullElse(container.get(abilityCooldown, PersistentDataType.LONG_ARRAY), new long[3]);
+        var objective = board.registerNewObjective("abilities", Criteria.DUMMY, Component.text("Abilities"));
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-        int[] abilityIDs = Objects.requireNonNullElse(container.get(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY), new int[3]);
-
-        Abilities abilities = new Abilities();
-
-        ScoreboardManager scoreboardManager = Bukkit.getScoreboardManager();
-        Scoreboard board = scoreboardManager.getNewScoreboard();
-        board.registerNewObjective("yep", Criteria.DUMMY, Component.text("Abilities"));
-        board.getObjective("yep").setDisplaySlot(DisplaySlot.SIDEBAR);
-
-        new BukkitRunnable() {
+        BukkitRunnable task = new BukkitRunnable() {
             @Override
             public void run() {
+                board.getEntries().forEach(board::resetScores);
 
-                board.getObjective("yep").unregister();
+                long now = System.currentTimeMillis();
+                boolean anyOnCooldown = false;
 
-                board.registerNewObjective("yep", Criteria.DUMMY, Component.text("Abilities"));
-                board.getObjective("yep").setDisplaySlot(DisplaySlot.SIDEBAR);
-                board.getObjective("yep").setDisplayName("Abilities");
-                board.getObjective("yep").getScore(" ").setScore(5);
-                board.getObjective("yep").getScore("  ").setScore(1);
-                p.setScoreboard(board);
+                objective.getScore(ChatColor.RESET.toString()).setScore(5);
 
-                cooldownDisplay.put(p, true);
+                for (int slot = 0; slot < 3; slot++) {
+                    int abilityId = slot < abilityIDs.length ? abilityIDs[slot] : 0;
+                    long cooldown = slot < cooldowns.length ? cooldowns[slot] : 0;
 
-                if (abilities.hasAbilityOnCooldown(p)) {
-                    // Update the scoreboard with the cooldowns
+                    String displayName;
+                    if (abilityId == 0) {
+                        displayName = ChatColor.RED + "Ability slot " + (slot + 1) + " empty.";
+                    } else {
+                        String abilityName = Abilities.abilityGuiComponents
+                                .getOrDefault(abilityId, List.of("Unknown")).get(0);
 
-                    if (abilityIDs[0] != 0) {
-                        if (cooldowns[0] > System.currentTimeMillis() / 1000L) {
-                            long timeLeft = cooldowns[0] - (System.currentTimeMillis() / 1000L);
-                            board.getObjective("yep").getScore(ChatColor.GRAY + Abilities.abilityGuiComponents.get(abilityIDs[0]).getFirst() + " Cooldown: " + ChatColor.RED + timeLeft).setScore(4);
+                        if (cooldown > now) {
+                            long timeLeft = (cooldown - now + 999) / 1000;
+                            displayName = ChatColor.GRAY + abilityName + " Cooldown: " + ChatColor.RED + timeLeft + "s";
+                            anyOnCooldown = true;
                         } else {
-                            board.getObjective("yep").getScore(ChatColor.GRAY + Abilities.abilityGuiComponents.get(abilityIDs[0]).getFirst() + " Cooldown: " + ChatColor.GREEN + "✔").setScore(4);
+                            displayName = ChatColor.GRAY + abilityName + " Cooldown: " + ChatColor.GREEN + "✔";
                         }
-                    } else {
-                        board.getObjective("yep").getScore(ChatColor.RED + "Ability slot 1 empty.").setScore(4);
                     }
 
-                    if (abilityIDs[1] != 0) {
-                        if (cooldowns[1] > System.currentTimeMillis() / 1000L) {
-                            long timeLeft = cooldowns[1] - (System.currentTimeMillis() / 1000L);
-                            board.getObjective("yep").getScore(ChatColor.GRAY + Abilities.abilityGuiComponents.get(abilityIDs[1]).getFirst() + " Cooldown: " + ChatColor.RED + timeLeft).setScore(3);
-                        } else {
-                            board.getObjective("yep").getScore(ChatColor.GRAY + Abilities.abilityGuiComponents.get(abilityIDs[1]).getFirst() + " Cooldown: " + ChatColor.GREEN + "✔").setScore(3);
-                        }
-                    } else {
-                        board.getObjective("yep").getScore(ChatColor.RED + "Ability slot 2 empty.").setScore(3);
-                    }
+                    objective.getScore(displayName).setScore(4 - slot);
+                }
 
-                    if (abilityIDs[2] != 0) {
-                        if (cooldowns[2] > System.currentTimeMillis() / 1000L) {
-                            long timeLeft = cooldowns[2] - (System.currentTimeMillis() / 1000L);
-                            board.getObjective("yep").getScore(ChatColor.GRAY + Abilities.abilityGuiComponents.get(abilityIDs[2]).getFirst() + " Cooldown: " + ChatColor.RED + timeLeft).setScore(2);
-                        } else {
-                            board.getObjective("yep").getScore(ChatColor.GRAY + Abilities.abilityGuiComponents.get(abilityIDs[2]).getFirst() + " Cooldown: " + ChatColor.GREEN + "✔").setScore(2);
-                        }
-                    } else {
-                        board.getObjective("yep").getScore(ChatColor.RED + "Ability slot 3 empty.").setScore(2);
-                    }
+                objective.getScore(ChatColor.RESET.toString() + ChatColor.WHITE).setScore(1);
 
-                } else {
+                player.setScoreboard(board);
 
-                    if (abilityIDs[0] != 0) {
-                        board.getObjective("yep").getScore(ChatColor.GRAY + Abilities.abilityGuiComponents.get(abilityIDs[0]).getFirst() + " Cooldown: " + ChatColor.GREEN + "✔").setScore(4);
-                    } else {
-                        board.getObjective("yep").getScore(ChatColor.RED + "Ability slot 1 empty.").setScore(4);
-                    }
-
-                    if (abilityIDs[1] != 0) {
-                        board.getObjective("yep").getScore(ChatColor.GRAY + Abilities.abilityGuiComponents.get(abilityIDs[1]).getFirst() + " Cooldown: " + ChatColor.GREEN + "✔").setScore(3);
-                    } else {
-                        board.getObjective("yep").getScore(ChatColor.RED + "Ability slot 2 empty.").setScore(3);
-                    }
-
-                    if (abilityIDs[2] != 0) {
-                        board.getObjective("yep").getScore(ChatColor.GRAY + Abilities.abilityGuiComponents.get(abilityIDs[2]).getFirst() + " Cooldown: " + ChatColor.GREEN + "✔").setScore(2);
-
-                    } else {
-                        board.getObjective("yep").getScore(ChatColor.RED + "Ability slot 3 empty.").setScore(2);
-                    }
-
-                    cooldownDisplay.put(p, false);
-
-                    cancel();
+                if (!anyOnCooldown) {
+                    this.cancel();
+                    activeTasks.remove(player);
                 }
             }
-        }.runTaskTimer(Server.getPlugin(), 1, 1);
+        };
+
+        task.runTaskTimer(Server.getPlugin(), 1L, 20L);
+        activeTasks.put(player, task);
     }
 
 
+    public void refresh(Player player) {
+        updateScoreboard(player);
+    }
 }
