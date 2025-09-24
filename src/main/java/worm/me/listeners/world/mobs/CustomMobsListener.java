@@ -119,7 +119,7 @@ public class CustomMobsListener implements Listener {
         return drops;
     }
 
-    public ItemStack generateKnowledgeTome() {
+    public static ItemStack generateKnowledgeTome() {
 
         VillagerProfession profession = determineProfession();
 
@@ -144,13 +144,13 @@ public class CustomMobsListener implements Listener {
 
     }
 
-    public VillagerProfession determineProfession() {
+    public static VillagerProfession determineProfession() {
 
-        int RNG = ThreadLocalRandom.current().nextInt(0, VillagerProfession.values().length - 1);
+        int RNG = ThreadLocalRandom.current().nextInt(0, VillagerProfession.values().length);
         return VillagerProfession.values()[RNG];
 
     }
-
+        
     @EventHandler
     public void onIronGolemDamage(EntityDamageEvent event) {
 

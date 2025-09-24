@@ -190,10 +190,9 @@ public enum VillagerProfession {
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new ItemStack(Material.IRON_LEGGINGS), new ItemStack(Material.GOLD_INGOT, 5), 1, 5, true, 5)
-                    .newTrade(new ItemStack(Material.IRON_CHESTPLATE), new ItemStack(Material.GOLD_INGOT, 5), 1, 5, true, 5)
-                    .newTrade(new ItemStack(Material.BLAST_FURNACE), new ItemStack(Material.GOLD_INGOT, 3), 3, 5, true, 5)
-                    .newTrade(new ItemStack(Material.GOLDEN_CARROT, 8), new ItemStack(Material.EMERALD, 1), 2, 10, true, 5)
+                    .newTrade(new ItemStack(Material.BAKED_POTATO, 16), new ItemStack(Material.EMERALD, 1), 2, 10, true, 5)
+                    .newTrade(new ItemStack(Material.GOLDEN_CARROT, 12), new ItemStack(Material.EMERALD, 1), 2, 10, true, 5)
+                    .newTrade(new ItemStack(Material.GOLDEN_CARROT, 16), new ItemStack(Material.EMERALD, 1), 2, 10, true, 5)
                     .build())),
     FISHERMAN("Fisherman", List.of(
             new Trader.TradeBuilder()
@@ -321,43 +320,43 @@ public enum VillagerProfession {
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.PAPER, 8), 5, 50, true, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.LEATHER, 5), 5, 20, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.SMITE, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 5, 10, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.BANE_OF_ARTHROPODS, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 5, 10, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.DEPTH_STRIDER, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 5, 10, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.SMITE, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 5, 10, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.BANE_OF_ARTHROPODS, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 5, 10, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.DEPTH_STRIDER, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 5, 10, true, 5)
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.FROST_WALKER, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 5, 10, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.FEATHER_FALLING, 1).build(), new ItemStack(Material.GOLD_INGOT, 2), 5, 10, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.LOOTING, 1).build(), new ItemStack(Material.GOLD_INGOT, 3), 5, 5, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.SWIFT_SNEAK, 1).build(), new ItemStack(Material.GOLD_INGOT, 4), 5, 10, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.FROST_WALKER, 1).build(), new ItemStack(Material.GOLD_INGOT, 1), 5, 10, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.FEATHER_FALLING, 1).build(), new ItemStack(Material.GOLD_INGOT, 2), 5, 10, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.LOOTING, 1).build(), new ItemStack(Material.GOLD_INGOT, 3), 5, 5, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.SWIFT_SNEAK, 1).build(), new ItemStack(Material.GOLD_INGOT, 4), 5, 10, true, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.INK_SAC, 4), 5, 40, true, 5)
                     .build(),
 
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.FEATHER, 6), 5, 40, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.THORNS, 1).build(), new ItemStack(Material.GOLD_INGOT, 3), 5, 10, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.SWEEPING_EDGE, 1).build(), new ItemStack(Material.GOLD_INGOT, 3), 5, 10, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.EFFICIENCY, 1).build(), new ItemStack(Material.GOLD_INGOT, 5), 5, 5, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.THORNS, 1).build(), new ItemStack(Material.GOLD_INGOT, 3), 5, 10, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.SWEEPING_EDGE, 1).build(), new ItemStack(Material.GOLD_INGOT, 3), 5, 10, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.EFFICIENCY, 1).build(), new ItemStack(Material.GOLD_INGOT, 5), 5, 5, true, 5)
                     .newTrade(new ItemStack(Material.LAPIS_LAZULI, 6), new ItemStack(Material.GOLD_NUGGET), 5, 20, true, 5)
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.FORTUNE, 1).build(), new ItemStack(Material.GOLD_INGOT, 8), 5, 10, true, 10)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.KNOCKBACK, 1).build(), new ItemStack(Material.GOLD_INGOT, 10), 1, 5, true, 10)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.PUNCH, 1).build(), new ItemStack(Material.GOLD_INGOT, 10), 1, 5, true, 10)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.FLAME, 1).build(), new ItemStack(Material.GOLD_INGOT, 8), 1, 5, true, 10)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.CHANNELING, 1).build(), new ItemStack(Material.EMERALD, 5), 1, 5, true, 10)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.FORTUNE, 1).build(), new ItemStack(Material.GOLD_INGOT, 8), 5, 10, true, 10)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.KNOCKBACK, 1).build(), new ItemStack(Material.GOLD_INGOT, 10), 1, 5, true, 10)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.PUNCH, 1).build(), new ItemStack(Material.GOLD_INGOT, 10), 1, 5, true, 10)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.FLAME, 1).build(), new ItemStack(Material.GOLD_INGOT, 8), 1, 5, true, 10)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.CHANNELING, 1).build(), new ItemStack(Material.EMERALD, 5), 1, 5, true, 10)
                     .newTrade(new ItemStack(Material.LANTERN, 4), new ItemStack(Material.GOLD_NUGGET, 1), 10, 10, true, 3)
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.SHARPNESS, 1).build(), new ItemStack(Material.EMERALD, 15), 1, 5, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.UNBREAKING, 1).build(), new ItemStack(Material.EMERALD, 15), 1, 5, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.PROTECTION, 1).build(), new ItemStack(Material.EMERALD, 15), 1, 5, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.POWER, 1).build(), new ItemStack(Material.EMERALD, 8), 1, 5, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.PIERCING, 1).build(), new ItemStack(Material.EMERALD, 15), 1, 5, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).storeEnchant(Enchantment.MULTISHOT, 1).build(), new ItemStack(Material.EMERALD, 10), 1, 5, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.SHARPNESS, 1).build(), new ItemStack(Material.EMERALD, 15), 1, 5, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.UNBREAKING, 1).build(), new ItemStack(Material.EMERALD, 15), 1, 5, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.PROTECTION, 1).build(), new ItemStack(Material.EMERALD, 15), 1, 5, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.POWER, 1).build(), new ItemStack(Material.EMERALD, 8), 1, 5, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.PIERCING, 1).build(), new ItemStack(Material.EMERALD, 15), 1, 5, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.MULTISHOT, 1).build(), new ItemStack(Material.EMERALD, 10), 1, 5, true, 5)
                     .build())),
 
     MASON("Mason", List.of(
@@ -505,10 +504,6 @@ public enum VillagerProfession {
                     .build(),
 
             new Trader.TradeBuilder()
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.GOLDEN_PICKAXE)).addEnchantment(Enchantment.EFFICIENCY, 4).build(), new ItemStack(Material.GOLD_INGOT, 2), 2, 5, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.GOLDEN_PICKAXE)).addEnchantment(Enchantment.SILK_TOUCH, 3).build(), new ItemStack(Material.GOLD_BLOCK, 3), 2, 5, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.GOLDEN_PICKAXE)).addEnchantment(Enchantment.EFFICIENCY, 4).build(), new ItemStack(Material.GOLD_INGOT, 2), 2, 5, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.GOLDEN_PICKAXE)).addEnchantment(Enchantment.SILK_TOUCH, 3).build(), new ItemStack(Material.GOLD_BLOCK, 3), 2, 5, true, 5)
                     .newTrade(new Item.ItemBuilder(new ItemStack(Material.GOLDEN_PICKAXE)).addEnchantment(Enchantment.EFFICIENCY, 4).build(), new ItemStack(Material.GOLD_INGOT, 2), 2, 5, true, 5)
                     .newTrade(new Item.ItemBuilder(new ItemStack(Material.GOLDEN_PICKAXE)).addEnchantment(Enchantment.SILK_TOUCH, 3).build(), new ItemStack(Material.GOLD_BLOCK, 3), 2, 5, true, 5)
                     .build(),
