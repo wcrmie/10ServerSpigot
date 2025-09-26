@@ -234,7 +234,7 @@ public class ShapedRecipes {
 
         shapedRecipeMap.put(snowball, List.of(List.of(new ItemStack(Material.AIR), new ItemStack(Material.CARVED_PUMPKIN), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.SNOW_BLOCK), new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.SNOW_BLOCK), new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "PORTABLE_SNOWMAN"))));
 
-        shapedRecipeMap.put(new ItemStack(Material.TNT), List.of(List.of(new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.GUNPOWDER),
+        shapedRecipeMap.put(new ItemStack(Material.TNT), List.of(List.of(new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.GUNPOWDER),
                 new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.SAND)), List.of(Item.create(Material.STONE, "TNT"))));
 
         shapedRecipeMap.put(Item.create(Material.WOODEN_PICKAXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "WOODEN_PICKAXE"))));

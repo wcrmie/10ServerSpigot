@@ -206,6 +206,10 @@ public class WorldListener implements Listener {
                 item.getItemStack().setData(DataComponentTypes.MAX_STACK_SIZE, 99);
             } else if (item.getItemStack().getType().equals(Material.GLASS_BOTTLE)) {
                 item.setItemStack(new worm.me.utils.Item.ItemBuilder(ExperienceBottle.emptyBottle).setAmount(item.getItemStack().getAmount()).build());
+            } else if (item.getItemStack().getType().equals(Material.GOAT_HORN)) {
+                item.getItemStack().setData(DataComponentTypes.MAX_STACK_SIZE, 4);
+            } else if (item.getItemStack().getType().toString().toLowerCase().contains("potion")) {
+                item.getItemStack().setData(DataComponentTypes.MAX_STACK_SIZE, 6);
             }
         }
 
