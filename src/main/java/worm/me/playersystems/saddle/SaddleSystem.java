@@ -80,7 +80,8 @@ public class SaddleSystem {
 
             if (clickedEntity instanceof Player clickedPlayer) {
                 ItemStack helmet = clickedPlayer.getInventory().getHelmet();
-                if (helmet != null && helmet.getType() == Material.SADDLE) {
+                ItemStack hand = player.getInventory().getItemInMainHand();
+                if (helmet != null && helmet.getType() == Material.SADDLE && hand.getType() == Material.AIR) {
                     getOnPlayer(player, clickedPlayer);
                     return;
                 }

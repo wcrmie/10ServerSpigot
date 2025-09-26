@@ -3,7 +3,6 @@ package worm.me.playersystems.abilities;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import worm.me.playersystems.abilities.active.*;
-import worm.me.playersystems.abilities.passive.SlimeBoots;
 import worm.me.playersystems.data.levels.Reqs;
 
 import java.util.function.Consumer;
@@ -53,7 +52,7 @@ public enum Ability {
             new Reqs.RequirementBuilder().combat(2000).build(),
             0,
             AbilityType.DOUBLE_SPACE,
-            player -> new DoubleJump().doubleJump(player)), //place holder
+            player -> new DoubleJump().doubleJump(player)), // place holder
 
     SCREAM(5,
             Material.GOAT_HORN,
@@ -118,6 +117,11 @@ public enum Ability {
     private final AbilityType type;
     private final Consumer<Player> executor;
 
+    public static final int SLOT_COUNT = 3;
+    public static final int[] DEFAULT_ACTIVE_ABILITIES = new int[SLOT_COUNT];
+    public static final long[] DEFAULT_COOLDOWNS = new long[SLOT_COUNT];
+    public static final int[] ABILITY_SLOT_POSITIONS = {10, 13, 16};
+
     Ability(int id, Material icon, String displayName, String description, int[] skillRequirements,
             int cooldownSeconds, AbilityType type, Consumer<Player> executor) {
         this.id = id;
@@ -175,5 +179,14 @@ public enum Ability {
             }
         }
         return null;
+    }
+
+    public static AbilityType getRequiredTypeForSlot(int slot) {
+        switch (slot) {
+            case 0: return AbilityType.DOUBLE_SPACE;
+            case 1: return AbilityType.HORIZONTAL;
+            case 2: return AbilityType.VERTICAL;
+            default: return AbilityType.OTHER;
+        }
     }
 }

@@ -5,99 +5,78 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import worm.me.playersystems.abilities.active.Dash;
-import worm.me.playersystems.abilities.active.DoubleJump;
-import worm.me.playersystems.abilities.active.Leap;
-import worm.me.playersystems.abilities.active.*;
 import worm.me.Server;
-import worm.me.playersystems.abilities.passive.SlimeBoots;
-import worm.me.playersystems.data.levels.Reqs;
+import worm.me.playersystems.data.Unlocks;
 
 import java.util.*;
 
 public class Abilities {
 
     public static final NamespacedKey abilitiesUnlocked = new NamespacedKey(Server.getPlugin(), "unlockedabilities");
-
     public static final NamespacedKey abilitiesActive = new NamespacedKey(Server.getPlugin(), "activeabilities");
-
     public static final NamespacedKey abilityCooldown = new NamespacedKey(Server.getPlugin(), "abilitycooldown");
 
     public static final Map<Integer, List<String>> abilityGuiComponents = new HashMap<>();
-
     public static final Map<Integer, int[]> abilityRequirements = new HashMap<>();
 
-    public void abilitiesInit(){
-        // Initialize the GUI Components for the abilities.
-        // We should initialize stuff in their related classes like this
-        // instead of clogging up the Server class.
-
-        // Format: abilityGuiComponents.put("Ability Name", List.of("Material", "Description", "Requirements"));
-
-        abilityGuiComponents.put(0, List.of("Empty", "RED_STAINED_GLASS_PANE", "Empty Slot", "This slot is empty"));
-
-        // ID 1
-        abilityGuiComponents.put(1, List.of("Double Jump", "FEATHER", ChatColor.DARK_GRAY + "Rapidly press space twice in the air to perform a double jump! "));
-
-        // ID 2
-        abilityGuiComponents.put(2, List.of("Dash", "IRON_SWORD", ChatColor.DARK_GRAY + "Dash forward " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK] + [Holding Sword]"));
-
-        // ID 3
-        abilityGuiComponents.put(3, List.of("Leap", "IRON_AXE", ChatColor.DARK_GRAY + "Leap up in the air " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK] + [Holding Axe]"));
-
-        // ID 4
-        abilityGuiComponents.put(4, List.of("Wall Jump", "IRON_BARS", ChatColor.DARK_GRAY + "Clutch onto walls using " + ChatColor.GRAY + "[SNEAK]"));
-
-        // ID 5
-        abilityGuiComponents.put(5, List.of("SCREAM", "GOAT_HORN", ChatColor.DARK_GRAY + "Scream as loud as you can using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Note Block]"));
-
-        // ID 6
-        abilityGuiComponents.put(6, List.of("Shadow-Step", "TINTED_GLASS", ChatColor.DARK_GRAY + "Step through space using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Tinted Glass] + [Standing on Ground]"));
-
-        // ID 7
-        abilityGuiComponents.put(7, List.of("Slime Boots", "SLIME_BALL", ChatColor.DARK_GRAY + "Bounce " + ChatColor.GRAY + "[Wearing Slime Boots] ||| [SNEAK] to Deactivate "));
-
-        // ID 8
-        abilityGuiComponents.put(8, List.of("Feather-Float", "ELYTRA", ChatColor.DARK_GRAY + "Float through the air swiftly using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Feather]"));
-
-        // ID 9
-        abilityGuiComponents.put(9, List.of("Speed-Step", "RABBIT_FOOT", ChatColor.DARK_GRAY + "Speed off in the direction you are looking using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Rabbit Foot]"));
-
-        // ID 10
-        abilityGuiComponents.put(10, List.of("Tactical Retreat", "BOW", ChatColor.DARK_GRAY + "Gain some distance on your opponent using " + ChatColor.GRAY + "[SNEAK] + [DROP] + [Holding Bow]"));
-
-        // ID 11
-        abilityGuiComponents.put(11, List.of("Ability 11", "ARROW", ChatColor.DARK_GRAY + "Shoot a weak arrow and ride it using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Bow]"));
+    public static void abilitiesInit() {
+        initializeGuiComponents();
+        initializeRequirements(); // Initialize requirements here
     }
 
-    public void initializeRequirements(){
-
-        // Format: abilityRequirements.put(abilityID, new int[]{combat, farming, crafting, fishing, smithing, mining, agility, foraging});
-        abilityRequirements.put(0, new Reqs.RequirementBuilder().combat(1).build());
-        abilityRequirements.put(1, new Reqs.RequirementBuilder().combat(1).build());
-        abilityRequirements.put(2, new Reqs.RequirementBuilder().combat(5).agility(3).build());
-        abilityRequirements.put(3, new Reqs.RequirementBuilder().combat(5).agility(8).build());
-        abilityRequirements.put(4, new Reqs.RequirementBuilder().combat(2000).build());
-        abilityRequirements.put(5, new Reqs.RequirementBuilder().combat(20).farming(10).fishing(15).agility(10).foraging(20).build());
-        abilityRequirements.put(6, new Reqs.RequirementBuilder().combat(35).smithing(5).mining(5).agility(15).build());
-        abilityRequirements.put(7, new int[]{5,  0,  0, 5,  2, 0, 10, 0});
-        abilityRequirements.put(8, new int[]{0,  25, 0, 5,  0, 0, 10, 0});
-        abilityRequirements.put(9, new int[]{5,  0, 0, 0,  0, 5, 25, 10});
-        abilityRequirements.put(10, new int[]{10,  1, 0, 0,  0, 2, 10, 2});
-        abilityRequirements.put(11, new int[]{10,  1, 0, 0,  0, 2, 10, 2});
+    public static void initializeRequirements() {
+        // Use Ability enum as single source of truth
+        abilityRequirements.clear();
+        for (Ability ability : Ability.values()) {
+            abilityRequirements.put(ability.getId(), ability.getSkillRequirements());
+        }
     }
 
-    public List<Integer> getActiveAbilities(Player p){
+    private static void initializeGuiComponents() {
+        abilityGuiComponents.put(0, List.of("Empty", "RED_STAINED_GLASS_PANE", "Empty Slot"));
+
+        abilityGuiComponents.put(1, List.of("Double Jump", "FEATHER",
+                ChatColor.DARK_GRAY + "Rapidly press space twice in the air to perform a double jump!"));
+
+        abilityGuiComponents.put(2, List.of("Dash", "IRON_SWORD",
+                ChatColor.DARK_GRAY + "Dash forward " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK] + [Holding Sword]"));
+
+        abilityGuiComponents.put(3, List.of("Leap", "IRON_AXE",
+                ChatColor.DARK_GRAY + "Leap up in the air " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK] + [Holding Axe]"));
+
+        abilityGuiComponents.put(4, List.of("Wall Jump", "IRON_BARS",
+                ChatColor.DARK_GRAY + "Clutch onto walls using " + ChatColor.GRAY + "[SNEAK]"));
+
+        abilityGuiComponents.put(5, List.of("SCREAM", "GOAT_HORN",
+                ChatColor.DARK_GRAY + "Scream as loud as you can using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Note Block]"));
+
+        abilityGuiComponents.put(6, List.of("Shadow-Step", "TINTED_GLASS",
+                ChatColor.DARK_GRAY + "Step through space using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Tinted Glass] + [Standing on Ground]"));
+
+        abilityGuiComponents.put(8, List.of("Feather-Float", "ELYTRA",
+                ChatColor.DARK_GRAY + "Float through the air swiftly using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Feather]"));
+
+        abilityGuiComponents.put(9, List.of("Speed-Step", "RABBIT_FOOT",
+                ChatColor.DARK_GRAY + "Speed off in the direction you are looking using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Rabbit Foot]"));
+
+        abilityGuiComponents.put(10, List.of("Tactical Retreat", "BOW",
+                ChatColor.DARK_GRAY + "Gain some distance on your opponent using " + ChatColor.GRAY + "[SNEAK] + [DROP] + [Holding Bow]"));
+
+        abilityGuiComponents.put(11, List.of("Ability 11", "ARROW",
+                ChatColor.DARK_GRAY + "Shoot a weak arrow and ride it using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Bow]"));
+    }
+
+    public List<Integer> getActiveAbilities(Player p) {
         PersistentDataContainer container = p.getPersistentDataContainer();
+        int[] activeArray = Objects.requireNonNullElse(
+                container.get(abilitiesActive, PersistentDataType.INTEGER_ARRAY),
+                Ability.DEFAULT_ACTIVE_ABILITIES
+        );
 
         List<Integer> active = new ArrayList<>();
-
-        for (int i : Objects.requireNonNullElse(container.get(abilitiesActive, PersistentDataType.INTEGER_ARRAY), new int[3])){
-
-            active.add(i);
-
+        for (int abilityId : activeArray) {
+            active.add(abilityId);
         }
-
         return active;
     }
 
@@ -114,45 +93,53 @@ public class Abilities {
     }
 
     private void triggerSlot(Player player, int slot) {
-        PersistentDataContainer container = player.getPersistentDataContainer();
-        int[] active = container.getOrDefault(abilitiesActive, PersistentDataType.INTEGER_ARRAY, new int[3]);
-        long[] cooldowns = container.getOrDefault(abilityCooldown, PersistentDataType.LONG_ARRAY, new long[3]);
-
-        if (slot >= active.length) return;
-        int abilityId = active[slot];
-        if (abilityId == 0) {
-            player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "X" + ChatColor.DARK_GRAY + "] " +
-                    ChatColor.RED + "No ability in this slot.");
+        if (slot < 0 || slot >= Ability.SLOT_COUNT) {
             return;
         }
 
-        long now = System.currentTimeMillis();
-        if (slot < cooldowns.length && cooldowns[slot] > now) {
-            long secondsLeft = (cooldowns[slot] - now) / 1000;
-            String abilityName = Ability.getById(abilityId).getDisplayName();
+        try {
+            PersistentDataContainer container = player.getPersistentDataContainer();
+            int[] active = container.getOrDefault(abilitiesActive, PersistentDataType.INTEGER_ARRAY,
+                    Ability.DEFAULT_ACTIVE_ABILITIES);
+            long[] cooldowns = container.getOrDefault(abilityCooldown, PersistentDataType.LONG_ARRAY,
+                    Ability.DEFAULT_COOLDOWNS);
 
-            player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "X" + ChatColor.DARK_GRAY + "] " +
-                    ChatColor.RED + "Your " + abilityName + " is on cooldown for " + secondsLeft + "s.");
-            return;
+            int abilityId = active[slot];
+            if (abilityId == 0) {
+                player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "X" + ChatColor.DARK_GRAY + "] " +
+                        ChatColor.RED + "No ability in this slot.");
+                return;
+            }
+
+            long now = System.currentTimeMillis();
+            if (slot < cooldowns.length && cooldowns[slot] > now) {
+                long secondsLeft = (cooldowns[slot] - now) / 1000;
+                Ability ability = Ability.getById(abilityId);
+                String abilityName = ability != null ? ability.getDisplayName() : "Unknown";
+
+                player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "X" + ChatColor.DARK_GRAY + "] " +
+                        ChatColor.RED + "Your " + abilityName + " is on cooldown for " + secondsLeft + "s.");
+                return;
+            }
+
+            handleAbility(player, abilityId);
+        } catch (Exception e) {
+            player.sendMessage(ChatColor.RED + "Error triggering ability slot!");
+            Server.getPlugin().getLogger().warning("Error triggering ability slot " + slot + " for " + player.getName() + ": " + e.getMessage());
         }
-
-        handleAbility(player, abilityId);
     }
 
-
-    public boolean isActive(Player p, int abilityID){
+    public boolean isActive(Player p, int abilityID) {
         return getActiveAbilities(p).contains(abilityID);
     }
 
-    public int getAbilitySlot(Player p, int abilityID){
+    public int getAbilitySlot(Player p, int abilityID) {
         List<Integer> active = getActiveAbilities(p);
-
-        for (int i = 0; i < active.size(); i++){
-            if (active.get(i) == abilityID){
+        for (int i = 0; i < active.size(); i++) {
+            if (active.get(i) == abilityID) {
                 return i;
             }
         }
-
         return -1;
     }
 
@@ -160,7 +147,7 @@ public class Abilities {
         long now = System.currentTimeMillis();
         long[] cooldowns = Objects.requireNonNullElse(
                 p.getPersistentDataContainer().get(abilityCooldown, PersistentDataType.LONG_ARRAY),
-                new long[3]
+                Ability.DEFAULT_COOLDOWNS
         );
 
         for (long cd : cooldowns) {
@@ -172,79 +159,112 @@ public class Abilities {
     }
 
     public void handleAbility(Player player, int abilityID) {
-        Ability ability = Ability.getById(abilityID);
-        if (ability == null || abilityID == 0) return;
+        try {
+            Ability ability = Ability.getById(abilityID);
+            if (ability == null || abilityID == 0) {
+                player.sendMessage(ChatColor.RED + "Invalid ability!");
+                return;
+            }
 
-        ability.execute(player);
-        setCooldownForAbility(player, abilityID);
+            ability.execute(player);
+            setCooldownForAbility(player, abilityID);
+
+        } catch (Exception e) {
+            player.sendMessage(ChatColor.RED + "Error using ability!");
+            Server.getPlugin().getLogger().severe("Error executing ability " + abilityID + " for " + player.getName() + ": " + e.getMessage());
+        }
     }
 
     public void setCooldownForAbility(Player player, int abilityID) {
-        PersistentDataContainer container = player.getPersistentDataContainer();
-        int[] active = container.getOrDefault(abilitiesActive, PersistentDataType.INTEGER_ARRAY, new int[3]);
-        long[] cooldowns = container.getOrDefault(abilityCooldown, PersistentDataType.LONG_ARRAY, new long[3]);
-        long now = System.currentTimeMillis();
+        try {
+            PersistentDataContainer container = player.getPersistentDataContainer();
+            int[] active = container.getOrDefault(abilitiesActive, PersistentDataType.INTEGER_ARRAY,
+                    Ability.DEFAULT_ACTIVE_ABILITIES);
+            long[] cooldowns = container.getOrDefault(abilityCooldown, PersistentDataType.LONG_ARRAY,
+                    Ability.DEFAULT_COOLDOWNS);
+            long now = System.currentTimeMillis();
 
-        for (int i = 0; i < active.length; i++) {
-            if (active[i] == abilityID) {
+            for (int i = 0; i < active.length; i++) {
+                if (active[i] == abilityID) {
+                    Ability ability = Ability.getById(active[i]);
+                    if (ability != null && ability.hasCooldown()) {
+                        cooldowns[i] = now + (ability.getCooldownSeconds() * 1000L);
+                    } else {
+                        cooldowns[i] = 0;
+                    }
+                    break;
+                }
+            }
+
+            container.set(abilityCooldown, PersistentDataType.LONG_ARRAY, cooldowns);
+            CooldownDisplay.getInstance().refresh(player);
+        } catch (Exception e) {
+            Server.getPlugin().getLogger().warning("Error setting cooldown for ability " + abilityID + ": " + e.getMessage());
+        }
+    }
+
+    public void setAllCooldowns(Player player) {
+        try {
+            PersistentDataContainer container = player.getPersistentDataContainer();
+            int[] active = container.getOrDefault(abilitiesActive, PersistentDataType.INTEGER_ARRAY,
+                    Ability.DEFAULT_ACTIVE_ABILITIES);
+            long[] cooldowns = new long[active.length];
+            long now = System.currentTimeMillis();
+
+            for (int i = 0; i < active.length; i++) {
                 Ability ability = Ability.getById(active[i]);
                 if (ability != null && ability.hasCooldown()) {
-                    cooldowns[i] = now + (ability.getCooldownSeconds() * 1000L); // milliseconds
+                    cooldowns[i] = now + (ability.getCooldownSeconds() * 1000L);
                 } else {
                     cooldowns[i] = 0;
                 }
             }
+
+            container.set(abilityCooldown, PersistentDataType.LONG_ARRAY, cooldowns);
+            CooldownDisplay.getInstance().refresh(player);
+        } catch (Exception e) {
+            Server.getPlugin().getLogger().warning("Error setting all cooldowns for " + player.getName() + ": " + e.getMessage());
         }
-
-        container.set(abilityCooldown, PersistentDataType.LONG_ARRAY, cooldowns);
-        CooldownDisplay.getInstance().refresh(player);
-    }
-
-    public void setAllCooldowns(Player player) {
-        PersistentDataContainer container = player.getPersistentDataContainer();
-        int[] active = container.getOrDefault(abilitiesActive, PersistentDataType.INTEGER_ARRAY, new int[3]);
-        long[] cooldowns = new long[active.length];
-        long now = System.currentTimeMillis();
-
-        for (int i = 0; i < active.length; i++) {
-            Ability ability = Ability.getById(active[i]);
-            if (ability != null && ability.hasCooldown()) {
-                cooldowns[i] = now + (ability.getCooldownSeconds() * 1000L);
-            } else {
-                cooldowns[i] = 0;
-            }
-        }
-
-        container.set(abilityCooldown, PersistentDataType.LONG_ARRAY, cooldowns);
-        CooldownDisplay.getInstance().refresh(player);
     }
 
     public static void validateAllAbilitySlots(Player player) {
-        AbilityType[] slotTypes = {
-                AbilityType.DOUBLE_SPACE,
-                AbilityType.HORIZONTAL,
-                AbilityType.VERTICAL
-        };
-
-        for (int i = 0; i < slotTypes.length; i++) {
-            validateAbilitySlot(player, i, slotTypes[i]);
+        for (int i = 0; i < Ability.SLOT_COUNT; i++) {
+            validateAbilitySlot(player, i, Ability.getRequiredTypeForSlot(i));
         }
     }
-
 
     public static void validateAbilitySlot(Player player, int slot, AbilityType requiredType) {
-        PersistentDataContainer container = player.getPersistentDataContainer();
-        int[] active = container.getOrDefault(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, new int[3]);
+        if (slot < 0 || slot >= Ability.SLOT_COUNT) return;
 
-        if (slot < 0 || slot >= active.length) return;
+        try {
+            PersistentDataContainer container = player.getPersistentDataContainer();
+            int[] active = container.getOrDefault(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY,
+                    Ability.DEFAULT_ACTIVE_ABILITIES);
 
-        int abilityId = active[slot];
-        Ability ability = Ability.getById(abilityId);
+            int abilityId = active[slot];
+            Ability ability = Ability.getById(abilityId);
 
-        if (ability == null || ability == Ability.EMPTY || ability.getType() != requiredType) {
-            active[slot] = Ability.EMPTY.getId();
-            container.set(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
+            if (ability == null || ability == Ability.EMPTY || ability.getType() != requiredType) {
+                active[slot] = Ability.EMPTY.getId();
+                container.set(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY, active);
+            }
+        } catch (Exception e) {
+            Server.getPlugin().getLogger().warning("Error validating ability slot " + slot + " for " + player.getName() + ": " + e.getMessage());
         }
     }
 
+    public static boolean validateAbilityForSlot(Player player, int abilityId, int slot) {
+        Ability ability = Ability.getById(abilityId);
+        if (ability == null) return false;
+
+        AbilityType requiredType = Ability.getRequiredTypeForSlot(slot);
+        if (ability.getType() != requiredType) return false;
+
+        Abilities abilities = new Abilities();
+        if (abilities.getActiveAbilities(player).contains(abilityId) && abilityId != 0) {
+            return false; // Already equipped elsewhere
+        }
+
+        return Unlocks.hasAbilityUnlocked(player, abilityId) || player.isOp();
+    }
 }

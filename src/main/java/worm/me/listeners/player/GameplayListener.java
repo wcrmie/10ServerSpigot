@@ -425,14 +425,21 @@ public class GameplayListener implements Listener {
                 event.getResult().addUnsafeEnchantment(ench, 3);
             }
 
-            if ((ench.equals(Enchantment.UNBREAKING)) && result.getEnchantments().get(ench) > 1) {
-                event.getResult().removeEnchantment(ench);
-                event.getResult().addUnsafeEnchantment(ench, 1);
+            if (ench.equals(Enchantment.UNBREAKING) && result.getEnchantments().get(ench) > 1) {
+                if (!isArmor(result.getType())) {
+                    result.removeEnchantment(ench);
+                    result.addUnsafeEnchantment(ench, 1);
+                }
             }
 
         }
+    }
 
-
+    private boolean isArmor(Material mat) {
+        return mat.name().endsWith("_HELMET")
+                || mat.name().endsWith("_CHESTPLATE")
+                || mat.name().endsWith("_LEGGINGS")
+                || mat.name().endsWith("_BOOTS");
     }
 
 }

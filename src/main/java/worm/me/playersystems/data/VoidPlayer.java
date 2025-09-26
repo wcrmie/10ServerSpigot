@@ -102,8 +102,7 @@ public class VoidPlayer {
         QuestAssign questAssign = new QuestAssign();
         questAssign.dailyCheck(player);
 
-        CooldownDisplay cooldownDisplay = new CooldownDisplay();
-        cooldownDisplay.UpdateScoreboard(player);
+        CooldownDisplay.getInstance().refresh(player);
 
     }
 

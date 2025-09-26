@@ -349,8 +349,17 @@ public class WorldListener implements Listener {
             event.getDrops().add(new ItemStack(Material.AMETHYST_SHARD, Math.round(emeraldCount/2F)));
         }
         if (event.getEntity().getType() == EntityType.SILVERFISH) {
-            int emeraldCount = ThreadLocalRandom.current().nextInt(3, 6);
-            event.getDrops().add(new ItemStack(Material.IRON_NUGGET, emeraldCount));
+            Silverfish sf = (Silverfish) event.getEntity();
+            CreatureSpawnEvent.SpawnReason reason = sf.getEntitySpawnReason();
+            if (reason == CreatureSpawnEvent.SpawnReason.POTION_EFFECT) {
+                if (ThreadLocalRandom.current().nextInt(100) < 33) {
+                    int nuggetCount = ThreadLocalRandom.current().nextInt(1, 3);
+                    event.getDrops().add(new ItemStack(Material.IRON_NUGGET, nuggetCount));
+                }
+            } else {
+                int nuggetCount = ThreadLocalRandom.current().nextInt(3, 6);
+                event.getDrops().add(new ItemStack(Material.IRON_NUGGET, nuggetCount));
+            }
         }
         if (event.getEntity().getType() == EntityType.BAT) {
             int emeraldCount = ThreadLocalRandom.current().nextInt(0, 2);
@@ -359,6 +368,18 @@ public class WorldListener implements Listener {
         if (event.getEntity().getType() == EntityType.DROWNED) {
             int emeraldCount = ThreadLocalRandom.current().nextInt(4, 6);
             event.getDrops().add(new ItemStack(Material.RAW_COPPER, emeraldCount));
+        }
+        if (event.getEntity().getType() == EntityType.IRON_GOLEM && !event.getEntity().getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.BUILD_IRONGOLEM)) {
+            event.getDrops().removeIf(drop -> drop != null && drop.getType() == Material.IRON_INGOT);
+            int nuggetCount = ThreadLocalRandom.current().nextInt(2, 5);
+            event.getDrops().add(new ItemStack(Material.IRON_NUGGET, nuggetCount));
+        }
+        if (event.getEntity().getType() == EntityType.VINDICATOR) {
+            event.getDrops().removeIf(drop -> drop != null && drop.getType() == Material.EMERALD);
+            if (ThreadLocalRandom.current().nextInt(100) < 10) {
+                int nuggetCount = ThreadLocalRandom.current().nextInt(1, 2);
+                event.getDrops().add(new ItemStack(Material.EMERALD, nuggetCount));
+            }
         }
 
         for (ItemStack itemStack : event.getDrops()) {

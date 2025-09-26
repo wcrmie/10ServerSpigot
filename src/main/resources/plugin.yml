@@ -3,8 +3,8 @@ version: '${project.version}'
 main: worm.me.Server
 api-version: '1.21'
 authors: [ worm, clem, Boolean ]
-depend: [WorldGuard, MessageHead]
-softdepend: [SkinsRestorer]
+depend: [WorldGuard]
+softdepend: [SkinsRestorer,  MessageHead]
 commands:
   setGens:
     description: Allows the player to choose which blocks are generated for them every 10 seconds via a GUI.

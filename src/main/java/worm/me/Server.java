@@ -155,7 +155,7 @@ public final class Server extends JavaPlugin {
         this.getCommand("suicide").setExecutor(new SuicideCommand());
         this.getCommand("togglegens").setExecutor(new ToggleGensCommand());
         this.getCommand("hat").setExecutor(new HatCommand());
-        this.getCommand("givebook").setExecutor(new GiveClericBookCommand());
+        //this.getCommand("givebook").setExecutor(new GiveClericBookCommand());
 
         // Create Map for tools
         List<Material> pickaxes = new ArrayList<>();
@@ -376,8 +376,6 @@ public final class Server extends JavaPlugin {
 
         // Initialize Ability GUI Components
         Abilities.abilitiesInit();
-
-        Abilities.initializeRequirements();
 
         for (Player p : Bukkit.getOnlinePlayers()){
             generating.add(p);

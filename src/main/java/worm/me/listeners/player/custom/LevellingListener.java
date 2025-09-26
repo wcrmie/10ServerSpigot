@@ -63,17 +63,6 @@ public class LevellingListener implements Listener {
             e.getBlock().getLocation().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.PUMPKIN_SEEDS, 2));
         }
 
-        if (Levels.getLevel(6, player) >= 12) {
-            if (e.getBlock().getType() == Material.IRON_ORE || e.getBlock().getType() == Material.COAL_ORE) {
-                int chance = ThreadLocalRandom.current().nextInt(0, 100);
-                if (chance < 10) {
-                    e.getBlock().getLocation().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.RAW_GOLD));
-                    player.playSound(player, Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 0.1F);
-                    player.sendMessage(Message.create(MessageType.GENERIC, "Your Midas' Touch allowed you to uncover a chunk of raw gold!"));
-                }
-            }
-        }
-
         Levels.expHandler(player, e);
 
         if (e.getBlock().getType().equals(Material.COBBLESTONE)) {
