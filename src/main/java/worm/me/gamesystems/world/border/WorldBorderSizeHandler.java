@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -155,7 +157,14 @@ public class WorldBorderSizeHandler {
 
     public void incrementBlockCount(BlockPlaceEvent event) {
         if (!bannedBlocks.contains(event.getBlock().getType())) {
-            blockCount++;
+            Block placed = event.getBlock();
+            if (placed.getBlockData() instanceof Slab slabData) {
+                if (slabData.getType() != Slab.Type.DOUBLE) {
+                    blockCount++;
+                }
+            }else {
+                blockCount++;
+            }
             saveAndAdjustWorldBorder();
         }
     }

@@ -4,11 +4,13 @@ import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import worm.me.Server;
+import worm.me.gamesystems.world.border.WorldBorderSizeHandler;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class WorldReset {
-    private long scoreNeededForReset = 60*60*48;
     private static WorldReset instance;
     private final Server plugin;
     private final World world;
@@ -23,6 +25,9 @@ public class WorldReset {
     private boolean fiveMinWarn = false;
     private boolean oneMinWarn = false;
     private boolean resetNow = false;
+
+    public int worldStartingSize = 150;
+    public long scoreNeededForReset = 60*60*48;
 
 
     public static WorldReset getInstance() {
@@ -83,6 +88,9 @@ public class WorldReset {
 
                 if (scoreNeededForReset <= resetScore){
                     resetScore = 0;
+                    oneHourWarn = false;
+                    fiveMinWarn = false;
+                    oneMinWarn = false;
                     WorldReset.getInstance().triggerReset(null);
                     resetNow = true;
                 }
@@ -104,6 +112,7 @@ public class WorldReset {
     public void triggerReset(Player p){
         isBlockPlacingDisabled = true;
         Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "WORLD RESET STARTING!");
+        worldStartingSize = ThreadLocalRandom.current().nextInt(150, 200);
         this.originalBorderSize = (int) worldBorder.getSize();
         this.originalCenter = worldBorder.getCenter().clone();
 
@@ -115,7 +124,7 @@ public class WorldReset {
         }
 
         Server.getPlugin().getWorldBorderHandler().setBlockCount(0);
-        worldBorder.setSize(99);
+        worldBorder.setSize(worldStartingSize);
         resetBlocks.startBlockReset(originalBorderSize, originalCenter);
     }
 
@@ -127,7 +136,14 @@ public class WorldReset {
         isBlockPlacingDisabled = false;
         this.resetScore = 0;
 
+        scoreNeededForReset = 60L*60*ThreadLocalRandom.current().nextInt(60, 120);
+        double setExpansionPercentage = ThreadLocalRandom.current().nextInt(75, 175)/100D;
+        Server.getPlugin().getWorldBorderHandler().setExpansionPercentage(setExpansionPercentage);
+
         Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "WORLD RESET COMPLETE!");
+        Bukkit.broadcastMessage(ChatColor.RED + "Reset will be in " + (scoreNeededForReset/60/60) + " hours");
+        Bukkit.broadcastMessage(ChatColor.RED + "world Starting Size is "  + worldStartingSize);
+        Bukkit.broadcastMessage(ChatColor.RED + "Expansion Percentage is " + setExpansionPercentage + "%");
 
         oneHourWarn = false;
         fiveMinWarn = false;
