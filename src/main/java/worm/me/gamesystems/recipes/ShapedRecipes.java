@@ -42,9 +42,9 @@ public class ShapedRecipes {
                                 new ItemStack(Material.SLIME_BALL),
                                 new ItemStack(Material.AIR),
                                 new ItemStack(Material.SLIME_BALL),
-                                new ItemStack(Material.SLIME_BLOCK),
+                                new ItemStack(Material.SLIME_BALL),
                                 new ItemStack(Material.AIR),
-                                new ItemStack(Material.SLIME_BLOCK)
+                                new ItemStack(Material.SLIME_BALL)
                         ),
                         List.of(Item.create(Material.STONE, "SLIME_BOOTS"))
                 )
@@ -71,6 +71,7 @@ public class ShapedRecipes {
         meta.setDisplayName(ChatColor.GREEN + "Emerald Chestplate");
         meta.setUnbreakable(true);
         meta.setColor(Color.GREEN);
+        meta.setMaxStackSize(4);
 
         emeraldChestplate.setItemMeta(meta);
 
@@ -78,14 +79,14 @@ public class ShapedRecipes {
                 new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD)), List.of(Item.create(Material.STONE, "EMERALD_CHESTPLATE"))));
 
         meta.setDisplayName(ChatColor.GREEN + "Emerald Leggings");
-
+        meta.setMaxStackSize(4);
         emeraldLeggings.setItemMeta(meta);
 
         shapedRecipeMap.put(emeraldLeggings, List.of(List.of(new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD),
                 new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD)), List.of(Item.create(Material.STONE, "EMERALD_LEGGINGS"))));
 
         meta.setDisplayName(ChatColor.GREEN + "Emerald Boots");
-
+        meta.setMaxStackSize(4);
         emeraldBoots.setItemMeta(meta);
 
         shapedRecipeMap.put(emeraldBoots, List.of(List.of(new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD),

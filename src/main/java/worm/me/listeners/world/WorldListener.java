@@ -210,6 +210,12 @@ public class WorldListener implements Listener {
                 item.getItemStack().setData(DataComponentTypes.MAX_STACK_SIZE, 4);
             } else if (item.getItemStack().getType().toString().toLowerCase().contains("potion")) {
                 item.getItemStack().setData(DataComponentTypes.MAX_STACK_SIZE, 6);
+            } else if (item.getItemStack().getType().toString().toLowerCase().contains("_CHESTPLATE")) {
+                item.getItemStack().setData(DataComponentTypes.MAX_STACK_SIZE, 4);
+            } else if (item.getItemStack().getType().toString().toLowerCase().contains("_LEGGINGS")) {
+                item.getItemStack().setData(DataComponentTypes.MAX_STACK_SIZE, 4);
+            } else if (item.getItemStack().getType().toString().toLowerCase().contains("_BOOTS")) {
+                item.getItemStack().setData(DataComponentTypes.MAX_STACK_SIZE, 4);
             }
         }
 
