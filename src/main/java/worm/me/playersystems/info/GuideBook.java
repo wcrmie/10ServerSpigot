@@ -188,7 +188,7 @@ public class GuideBook {
 
         // Enchantments
         pages.add(new ComponentBuilder("Enchantments").underlined(true)
-                .append("\n\nSome enchantments are limited on this server.\n\nUnbroken is limited to level 1 except on armor.").reset().create());
+                .append("\n\nSome enchantments are limited on this server.\n\nUnbreaking is limited to level 1 except on armor.").reset().create());
 
         pages.add(new ComponentBuilder("Enchantments(cont.)").underlined(true)
                 .append("\nSharpness, power, protection, and feather falling are all limited to level 3.\n\nWhen a tool or weapon down grades there's a chance for it to downgrade the enchantment level of that tool/weapon.\n\n").reset()

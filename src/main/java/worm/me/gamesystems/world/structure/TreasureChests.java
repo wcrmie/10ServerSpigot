@@ -42,15 +42,12 @@ public class TreasureChests {
     }
 
     private void initializeLootTable() {
-        lootTable.put(Material.MOJANG_BANNER_PATTERN, new LootEntry(20, 1));
-        lootTable.put(Material.SNIFFER_EGG, new LootEntry(20, 1));
+        lootTable.put(Material.SNIFFER_EGG, new LootEntry(5, 1));
         lootTable.put(Material.BREAD, new LootEntry(40, 10));
-        lootTable.put(Material.ENCHANTED_GOLDEN_APPLE, new LootEntry(1, 1));
-        lootTable.put(Material.LEATHER_BOOTS, new LootEntry(20, 1, true)); // This is for slime boots
-        lootTable.put(Material.SNORT_POTTERY_SHERD, new LootEntry(5, 1));
+        lootTable.put(Material.SNORT_POTTERY_SHERD, new LootEntry(1, 1));
+        lootTable.put(Material.PHANTOM_MEMBRANE, new LootEntry(10, 1));
         lootTable.put(Material.IRON_INGOT, new LootEntry(12, 1));
         lootTable.put(Material.IRON_NUGGET, new LootEntry(40, 5));
-        lootTable.put(Material.PHANTOM_MEMBRANE, new LootEntry(20, 1));
         lootTable.put(Material.GOLDEN_CARROT, new LootEntry(20, 5));
         lootTable.put(Material.GOLD_INGOT, new LootEntry(20, 1));
         lootTable.put(Material.GOLD_NUGGET, new LootEntry(24, 5));
@@ -183,27 +180,6 @@ public class TreasureChests {
         addLootToChest(inventory);
     }
 
-    private ItemStack createSlimeBoots() {
-        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
-        LeatherArmorMeta meta = (LeatherArmorMeta) boots.getItemMeta();
-
-        meta.setDisplayName(ChatColor.GREEN + "Slime Boots");
-        meta.setColor(Color.LIME);
-
-        List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "You must have the slime boot ability to use this");
-        meta.setLore(lore);
-
-        meta.getPersistentDataContainer().set(
-                new NamespacedKey(Bukkit.getPluginManager().getPlugin("YourPluginName"), "slimeboots"),
-                PersistentDataType.STRING,
-                "true"
-        );
-
-        boots.setItemMeta(meta);
-        return boots;
-    }
-
     private void addLootToChest(Inventory chestInventory) {
         int totalWeight = lootTable.values().stream().mapToInt(entry -> entry.weight).sum();
 
@@ -230,13 +206,9 @@ public class TreasureChests {
                 if (randomWeight < currentWeight) {
                     ItemStack item;
 
-                    if (entry.getKey() == Material.LEATHER_BOOTS && entry.getValue().isSpecialItem) {
-                        item = createSlimeBoots();
-                    } else {
                         int quantity = ThreadLocalRandom.current().nextInt(1, entry.getValue().maxQuantity + 1);
                         item = new ItemStack(entry.getKey(), quantity);
 
-                    }
 
                     chestInventory.setItem(slot, item);
                     break;

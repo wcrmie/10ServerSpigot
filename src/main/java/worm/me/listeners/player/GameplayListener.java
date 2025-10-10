@@ -432,6 +432,16 @@ public class GameplayListener implements Listener {
                 }
             }
 
+            if (result.getType().name().startsWith("WOODEN_") && ench.equals(Enchantment.EFFICIENCY) && result.getEnchantments().get(ench) > 3 ){
+                event.getResult().removeEnchantment(ench);
+                event.getResult().addUnsafeEnchantment(ench, 3);
+            }
+
+            if (result.getType().name().startsWith("STONE_") && ench.equals(Enchantment.EFFICIENCY) && result.getEnchantments().get(ench) > 4 ){
+                event.getResult().removeEnchantment(ench);
+                event.getResult().addUnsafeEnchantment(ench, 4);
+            }
+
         }
     }
 
