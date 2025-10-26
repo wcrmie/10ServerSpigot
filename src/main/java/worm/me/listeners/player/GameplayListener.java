@@ -4,6 +4,7 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import io.papermc.paper.event.player.PlayerArmSwingEvent;
+import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
@@ -28,6 +29,7 @@ import worm.me.gamesystems.items.gear.tools.ToolsEvents;
 import worm.me.gamesystems.world.mobs.traders.Trader;
 import worm.me.gamesystems.world.mobs.traders.VillagerProfession;
 import worm.me.gamesystems.world.structure.generation.CartographerCompass;
+import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
 import worm.me.playersystems.abilities.passive.SlimeBoots;
 import worm.me.playersystems.data.Vault;
@@ -127,6 +129,29 @@ public class GameplayListener implements Listener {
             }
 
         }
+    }
+
+    @EventHandler
+
+
+
+    public void onPlayerMoveEvent(PlayerMoveEvent e){
+
+        Player player = e.getPlayer();
+
+        if (e.getFrom() == e.getTo()) return;
+
+        if (Objects.requireNonNull(e.getTo()).getY() < 200) e.getPlayer().damage(1000000);
+
+        // 0 is the slot for abilities activated by toggling flight
+        if (!Abilities.isOnCooldown(player, 0)){
+
+            player.setAllowFlight(true);
+
+            player.setFlyingFallDamage(TriState.TRUE);
+
+        }
+
     }
 
     @EventHandler

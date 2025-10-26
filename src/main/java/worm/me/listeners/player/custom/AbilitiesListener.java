@@ -20,7 +20,7 @@ public class AbilitiesListener implements Listener {
     @EventHandler
     public void onPlayerFlightEvent(PlayerToggleFlightEvent e) {
         Player player = e.getPlayer();
-        player.setAllowFlight(true);
+        player.setAllowFlight(false);
         if (player.getGameMode() == GameMode.CREATIVE) return;
         Abilities.validateAllAbilitySlots(player);
         e.setCancelled(true);

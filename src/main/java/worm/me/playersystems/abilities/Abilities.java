@@ -12,7 +12,6 @@ import java.util.*;
 
 public class Abilities {
 
-    public static final NamespacedKey abilitiesUnlocked = new NamespacedKey(Server.getPlugin(), "unlockedabilities");
     public static final NamespacedKey abilitiesActive = new NamespacedKey(Server.getPlugin(), "activeabilities");
     public static final NamespacedKey abilityCooldown = new NamespacedKey(Server.getPlugin(), "abilitycooldown");
 
@@ -66,7 +65,7 @@ public class Abilities {
                 ChatColor.DARK_GRAY + "Shoot a weak arrow and ride it using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Bow]"));
     }
 
-    public List<Integer> getActiveAbilities(Player p) {
+    public static List<Integer> getActiveAbilities(Player p) {
         PersistentDataContainer container = p.getPersistentDataContainer();
         int[] activeArray = Objects.requireNonNullElse(
                 container.get(abilitiesActive, PersistentDataType.INTEGER_ARRAY),
@@ -129,18 +128,18 @@ public class Abilities {
         }
     }
 
-    public boolean isActive(Player p, int abilityID) {
-        return getActiveAbilities(p).contains(abilityID);
+    public static long getAbilityCooldownRemaining(Player p, int abilitySlot) {
+        long now = System.currentTimeMillis();
+        long[] cooldowns = Objects.requireNonNullElse(
+                p.getPersistentDataContainer().get(abilityCooldown, PersistentDataType.LONG_ARRAY),
+                Ability.DEFAULT_COOLDOWNS
+        );
+
+        return Math.max(0, cooldowns[abilitySlot] - now);
     }
 
-    public int getAbilitySlot(Player p, int abilityID) {
-        List<Integer> active = getActiveAbilities(p);
-        for (int i = 0; i < active.size(); i++) {
-            if (active.get(i) == abilityID) {
-                return i;
-            }
-        }
-        return -1;
+    public static boolean isOnCooldown(Player p, int abilitySlot) {
+        return getAbilityCooldownRemaining(p, abilitySlot) > 0;
     }
 
     public boolean hasAbilityOnCooldown(Player p) {
