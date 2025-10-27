@@ -26,6 +26,7 @@ import worm.me.Server;
 import worm.me.gamesystems.fishing.FishingTables;
 import worm.me.gamesystems.items.gear.armor.ArmorBreak;
 import worm.me.gamesystems.items.gear.tools.ToolsEvents;
+import worm.me.gamesystems.world.blocks.ArtBlocks;
 import worm.me.gamesystems.world.mobs.traders.Trader;
 import worm.me.gamesystems.world.mobs.traders.VillagerProfession;
 import worm.me.gamesystems.world.structure.generation.CartographerCompass;
@@ -373,6 +374,12 @@ public class GameplayListener implements Listener {
                 Snowball snowball = e.getPlayer().launchProjectile(Snowball.class);
                 snowball.getPersistentDataContainer().set(new NamespacedKey(Server.getPlugin(), "snowman"), PersistentDataType.STRING, "snowman");
 
+            }
+
+            Player p = (Player) e.getPlayer();
+            if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("WOOL") || Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("CONCRETE")){
+                ArtBlocks handler = new ArtBlocks(Server.getPlugin());
+                handler.rightClick(e);
             }
         }
 
