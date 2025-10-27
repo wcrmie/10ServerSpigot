@@ -137,7 +137,7 @@ public class WorldReset {
         this.resetScore = 0;
 
         scoreNeededForReset = 60L*60*ThreadLocalRandom.current().nextInt(60, 120);
-        double setExpansionPercentage = ThreadLocalRandom.current().nextInt(75, 175)/100D;
+        double setExpansionPercentage = ThreadLocalRandom.current().nextInt(40, 120)/100D;
         Server.getPlugin().getWorldBorderHandler().setExpansionPercentage(setExpansionPercentage);
 
         Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "WORLD RESET COMPLETE!");
