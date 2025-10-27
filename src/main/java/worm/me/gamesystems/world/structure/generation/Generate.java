@@ -210,4 +210,31 @@ public class Generate {
             sender.sendMessage("Saved structures: " + String.join(", ", structures));
         }
     }
+
+    public void handleRemoveStructure(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage("Only players can use this command.");
+            return;
+        }
+
+        if (args.length != 1) {
+            player.sendMessage("Usage: /structuresremove <name>");
+            return;
+        }
+
+        String name = args[0];
+        File folder = new File(plugin.getDataFolder(), "structures");
+        File file = new File(folder, name + ".nbt");
+
+        if (!file.exists()) {
+            player.sendMessage("No structure found with that name.");
+            return;
+        }
+
+        if (file.delete()) {
+            player.sendMessage("Removed structure: " + name);
+        } else {
+            player.sendMessage("Failed to delete structure file.");
+        }
+    }
 }

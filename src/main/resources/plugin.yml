@@ -80,3 +80,7 @@ commands:
     usage: /<command>
     description: gives cleric book
     permission: 10VS.givebook
+  structuresremove:
+    usage: /structuresremove
+    description: removes a structure file
+    permission: 10VS.structuresremove

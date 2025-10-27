@@ -121,6 +121,7 @@ public final class Server extends JavaPlugin {
         getCommand("structuresplace").setExecutor(new StructuresPlaceCommand(generate));
         getCommand("structuresplacetype").setExecutor(new StructuresPlaceTypeCommand());
         getCommand("structureslist").setExecutor(new StructuresListCommand(generate));
+        getCommand("structuresremove").setExecutor(new StructuresRemoveCommand(generate));
 
         // start worldreset score adder
         WorldReset.getInstance().scoreAdder();
