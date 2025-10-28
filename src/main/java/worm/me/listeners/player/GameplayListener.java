@@ -171,6 +171,9 @@ public class GameplayListener implements Listener {
             e.setCancelled(true);
             ExperienceBottle.fillBottle(p);
         }
+        if (e.getItemStack().getType().equals(Material.GLASS_BOTTLE) && p.isSneaking()) {
+
+        }
     }
 
     @EventHandler
@@ -392,6 +395,23 @@ public class GameplayListener implements Listener {
             if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("WOOL") || Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("CONCRETE")){
                 ArtBlocks handler = new ArtBlocks(Server.getPlugin());
                 handler.rightClick(e);
+            }
+        }
+
+
+
+        Player player = e.getPlayer();
+        ItemStack item = player.getInventory().getItemInMainHand();
+
+        Material material = item.getType();
+
+        if (material == Material.WOODEN_PICKAXE || material == Material.WOODEN_AXE || material == Material.WOODEN_SHOVEL) {
+            if (item.containsEnchantment(Enchantment.EFFICIENCY)) {
+                int level = item.getEnchantmentLevel(Enchantment.EFFICIENCY);
+                if (level > 3) {
+                    item.removeEnchantment(Enchantment.EFFICIENCY);
+                    item.addUnsafeEnchantment(Enchantment.EFFICIENCY, 3);
+                }
             }
         }
 
