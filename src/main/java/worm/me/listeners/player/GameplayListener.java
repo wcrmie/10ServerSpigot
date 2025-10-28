@@ -2,6 +2,7 @@ package worm.me.listeners.player;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import io.papermc.paper.event.player.PlayerArmSwingEvent;
 import net.kyori.adventure.util.TriState;
@@ -24,6 +25,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
 import worm.me.gamesystems.fishing.FishingTables;
+import worm.me.gamesystems.items.ExperienceBottle;
 import worm.me.gamesystems.items.gear.armor.ArmorBreak;
 import worm.me.gamesystems.items.gear.tools.ToolsEvents;
 import worm.me.gamesystems.world.blocks.ArtBlocks;
@@ -163,12 +165,22 @@ public class GameplayListener implements Listener {
     }
 
     @EventHandler
+    public void onPlayerUseItemEvent(UseItemEvent e) {
+        Player p = e.getCause().getFirstPlayer();
+        if (e.getItemStack().getType().equals(Material.GLASS_BOTTLE) && p.isSneaking()) {
+            e.setCancelled(true);
+            ExperienceBottle.fillBottle(p);
+        }
+    }
+
+    @EventHandler
     public void onPlayerRightClick(PlayerInteractEntityEvent e){
 
         Player player = e.getPlayer();
 
         SaddleSystem sshandler = new SaddleSystem(Server.getPlugin());
         sshandler.rightClick(e);
+
 
         if (player.getInventory().getItemInMainHand().getType().equals(Material.KNOWLEDGE_BOOK) || player.getInventory().getItemInOffHand().getType().equals(Material.KNOWLEDGE_BOOK)) {
 
