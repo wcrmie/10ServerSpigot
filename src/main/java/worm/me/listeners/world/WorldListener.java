@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -23,6 +24,8 @@ import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import worm.me.Server;
+import worm.me.gamesystems.halloween.Candy;
+import worm.me.gamesystems.halloween.PumpkinPatch;
 import worm.me.gamesystems.items.ExperienceBottle;
 import worm.me.gamesystems.items.SnowballKnockback;
 import worm.me.gamesystems.world.mobs.traders.Wandering;
@@ -171,6 +174,19 @@ public class WorldListener implements Listener {
             }
 
         }
+    }
+
+    @EventHandler
+    public void onPumpkinGrow(BlockGrowEvent event) {
+
+        if (event.getBlock().getType().equals(Material.PUMPKIN)) {
+
+            event.getBlock().setType(Material.AIR);
+
+            PumpkinPatch.tryGrowUndead(event.getBlock().getLocation());
+
+        }
+
     }
 
     // --------------------END Block Events--------------------
@@ -411,6 +427,19 @@ public class WorldListener implements Listener {
 
             }
         }
+
+        if (event.getEntity() instanceof Monster monster && PumpkinPatch.isHalloweenUndead(monster)) {
+
+            event.getDrops().clear();
+            event.getDrops().add(Candy.selectCandy());
+            if (ThreadLocalRandom.current().nextInt(100) < 25) {
+                event.getDrops().add(Candy.selectCandy());
+            }
+            event.getDrops().add(new ItemStack(Material.CARVED_PUMPKIN));
+            event.getDrops().add(new ItemStack(Material.PUMPKIN_SEEDS, ThreadLocalRandom.current().nextInt(1, 4)));
+
+        }
+
     }
 
     @EventHandler
