@@ -274,6 +274,11 @@ public class WorldListener implements Listener {
 
             e.getAttribute(Attribute.SCALE).setBaseValue(rng);
 
+            if (e.getType().equals(EntityType.CHICKEN) && ThreadLocalRandom.current().nextDouble(0, 50) == 50) {
+
+                e.getAttribute(Attribute.SCALE).setBaseValue(2.5);
+            }
+
         }
 
         if (entity instanceof Zombie zombie && entity.getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.NATURAL)) {
