@@ -51,6 +51,7 @@ public class PumpkinPatch {
         }
 
         undead.getEquipment().setHelmet(item);
+        undead.getEquipment().setItemInMainHand(new ItemStack(Material.WOODEN_SWORD));
 
         PersistentDataContainer data = undead.getPersistentDataContainer();
 
