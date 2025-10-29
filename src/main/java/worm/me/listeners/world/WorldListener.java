@@ -285,7 +285,7 @@ public class WorldListener implements Listener {
 
         Entity entity = event.getEntity();
 
-        if (entity instanceof Zombie || entity instanceof Skeleton || entity instanceof Stray || entity instanceof Cow || entity instanceof Pig || entity instanceof Sheep || entity instanceof Chicken || entity instanceof Villager || entity instanceof Parrot) {
+        if (entity instanceof Zombie || entity instanceof Skeleton || entity instanceof Stray || entity instanceof Cow || entity instanceof Pig || entity instanceof Sheep || entity instanceof Chicken || entity instanceof Villager || entity instanceof Parrot || entity instanceof Bat) {
 
 
             LivingEntity e = (LivingEntity) entity;
