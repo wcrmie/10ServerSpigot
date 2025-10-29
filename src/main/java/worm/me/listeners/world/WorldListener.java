@@ -214,6 +214,26 @@ public class WorldListener implements Listener {
 
         if (event.getEntity() instanceof Player) return;
 
+        if (event.getEntity() instanceof Witch) {
+
+            int RNG = ThreadLocalRandom.current().nextInt(5, 10);
+
+            for (int i = 0; i < RNG; i++) {
+
+                event.getEntity().getWorld().spawn(event.getEntity().getLocation(), Bat.class);
+
+            }
+
+            if (ThreadLocalRandom.current().nextInt(0, 2) == 0) {
+
+                event.getEntity().getWorld().spawn(event.getEntity().getLocation(), Cat.class ,cat -> {
+                    cat.setCatType(Cat.Type.ALL_BLACK);
+                });
+
+            }
+
+        }
+
         if (event.getEntity() instanceof Item) {
             Item item = (Item) event.getEntity();
             if (item.getItemStack().getType().toString().toLowerCase().contains("_disc")) {
