@@ -63,6 +63,9 @@ public class Abilities {
 
         abilityGuiComponents.put(11, List.of("Ability 11", "ARROW",
                 ChatColor.DARK_GRAY + "Shoot a weak arrow and ride it using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Bow]"));
+
+        abilityGuiComponents.put(12, List.of("Slide", "ICE",
+                ChatColor.DARK_GRAY + " " + ChatColor.GRAY + " "));
     }
 
     public static List<Integer> getActiveAbilities(Player p) {
