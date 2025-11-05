@@ -115,7 +115,15 @@ public enum Ability {
           new Reqs.RequirementBuilder().agility(15).fishing(5).build(),
           8,
           AbilityType.DOUBLE_SPACE,
-          player -> new Slide().slide(player));
+          player -> new Slide().slide(player)),
+    HEAVY_MINER(13,
+          Material.COPPER_ORE,
+          "Heavy Miner",
+                  "<dark_gray>Mine extra fast but its very hard to move and see</dark_gray>",
+                  new Reqs.RequirementBuilder().combat(5).mining(30).foraging(30).build(),
+          30,
+    AbilityType.VERTICAL,
+    player -> new HeavyMiner().heavyMiner(player));
 
 
     private final int id;

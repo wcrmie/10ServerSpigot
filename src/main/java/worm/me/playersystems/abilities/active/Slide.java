@@ -11,19 +11,19 @@ import worm.me.playersystems.data.levels.Levels;
 public class Slide {
 
     public void slide (Player p){
-        p.teleport(p.getLocation().subtract(0, 0.5, 0));
+        p.teleport(p.getLocation().subtract(0, 0.3, 0));
 
         new BukkitRunnable() {
             int ticks = 0;
             @Override
             public void run() {
-                if (ticks++ > 8) {
+                if (ticks++ > 20) {
                     cancel();
                 }
                 Vector direction = p.getLocation().getDirection();
 
                 direction.multiply(0.9);
-                direction.setY(-0.5);
+                direction.setY(-0.4);
                 p.setVelocity(direction);
 
                 Block blockBelow = p.getLocation().subtract(0, 1, 0).getBlock();
