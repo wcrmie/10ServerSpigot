@@ -392,10 +392,13 @@ public class GameplayListener implements Listener {
             }
 
             Player p = (Player) e.getPlayer();
-            if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("WOOL") || Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("CONCRETE")){
-                ArtBlocks handler = new ArtBlocks(Server.getPlugin());
-                handler.rightClick(e);
+            if (e.getHand() != org.bukkit.inventory.EquipmentSlot.HAND) {
+                if (Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("WOOL") || Objects.requireNonNullElse(e.getClickedBlock(), p.getLocation().getBlock()).getType().toString().contains("CONCRETE")){
+                    ArtBlocks handler = new ArtBlocks(Server.getPlugin());
+                    handler.rightClick(e);
+                }
             }
+
         }
 
 
