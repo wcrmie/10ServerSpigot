@@ -113,7 +113,7 @@ public final class Server extends JavaPlugin {
         Island.init(this);
 
         // Register commands
-
+        getCommand("setresettimer").setExecutor(new WorldResetSetTimeCommand());
         getCommand("resetworld").setExecutor(new WorldResetCommand());
         getCommand("blockcount").setExecutor(new BlockCountCommand(WorldBorderSizeHandler));
         getCommand("expansionpercentage").setExecutor(new ExpansionPercentageCommand(WorldBorderSizeHandler));
