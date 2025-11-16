@@ -88,3 +88,7 @@ commands:
     description: Sets the world reset timer
     usage: /setresettimer <seconds>
     permission: 10VS.setresettimer
+  spawntreasure:
+    description: Spawns a treasure chest in the world
+    usage: /spawntreasure
+    permission: 10VS.spawntreasure
