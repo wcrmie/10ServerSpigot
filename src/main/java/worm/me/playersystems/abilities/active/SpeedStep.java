@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class SpeedStep {
     private final Map<UUID, DashInfo> activeDashes = new ConcurrentHashMap<>();
-    private final int DASH_DURATION = 13;
+    private final int DASH_DURATION = 11;
     private final int POST_DASH_DURATION = 5;
     private final double DASH_SPEED = 1.07;
     private final float INITIAL_SCALE = 0.27f;

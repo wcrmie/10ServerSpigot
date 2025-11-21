@@ -20,8 +20,5 @@ public class Leap {
         World world = p.getWorld();
         world.spawnParticle(Particle.GUST_EMITTER_SMALL, p.getLocation(), 1, 0.3, 0.00001, 0.3, 0.05);
         world.playSound(p.getLocation(), Sound.ITEM_TRIDENT_RIPTIDE_1, .8f, 2f);
-
-        p.swingMainHand();
-
     }
 }

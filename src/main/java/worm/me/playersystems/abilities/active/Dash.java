@@ -20,8 +20,5 @@ public class Dash {
         World world = p.getWorld();
         world.spawnParticle(Particle.SWEEP_ATTACK, p.getLocation(), 5, 0.3, 0.00001, 0.3, 0.05);
         world.playSound(p.getLocation(), Sound.ITEM_TRIDENT_THROW, .8f, 1.5f);
-
-        p.swingMainHand();
-
     }
 }

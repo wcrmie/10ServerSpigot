@@ -11,7 +11,7 @@ public class TacticalRetreat {
 
     public void retreat(Player p){
         Vector direction = p.getLocation().getDirection();
-        direction.multiply(-1.5);
+        direction.multiply(-1.8);
         direction.setY(0.5);
         p.setVelocity(direction);
         Levels.addExp(5L, Levels.skillTranslation("Agility"), p);
