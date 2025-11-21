@@ -4,6 +4,7 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -176,11 +177,14 @@ public class Levels {
 
                 if (getLevel(Skill.COMBAT.ordinal(), p) >= 7) {
                     if (event.getEntity().getKiller() != null) {
-                        int goldChance = getGoldChance(p);
-                        int chance = ThreadLocalRandom.current().nextInt(1, 80);
-                        if (chance <= goldChance) {
-                            event.getDrops().add(new ItemStack(Material.GOLD_NUGGET));
-                            p.playSound(p, Sound.ITEM_AXE_SCRAPE, 1F, 2F);
+                        EntityType type = event.getEntityType();
+                        if (type != EntityType.SILVERFISH && type != EntityType.SLIME) {
+                            int goldChance = getGoldChance(p);
+                            int chance = ThreadLocalRandom.current().nextInt(1, 80);
+                            if (chance <= goldChance) {
+                                event.getDrops().add(new ItemStack(Material.GOLD_NUGGET));
+                                p.playSound(p, Sound.ITEM_AXE_SCRAPE, 1F, 2F);
+                            }
                         }
                     }
                 }
