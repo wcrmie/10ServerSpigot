@@ -11,15 +11,14 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockFromToEvent;
-import org.bukkit.event.block.BlockGrowEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -29,6 +28,7 @@ import worm.me.gamesystems.items.ExperienceBottle;
 import worm.me.gamesystems.items.SnowballKnockback;
 import worm.me.gamesystems.world.mobs.traders.Wandering;
 import worm.me.gamesystems.world.reset.WorldReset;
+import worm.me.gamesystems.world.structure.TreasureChests;
 import worm.me.data.VoidPlayer;
 
 import java.util.*;
@@ -42,10 +42,10 @@ public class WorldListener implements Listener {
 
     public static Map<IronGolem, BossBar> ironGolemBossBars = new HashMap<>();
 
-
     public WorldListener(Server plugin) {
         this.plugin = plugin;
     }
+
 
     // --------------------Block Events--------------------
 
@@ -469,6 +469,26 @@ public class WorldListener implements Listener {
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e){
         SnowballKnockback sbk = new SnowballKnockback(plugin);
         sbk.onSnowballHit(e);
+    }
+
+    @EventHandler
+    public void onChestOpen(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
+        Block block = event.getClickedBlock();
+        if (block == null) return;
+
+        if (block.getType() == Material.CHEST || block.getType() == Material.TRAPPED_CHEST) {
+            Location chestLocation = block.getLocation();
+
+            if (plugin.getPlugin().getTreasureChests() != null) {
+                TreasureChests treasureChests = plugin.getPlugin().getTreasureChests();
+
+                if (treasureChests.getDisplayAt(chestLocation) != null) {
+                    treasureChests.chestOpened(chestLocation, event.getPlayer());
+                }
+            }
+        }
     }
 
     // --------------------END Entity Events-----------------------

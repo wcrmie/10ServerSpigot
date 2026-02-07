@@ -78,6 +78,10 @@ public final class Server extends JavaPlugin {
 
     private SpeedStep speedStep = new SpeedStep();
 
+    public TreasureChests getTreasureChests() {
+        return this.treasureChests;
+    }
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -113,7 +117,8 @@ public final class Server extends JavaPlugin {
         Island.init(this);
 
         // Register commands
-
+        getCommand("spawntreasure").setExecutor(new TreasureChestCommand(treasureChests));
+        getCommand("setresettimer").setExecutor(new WorldResetSetTimeCommand());
         getCommand("resetworld").setExecutor(new WorldResetCommand());
         getCommand("blockcount").setExecutor(new BlockCountCommand(WorldBorderSizeHandler));
         getCommand("expansionpercentage").setExecutor(new ExpansionPercentageCommand(WorldBorderSizeHandler));
@@ -395,6 +400,8 @@ public final class Server extends JavaPlugin {
         }
 
         WorldReset.getInstance().saveData();
+
+        if (treasureChests != null) treasureChests.removeAllDisplays();
 
         FileConfiguration config = getConfig();
         WorldBorderSizeHandler WorldBorderSizeHandler = new WorldBorderSizeHandler(this);

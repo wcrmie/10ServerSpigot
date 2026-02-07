@@ -3,11 +3,17 @@ package worm.me.gamesystems.world.structure;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.WorldBorder;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.persistence.PersistentDataType;
+import worm.me.utils.chat.Message;
+import worm.me.utils.chat.MessageType;
+import org.bukkit.entity.Display;
+import org.bukkit.entity.BlockDisplay;
+import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
+
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -16,43 +22,17 @@ public class TreasureChests {
 
     private final World world = Bukkit.getWorld("ul_Void");
     private final WorldBorder worldBorder = world.getWorldBorder();
+
     private int xMoreThan, xLessThan, yMoreThan, yLessThan, zMoreThan, zLessThan;
 
-    private final Map<Material, LootEntry> lootTable = new HashMap<>();
+    private final Map<Location, BlockDisplay> chestDisplays = new HashMap<>();
 
-    private static class LootEntry {
-        int weight;
-        int maxQuantity;
-        boolean isSpecialItem;
-
-        public LootEntry(int weight, int maxQuantity) {
-            this(weight, maxQuantity, false);
-        }
-
-        public LootEntry(int weight, int maxQuantity, boolean isSpecialItem) {
-            this.weight = weight;
-            this.maxQuantity = maxQuantity;
-            this.isSpecialItem = isSpecialItem;
-        }
-    }
+    // Loot table from enum
+    private final List<TreasureChestLootType> lootTable =
+            Arrays.asList(TreasureChestLootType.values());
 
     public TreasureChests() {
         updateBorderValues();
-        initializeLootTable();
-    }
-
-    private void initializeLootTable() {
-        lootTable.put(Material.SNIFFER_EGG, new LootEntry(5, 1));
-        lootTable.put(Material.BREAD, new LootEntry(40, 10));
-        lootTable.put(Material.SNORT_POTTERY_SHERD, new LootEntry(1, 1));
-        lootTable.put(Material.PHANTOM_MEMBRANE, new LootEntry(10, 1));
-        lootTable.put(Material.IRON_INGOT, new LootEntry(12, 1));
-        lootTable.put(Material.IRON_NUGGET, new LootEntry(40, 5));
-        lootTable.put(Material.GOLDEN_CARROT, new LootEntry(20, 5));
-        lootTable.put(Material.GOLD_INGOT, new LootEntry(20, 1));
-        lootTable.put(Material.GOLD_NUGGET, new LootEntry(24, 5));
-        lootTable.put(Material.COOKED_BEEF, new LootEntry(36, 15));
-        lootTable.put(Material.GOLDEN_APPLE, new LootEntry(12, 2));
     }
 
     private void updateBorderValues() {
@@ -81,15 +61,15 @@ public class TreasureChests {
     }
 
     public Location validLocation() {
-        Location location = findValidLocation(17, 17, 17, 45, 45, 45 ,3, "Estra Extra big used");
+        Location location = findValidLocation(17, 17, 17, 45, 45, 45, 3, "Estra Extra big used");
         if (location == null) {
-            location = findValidLocation(11, 11, 11, 15, 15, 15 ,10, "Extra big used");
+            location = findValidLocation(11, 11, 11, 15, 15, 15, 10, "Extra big used");
             if (location == null) {
                 location = findValidLocation(7, 9, 7, 11, 9, 11, 20, "big used");
                 if (location == null) {
-                    location = findValidLocation(3, 5, 3, 0, 1, 0 , 500, "med used");
+                    location = findValidLocation(3, 5, 3, 0, 1, 0, 500, "med used");
                     if (location == null) {
-                        location = findValidLocation(0, 3, 0, 0, 1, 0 , 2000, "small used");
+                        location = findValidLocation(0, 3, 0, 0, 1, 0, 2000, "small used");
                         if (location == null) {
                             location = worldBorderGetRandomBlock();
                         }
@@ -100,22 +80,30 @@ public class TreasureChests {
         return location;
     }
 
-    private Location findValidLocation(int xSize, int ySize, int zSize, int xBSize, int yBSize, int zBSize, int maxAttempts, String successMessage) {
+    private Location findValidLocation(int xSize, int ySize, int zSize,
+                                       int xBSize, int yBSize, int zBSize,
+                                       int maxAttempts, String successMessage) {
+
         int yOffSetUp = 1;
         int locationAttempts = 0;
+
         Location location;
         boolean validLocation;
+
         do {
             locationAttempts++;
             validLocation = true;
+
             location = worldBorderGetRandomBlock();
+
             int xStart = (int) (location.getX() - (xBSize / 2.0));
             int xEnd = (int) (location.getX() + (xBSize / 2.0));
             int yStart = (int) (location.getY() - (yBSize / 2.0)) + yOffSetUp;
             int yEnd = (int) (location.getY() + (yBSize / 2.0)) + yOffSetUp;
             int zStart = (int) (location.getZ() - (zBSize / 2.0));
             int zEnd = (int) (location.getZ() + (zBSize / 2.0));
-            //full
+
+            // Full interior check
             for (int x = (int) (location.getX() - (xSize / 2.0)); x <= (int) (location.getX() + (xSize / 2.0)); x++) {
                 for (int y = (int) (location.getY() - (ySize / 2.0)) + yOffSetUp; y <= (int) (location.getY() + (ySize / 2.0)) + yOffSetUp; y++) {
                     for (int z = (int) (location.getZ() - (zSize / 2.0)); z <= (int) (location.getZ() + (zSize / 2.0)); z++) {
@@ -128,7 +116,8 @@ public class TreasureChests {
                 }
                 if (!validLocation) break;
             }
-            //x sides
+
+            // X walls
             for (int y = yStart; y <= yEnd; y++) {
                 for (int z = zStart; z <= zEnd; z++) {
                     if (!isAir(xStart, y, z) || !isAir(xEnd, y, z)) {
@@ -138,7 +127,8 @@ public class TreasureChests {
                 }
                 if (!validLocation) break;
             }
-            //y sides
+
+            // Y walls
             for (int x = xStart; x <= xEnd; x++) {
                 for (int z = zStart; z <= zEnd; z++) {
                     if (!isAir(x, yStart, z) || !isAir(x, yEnd, z)) {
@@ -148,7 +138,8 @@ public class TreasureChests {
                 }
                 if (!validLocation) break;
             }
-            //z sides
+
+            // Z walls
             for (int x = xStart; x <= xEnd; x++) {
                 for (int y = yStart; y <= yEnd; y++) {
                     if (!isAir(x, y, zStart) || !isAir(x, y, zEnd)) {
@@ -158,30 +149,44 @@ public class TreasureChests {
                 }
                 if (!validLocation) break;
             }
+
         } while (!validLocation && locationAttempts < maxAttempts);
-        if (validLocation) {
-            return location;
-        }
-        return null;
+
+        return validLocation ? location : null;
     }
 
     private boolean isAir(int x, int y, int z) {
-        Block block = world.getBlockAt(x, y, z);
-        return block.getType() == Material.AIR;
+        return world.getBlockAt(x, y, z).getType() == Material.AIR;
     }
 
     public void chestSpawn() {
         updateBorderValues();
+
         Location location = validLocation();
         Block block = world.getBlockAt(location);
         block.setType(Material.CHEST);
         Chest chest = (Chest) block.getState();
-        Inventory inventory = chest.getInventory();
-        addLootToChest(inventory);
+        addLootToChest(chest.getInventory());
+
+        BlockDisplay display = world.spawn(location.clone(), BlockDisplay.class);
+        display.setBlock(block.getBlockData());
+        display.setInterpolationDuration(0);
+        display.setShadowStrength(0);
+        display.setGlowing(true);
+
+        chestDisplays.put(location, display);
+
+        String msg = Message.create(MessageType.GENERIC,
+                "A treasure chest has spawned at " +
+                        location.getBlockX() + ", " +
+                        location.getBlockY() + ", " +
+                        location.getBlockZ() + "!"
+        );
+        Message.sendAll(msg);
     }
 
     private void addLootToChest(Inventory chestInventory) {
-        int totalWeight = lootTable.values().stream().mapToInt(entry -> entry.weight).sum();
+        int totalWeight = lootTable.stream().mapToInt(TreasureChestLootType::getWeight).sum();
 
         int chestSize = chestInventory.getSize();
         int minSlots = (int) Math.ceil(chestSize * 0.10);
@@ -191,6 +196,7 @@ public class TreasureChests {
         Set<Integer> filledSlots = new HashSet<>();
 
         for (int i = 0; i < slotsToFill; i++) {
+
             int slot;
             do {
                 slot = ThreadLocalRandom.current().nextInt(chestSize);
@@ -201,14 +207,13 @@ public class TreasureChests {
             int randomWeight = ThreadLocalRandom.current().nextInt(totalWeight);
             int currentWeight = 0;
 
-            for (Map.Entry<Material, LootEntry> entry : lootTable.entrySet()) {
-                currentWeight += entry.getValue().weight;
+            for (TreasureChestLootType loot : lootTable) {
+                currentWeight += loot.getWeight();
+
                 if (randomWeight < currentWeight) {
-                    ItemStack item;
 
-                        int quantity = ThreadLocalRandom.current().nextInt(1, entry.getValue().maxQuantity + 1);
-                        item = new ItemStack(entry.getKey(), quantity);
-
+                    int qty = ThreadLocalRandom.current().nextInt(1, loot.getMaxQuantity() + 1);
+                    ItemStack item = new ItemStack(loot.getMaterial(), qty);
 
                     chestInventory.setItem(slot, item);
                     break;
@@ -216,4 +221,45 @@ public class TreasureChests {
             }
         }
     }
+
+
+    public BlockDisplay getDisplayAt(Location loc) {
+        return chestDisplays.get(loc);
+    }
+
+    public void removeDisplay(Location loc) {
+        BlockDisplay display = chestDisplays.remove(loc);
+        if (display != null && !display.isDead()) display.remove();
+    }
+
+    public void removeAllDisplays() {
+        for (BlockDisplay display : chestDisplays.values()) {
+            if (display != null && !display.isDead()) display.remove();
+        }
+        chestDisplays.clear();
+    }
+
+    public void removeClosestDisplay(Location loc, double radius) {
+        BlockDisplay closest = null;
+        double closestDistance = radius;
+
+        for (Map.Entry<Location, BlockDisplay> entry : chestDisplays.entrySet()) {
+            double distance = entry.getKey().distance(loc);
+            if (distance <= closestDistance) {
+                closest = entry.getValue();
+                closestDistance = distance;
+            }
+        }
+
+        if (closest != null) {
+            closest.remove();
+            chestDisplays.values().remove(closest);
+        }
+    }
+
+    public void chestOpened(Location loc, Player player) {
+        Block block = loc.getBlock();
+        removeClosestDisplay(loc, 2.0);
+    }
+
 }

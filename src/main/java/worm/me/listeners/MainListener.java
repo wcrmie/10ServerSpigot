@@ -3,6 +3,7 @@ package worm.me.listeners;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
@@ -45,6 +46,40 @@ public class MainListener implements org.bukkit.event.Listener {
         Player p = (Player) e.getPlayer();
         GuideBook guideBook = new GuideBook();
         guideBook.guideBook(p);
+    }
+
+    @EventHandler
+    public void onTridentHit(ProjectileHitEvent event) {
+        if (!(event.getEntity() instanceof Trident trident)) return;
+
+        if (!(trident.getShooter() instanceof Player)) return;
+
+        ItemStack item = trident.getItemStack();
+        if (item == null) return;
+
+        if (!item.containsEnchantment(org.bukkit.enchantments.Enchantment.CHANNELING)) return;
+
+        World world = trident.getWorld();
+
+        if (!world.hasStorm()) return;
+
+        Location strikeLoc = null;
+
+        if (event.getHitEntity() != null) {
+            strikeLoc = event.getHitEntity().getLocation();
+        }
+
+        if (event.getHitBlock() != null) {
+            if (event.getHitBlock().getType() == Material.LIGHTNING_ROD) {
+                strikeLoc = event.getHitBlock().getLocation().add(0.5, 1, 0.5);
+            } else {
+                strikeLoc = trident.getLocation();
+            }
+        }
+
+        if (strikeLoc != null) {
+            world.strikeLightning(strikeLoc);
+        }
     }
 
     @EventHandler

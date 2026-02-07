@@ -23,7 +23,7 @@ public enum Ability {
             "Double Jump",
             "<dark_gray>double jump!<dark_gray>",
             new Reqs.RequirementBuilder().combat(1).build(),
-            10,
+            8,
             AbilityType.DOUBLE_SPACE,
             player -> new DoubleJump().doubleJump(player)),
 
@@ -32,7 +32,7 @@ public enum Ability {
             "Dash",
             "<dark_gray>Dash forward</dark_gray>",
             new Reqs.RequirementBuilder().combat(5).agility(3).build(),
-            10,
+            12,
             AbilityType.HORIZONTAL,
             player -> new Dash().dash(player)),
 
@@ -41,7 +41,7 @@ public enum Ability {
             "Leap",
             "<dark_gray>Leap up in the air</dark_gray>",
             new Reqs.RequirementBuilder().combat(5).agility(8).build(),
-            10,
+            12,
             AbilityType.VERTICAL,
             player -> new Leap().leap(player)),
 
@@ -68,7 +68,7 @@ public enum Ability {
             "Shadow-Step",
             "<dark_gray>Step through space</dark_gray>",
             new Reqs.RequirementBuilder().combat(35).smithing(5).mining(5).agility(15).build(),
-            20,
+            16,
             AbilityType.HORIZONTAL,
             player -> new ShadowStep().shadowStep(player)),
 
@@ -77,7 +77,7 @@ public enum Ability {
             "Feather-Float",
             "<dark_gray>Float through the air swiftly</dark_gray>",
             new Reqs.RequirementBuilder().farming(25).fishing(5).agility(10).build(),
-            15,
+            16,
             AbilityType.VERTICAL,
             player -> new FeatherDash().featherDash(player)),
 
@@ -86,7 +86,7 @@ public enum Ability {
             "Speed-Step",
             "<dark_gray>Speed off in the direction you are looking</dark_gray>",
             new Reqs.RequirementBuilder().combat(5).mining(5).agility(25).foraging(10).build(),
-            20,
+            24,
             AbilityType.HORIZONTAL,
             player -> new SpeedStep().SpeedStep(player)),
 
@@ -95,7 +95,7 @@ public enum Ability {
             "Tactical Retreat",
             "<dark_gray>Gain some distance on your opponent</dark_gray>",
             new Reqs.RequirementBuilder().combat(10).farming(1).mining(2).agility(10).foraging(2).build(),
-            10,
+            8,
             AbilityType.HORIZONTAL,
             player -> new TacticalRetreat().retreat(player)),
 
@@ -106,7 +106,25 @@ public enum Ability {
             new Reqs.RequirementBuilder().combat(10).farming(1).mining(2).agility(10).foraging(2).build(),
             20,
             AbilityType.VERTICAL,
-            player -> new RideArrow().shootRiddenArrow(player));
+            player -> new RideArrow().shootRiddenArrow(player)),
+
+    SLIDE(12,
+          Material.ICE,
+          "Slide",
+          "<dark_gray>Slide all about</dark_gray>",
+          new Reqs.RequirementBuilder().agility(15).fishing(5).build(),
+          8,
+          AbilityType.DOUBLE_SPACE,
+          player -> new Slide().slide(player)),
+    HEAVY_MINER(13,
+          Material.COPPER_ORE,
+          "Heavy Miner",
+                  "<dark_gray>Mine extra fast but its very hard to move and see</dark_gray>",
+                  new Reqs.RequirementBuilder().combat(5).mining(30).foraging(30).build(),
+          30,
+    AbilityType.VERTICAL,
+    player -> new HeavyMiner().heavyMiner(player));
+
 
     private final int id;
     private final Material icon;
