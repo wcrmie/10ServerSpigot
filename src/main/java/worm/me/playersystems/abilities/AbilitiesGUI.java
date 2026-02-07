@@ -11,7 +11,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.utils.GuiConstructor;
 import worm.me.Server;
-import worm.me.playersystems.data.Unlocks;
+import worm.me.data.Unlocks;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 

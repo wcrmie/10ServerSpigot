@@ -14,10 +14,10 @@ import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.FeatherDash;
-import worm.me.playersystems.data.VoidPlayer;
+import worm.me.data.VoidPlayer;
 import worm.me.playersystems.generator.Generator;
-import worm.me.playersystems.info.Tips;
-import worm.me.playersystems.join.FirstJoin;
+import worm.me.utils.info.Tips;
+import worm.me.utils.join.FirstJoin;
 
 public class InitializationsListener implements Listener {
 

@@ -1,4 +1,4 @@
-package worm.me.playersystems.info;
+package worm.me.utils.info;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,7 +16,7 @@ import worm.me.utils.GuiConstructor;
 import worm.me.gamesystems.world.reset.WorldReset;
 import worm.me.playersystems.abilities.AbilitiesGUI;
 import worm.me.playersystems.generator.GeneratorEdit;
-import worm.me.playersystems.data.PlayerProfileGUI;
+import worm.me.data.PlayerProfileGUI;
 //import worm.me.playersystems.social.legacyhats.Hats;
 //import worm.me.playersystems.social.skins.SkinGui;
 import worm.me.Server;

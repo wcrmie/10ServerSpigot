@@ -1,6 +1,8 @@
 package worm.me.listeners.player.voidfishing;
 
+import io.papermc.paper.event.entity.EntityMoveEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.FishHook;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,7 +29,6 @@ public class VoidFishingListener implements Listener {
                     Bukkit.getPluginManager().callEvent(new VoidFishEvent(player, bobber, VoidBobber.VoidFishState.FISH_CAUGHT));
 
                     event.getHook().setHookedEntity(null); // set it later
-
                     bobber.remove();
 
                 } else {
@@ -36,12 +37,27 @@ public class VoidFishingListener implements Listener {
                     bobber.remove();
                 }
 
-
+                bobber.getMainLoop().cancel();
             }
-
         }
+    }
 
+    @EventHandler
+    public void onBobberMove(EntityMoveEvent event) {
 
+        if (!(event.getEntity() instanceof FishHook bobber)) return;
+
+        if (!VoidBobber.canVoidFish(bobber)) return;
+
+        if (VoidBobber.findBobber(bobber) != null) return;
+
+        if (event.getFrom() == event.getTo()) return;
+
+        if (event.getFrom().getY() >= 210) return;
+
+        //TODO: add logic to check for lure and luck
+        VoidBobber voidBobber = new VoidBobber((Player) bobber.getShooter(), bobber, 0, 0);
+        voidBobber.startFishing();
 
     }
 
@@ -54,7 +70,7 @@ public class VoidFishingListener implements Listener {
 
         switch (state) {
             case FISH_BITE -> {
-
+                // i dont really need to do anything here
             }
 
             case FISH_CAUGHT -> {
@@ -63,7 +79,8 @@ public class VoidFishingListener implements Listener {
 
             }
             case FAILED_CATCH -> {
-                // Handle failed attempt
+                bobber.getMainLoop().cancel();
+                bobber.startFishing();
 
             }
         }

@@ -7,8 +7,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import worm.me.playersystems.abilities.Abilities;
-import worm.me.playersystems.data.levels.Levels;
+import worm.me.data.levels.Levels;
 import worm.me.Server;
 
 import java.util.HashMap;

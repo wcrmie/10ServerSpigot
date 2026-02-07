@@ -1,4 +1,4 @@
-package worm.me.playersystems.data.levels;
+package worm.me.data.levels;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

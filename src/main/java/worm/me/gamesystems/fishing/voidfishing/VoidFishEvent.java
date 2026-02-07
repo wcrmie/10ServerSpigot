@@ -33,6 +33,6 @@ public class VoidFishEvent extends Event {
 
     @Override
     public @NotNull HandlerList getHandlers() {
-        return null;
+        return handlers;
     }
 }

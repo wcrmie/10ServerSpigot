@@ -1,4 +1,4 @@
-package worm.me.playersystems.data;
+package worm.me.data;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

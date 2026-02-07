@@ -16,13 +16,13 @@ import worm.me.gamesystems.recipes.RecipesGUI;
 import worm.me.playersystems.abilities.AbilitiesGUI;
 import worm.me.gamesystems.items.gear.Upgrade;
 import worm.me.playersystems.generator.GeneratorEdit;
-import worm.me.playersystems.data.*;
-import worm.me.playersystems.data.levels.LevelsGUI;
+import worm.me.data.*;
+import worm.me.data.levels.LevelsGUI;
 //import worm.me.playersystems.social.legacyhats.Hats;
-import worm.me.playersystems.info.GuideBook;
+import worm.me.utils.info.GuideBook;
 //import worm.me.playersystems.social.skins.SkinGui;
 import worm.me.gamesystems.items.gear.tools.ToolsEvents;
-import worm.me.playersystems.info.MainGUIMenu;
+import worm.me.utils.info.MainGUIMenu;
 import worm.me.utils.Item;
 
 import java.util.*;

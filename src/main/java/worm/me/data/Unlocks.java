@@ -1,16 +1,13 @@
-package worm.me.playersystems.data;
+package worm.me.data;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.checkerframework.checker.units.qual.N;
 import worm.me.playersystems.abilities.Abilities;
-import worm.me.playersystems.data.levels.Levels;
+import worm.me.data.levels.Levels;
 import worm.me.Server;
 
 import java.lang.constant.Constable;

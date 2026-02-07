@@ -14,7 +14,7 @@ import org.bukkit.util.Transformation;
 import org.joml.AxisAngle4f;
 import org.joml.Vector3f;
 import worm.me.playersystems.abilities.Abilities;
-import worm.me.playersystems.data.levels.Levels;
+import worm.me.data.levels.Levels;
 import worm.me.Server;
 
 import java.util.ArrayList;

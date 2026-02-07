@@ -1,4 +1,4 @@
-package worm.me.playersystems.info;
+package worm.me.utils.info;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;

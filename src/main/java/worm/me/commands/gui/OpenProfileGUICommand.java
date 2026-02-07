@@ -1,13 +1,11 @@
 package worm.me.commands.gui;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import worm.me.playersystems.data.PlayerProfileGUI;
-import worm.me.Server;
+import worm.me.data.PlayerProfileGUI;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 

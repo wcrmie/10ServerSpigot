@@ -25,6 +25,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
 import worm.me.gamesystems.fishing.FishingTables;
+import worm.me.gamesystems.halloween.Candy;
 import worm.me.gamesystems.items.ExperienceBottle;
 import worm.me.gamesystems.items.gear.armor.ArmorBreak;
 import worm.me.gamesystems.items.gear.tools.ToolsEvents;
@@ -35,9 +36,10 @@ import worm.me.gamesystems.world.structure.generation.CartographerCompass;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
 import worm.me.playersystems.abilities.passive.SlimeBoots;
-import worm.me.playersystems.data.Vault;
-import worm.me.playersystems.data.VoidPlayer;
-import worm.me.playersystems.data.levels.Levels;
+import worm.me.playersystems.attributes.SizeModifier;
+import worm.me.data.Vault;
+import worm.me.data.VoidPlayer;
+import worm.me.data.levels.Levels;
 import worm.me.playersystems.saddle.SaddleSystem;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
@@ -112,6 +114,20 @@ public class GameplayListener implements Listener {
 
         Levels.expHandler(event.getPlayer(), event);
 
+    }
+
+    @EventHandler
+    public void onConsumeEvent(PlayerItemConsumeEvent event) {
+        ItemStack item = event.getItem();
+        Player player = event.getPlayer();
+
+        if (item.getType().equals(Material.ENCHANTED_GOLDEN_APPLE)) {
+            VoidPlayer.registerStats(player, 5);
+        }
+
+        if (Candy.isCandy(item) && item.getType().equals(Material.BLUE_EGG)) {
+            //jawbreaker
+        }
     }
 
     @EventHandler
@@ -194,6 +210,12 @@ public class GameplayListener implements Listener {
 
                 ItemStack tome = player.getInventory().getItemInMainHand();
 
+                if (!player.getInventory().getItemInMainHand().getType().equals(Material.KNOWLEDGE_BOOK)){
+                    tome = player.getInventory().getItemInOffHand();
+                }
+
+
+
                 PersistentDataContainer pdc = tome.getItemMeta().getPersistentDataContainer();
                 int[] genetics = pdc.getOrDefault(new NamespacedKey(Server.getPlugin(), "genetics"), PersistentDataType.INTEGER_ARRAY, new int[VillagerProfession.values().length]);
 
@@ -233,14 +255,20 @@ public class GameplayListener implements Listener {
 
     @EventHandler
     public void onPlayerPlace(BlockPlaceEvent e){
-        Player p = e.getPlayer();
+        Player player = e.getPlayer();
+
+        if (Candy.isCandy(e.getItemInHand())){
+            Server.getPlugin().getLogger().info("candy");
+            e.setCancelled(true);
+        }
+        Server.getPlugin().getLogger().info(e.getItemInHand().toString());
 
         // Height limit for building
-        if (p.getGameMode() == GameMode.CREATIVE) return;
+        if (player.getGameMode() == GameMode.CREATIVE) return;
         if (Objects.requireNonNull(e.getBlock().getLocation().getWorld()).getName().equals("ul_Void_nether")) return;
         if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < 219){
             e.setCancelled(true);
-            p.sendMessage(Message.create(MessageType.FAIL, "The build area is between y = 220 and y = 280."));
+            player.sendMessage(Message.create(MessageType.FAIL, "The build area is between y = 220 and y = 280."));
         }
     }
 
@@ -269,6 +297,11 @@ public class GameplayListener implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent e){
+
+        if (e.getDamageSource() instanceof Player attacker && SizeModifier.getSize(attacker) <= 1) {
+            e.setDamage(SizeModifier.calculateDamage(attacker, e.getDamage()));
+        }
+
         if (e.getEntity() instanceof Player player) {
             if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
                 if (!player.isSneaking()) {

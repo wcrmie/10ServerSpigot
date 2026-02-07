@@ -26,6 +26,7 @@ public class VoidBobber {
     private final Integer lureLevel;
     private final Integer luckLevel;
     private static final List<VoidBobber> activeBobbers = new ArrayList<>();
+    private BukkitTask mainLoop;
 
     private VoidFishState state;
 
@@ -90,7 +91,7 @@ public class VoidBobber {
 
     public void mainLoop() {
 
-        new BukkitRunnable() {
+        mainLoop = new BukkitRunnable() {
             @Override
             public void run() {
 
@@ -103,6 +104,10 @@ public class VoidBobber {
             }
         }.runTaskTimer(Server.getPlugin(), 0L, 5L);
 
+    }
+
+    public BukkitTask getMainLoop() {
+        return this.mainLoop;
     }
 
     public long getFishingDuration() {

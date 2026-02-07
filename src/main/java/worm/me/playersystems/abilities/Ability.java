@@ -3,7 +3,7 @@ package worm.me.playersystems.abilities;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import worm.me.playersystems.abilities.active.*;
-import worm.me.playersystems.data.levels.Reqs;
+import worm.me.data.levels.Reqs;
 
 import java.util.function.Consumer;
 

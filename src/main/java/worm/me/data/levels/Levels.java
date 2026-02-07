@@ -1,4 +1,4 @@
-package worm.me.playersystems.data.levels;
+package worm.me.data.levels;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;

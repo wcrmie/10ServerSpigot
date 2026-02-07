@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
-import worm.me.playersystems.data.Unlocks;
+import worm.me.data.Unlocks;
 
 import java.util.*;
 

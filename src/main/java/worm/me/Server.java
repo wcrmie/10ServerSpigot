@@ -1,5 +1,4 @@
 package worm.me;
-import net.dv8tion.jda.api.JDA;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
@@ -20,6 +19,7 @@ import worm.me.gamesystems.world.structure.Island;
 import worm.me.gamesystems.world.structure.TreasureChests;
 import worm.me.gamesystems.world.reset.WorldReset;
 import worm.me.listeners.MainListener;
+import worm.me.listeners.items.PotionListener;
 import worm.me.listeners.player.*;
 import worm.me.listeners.world.WorldListener;
 import worm.me.listeners.world.mobs.CustomMobsListener;
@@ -33,7 +33,7 @@ import worm.me.playersystems.abilities.active.DoubleJump;
 import worm.me.playersystems.abilities.active.FeatherDash;
 import worm.me.playersystems.abilities.active.ShadowStep;
 import worm.me.playersystems.abilities.active.SpeedStep;
-import worm.me.playersystems.data.levels.Reqs;
+import worm.me.data.levels.Reqs;
 import worm.me.playersystems.generator.Generator;
 import worm.me.playersystems.quests.QuestInitialize;
 import worm.me.playersystems.PlayerSpawning;
@@ -140,6 +140,8 @@ public final class Server extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new QuestListener(), this);
         getServer().getPluginManager().registerEvents(new CustomMobsListener(), this);
         getServer().getPluginManager().registerEvents(new VillagerListener(), this);
+
+        getServer().getPluginManager().registerEvents(new PotionListener(), this);
 
         // Allows Command classes to register commands
         configManager = new ConfigManager();

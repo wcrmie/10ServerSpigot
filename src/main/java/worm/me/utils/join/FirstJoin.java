@@ -1,4 +1,4 @@
-package worm.me.playersystems.join;
+package worm.me.utils.join;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

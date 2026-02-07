@@ -1,6 +1,5 @@
-package worm.me.playersystems.info;
+package worm.me.utils.info;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import worm.me.Server;

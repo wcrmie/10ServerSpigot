@@ -9,6 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import worm.me.Server;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PumpkinPatch {
@@ -19,15 +21,18 @@ public class PumpkinPatch {
         return chance;
     }
 
-    public static void tryGrowUndead(Location loc) {
+    public static boolean tryGrowUndead(Location loc) {
 
         int chance = ThreadLocalRandom.current().nextInt(0, 100);
 
         if (chance <= getChance()) {
 
+            loc.add(0.5,0.5,0.5);
             growUndead(loc);
+            return true;
 
         }
+        return false;
     }
 
     public static boolean isHalloweenUndead(Monster monster) {
@@ -42,7 +47,7 @@ public class PumpkinPatch {
 
         World world = loc.getWorld();
 
-        Monster undead = world.spawn(loc, getUndead());
+        Monster undead = world.spawn(loc, ScaryMob.create());
 
         ItemStack item = new ItemStack(Material.CARVED_PUMPKIN);
 
@@ -59,12 +64,31 @@ public class PumpkinPatch {
 
     }
 
-    private static Class<? extends Monster> getUndead() {
+    public static class ScaryMob {
 
-        if (ThreadLocalRandom.current().nextInt(0, 100) < 50) {
-            return Skeleton.class;
+        protected static Class<? extends Monster> create() {
+
+            if (ThreadLocalRandom.current().nextInt(0, 100) < 50) {
+                return Skeleton.class;
+            }
+
+            return Zombie.class;
         }
 
-        return Zombie.class;
+        public static List<ItemStack> getDrops() {
+
+            List<ItemStack> items = new ArrayList<>();
+
+            items.add(Candy.selectCandy());
+
+            if (ThreadLocalRandom.current().nextInt(100) < 25) {
+                items.add(Candy.selectCandy());
+            }
+
+            items.add(new ItemStack(Material.CARVED_PUMPKIN));
+            items.add(new ItemStack(Material.PUMPKIN_SEEDS, ThreadLocalRandom.current().nextInt(1, 4)));
+
+            return  items;
+        }
     }
 }

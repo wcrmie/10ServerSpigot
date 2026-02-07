@@ -5,7 +5,7 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-import worm.me.playersystems.data.levels.Levels;
+import worm.me.data.levels.Levels;
 
 
 public class Leap {
