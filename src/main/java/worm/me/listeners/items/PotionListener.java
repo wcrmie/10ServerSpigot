@@ -87,7 +87,7 @@ public class PotionListener implements Listener {
         if (clickedItem == null) return;
 
         ItemStack cursorItem = event.getCursor();
-
+        
         if (event.getCurrentItem().getType() == Material.POTION) {
 
             PotionMeta meta = (PotionMeta) clickedItem.getItemMeta();
