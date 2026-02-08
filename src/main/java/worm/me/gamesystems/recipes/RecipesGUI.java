@@ -91,6 +91,8 @@ public class RecipesGUI {
 
         int page = Integer.parseInt(invName.split("Recipes Page ")[1]);
 
+        if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) return;
+
         if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Next Page")){
             openMainGUI((Player) e.getWhoClicked(), page + 1);
 
