@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import worm.me.Server;
-import worm.me.playersystems.data.levels.Levels;
+import worm.me.data.levels.Levels;
 
 public class Slide {
 

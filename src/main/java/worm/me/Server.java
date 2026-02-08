@@ -163,6 +163,7 @@ public final class Server extends JavaPlugin {
         this.getCommand("suicide").setExecutor(new SuicideCommand());
         this.getCommand("togglegens").setExecutor(new ToggleGensCommand());
         this.getCommand("hat").setExecutor(new HatCommand());
+        this.getCommand("setresettimer").setExecutor(new WorldResetSetTimeCommand());
         //this.getCommand("givebook").setExecutor(new GiveClericBookCommand());
 
         // Create Map for tools

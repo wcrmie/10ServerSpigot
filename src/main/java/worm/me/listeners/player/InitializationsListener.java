@@ -72,7 +72,10 @@ public class InitializationsListener implements Listener {
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent e){
+
         Player p = e.getPlayer();
+
+        e.quitMessage(null);
 
         worm.me.Server.getPlugin().generating.remove(e.getPlayer());
 

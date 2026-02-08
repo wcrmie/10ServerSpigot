@@ -261,7 +261,6 @@ public class GameplayListener implements Listener {
             Server.getPlugin().getLogger().info("candy");
             e.setCancelled(true);
         }
-        Server.getPlugin().getLogger().info(e.getItemInHand().toString());
 
         // Height limit for building
         if (player.getGameMode() == GameMode.CREATIVE) return;

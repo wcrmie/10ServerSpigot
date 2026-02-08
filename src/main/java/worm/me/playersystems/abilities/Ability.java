@@ -120,7 +120,7 @@ public enum Ability {
           Material.COPPER_ORE,
           "Heavy Miner",
                   "<dark_gray>Mine extra fast but its very hard to move and see</dark_gray>",
-                  new Reqs.RequirementBuilder().combat(5).mining(30).foraging(30).build(),
+                  new Reqs.RequirementBuilder().combat(2000).mining(30).foraging(30).build(),
           30,
     AbilityType.VERTICAL,
     player -> new HeavyMiner().heavyMiner(player));
