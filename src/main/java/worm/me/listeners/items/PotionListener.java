@@ -83,6 +83,9 @@ public class PotionListener implements Listener {
     public void onCreate(InventoryClickEvent event) {
 
         ItemStack clickedItem = event.getCurrentItem();
+
+        if (clickedItem == null) return;
+
         ItemStack cursorItem = event.getCursor();
 
         if (event.getCurrentItem().getType() == Material.POTION) {
