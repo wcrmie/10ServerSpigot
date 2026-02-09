@@ -67,6 +67,7 @@ public class InitializationsListener implements Listener {
             firstJoin.firstJoin(player);
 
         }
+        player.setAllowFlight(true);
 
     }
 

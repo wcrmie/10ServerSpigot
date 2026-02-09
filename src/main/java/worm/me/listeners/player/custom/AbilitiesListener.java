@@ -27,6 +27,7 @@ public class AbilitiesListener implements Listener {
         player.setFlying(false);
 
         abilities.triggerSlot1(player);
+        player.setAllowFlight(false);
     }
 
     @EventHandler

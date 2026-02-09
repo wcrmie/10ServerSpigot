@@ -162,13 +162,18 @@ public class GameplayListener implements Listener {
 
         if (Objects.requireNonNull(e.getTo()).getY() < 200) e.getPlayer().damage(1000000);
 
-        // 0 is the slot for abilities activated by toggling flight
-        if (!Abilities.isOnCooldown(player, 0)){
+        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
 
-            player.setAllowFlight(true);
+        boolean isOnCooldown = Abilities.isOnCooldown(player, 0);
 
-            player.setFlyingFallDamage(TriState.TRUE);
-
+        if (isOnCooldown) {
+            if (player.getAllowFlight()) {
+                player.setAllowFlight(false);
+            }
+        } else {
+            if (!player.getAllowFlight()) {
+                player.setAllowFlight(true);
+            }
         }
 
     }
