@@ -425,7 +425,7 @@ public final class Server extends JavaPlugin {
         long currentTime = System.currentTimeMillis();
         long timeSinceLastSpawn = currentTime - lastSpawn;
 
-        long intervalMillis = 2 * 60 * 60 * 1000;
+        long intervalMillis = 30 * 60 * 1000;
 
         long initialDelay;
         if (lastSpawn == 0) {
