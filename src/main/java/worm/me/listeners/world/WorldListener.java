@@ -406,7 +406,7 @@ public class WorldListener implements Listener {
             Silverfish sf = (Silverfish) event.getEntity();
             CreatureSpawnEvent.SpawnReason reason = sf.getEntitySpawnReason();
             if (reason == CreatureSpawnEvent.SpawnReason.POTION_EFFECT) {
-                if (ThreadLocalRandom.current().nextInt(100) <33) {
+                if (ThreadLocalRandom.current().nextInt(100) <6) {
                     int nuggetCount = ThreadLocalRandom.current().nextInt(1, 2);
                     event.getDrops().add(new ItemStack(Material.IRON_NUGGET, nuggetCount));
                 }
