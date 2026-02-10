@@ -91,7 +91,7 @@ public class WorldReset {
                     oneHourWarn = false;
                     fiveMinWarn = false;
                     oneMinWarn = false;
-                    WorldReset.getInstance().triggerReset(null);
+                    //WorldReset.getInstance().triggerReset(null);
                     resetNow = true;
                 }
                 saveData();
