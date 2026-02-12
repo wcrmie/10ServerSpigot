@@ -1,6 +1,7 @@
 package worm.me.listeners.player;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -68,6 +69,7 @@ public class InitializationsListener implements Listener {
 
         }
         player.setAllowFlight(true);
+        player.setFlyingFallDamage(TriState.TRUE);
 
     }
 
