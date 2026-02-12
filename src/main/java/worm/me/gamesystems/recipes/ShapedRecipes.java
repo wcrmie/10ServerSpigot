@@ -2,6 +2,7 @@ package worm.me.gamesystems.recipes;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
@@ -375,6 +376,8 @@ public class ShapedRecipes {
         // Set name and color
         meta.setDisplayName(ChatColor.GREEN + "Slime Boots");
         ((LeatherArmorMeta)meta).setColor(Color.LIME);
+
+        meta.addEnchant(Enchantment.UNBREAKING, 2, true);
 
         // Add NBT tag
         meta.getPersistentDataContainer().set(

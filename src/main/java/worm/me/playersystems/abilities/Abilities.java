@@ -69,6 +69,11 @@ public class Abilities {
 
         abilityGuiComponents.put(13, List.of("Heavy Miner", "ICE",
                 ChatColor.DARK_GRAY + " " + ChatColor.GRAY + " "));
+
+        abilityGuiComponents.put(14, List.of("Zig zag", "MEGENTA_GLAZED_TERRACOTTA",
+                ChatColor.DARK_GRAY + " " + ChatColor.GRAY + " "));
+
+
     }
 
     public static List<Integer> getActiveAbilities(Player p) {

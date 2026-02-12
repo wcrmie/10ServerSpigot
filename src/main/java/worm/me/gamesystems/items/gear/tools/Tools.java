@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import worm.me.Server;
+import worm.me.gamesystems.items.gear.EnchantsUpgrade;
 import worm.me.utils.Item;
 
 import java.util.ArrayList;
@@ -60,6 +61,7 @@ public class Tools {
 
             ItemStack newToolItem = new ItemStack(newTool);
             newToolItem.setItemMeta(toolMeta);
+            newToolItem = new EnchantsUpgrade().upgradeEnchants(newToolItem);
             return newToolItem;
         }
 
@@ -103,7 +105,6 @@ public class Tools {
 
             return newToolItem;
         }
-
     }
 
     public static String toolType(Material tool){

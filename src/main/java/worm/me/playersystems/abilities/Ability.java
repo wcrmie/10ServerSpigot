@@ -123,7 +123,15 @@ public enum Ability {
                   new Reqs.RequirementBuilder().combat(2000).mining(30).foraging(30).build(),
           30,
     AbilityType.VERTICAL,
-    player -> new HeavyMiner().heavyMiner(player));
+    player -> new HeavyMiner().heavyMiner(player)),
+    Zig_zag(14,
+                Material.MAGENTA_GLAZED_TERRACOTTA,
+          "Zig zag",
+                        "<dark_gray>zip to the right and left</dark_gray>",
+                        new Reqs.RequirementBuilder().combat(20).agility(45).build(),
+          15,
+    AbilityType.HORIZONTAL,
+            player -> new ZigZag().zigzag(player));
 
 
     private final int id;

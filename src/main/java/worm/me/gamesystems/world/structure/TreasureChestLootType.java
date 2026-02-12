@@ -11,10 +11,10 @@ public enum TreasureChestLootType {
     IRON_INGOT(Material.IRON_INGOT, 12, 1),
     IRON_NUGGET(Material.IRON_NUGGET, 40, 5),
     GOLDEN_CARROT(Material.GOLDEN_CARROT, 20, 5),
-    GOLD_INGOT(Material.GOLD_INGOT, 20, 1),
-    GOLD_NUGGET(Material.GOLD_NUGGET, 24, 5),
+    GOLD_INGOT(Material.GOLD_INGOT, 12, 1),
+    GOLD_NUGGET(Material.GOLD_NUGGET, 20, 5),
     COOKED_BEEF(Material.COOKED_BEEF, 36, 15),
-    GOLDEN_APPLE(Material.GOLDEN_APPLE, 12, 2);
+    GOLDEN_APPLE(Material.GOLDEN_APPLE, 10, 2);
 
     private final Material material;
     private final int weight;
