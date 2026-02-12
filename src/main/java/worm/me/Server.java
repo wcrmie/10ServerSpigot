@@ -164,7 +164,8 @@ public final class Server extends JavaPlugin {
         this.getCommand("togglegens").setExecutor(new ToggleGensCommand());
         this.getCommand("hat").setExecutor(new HatCommand());
         this.getCommand("setresettimer").setExecutor(new WorldResetSetTimeCommand());
-        //this.getCommand("givebook").setExecutor(new GiveClericBookCommand());
+        this.getCommand("givebook").setExecutor(new GiveClericBookCommand());
+        this.getCommand("discord").setExecutor(new DiscordCommand());
 
         // Create Map for tools
         List<Material> pickaxes = new ArrayList<>();

@@ -35,7 +35,7 @@ public class Trader {
 
         Villager.Profession profession = villager.getProfession();
 
-        VillagerProfession villagerProfession = VillagerProfession.valueOf(profession.toString());
+        VillagerProfession villagerProfession = VillagerProfession.valueOf(profession.name().toUpperCase());
 
         List<MerchantRecipe> trades = new ArrayList<>(villager.getRecipes());
 
