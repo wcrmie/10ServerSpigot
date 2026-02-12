@@ -24,10 +24,9 @@ public class AbilitiesListener implements Listener {
         if (player.getGameMode() == GameMode.CREATIVE) return;
         Abilities.validateAllAbilitySlots(player);
         e.setCancelled(true);
-        player.setFlying(false);
-
         abilities.triggerSlot1(player);
         player.setAllowFlight(false);
+        player.setFlyingFallDamage(TriState.TRUE);
     }
 
     @EventHandler
