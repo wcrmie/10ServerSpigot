@@ -129,7 +129,7 @@ public enum Ability {
           "Zig zag",
                         "<dark_gray>zip to the right and left</dark_gray>",
                         new Reqs.RequirementBuilder().combat(20).agility(45).build(),
-          15,
+          18,
     AbilityType.HORIZONTAL,
             player -> new ZigZag().zigzag(player));
 

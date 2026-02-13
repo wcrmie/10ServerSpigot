@@ -40,7 +40,7 @@ public class ZigZag {
                 }
 
 
-                dashVelocity.multiply(1.4);
+                dashVelocity.multiply(1.25);
                 dashVelocity.setY(0.15);
                 p.setVelocity(dashVelocity);
 
