@@ -448,9 +448,19 @@ public class GameplayListener implements Listener {
         if (material == Material.WOODEN_PICKAXE || material == Material.WOODEN_AXE || material == Material.WOODEN_SHOVEL) {
             if (item.containsEnchantment(Enchantment.EFFICIENCY)) {
                 int level = item.getEnchantmentLevel(Enchantment.EFFICIENCY);
-                if (level > 3) {
+                if (level > 2) {
                     item.removeEnchantment(Enchantment.EFFICIENCY);
-                    item.addUnsafeEnchantment(Enchantment.EFFICIENCY, 3);
+                    item.addUnsafeEnchantment(Enchantment.EFFICIENCY, 2);
+                }
+            }
+        }
+
+        if (material == Material.WOODEN_SWORD) {
+            if (item.containsEnchantment(Enchantment.SHARPNESS)) {
+                int level = item.getEnchantmentLevel(Enchantment.SHARPNESS);
+                if (level > 2) {
+                    item.removeEnchantment(Enchantment.SHARPNESS);
+                    item.addUnsafeEnchantment(Enchantment.SHARPNESS, 2);
                 }
             }
         }
