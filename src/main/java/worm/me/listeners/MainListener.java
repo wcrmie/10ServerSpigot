@@ -88,13 +88,17 @@ public class MainListener implements org.bukkit.event.Listener {
         Inventory inventory = Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST));
         InventoryView view = e.getView();
         String invName = view.getTitle();
+
         Player player = (Player) e.getWhoClicked();
+
         Material itemType = Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).getType();
         ItemStack cursor = Objects.requireNonNullElse(e.getCursor(), new ItemStack(Material.STRUCTURE_VOID));
 
+        Material heldItem = cursor.getType();
+
         switch (itemType) {
             case CHAINMAIL_BOOTS -> {
-                if (cursor.getType().equals(Upgrade.CHAIN_ARMOR.getUpgradeItem().getType()) && cursor.getAmount() >= Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount()){
+                if (heldItem.equals(Upgrade.CHAIN_ARMOR.getUpgradeItem().getType()) && cursor.getAmount() >= Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount()){
                     e.setCancelled(true);
                     cursor.setAmount(cursor.getAmount() - Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount());
 
@@ -110,7 +114,7 @@ public class MainListener implements org.bukkit.event.Listener {
                 }
             }
             case CHAINMAIL_CHESTPLATE -> {
-                if (cursor.getType().equals(Upgrade.CHAIN_ARMOR.getUpgradeItem().getType()) && cursor.getAmount() >= Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount()){
+                if (heldItem.equals(Upgrade.CHAIN_ARMOR.getUpgradeItem().getType()) && cursor.getAmount() >= Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount()){
                     e.setCancelled(true);
                     cursor.setAmount(cursor.getAmount() - Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount());
 
@@ -126,7 +130,7 @@ public class MainListener implements org.bukkit.event.Listener {
                 }
             }
             case CHAINMAIL_LEGGINGS -> {
-                if (cursor.getType().equals(Upgrade.CHAIN_ARMOR.getUpgradeItem().getType()) && cursor.getAmount() >= Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount()) {
+                if (heldItem.equals(Upgrade.CHAIN_ARMOR.getUpgradeItem().getType()) && cursor.getAmount() >= Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount()) {
                     e.setCancelled(true);
                     cursor.setAmount(cursor.getAmount() - Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount());
 
