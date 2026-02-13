@@ -1,5 +1,7 @@
 package worm.me.listeners;
 
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -30,22 +32,14 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MainListener implements org.bukkit.event.Listener {
-
-    private final worm.me.Server plugin;
-
-    private final List<LivingEntity> tickList = new ArrayList<>();
-
-    public MainListener(worm.me.Server plugin) {
-        this.plugin = plugin;
-    }
+    
 
     @EventHandler
     public void onEnchantTable(InventoryOpenEvent e){
         if (!e.getInventory().getType().equals(InventoryType.ENCHANTING)) return;
         e.setCancelled(true);
         Player p = (Player) e.getPlayer();
-        GuideBook guideBook = new GuideBook();
-        guideBook.guideBook(p);
+        GuideBook.guideBook(p);
     }
 
     @EventHandler
@@ -55,7 +49,6 @@ public class MainListener implements org.bukkit.event.Listener {
         if (!(trident.getShooter() instanceof Player)) return;
 
         ItemStack item = trident.getItemStack();
-        if (item == null) return;
 
         if (!item.containsEnchantment(org.bukkit.enchantments.Enchantment.CHANNELING)) return;
 
@@ -87,7 +80,10 @@ public class MainListener implements org.bukkit.event.Listener {
 
         Inventory inventory = Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST));
         InventoryView view = e.getView();
-        String invName = view.getTitle();
+        
+        // TODO: make menus each their own class which extends InventoryHolder that way we can just do the following:
+        // if (event.getInventory().getHolder() instanceof MenuClass menuClass)
+        String invName = ((TextComponent) view.title()).content();
 
         Player player = (Player) e.getWhoClicked();
 
@@ -102,7 +98,7 @@ public class MainListener implements org.bukkit.event.Listener {
                     e.setCancelled(true);
                     cursor.setAmount(cursor.getAmount() - Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount());
 
-                    org.bukkit.inventory.meta.Damageable meta = (Damageable) e.getCurrentItem().getItemMeta();
+                    org.bukkit.inventory.meta.Damageable meta = (Damageable) Objects.requireNonNull(e.getCurrentItem()).getItemMeta();
 
                     meta.setDamage(0);
 
@@ -118,7 +114,7 @@ public class MainListener implements org.bukkit.event.Listener {
                     e.setCancelled(true);
                     cursor.setAmount(cursor.getAmount() - Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount());
 
-                    org.bukkit.inventory.meta.Damageable meta = (Damageable) e.getCurrentItem().getItemMeta();
+                    org.bukkit.inventory.meta.Damageable meta = (Damageable) Objects.requireNonNull(e.getCurrentItem()).getItemMeta();
 
                     meta.setDamage(0);
 
@@ -134,7 +130,7 @@ public class MainListener implements org.bukkit.event.Listener {
                     e.setCancelled(true);
                     cursor.setAmount(cursor.getAmount() - Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount());
 
-                    org.bukkit.inventory.meta.Damageable meta = (Damageable) e.getCurrentItem().getItemMeta();
+                    org.bukkit.inventory.meta.Damageable meta = (Damageable) Objects.requireNonNull(e.getCurrentItem()).getItemMeta();
 
                     meta.setDamage(0);
 
@@ -176,22 +172,19 @@ public class MainListener implements org.bukkit.event.Listener {
 
         GeneratorEdit genEdit = new GeneratorEdit();
 
-        if (e.getSlotType() == InventoryType.SlotType.ARMOR){
-        }
+        if (Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).isSimilar(Item.create(Material.BARRIER, NamedTextColor.RED + "Close Menu", " ", NamedTextColor.GRAY + "Close this menu."))) player.closeInventory();
 
-        if (Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).isSimilar(Item.create(Material.BARRIER, ChatColor.RED + "Close Menu", " ", ChatColor.GRAY + "Close this menu."))) player.closeInventory();
-
-        if (Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).getType() == Material.SPECTRAL_ARROW && e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Go Back")){
+        if (Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).getType() == Material.SPECTRAL_ARROW && e.getCurrentItem().getItemMeta().getDisplayName().equals(NamedTextColor.GRAY + "Go Back")){
             GuiConstructor guiConstructor = new GuiConstructor();
             guiConstructor.goBack(e);
         }
 
-        if (invName.equals(ChatColor.DARK_GRAY + "Main Menu")){
+        if (invName.equals(NamedTextColor.DARK_GRAY + "Main Menu")){
             MainGUIMenu mainGUIMenu = new MainGUIMenu();
             mainGUIMenu.eventHandler(e);
         }
 
-        if (invName.equals(ChatColor.DARK_GRAY + "Your Active Abilities")){
+        if (invName.equals(NamedTextColor.DARK_GRAY + "Your Active Abilities")){
             e.setCancelled(true);
             AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
             abilitiesGUI.initializeAbilitySelection(player, e);;
@@ -217,7 +210,7 @@ public class MainListener implements org.bukkit.event.Listener {
             recipeGui.eventHandlerRecipe(e);
         }
 
-        if (invName.equals(ChatColor.DARK_GRAY + "Skins")){
+        if (invName.equals(NamedTextColor.DARK_GRAY + "Skins")){
             e.setCancelled(true);
             //SkinGui.skinGuiDo(e, plugin);
         }
@@ -232,16 +225,8 @@ public class MainListener implements org.bukkit.event.Listener {
             levels.eventHandler(e);
         }
 
-//        if (invName.contains(ChatColor.DARK_GRAY + "Hats Page ")) {
-//
-//            Hats hat = new Hats();
-//
-//            hat.hatGuiEventHandler(e);
-//
-//        }
-
         // needs to be moved \/ \/ \/
-        else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Generated Blocks")) {
+        else if (e.getView().getTitle().equals(NamedTextColor.DARK_GRAY + "Select Generated Blocks")) {
             e.setCancelled(true);
 
             ItemStack clickedItem = e.getCurrentItem();
@@ -258,7 +243,7 @@ public class MainListener implements org.bukkit.event.Listener {
             } else if (clickedItem.getType().equals(Material.COAL)) {
                 genEdit.miscItem(player);
             }
-        } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Stone Block")){
+        } else if (e.getView().getTitle().equals(NamedTextColor.DARK_GRAY + "Select Stone Block")){
             e.setCancelled(true);
 
             ItemStack clickedItem = e.getCurrentItem();
@@ -270,10 +255,10 @@ public class MainListener implements org.bukkit.event.Listener {
                 if (Unlocks.hasGenUnlocked(player, clickedItem.getType())){
                     PersistentDataContainer container = player.getPersistentDataContainer();
                     container.set(genEdit.stoneBlock, PersistentDataType.STRING, clickedItem.getType().toString());
-                    player.sendMessage(ChatColor.GREEN + "Your stone block has been changed to " + clickedItem.getTranslationKey());
+                    player.sendMessage(NamedTextColor.GREEN + "Your stone block has been changed to " + ((TextComponent) clickedItem.displayName()).content());
                 }
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
-        } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Wood Block")){
+        } else if (e.getView().getTitle().equals(NamedTextColor.DARK_GRAY + "Select Wood Block")){
             e.setCancelled(true);
 
             ItemStack clickedItem = e.getCurrentItem();
@@ -283,11 +268,11 @@ public class MainListener implements org.bukkit.event.Listener {
                 if (Unlocks.hasGenUnlocked(player, clickedItem.getType())){
                     PersistentDataContainer container = player.getPersistentDataContainer();
                     container.set(genEdit.woodBlock, PersistentDataType.STRING, clickedItem.getType().toString());
-                    player.sendMessage(ChatColor.GREEN + "Your wood block has been changed to " + clickedItem.getTranslationKey());
+                    player.sendMessage(NamedTextColor.GREEN + "Your wood block has been changed to " + clickedItem.getTranslationKey());
                 }
 
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
-        } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Loose Block")){
+        } else if (e.getView().getTitle().equals(NamedTextColor.DARK_GRAY + "Select Loose Block")){
             e.setCancelled(true);
 
             ItemStack clickedItem = e.getCurrentItem();
@@ -298,10 +283,10 @@ public class MainListener implements org.bukkit.event.Listener {
                 if (Unlocks.hasGenUnlocked(player, clickedItem.getType())) {
                     PersistentDataContainer container = player.getPersistentDataContainer();
                     container.set(genEdit.dirtBlock, PersistentDataType.STRING, clickedItem.getType().toString());
-                    player.sendMessage(ChatColor.GREEN + "Your loose block has been changed to " + clickedItem.getTranslationKey());
+                    player.sendMessage(NamedTextColor.GREEN + "Your loose block has been changed to " + clickedItem.getTranslationKey());
                 }
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
-        } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Miscellaneous Item")){
+        } else if (e.getView().getTitle().equals(NamedTextColor.DARK_GRAY + "Select Miscellaneous Item")){
             e.setCancelled(true);
 
             ItemStack clickedItem = e.getCurrentItem();
@@ -313,10 +298,10 @@ public class MainListener implements org.bukkit.event.Listener {
                 if (Unlocks.hasGenUnlocked(player, clickedItem.getType())){
                     PersistentDataContainer container = player.getPersistentDataContainer();
                     container.set(genEdit.miscItem, PersistentDataType.STRING, clickedItem.getType().toString());
-                    player.sendMessage(ChatColor.GREEN + "Your misc. item has been changed to " + clickedItem.getTranslationKey());
+                    player.sendMessage(NamedTextColor.GREEN + "Your misc. item has been changed to " + clickedItem.getTranslationKey());
                 }
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
-        } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Quests")){
+        } else if (e.getView().getTitle().equals(NamedTextColor.DARK_GRAY + "Quests")){
             e.setCancelled(true);
 
         }
