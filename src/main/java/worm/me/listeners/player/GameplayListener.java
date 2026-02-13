@@ -1,5 +1,6 @@
 package worm.me.listeners.player;
 
+import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
@@ -7,6 +8,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import io.papermc.paper.event.player.PlayerArmSwingEvent;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -17,6 +19,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -34,6 +38,7 @@ import worm.me.gamesystems.world.mobs.traders.Trader;
 import worm.me.gamesystems.world.mobs.traders.VillagerProfession;
 import worm.me.gamesystems.world.structure.generation.CartographerCompass;
 import worm.me.playersystems.abilities.Abilities;
+import worm.me.playersystems.abilities.Ability;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
 import worm.me.playersystems.abilities.passive.SlimeBoots;
 import worm.me.playersystems.attributes.SizeModifier;
@@ -44,12 +49,13 @@ import worm.me.playersystems.saddle.SaddleSystem;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+
+
 public class GameplayListener implements Listener {
+
 
 
 
@@ -172,10 +178,19 @@ public class GameplayListener implements Listener {
             }
         } else {
             if (!player.getAllowFlight()) {
-                player.setAllowFlight(true);
+                if( !isSlot1Empty(player)) {
+                    player.setAllowFlight(true);
+                }
             }
         }
 
+    }
+
+    public static boolean isSlot1Empty(Player player) {
+        Abilities abilities = new Abilities();
+        List<Integer> active = abilities.getActiveAbilities(player);
+        int abilityId = active.get(0);
+        return abilityId == Ability.EMPTY.getId();
     }
 
     @EventHandler
@@ -448,14 +463,25 @@ public class GameplayListener implements Listener {
         if (material == Material.WOODEN_PICKAXE || material == Material.WOODEN_AXE || material == Material.WOODEN_SHOVEL) {
             if (item.containsEnchantment(Enchantment.EFFICIENCY)) {
                 int level = item.getEnchantmentLevel(Enchantment.EFFICIENCY);
-                if (level > 3) {
+                if (level > 2) {
                     item.removeEnchantment(Enchantment.EFFICIENCY);
-                    item.addUnsafeEnchantment(Enchantment.EFFICIENCY, 3);
+                    item.addUnsafeEnchantment(Enchantment.EFFICIENCY, 2);
+                }
+            }
+        }
+
+        if (material == Material.WOODEN_SWORD) {
+            if (item.containsEnchantment(Enchantment.SHARPNESS)) {
+                int level = item.getEnchantmentLevel(Enchantment.SHARPNESS);
+                if (level > 2) {
+                    item.removeEnchantment(Enchantment.SHARPNESS);
+                    item.addUnsafeEnchantment(Enchantment.SHARPNESS, 2);
                 }
             }
         }
 
     }
+
 
     @EventHandler
     public void onSnowballHit(ProjectileHitEvent e){
@@ -530,15 +556,20 @@ public class GameplayListener implements Listener {
             }
 
             if (ench.equals(Enchantment.UNBREAKING) && result.getEnchantments().get(ench) > 1) {
-                if (!isArmor(result.getType())) {
+                if (result.getType() == Material.BOW) {
                     result.removeEnchantment(ench);
                     result.addUnsafeEnchantment(ench, 1);
                 }
             }
 
-            if (result.getType().name().startsWith("WOODEN_") && ench.equals(Enchantment.EFFICIENCY) && result.getEnchantments().get(ench) > 3 ){
+            if (result.getType().name().startsWith("WOODEN_") && ench.equals(Enchantment.EFFICIENCY) && result.getEnchantments().get(ench) > 2 ){
                 event.getResult().removeEnchantment(ench);
-                event.getResult().addUnsafeEnchantment(ench, 3);
+                event.getResult().addUnsafeEnchantment(ench, 2);
+            }
+
+            if (result.getType().name().startsWith("WOODEN_") && ench.equals(Enchantment.SHARPNESS) && result.getEnchantments().get(ench) > 2 ){
+                event.getResult().removeEnchantment(ench);
+                event.getResult().addUnsafeEnchantment(ench, 2);
             }
 
             if (result.getType().name().startsWith("STONE_") && ench.equals(Enchantment.EFFICIENCY) && result.getEnchantments().get(ench) > 4 ){
@@ -547,13 +578,6 @@ public class GameplayListener implements Listener {
             }
 
         }
-    }
-
-    private boolean isArmor(Material mat) {
-        return mat.name().endsWith("_HELMET")
-                || mat.name().endsWith("_CHESTPLATE")
-                || mat.name().endsWith("_LEGGINGS")
-                || mat.name().endsWith("_BOOTS");
     }
 
 }

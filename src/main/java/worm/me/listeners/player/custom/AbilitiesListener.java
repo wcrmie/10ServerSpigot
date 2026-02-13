@@ -20,19 +20,19 @@ public class AbilitiesListener implements Listener {
     @EventHandler
     public void onPlayerFlightEvent(PlayerToggleFlightEvent e) {
         Player player = e.getPlayer();
-        player.setAllowFlight(false);
         if (player.getGameMode() == GameMode.CREATIVE) return;
-        Abilities.validateAllAbilitySlots(player);
         e.setCancelled(true);
-        abilities.triggerSlot1(player);
         player.setAllowFlight(false);
         player.setFlyingFallDamage(TriState.TRUE);
+        Abilities.validateAllAbilitySlots(player);
+        abilities.triggerSlot1(player);
     }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         player.setAllowFlight(true);
+        player.setFlyingFallDamage(TriState.TRUE);
         if (e.getHand() != EquipmentSlot.HAND) return;
 
         Material item = player.getInventory().getItemInMainHand().getType();
