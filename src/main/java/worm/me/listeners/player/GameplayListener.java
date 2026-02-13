@@ -189,8 +189,6 @@ public class GameplayListener implements Listener {
     public static boolean isSlot1Empty(Player player) {
         Abilities abilities = new Abilities();
         List<Integer> active = abilities.getActiveAbilities(player);
-
-        // Slot 1 corresponds to index 0
         int abilityId = active.get(0);
         return abilityId == Ability.EMPTY.getId();
     }
