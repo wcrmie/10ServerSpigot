@@ -32,7 +32,6 @@ public class AbilitiesListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         player.setAllowFlight(true);
-        player.setFlyingFallDamage(TriState.TRUE);
         if (e.getHand() != EquipmentSlot.HAND) return;
 
         Material item = player.getInventory().getItemInMainHand().getType();
