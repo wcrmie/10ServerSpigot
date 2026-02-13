@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class PumpkinPatch {
 
-    private static final float chance = 25;
+    private static final float chance = 5;
 
     public static float getChance() {
         return chance;
