@@ -15,7 +15,7 @@ public class EnchantsUpgrade {
             return item;
         }
 
-        if (ThreadLocalRandom.current().nextInt(0, 5) != 0) {
+        if (ThreadLocalRandom.current().nextInt(0, 10) != 0) {
             return item;
         }
 

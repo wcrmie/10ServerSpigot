@@ -530,15 +530,20 @@ public class GameplayListener implements Listener {
             }
 
             if (ench.equals(Enchantment.UNBREAKING) && result.getEnchantments().get(ench) > 1) {
-                if (!isArmor(result.getType())) {
+                if (result.getType() == Material.BOW) {
                     result.removeEnchantment(ench);
                     result.addUnsafeEnchantment(ench, 1);
                 }
             }
 
-            if (result.getType().name().startsWith("WOODEN_") && ench.equals(Enchantment.EFFICIENCY) && result.getEnchantments().get(ench) > 3 ){
+            if (result.getType().name().startsWith("WOODEN_") && ench.equals(Enchantment.EFFICIENCY) && result.getEnchantments().get(ench) > 2 ){
                 event.getResult().removeEnchantment(ench);
-                event.getResult().addUnsafeEnchantment(ench, 3);
+                event.getResult().addUnsafeEnchantment(ench, 2);
+            }
+
+            if (result.getType().name().startsWith("WOODEN_") && ench.equals(Enchantment.SHARPNESS) && result.getEnchantments().get(ench) > 2 ){
+                event.getResult().removeEnchantment(ench);
+                event.getResult().addUnsafeEnchantment(ench, 2);
             }
 
             if (result.getType().name().startsWith("STONE_") && ench.equals(Enchantment.EFFICIENCY) && result.getEnchantments().get(ench) > 4 ){
@@ -547,13 +552,6 @@ public class GameplayListener implements Listener {
             }
 
         }
-    }
-
-    private boolean isArmor(Material mat) {
-        return mat.name().endsWith("_HELMET")
-                || mat.name().endsWith("_CHESTPLATE")
-                || mat.name().endsWith("_LEGGINGS")
-                || mat.name().endsWith("_BOOTS");
     }
 
 }
