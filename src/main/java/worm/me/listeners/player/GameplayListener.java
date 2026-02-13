@@ -180,6 +180,7 @@ public class GameplayListener implements Listener {
             if (!player.getAllowFlight()) {
                 if( !isSlot1Empty(player)) {
                     player.setAllowFlight(true);
+                    player.setFlyingFallDamage(TriState.TRUE);
                 }
             }
         }
