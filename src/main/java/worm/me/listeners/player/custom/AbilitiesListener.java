@@ -31,7 +31,6 @@ public class AbilitiesListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
-        player.setAllowFlight(true);
         if (e.getHand() != EquipmentSlot.HAND) return;
 
         Material item = player.getInventory().getItemInMainHand().getType();
