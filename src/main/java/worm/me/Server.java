@@ -132,7 +132,7 @@ public final class Server extends JavaPlugin {
         WorldReset.getInstance().scoreAdder();
 
         // Allows listeners to receive events.
-        getServer().getPluginManager().registerEvents(new MainListener(this), this);
+        getServer().getPluginManager().registerEvents(new MainListener(), this);
 
         // Player Listeners
         getServer().getPluginManager().registerEvents(new AbilitiesListener(), this);
