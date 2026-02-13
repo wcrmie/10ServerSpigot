@@ -69,8 +69,6 @@ public class InitializationsListener implements Listener {
             firstJoin.firstJoin(player);
 
         }
-        player.setAllowFlight(true);
-        player.setFlyingFallDamage(TriState.TRUE);
 
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "waypoint modify " + player.getName() + " color " + "white");
 
