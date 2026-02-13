@@ -36,7 +36,7 @@ public class ShadowStep {
 
         Vector direction = p.getLocation().getDirection().normalize();
 
-        double maxAngle = Math.toRadians(45);
+        double maxAngle = Math.toRadians(30);
         double pitch = Math.toRadians(-p.getLocation().getPitch());
 
         if (pitch > maxAngle) pitch = maxAngle;
@@ -61,7 +61,7 @@ public class ShadowStep {
                 Location currentLocation = p.getLocation();
                 pathHistory.add(currentLocation.clone());
 
-                if (ticks >= 15 || !p.isOnline()) {
+                if (ticks >= 14 || !p.isOnline()) {
                     this.cancel();
                     createTrailingGhosts(p, pathHistory);
                     Levels.addExp(10L, Levels.skillTranslation("Agility"), p);
