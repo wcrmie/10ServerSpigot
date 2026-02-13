@@ -113,7 +113,7 @@ public enum Ability {
           "Slide",
           "<dark_gray>Slide all about</dark_gray>",
           new Reqs.RequirementBuilder().agility(15).fishing(5).build(),
-          8,
+          6,
           AbilityType.DOUBLE_SPACE,
           player -> new Slide().slide(player)),
     HEAVY_MINER(13,
@@ -131,7 +131,23 @@ public enum Ability {
                         new Reqs.RequirementBuilder().combat(20).agility(45).build(),
           18,
     AbilityType.HORIZONTAL,
-            player -> new ZigZag().zigzag(player));
+            player -> new ZigZag().zigzag(player)),
+    CrescentRight(15,
+            Material.PUMPKIN_PIE,
+          "Crescent Right",
+                    "<dark_gray>Swing in a half circle behind yourself to the right</dark_gray>",
+                    new Reqs.RequirementBuilder().smithing(10).agility(18).build(),
+          10,
+    AbilityType.DOUBLE_SPACE,
+    player -> new CrescentRight().crescentRight(player)),
+    CrescentLeft(16,
+            Material.PUMPKIN_PIE,
+            "Crescent Left",
+            "<dark_gray>Swing in a half circle behind yourself to the left</dark_gray>",
+            new Reqs.RequirementBuilder().smithing(10).agility(18).build(),
+            10,
+            AbilityType.DOUBLE_SPACE,
+            player -> new CrescentLeft().crescentLeft(player));
 
 
     private final int id;

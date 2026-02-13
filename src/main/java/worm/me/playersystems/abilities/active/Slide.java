@@ -35,7 +35,7 @@ public class Slide {
             int ticks = 0;
             @Override
             public void run() {
-                if (ticks++ > 25) {
+                if (ticks++ > 30) {
                     cancel();
                 }
                 Vector direction = p.getLocation().getDirection();

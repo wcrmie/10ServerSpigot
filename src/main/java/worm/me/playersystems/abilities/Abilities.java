@@ -73,6 +73,12 @@ public class Abilities {
         abilityGuiComponents.put(14, List.of("Zig zag", "MEGENTA_GLAZED_TERRACOTTA",
                 ChatColor.DARK_GRAY + " " + ChatColor.GRAY + " "));
 
+        abilityGuiComponents.put(15, List.of("Crescent Right", "PUMKIN_PIE",
+                ChatColor.DARK_GRAY + " " + ChatColor.GRAY + " "));
+
+        abilityGuiComponents.put(16, List.of("Crescent Left", "PUMKIN_PIE",
+                ChatColor.DARK_GRAY + " " + ChatColor.GRAY + " "));
+
 
     }
 
