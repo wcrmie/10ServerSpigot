@@ -38,6 +38,7 @@ import worm.me.gamesystems.world.mobs.traders.Trader;
 import worm.me.gamesystems.world.mobs.traders.VillagerProfession;
 import worm.me.gamesystems.world.structure.generation.CartographerCompass;
 import worm.me.playersystems.abilities.Abilities;
+import worm.me.playersystems.abilities.Ability;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
 import worm.me.playersystems.abilities.passive.SlimeBoots;
 import worm.me.playersystems.attributes.SizeModifier;
@@ -48,10 +49,7 @@ import worm.me.playersystems.saddle.SaddleSystem;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -180,10 +178,21 @@ public class GameplayListener implements Listener {
             }
         } else {
             if (!player.getAllowFlight()) {
-                player.setAllowFlight(true);
+                if( !isSlot1Empty(player)) {
+                    player.setAllowFlight(true);
+                }
             }
         }
 
+    }
+
+    public static boolean isSlot1Empty(Player player) {
+        Abilities abilities = new Abilities();
+        List<Integer> active = abilities.getActiveAbilities(player);
+
+        // Slot 1 corresponds to index 0
+        int abilityId = active.get(0);
+        return abilityId == Ability.EMPTY.getId();
     }
 
     @EventHandler
