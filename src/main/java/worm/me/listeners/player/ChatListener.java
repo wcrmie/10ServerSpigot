@@ -26,46 +26,6 @@ public class ChatListener implements Listener {
         Player sender = event.getPlayer();
         String msg = event.getMessage();
 
-        // queue messages to be sent above head
-        event.getRecipients().clear();
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            double distance = player.getLocation().distance(sender.getLocation());
-
-            int color = distance == 0 ? 255 : (int) Math.round(255 - 255 * (distance / (player.getWorld().getWorldBorder().getSize() + 50)));
-            if (color < 50) color = 50;
-            String hexColor = String.format("#%02x%02x%02x", color, color, color);
-
-            String message = msg;
-            if (message.contains(player.getName())) {
-                message = message.replace(player.getName(), ChatColor.YELLOW + "@" + player.getName() + ChatColor.RESET);
-                player.playSound(player, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
-            }
-
-            net.kyori.adventure.text.TextComponent component = Component.text(sender.getName() + ": " + message).color(TextColor.fromHexString(hexColor));
-
-            if (message.contains("[i]") || message.contains("[item]")) {
-
-                ItemStack item = sender.getInventory().getItemInMainHand();
-
-                String itemName = item.getType().toString();
-
-                if (itemName.isEmpty()) {
-                    itemName = item.getType().toString();
-                }
-
-                message = message.replaceAll("\\[i]", ChatColor.AQUA + "[" + itemName + " x" + item.getAmount() + "]" + ChatColor.RESET).replaceAll("\\[item]", ChatColor.AQUA + "[" + itemName + " x" + item.getAmount() + "]" + ChatColor.RESET);
-
-                component = Component.text(sender.getName() + ": " + message).color(TextColor.fromHexString(hexColor));
-
-                component = component.hoverEvent(item.asHoverEvent());
-
-            }
-
-            player.sendMessage(component);
-
-        }
-
         if (msg.toLowerCase().contains("hack") || msg.toLowerCase().contains("cheat") || msg.toLowerCase().contains("hax")) {
             sender.sendMessage(Message.create(MessageType.GENERIC, "If you think someone is hacking, please report them using /report <player>."));
             sender.playSound(sender, Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
