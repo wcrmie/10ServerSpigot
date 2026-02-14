@@ -113,7 +113,7 @@ public class MainGUIMenu extends Menu implements InventoryHolder {
             }
             case 22 -> {
                 AbilitiesMainMenu abilitiesGUI = new AbilitiesMainMenu(player);
-                abilitiesGUI.abilitiesActive(player);
+                abilitiesGUI.open();
             }
             case 23 -> {
                 RecipeBrowserMenu recipeBrowserMenu = new RecipeBrowserMenu(player, 1);

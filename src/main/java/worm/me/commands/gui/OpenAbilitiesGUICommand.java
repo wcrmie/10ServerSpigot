@@ -12,9 +12,11 @@ public class OpenAbilitiesGUICommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player p){
             AbilitiesMainMenu abilitiesGUI = new AbilitiesMainMenu(p);
-            abilitiesGUI.abilitiesActive(p);
+            abilitiesGUI.open();
             return true;
-        } else sender.sendMessage("This command is for the player, silly!");
+        } else {
+            sender.sendMessage("This command is for the player, silly!");
+        }
         return false;
     }
 }

@@ -52,6 +52,9 @@ public class PotionListener implements Listener {
 
                     SizeModifier.setPlayerSize(player, playerSize - 0.2 * playerSize);
                     Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(20*(playerSize - 0.2 * playerSize));
+                    Objects.requireNonNull(player.getAttribute(Attribute.MOVEMENT_SPEED)).setBaseValue(0.1*((playerSize+0.1)/2));
+                    Objects.requireNonNull(player.getAttribute(Attribute.BLOCK_INTERACTION_RANGE)).setBaseValue(4.5*((playerSize+4.5)/2));
+                    Objects.requireNonNull(player.getAttribute(Attribute.ENTITY_INTERACTION_RANGE)).setBaseValue(3*((playerSize+3)/2));
 
                     break;
                 }
@@ -69,6 +72,8 @@ public class PotionListener implements Listener {
 
                     SizeModifier.setPlayerSize(player, playerSize + 0.2 * playerSize);
                     Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(20*(playerSize + 0.2 * playerSize));
+                    Objects.requireNonNull(player.getAttribute(Attribute.MOVEMENT_SPEED)).setBaseValue(0.1*((playerSize+0.1)/2));
+
 
                     break;
                 }
@@ -82,6 +87,9 @@ public class PotionListener implements Listener {
         Player player = event.getEntity();
         SizeModifier.setPlayerSize(player, 1);
         Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(20);
+        Objects.requireNonNull(player.getAttribute(Attribute.MOVEMENT_SPEED)).setBaseValue(0.1);
+        Objects.requireNonNull(player.getAttribute(Attribute.BLOCK_INTERACTION_RANGE)).setBaseValue(4.5);
+        Objects.requireNonNull(player.getAttribute(Attribute.BLOCK_INTERACTION_RANGE)).setBaseValue(3);
 
     }
 
