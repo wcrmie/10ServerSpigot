@@ -237,18 +237,6 @@ public class MainListener implements Listener {
             mainGUIMenu.handleClick(event);
         }
 
-        if (invName.equals(ChatColor.DARK_GRAY + "Your Active Abilities")){
-            event.setCancelled(true);
-            AbilitiesMainMenu abilitiesGUI = new AbilitiesMainMenu(player);
-            abilitiesGUI.initializeAbilitySelection(player, event);;
-        }
-
-        if (invName.contains("Ability Slot")) {
-            event.setCancelled(true);
-            AbilitiesMainMenu abilitiesGUI = new AbilitiesMainMenu(player);
-            abilitiesGUI.activateAbility(player, event.getSlot(), event);
-        }
-
         if (invName.contains("Recipes Page ")) {
             event.setCancelled(true);
             RecipeBrowserMenu recipeGui = new RecipeBrowserMenu(player, 1);
