@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import worm.me.gamesystems.recipes.RecipesGUI;
+import worm.me.menu.recipes.RecipeBrowserMenu;
 
 public class OpenRecipesGUICommand implements CommandExecutor {
     @Override
@@ -13,8 +13,8 @@ public class OpenRecipesGUICommand implements CommandExecutor {
 
         if (sender instanceof Player p){
 
-            RecipesGUI recipesGUI = new RecipesGUI();
-            recipesGUI.openMainGUI(p, 1);
+            RecipeBrowserMenu recipeBrowserMenu = new RecipeBrowserMenu(p, 1);
+            recipeBrowserMenu.open();
             return true;
 
         }

@@ -1,14 +1,22 @@
-package worm.me.playersystems.abilities;
+package worm.me.menu.abilities;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
+import worm.me.menu.MainSubMenu;
+import worm.me.menu.Menu;
+import worm.me.playersystems.abilities.Abilities;
+import worm.me.playersystems.abilities.Ability;
+import worm.me.playersystems.abilities.AbilityType;
+import worm.me.playersystems.abilities.CooldownDisplay;
 import worm.me.utils.GuiConstructor;
 import worm.me.Server;
 import worm.me.data.Unlocks;
@@ -18,7 +26,35 @@ import worm.me.utils.chat.MessageType;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class AbilitiesGUI {
+public class AbilitiesMainMenu extends Menu implements InventoryHolder, MainSubMenu {
+
+    private Inventory inventory;
+
+    public AbilitiesMainMenu(Player viewer) {
+
+        super(viewer);
+    }
+
+    @Override
+    public Inventory initialize() {
+        return null;
+    }
+
+
+    @Override
+    public void open() {
+
+    }
+
+    @Override
+    public void handleClick(InventoryClickEvent event) {
+
+    }
+
+    @Override
+    public @NotNull Inventory getInventory() {
+        return inventory;
+    }
 
     private static class SlotInfo {
         final AbilityType type;
@@ -45,7 +81,7 @@ public class AbilitiesGUI {
     public void abilitiesActive(Player p) {
         try {
             PersistentDataContainer container = p.getPersistentDataContainer();
-            Inventory gui = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Your Active Abilities", 27);
+            Inventory gui = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Your Active Abilities", 27, this);
 
             int[] active = Objects.requireNonNullElse(
                     container.get(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY),
@@ -109,7 +145,8 @@ public class AbilitiesGUI {
             SlotInfo slotInfo = slotInfos[slot];
             Inventory gui = GuiConstructor.chestInventory(
                     ChatColor.DARK_GRAY + slotInfo.title + " Ability Slot",
-                    54
+                    54,
+                    this
             );
 
             populateAbilitySelection(gui, slotInfo.type, p);

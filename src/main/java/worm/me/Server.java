@@ -152,11 +152,11 @@ public final class Server extends JavaPlugin {
         configManager = new ConfigManager();
         configManager.loadConfig();
 
-        this.getCommand("setGens").setExecutor(new SetGensCommand(this));
+        this.getCommand("setGens").setExecutor(new SetGensCommand());
         this.getCommand("rules").setExecutor(new RulesCommand());
-        this.getCommand("sit").setExecutor(new SitCommand(this));
+        this.getCommand("sit").setExecutor(new SitCommand());
         this.getCommand("abilities").setExecutor(new OpenAbilitiesGUICommand());
-        this.getCommand("levels").setExecutor(new OpenLevelsGUICommand(this));
+        this.getCommand("levels").setExecutor(new OpenLevelsGUICommand());
         this.getCommand("menu").setExecutor(new MenuCommand());
         this.getCommand("profile").setExecutor(new OpenProfileGUICommand());
         this.getCommand("recipes").setExecutor(new OpenRecipesGUICommand());

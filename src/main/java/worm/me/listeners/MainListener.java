@@ -14,19 +14,24 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import worm.me.menu.Menu;
+import worm.me.menu.PlayerProfileMenu;
+import worm.me.menu.abilities.AbilitiesSubMenu;
+import worm.me.menu.generators.GensSubMenu;
+import worm.me.menu.recipes.RecipeSpecificMenu;
 import worm.me.utils.GuiConstructor;
 import worm.me.Server;
-import worm.me.gamesystems.recipes.RecipesGUI;
-import worm.me.playersystems.abilities.AbilitiesGUI;
+import worm.me.menu.recipes.RecipeBrowserMenu;
+import worm.me.menu.abilities.AbilitiesMainMenu;
 import worm.me.gamesystems.items.gear.Upgrade;
-import worm.me.playersystems.generator.GeneratorEdit;
+import worm.me.menu.generators.GensMainMenu;
 import worm.me.data.*;
-import worm.me.data.levels.LevelsGUI;
+import worm.me.menu.SkillsMenu;
 //import worm.me.playersystems.social.legacyhats.Hats;
 import worm.me.utils.info.GuideBook;
 //import worm.me.playersystems.social.skins.SkinGui;
 import worm.me.gamesystems.items.gear.tools.ToolsEvents;
-import worm.me.utils.info.MainGUIMenu;
+import worm.me.menu.MainGUIMenu;
 import worm.me.utils.Item;
 
 import java.util.*;
@@ -77,68 +82,68 @@ public class MainListener implements Listener {
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent e){
+    public void onInventoryClick(InventoryClickEvent event){
 
-        Inventory inventory = Objects.requireNonNullElse(e.getClickedInventory(), Bukkit.createInventory(e.getWhoClicked(), InventoryType.CHEST));
-        InventoryView view = e.getView();
+        Inventory inventory = Objects.requireNonNullElse(event.getClickedInventory(), Bukkit.createInventory(event.getWhoClicked(), InventoryType.CHEST));
+        InventoryView view = event.getView();
         
         // TODO: make menus each their own class which extends InventoryHolder that way we can just do the following:
         // if (event.getInventory().getHolder() instanceof MenuClass menuClass)
         String invName = view.getTitle();
 
-        Player player = (Player) e.getWhoClicked();
+        Player player = (Player) event.getWhoClicked();
 
-        Material itemType = Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).getType();
-        ItemStack cursor = Objects.requireNonNullElse(e.getCursor(), new ItemStack(Material.STRUCTURE_VOID));
+        Material itemType = Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).getType();
+        ItemStack cursor = Objects.requireNonNullElse(event.getCursor(), new ItemStack(Material.STRUCTURE_VOID));
 
         Material heldItem = cursor.getType();
 
         switch (itemType) {
             case CHAINMAIL_BOOTS -> {
                 if (heldItem.equals(Upgrade.CHAIN_ARMOR.getUpgradeItem().getType()) && cursor.getAmount() >= Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount()){
-                    e.setCancelled(true);
+                    event.setCancelled(true);
                     cursor.setAmount(cursor.getAmount() - Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount());
 
-                    Damageable meta = (Damageable) Objects.requireNonNull(e.getCurrentItem()).getItemMeta();
+                    Damageable meta = (Damageable) Objects.requireNonNull(event.getCurrentItem()).getItemMeta();
 
                     meta.setDamage(0);
 
                     ItemStack armor = new ItemStack(Material.IRON_BOOTS);
                     armor.setItemMeta(meta);
 
-                    inventory.setItem(e.getSlot(), armor);
+                    inventory.setItem(event.getSlot(), armor);
                     player.playSound(player, Sound.BLOCK_ANVIL_USE, 1F, 2F);
                 }
             }
             case CHAINMAIL_CHESTPLATE -> {
                 if (heldItem.equals(Upgrade.CHAIN_ARMOR.getUpgradeItem().getType()) && cursor.getAmount() >= Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount()){
-                    e.setCancelled(true);
+                    event.setCancelled(true);
                     cursor.setAmount(cursor.getAmount() - Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount());
 
-                    Damageable meta = (Damageable) Objects.requireNonNull(e.getCurrentItem()).getItemMeta();
+                    Damageable meta = (Damageable) Objects.requireNonNull(event.getCurrentItem()).getItemMeta();
 
                     meta.setDamage(0);
 
                     ItemStack armor = new ItemStack(Material.IRON_CHESTPLATE);
                     armor.setItemMeta(meta);
 
-                    inventory.setItem(e.getSlot(), armor);
+                    inventory.setItem(event.getSlot(), armor);
                     player.playSound(player, Sound.BLOCK_ANVIL_USE, 1F, 2F);
                 }
             }
             case CHAINMAIL_LEGGINGS -> {
                 if (heldItem.equals(Upgrade.CHAIN_ARMOR.getUpgradeItem().getType()) && cursor.getAmount() >= Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount()) {
-                    e.setCancelled(true);
+                    event.setCancelled(true);
                     cursor.setAmount(cursor.getAmount() - Upgrade.CHAIN_ARMOR.getUpgradeItem().getAmount());
 
-                    Damageable meta = (Damageable) Objects.requireNonNull(e.getCurrentItem()).getItemMeta();
+                    Damageable meta = (Damageable) Objects.requireNonNull(event.getCurrentItem()).getItemMeta();
 
                     meta.setDamage(0);
 
                     ItemStack armor = new ItemStack(Material.IRON_LEGGINGS);
                     armor.setItemMeta(meta);
 
-                    inventory.setItem(e.getSlot(), armor);
+                    inventory.setItem(event.getSlot(), armor);
                     player.playSound(player, Sound.BLOCK_ANVIL_USE, 1F, 2F);
                 }
             }
@@ -148,92 +153,126 @@ public class MainListener implements Listener {
             if (itemType.equals(Material.WOODEN_AXE) || itemType.equals(Material.WOODEN_PICKAXE) ||
                     itemType.equals(Material.WOODEN_SWORD) || itemType.equals(Material.WOODEN_SHOVEL)){
                 if (cursor.getType() == Upgrade.WOOD_TOOL.getUpgradeItem().getType() && cursor.getAmount() >= Upgrade.WOOD_TOOL.getUpgradeItem().getAmount()){
-                    e.setCancelled(true);
+                    event.setCancelled(true);
                     cursor.setAmount(cursor.getAmount() - Upgrade.WOOD_TOOL.getUpgradeItem().getAmount());
                     ToolsEvents toolsEvents = new ToolsEvents();
-                    toolsEvents.toolUpgradeAttempt(player, e);
+                    toolsEvents.toolUpgradeAttempt(player, event);
                     player.playSound(player, Sound.BLOCK_ANVIL_USE, 1F, 2F);
                 }
 
             } else if (itemType.equals(Material.STONE_AXE) || itemType.equals(Material.STONE_PICKAXE) ||
                     itemType.equals(Material.STONE_SWORD) || itemType.equals(Material.STONE_SHOVEL)){
                 if (cursor.getType() == Upgrade.STONE_TOOL.getUpgradeItem().getType() && cursor.getAmount() >= Upgrade.STONE_TOOL.getUpgradeItem().getAmount()){
-                    e.setCancelled(true);
+                    event.setCancelled(true);
                     cursor.setAmount(cursor.getAmount() - Upgrade.STONE_TOOL.getUpgradeItem().getAmount());
                     ToolsEvents toolsEvents = new ToolsEvents();
-                    toolsEvents.toolUpgradeAttempt(player, e);
+                    toolsEvents.toolUpgradeAttempt(player, event);
                     player.playSound(player, Sound.BLOCK_ANVIL_USE, 1F, 2F);
                 }
             }
         }
 
         if (!player.getPassengers().isEmpty() && player.getPassengers().getFirst().getType() != EntityType.PLAYER){
-            e.setCancelled(true);
+            event.setCancelled(true);
         }
 
-        switch (inventory.getHolder()) {
+        if (inventory.getHolder() instanceof Menu menu) {
 
-            case PlayerProfileGUI profileGUI -> {
+            switch (menu) {
 
-                profileGUI.eventHandler(e);
+                case PlayerProfileMenu profileGUI -> {
+                    profileGUI.handleClick(event);
+                }
 
+                case MainGUIMenu mainMenu -> {
+                    mainMenu.handleClick(event);
+                }
+
+                case SkillsMenu skillsMenu -> {
+                    skillsMenu.handleClick(event);
+                }
+
+                case RecipeBrowserMenu recipeBrowserMenu -> {
+                    recipeBrowserMenu.handleClick(event);
+                }
+
+                case RecipeSpecificMenu recipeSpecificMenu -> {
+                    recipeSpecificMenu.handleClick(event);
+                }
+
+                case GensMainMenu gensMainMenu -> {
+                    gensMainMenu.handleClick(event);
+                }
+
+                case GensSubMenu gensSubMenu -> {
+                    gensSubMenu.handleClick(event);
+                }
+
+                case AbilitiesMainMenu abilitiesMainMenu -> {
+                    abilitiesMainMenu.handleClick(event);
+                }
+
+                case AbilitiesSubMenu abilitiesSubMenu -> {
+                    abilitiesSubMenu.handleClick(event);
+                }
+
+                default -> Server.getPlugin().getLogger().info("bruh");
             }
-
-            case null -> {}
-
-            default -> Server.getPlugin().getLogger().info("bruh");
         }
 
-        GeneratorEdit genEdit = new GeneratorEdit();
 
-        if (Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).isSimilar(Item.create(Material.BARRIER, ChatColor.RED + "Close Menu", " ", ChatColor.GRAY + "Close this menu."))) player.closeInventory();
 
-        if (Objects.requireNonNullElse(e.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).getType() == Material.SPECTRAL_ARROW && e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Go Back")){
-            GuiConstructor guiConstructor = new GuiConstructor();
-            guiConstructor.goBack(e);
+        GensMainMenu genEdit = new GensMainMenu(player);
+
+        if (Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).isSimilar(Item.create(Material.BARRIER, ChatColor.RED + "Close Menu", " ", ChatColor.GRAY + "Close this menu."))) player.closeInventory();
+
+        if (Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).getType() == Material.SPECTRAL_ARROW && event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Go Back")){
+            MainGUIMenu mainGUIMenu = new MainGUIMenu(player);
+            mainGUIMenu.open();
+
         }
 
         if (invName.equals(ChatColor.DARK_GRAY + "Main Menu")){
-            MainGUIMenu mainGUIMenu = new MainGUIMenu();
-            mainGUIMenu.eventHandler(e);
+            MainGUIMenu mainGUIMenu = new MainGUIMenu(player);
+            mainGUIMenu.handleClick(event);
         }
 
         if (invName.equals(ChatColor.DARK_GRAY + "Your Active Abilities")){
-            e.setCancelled(true);
-            AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
-            abilitiesGUI.initializeAbilitySelection(player, e);;
+            event.setCancelled(true);
+            AbilitiesMainMenu abilitiesGUI = new AbilitiesMainMenu(player);
+            abilitiesGUI.initializeAbilitySelection(player, event);;
         }
 
         if (invName.contains("Ability Slot")) {
-            e.setCancelled(true);
-            AbilitiesGUI abilitiesGUI = new AbilitiesGUI();
-            abilitiesGUI.activateAbility(player, e.getSlot(), e);
+            event.setCancelled(true);
+            AbilitiesMainMenu abilitiesGUI = new AbilitiesMainMenu(player);
+            abilitiesGUI.activateAbility(player, event.getSlot(), event);
         }
 
         if (invName.contains("Recipes Page ")) {
-            e.setCancelled(true);
-            RecipesGUI recipeGui = new RecipesGUI();
+            event.setCancelled(true);
+            RecipeBrowserMenu recipeGui = new RecipeBrowserMenu(player, 1);
 
-            recipeGui.eventHandlerMain(e);
+            recipeGui.handleClick(event);
         }
 
         if (invName.contains("Recipe of ")) {
-            e.setCancelled(true);
-            RecipesGUI recipeGui = new RecipesGUI();
+            event.setCancelled(true);
+            RecipeBrowserMenu recipeGui = new RecipeBrowserMenu(player, 1);
 
-            recipeGui.eventHandlerRecipe(e);
+            recipeGui.handleClick(event);
         }
 
         if (invName.contains("Skill Levels")){
-            LevelsGUI levels = new LevelsGUI();
-            levels.eventHandler(e);
+            SkillsMenu levels = new SkillsMenu(player, player);
+            levels.handleClick(event);
         }
 
         // needs to be moved \/ \/ \/
-        else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Generated Blocks")) {
-            e.setCancelled(true);
+        else if (event.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Generated Blocks")) {
+            event.setCancelled(true);
 
-            ItemStack clickedItem = e.getCurrentItem();
+            ItemStack clickedItem = event.getCurrentItem();
 
             if (clickedItem == null || clickedItem.getType().isAir() || clickedItem.getType().equals(Material.GRAY_STAINED_GLASS_PANE)) return;
 
@@ -247,10 +286,10 @@ public class MainListener implements Listener {
             } else if (clickedItem.getType().equals(Material.COAL)) {
                 genEdit.miscItem(player);
             }
-        } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Stone Block")){
-            e.setCancelled(true);
+        } else if (event.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Stone Block")){
+            event.setCancelled(true);
 
-            ItemStack clickedItem = e.getCurrentItem();
+            ItemStack clickedItem = event.getCurrentItem();
 
             if (clickedItem == null || clickedItem.getType().isAir() || clickedItem.getType().equals(Material.GRAY_STAINED_GLASS_PANE)) return;
 
@@ -262,10 +301,10 @@ public class MainListener implements Listener {
                     player.sendMessage(ChatColor.GREEN + "Your stone block has been changed to " + ((TextComponent) clickedItem.displayName()).content());
                 }
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
-        } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Wood Block")){
-            e.setCancelled(true);
+        } else if (event.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Wood Block")){
+            event.setCancelled(true);
 
-            ItemStack clickedItem = e.getCurrentItem();
+            ItemStack clickedItem = event.getCurrentItem();
 
             if (Server.planks.containsKey(clickedItem.getType())){
 
@@ -276,10 +315,10 @@ public class MainListener implements Listener {
                 }
 
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
-        } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Loose Block")){
-            e.setCancelled(true);
+        } else if (event.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Loose Block")){
+            event.setCancelled(true);
 
-            ItemStack clickedItem = e.getCurrentItem();
+            ItemStack clickedItem = event.getCurrentItem();
 
             if (Server.dirts.containsKey(clickedItem.getType())){
 
@@ -290,10 +329,10 @@ public class MainListener implements Listener {
                     player.sendMessage(ChatColor.GREEN + "Your loose block has been changed to " + clickedItem.getTranslationKey());
                 }
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
-        } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Miscellaneous Item")){
-            e.setCancelled(true);
+        } else if (event.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Miscellaneous Item")){
+            event.setCancelled(true);
 
-            ItemStack clickedItem = e.getCurrentItem();
+            ItemStack clickedItem = event.getCurrentItem();
 
             if (clickedItem == null || clickedItem.getType().isAir() || clickedItem.getType().equals(Material.GRAY_STAINED_GLASS_PANE)) return;
 
@@ -305,12 +344,12 @@ public class MainListener implements Listener {
                     player.sendMessage(ChatColor.GREEN + "Your misc. item has been changed to " + clickedItem.getTranslationKey());
                 }
             } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
-        } else if (e.getView().getTitle().equals(ChatColor.DARK_GRAY + "Quests")){
-            e.setCancelled(true);
+        } else if (event.getView().getTitle().equals(ChatColor.DARK_GRAY + "Quests")){
+            event.setCancelled(true);
 
         }
 
-        if (e.isCancelled()) ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, ThreadLocalRandom.current().nextFloat(1.0F, 1.2F));
+        if (event.isCancelled()) ((Player) event.getWhoClicked()).playSound(event.getWhoClicked().getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, ThreadLocalRandom.current().nextFloat(1.0F, 1.2F));
 
     }
 }

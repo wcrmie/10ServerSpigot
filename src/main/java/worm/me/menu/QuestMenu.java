@@ -1,27 +1,39 @@
-package worm.me.playersystems.quests;
+package worm.me.menu;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
+import worm.me.playersystems.quests.QuestAssign;
+import worm.me.playersystems.quests.QuestInitialize;
 import worm.me.utils.GuiConstructor;
 import worm.me.utils.Item;
 
 import java.util.List;
 
-public class QuestGui {
+public class QuestMenu extends Menu implements InventoryHolder {
 
     private QuestAssign questAssign = new QuestAssign();
+
+    private final Inventory inventory;
+
+    protected QuestMenu(Player viewer, Inventory inventory) {
+        super(viewer);
+        this.inventory = inventory;
+    }
 
     public void questGuiOpen(Player p){
         // Open the quest GUI for the player
         PersistentDataContainer container = p.getPersistentDataContainer();
 
-        Inventory GUI = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Quests", 27);
+        Inventory GUI = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Quests", 27, this);
 
         for (int i = 0; i < 3; i++){
 
@@ -83,4 +95,23 @@ public class QuestGui {
         return m.get(questID).get(2);
     }
 
+    @Override
+    public Inventory initialize() {
+        return null;
+    }
+
+    @Override
+    public void open() {
+
+    }
+
+    @Override
+    public void handleClick(InventoryClickEvent event) {
+
+    }
+
+    @Override
+    public @NotNull Inventory getInventory() {
+        return null;
+    }
 }

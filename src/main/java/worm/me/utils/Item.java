@@ -3,6 +3,7 @@ package worm.me.utils;
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.datacomponent.DataComponentType;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -13,6 +14,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class Item {
 
@@ -29,10 +31,9 @@ public class Item {
 
         List<String> loreStrings = Arrays.asList(lore);
 
-        List<Component> loreComponents = loreStrings.stream().flatMap(line -> {Component.text(line);}).toList();
+        List<TextComponent> loreComponents = loreStrings.stream().flatMap(line -> Stream.of(Component.text(line))).toList();
 
-
-        meta.lore();
+        meta.lore(loreComponents);
 
         item.setItemMeta(meta);
 

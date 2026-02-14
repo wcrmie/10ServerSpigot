@@ -14,12 +14,6 @@ import worm.me.utils.chat.MessageType;
 
 public class SitCommand implements CommandExecutor {
 
-    private final Server plugin;
-
-    public SitCommand(Server plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player p){

@@ -13,6 +13,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import worm.me.Server;
+import worm.me.menu.generators.GensMainMenu;
 
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -57,9 +58,9 @@ public class Generator {
     }
 
     // Generates the random item the player is given
-    public static ItemStack randomItem(Player p){
-        PersistentDataContainer container = p.getPersistentDataContainer();
-        GeneratorEdit genEdit = new GeneratorEdit();
+    public static ItemStack randomItem(Player player){
+        PersistentDataContainer container = player.getPersistentDataContainer();
+        GensMainMenu genEdit = new GensMainMenu(player);
         int RNG = ThreadLocalRandom.current().nextInt(0,100);
         if (1 <= RNG && RNG <= 55) {
             setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.stoneBlock, PersistentDataType.STRING), Material.COBBLESTONE.toString())));
