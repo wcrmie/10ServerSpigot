@@ -85,11 +85,6 @@ public class MainListener implements Listener {
     public void onInventoryClick(InventoryClickEvent event){
 
         Inventory inventory = Objects.requireNonNullElse(event.getClickedInventory(), Bukkit.createInventory(event.getWhoClicked(), InventoryType.CHEST));
-        InventoryView view = event.getView();
-        
-        // TODO: make menus each their own class which extends InventoryHolder that way we can just do the following:
-        // if (event.getInventory().getHolder() instanceof MenuClass menuClass)
-        String invName = view.getTitle();
 
         Player player = (Player) event.getWhoClicked();
 
@@ -178,174 +173,37 @@ public class MainListener implements Listener {
 
         if (inventory.getHolder() instanceof Menu menu) {
 
+            event.setCancelled(true);
+
             switch (menu) {
 
-                case PlayerProfileMenu profileGUI -> {
-                    profileGUI.handleClick(event);
-                }
+                case PlayerProfileMenu profileGUI -> profileGUI.handleClick(event);
 
-                case MainGUIMenu mainMenu -> {
-                    mainMenu.handleClick(event);
-                }
+                case MainGUIMenu mainMenu -> mainMenu.handleClick(event);
 
-                case SkillsMenu skillsMenu -> {
-                    skillsMenu.handleClick(event);
-                }
+                case SkillsMenu skillsMenu -> skillsMenu.handleClick(event);
 
-                case RecipeBrowserMenu recipeBrowserMenu -> {
-                    recipeBrowserMenu.handleClick(event);
-                }
+                case RecipeBrowserMenu recipeBrowserMenu -> recipeBrowserMenu.handleClick(event);
 
-                case RecipeSpecificMenu recipeSpecificMenu -> {
-                    recipeSpecificMenu.handleClick(event);
-                }
+                case RecipeSpecificMenu recipeSpecificMenu -> recipeSpecificMenu.handleClick(event);
 
-                case GensMainMenu gensMainMenu -> {
-                    gensMainMenu.handleClick(event);
-                }
+                case GensMainMenu gensMainMenu -> gensMainMenu.handleClick(event);
 
-                case GensSubMenu gensSubMenu -> {
-                    gensSubMenu.handleClick(event);
-                }
+                case GensSubMenu gensSubMenu -> gensSubMenu.handleClick(event);
 
-                case AbilitiesMainMenu abilitiesMainMenu -> {
-                    abilitiesMainMenu.handleClick(event);
-                }
+                case AbilitiesMainMenu abilitiesMainMenu -> abilitiesMainMenu.handleClick(event);
 
-                case AbilitiesSubMenu abilitiesSubMenu -> {
-                    abilitiesSubMenu.handleClick(event);
-                }
+                case AbilitiesSubMenu abilitiesSubMenu -> abilitiesSubMenu.handleClick(event);
 
                 default -> Server.getPlugin().getLogger().info("bruh");
             }
         }
-
-
-
-        GensMainMenu genEdit = new GensMainMenu(player);
 
         if (Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).isSimilar(Item.create(Material.BARRIER, ChatColor.RED + "Close Menu", " ", ChatColor.GRAY + "Close this menu."))) player.closeInventory();
 
         if (Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).getType() == Material.SPECTRAL_ARROW && event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Go Back")){
             MainGUIMenu mainGUIMenu = new MainGUIMenu(player);
             mainGUIMenu.open();
-
-        }
-
-        if (invName.equals(ChatColor.DARK_GRAY + "Main Menu")){
-            MainGUIMenu mainGUIMenu = new MainGUIMenu(player);
-            mainGUIMenu.handleClick(event);
-        }
-
-        if (invName.equals(ChatColor.DARK_GRAY + "Your Active Abilities")){
-            event.setCancelled(true);
-            AbilitiesMainMenu abilitiesGUI = new AbilitiesMainMenu(player);
-            abilitiesGUI.initializeAbilitySelection(player, event);;
-        }
-
-        if (invName.contains("Ability Slot")) {
-            event.setCancelled(true);
-            AbilitiesMainMenu abilitiesGUI = new AbilitiesMainMenu(player);
-            abilitiesGUI.activateAbility(player, event.getSlot(), event);
-        }
-
-        if (invName.contains("Recipes Page ")) {
-            event.setCancelled(true);
-            RecipeBrowserMenu recipeGui = new RecipeBrowserMenu(player, 1);
-
-            recipeGui.handleClick(event);
-        }
-
-        if (invName.contains("Recipe of ")) {
-            event.setCancelled(true);
-            RecipeBrowserMenu recipeGui = new RecipeBrowserMenu(player, 1);
-
-            recipeGui.handleClick(event);
-        }
-
-        if (invName.contains("Skill Levels")){
-            SkillsMenu levels = new SkillsMenu(player, player);
-            levels.handleClick(event);
-        }
-
-        // needs to be moved \/ \/ \/
-        else if (event.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Generated Blocks")) {
-            event.setCancelled(true);
-
-            ItemStack clickedItem = event.getCurrentItem();
-
-            if (clickedItem == null || clickedItem.getType().isAir() || clickedItem.getType().equals(Material.GRAY_STAINED_GLASS_PANE)) return;
-
-
-            if (clickedItem.getType().equals(Material.COBBLESTONE)){
-                genEdit.stoneItem(player);
-            } else if (clickedItem.getType().equals(Material.DIRT)) {
-                genEdit.dirtItem(player);
-            } else if (clickedItem.getType().equals(Material.OAK_PLANKS)) {
-                genEdit.woodItem(player);
-            } else if (clickedItem.getType().equals(Material.COAL)) {
-                genEdit.miscItem(player);
-            }
-        } else if (event.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Stone Block")){
-            event.setCancelled(true);
-
-            ItemStack clickedItem = event.getCurrentItem();
-
-            if (clickedItem == null || clickedItem.getType().isAir() || clickedItem.getType().equals(Material.GRAY_STAINED_GLASS_PANE)) return;
-
-            if (Server.stones.containsKey(clickedItem.getType())){
-
-                if (Unlocks.hasGenUnlocked(player, clickedItem.getType())){
-                    PersistentDataContainer container = player.getPersistentDataContainer();
-                    container.set(genEdit.stoneBlock, PersistentDataType.STRING, clickedItem.getType().toString());
-                    player.sendMessage(ChatColor.GREEN + "Your stone block has been changed to " + ((TextComponent) clickedItem.displayName()).content());
-                }
-            } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
-        } else if (event.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Wood Block")){
-            event.setCancelled(true);
-
-            ItemStack clickedItem = event.getCurrentItem();
-
-            if (Server.planks.containsKey(clickedItem.getType())){
-
-                if (Unlocks.hasGenUnlocked(player, clickedItem.getType())){
-                    PersistentDataContainer container = player.getPersistentDataContainer();
-                    container.set(genEdit.woodBlock, PersistentDataType.STRING, clickedItem.getType().toString());
-                    player.sendMessage(ChatColor.GREEN + "Your wood block has been changed to " + clickedItem.getTranslationKey());
-                }
-
-            } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
-        } else if (event.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Loose Block")){
-            event.setCancelled(true);
-
-            ItemStack clickedItem = event.getCurrentItem();
-
-            if (Server.dirts.containsKey(clickedItem.getType())){
-
-
-                if (Unlocks.hasGenUnlocked(player, clickedItem.getType())) {
-                    PersistentDataContainer container = player.getPersistentDataContainer();
-                    container.set(genEdit.dirtBlock, PersistentDataType.STRING, clickedItem.getType().toString());
-                    player.sendMessage(ChatColor.GREEN + "Your loose block has been changed to " + clickedItem.getTranslationKey());
-                }
-            } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
-        } else if (event.getView().getTitle().equals(ChatColor.DARK_GRAY + "Select Miscellaneous Item")){
-            event.setCancelled(true);
-
-            ItemStack clickedItem = event.getCurrentItem();
-
-            if (clickedItem == null || clickedItem.getType().isAir() || clickedItem.getType().equals(Material.GRAY_STAINED_GLASS_PANE)) return;
-
-            if (Server.miscs.containsKey(clickedItem.getType())){
-
-                if (Unlocks.hasGenUnlocked(player, clickedItem.getType())){
-                    PersistentDataContainer container = player.getPersistentDataContainer();
-                    container.set(genEdit.miscItem, PersistentDataType.STRING, clickedItem.getType().toString());
-                    player.sendMessage(ChatColor.GREEN + "Your misc. item has been changed to " + clickedItem.getTranslationKey());
-                }
-            } else if (clickedItem.getType().equals(Material.ARROW)) genEdit.genOptions(player);
-        } else if (event.getView().getTitle().equals(ChatColor.DARK_GRAY + "Quests")){
-            event.setCancelled(true);
 
         }
 

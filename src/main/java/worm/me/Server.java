@@ -62,8 +62,6 @@ public final class Server extends JavaPlugin {
 
     public Map<Material, Long> smithingItems = new HashMap<>();
 
-    public List<Sound> sounds = new ArrayList<>();
-
     public static Map<Material, int[]> stones = new HashMap<>();
     public static Map<Material, int[]> dirts = new HashMap<>();
     public static Map<Material, int[]> planks = new HashMap<>();
@@ -316,37 +314,6 @@ public final class Server extends JavaPlugin {
         smithingItems.put(Material.IRON_NUGGET, 3L);
         smithingItems.put(Material.COAL, 1L);
         smithingItems.put(Material.COPPER_INGOT, 1L);
-
-
-
-        // Set voices
-        sounds.add(Sound.BLOCK_STONE_BUTTON_CLICK_OFF); // 0
-        sounds.add(Sound.BLOCK_WOODEN_BUTTON_CLICK_OFF); // 1
-        sounds.add(Sound.BLOCK_DISPENSER_DISPENSE); // 2
-        sounds.add(Sound.BLOCK_STONE_BREAK); // 3
-        sounds.add(Sound.BLOCK_BONE_BLOCK_BREAK); // 4
-        sounds.add(Sound.ENTITY_ARMOR_STAND_HIT); // 5
-        sounds.add(Sound.BLOCK_WOOL_HIT); // 6
-        sounds.add(Sound.BLOCK_BAMBOO_HIT); // 7
-        sounds.add(Sound.BLOCK_AMETHYST_BLOCK_BREAK); // 8
-        sounds.add(Sound.ENTITY_ENDER_EYE_DEATH); // 9
-        sounds.add(Sound.ENTITY_PLAYER_BURP); // 10
-        sounds.add(Sound.ENTITY_CAT_AMBIENT); // 11
-        sounds.add(Sound.ENTITY_WOLF_AMBIENT); // 12
-        sounds.add(Sound.ENTITY_SHEEP_DEATH); // 13
-        sounds.add(Sound.ENTITY_BEE_HURT); // 14
-        sounds.add(Sound.ENTITY_ARMADILLO_BRUSH); // 15
-        sounds.add(Sound.ENTITY_CAMEL_DASH); // 16
-        sounds.add(Sound.ENTITY_VILLAGER_TRADE); // 17
-        sounds.add(Sound.ENTITY_VILLAGER_NO); // 18
-        sounds.add(Sound.ENTITY_CREEPER_HURT); // 19
-        sounds.add(Sound.ENTITY_ZOMBIE_HURT); // 20
-        sounds.add(Sound.ENTITY_SKELETON_HURT); // 21
-        sounds.add(Sound.ENTITY_ENDERMAN_HURT); // 22
-        sounds.add(Sound.ENTITY_ENDER_DRAGON_HURT); // 23
-        sounds.add(Sound.ENTITY_WITCH_THROW); // 24
-        sounds.add(Sound.BLOCK_DECORATED_POT_INSERT); // 25
-        sounds.add(Sound.BLOCK_DECORATED_POT_INSERT_FAIL); // 26
 
         // CREATE BLOCK KEYS FOR GENERATOR
         stones.put(Material.COBBLESTONE, new Reqs.RequirementBuilder().mining(1).build());
