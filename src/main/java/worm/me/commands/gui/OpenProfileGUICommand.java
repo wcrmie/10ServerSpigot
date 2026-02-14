@@ -1,5 +1,6 @@
 package worm.me.commands.gui;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,20 +16,21 @@ public class OpenProfileGUICommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        if (sender instanceof Player p){
+        if (sender instanceof Player player){
             // Open the profile GUI
 
-            PlayerProfileGUI playerProfileGUI = new PlayerProfileGUI();
+            PlayerProfileGUI playerProfileGUI = new PlayerProfileGUI(player);
 
             if (args.length > 0){
                 try {
-                    playerProfileGUI.openProfile(p.getServer().getPlayer(args[0]), p);
+
+                    playerProfileGUI.openProfile(Bukkit.getPlayer(args[0]), player);
                 } catch (NullPointerException e){
-                    p.sendMessage(Message.create(MessageType.ERROR, "Player not found!"));
+                    player.sendMessage(Message.create(MessageType.ERROR, "Player not found!"));
                     return false;
                 }
                 return true;
-            } else playerProfileGUI.openProfile(p, p);
+            } else playerProfileGUI.openProfile(player, player);
             return true;
 
         } else sender.sendMessage("This command is for the player, silly!");

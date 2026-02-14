@@ -1,35 +1,48 @@
 package worm.me.data;
 
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.NotNull;
 import worm.me.utils.GuiConstructor;
 import worm.me.data.levels.LevelsGUI;
 import worm.me.utils.Item;
 
-public class PlayerProfileGUI {
+public class PlayerProfileGUI implements InventoryHolder {
 
-    public void openProfile(Player p, Player viewer){
+    private final Inventory inventory;
+    private final Player viewer;
+
+    public PlayerProfileGUI(Player viewer) {
+        this.viewer = viewer;
+        this.inventory = Bukkit.createInventory(this, 36, Component.text(ChatColor.DARK_GRAY + owner.getName() + "'s Profile"));
+    }
+
+
+    public void openProfile(Player owner, Player viewer){
         // Open the player's profile GUI
 
-        Inventory gui = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + p.getName() + "'s Profile", 36);
+        Inventory gui = inventory;
 
         // Set player head item to the player's head
 
         String whose;
 
-        if (p == viewer) {
+        if (owner == viewer) {
 
             whose = "Your ";
 
         } else {
 
-            whose = p.getName() + "'s ";
+            whose = owner.getName() + "'s ";
 
         }
 
@@ -39,7 +52,7 @@ public class PlayerProfileGUI {
 
 
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
-        skullMeta.setOwningPlayer(p);
+        skullMeta.setOwningPlayer(owner);
         skull.setItemMeta(skullMeta);
 
         gui.setItem(4, skull);
@@ -74,6 +87,10 @@ public class PlayerProfileGUI {
 
     }
 
+    public Player getViewer() {
+        return viewer;
+    }
+
     public void eventHandler(InventoryClickEvent e){
         e.setCancelled(true);
 
@@ -85,4 +102,8 @@ public class PlayerProfileGUI {
         }
     }
 
+    @Override
+    public @NotNull Inventory getInventory() {
+        return inventory;
+    }
 }
