@@ -19,7 +19,6 @@ import worm.me.utils.Item;
 public class RecipeBrowserMenu extends PagedMenu implements InventoryHolder, MainSubMenu {
 
     private final Inventory inventory;
-    private int page;
 
     public RecipeBrowserMenu(Player viewer, int page) {
         super(viewer, page);
@@ -28,15 +27,16 @@ public class RecipeBrowserMenu extends PagedMenu implements InventoryHolder, Mai
 
     @Override
     public void turnPage(int page) {
-
+        RecipeBrowserMenu newMenu = new RecipeBrowserMenu(getViewer(), getPage());
+        newMenu.open();
     }
 
     @Override
     public Inventory initialize() {
 
-        Inventory inventory = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Recipes Page " + page, 54, this);
+        Inventory inventory = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Recipes Page " + getPage(), 54, this);
 
-        if (page > 1){
+        if (getPage() > 1){
 
             inventory.setItem(48, Item.create(Material.ARROW, ChatColor.GRAY + "Previous Page"));
 
@@ -50,11 +50,11 @@ public class RecipeBrowserMenu extends PagedMenu implements InventoryHolder, Mai
 
         for (int i = 0; i < 28; i++){
 
-            if (i + (28 * (page - 1)) >= ShapedRecipes.shapedRecipeMap.size()){
+            if (i + (28 * (getPage() - 1)) >= ShapedRecipes.shapedRecipeMap.size()){
                 break;
             }
 
-            ItemStack recipe = ShapedRecipes.shapedRecipeMap.keySet().toArray(ItemStack[] :: new)[i + (28 * (page - 1))];
+            ItemStack recipe = ShapedRecipes.shapedRecipeMap.keySet().toArray(ItemStack[] :: new)[i + (28 * (getPage() - 1))];
 
             slot++;
 

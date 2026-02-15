@@ -109,7 +109,7 @@ public class MainGUIMenu extends Menu implements InventoryHolder {
             }
             case 21 -> {
                 GensMainMenu gensMainMenu = new GensMainMenu(player);
-                gensMainMenu.genOptions(player);
+                gensMainMenu.open();
             }
             case 22 -> {
                 AbilitiesMainMenu abilitiesGUI = new AbilitiesMainMenu(player);

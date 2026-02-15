@@ -20,6 +20,7 @@ import worm.me.utils.Item;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GensSubMenu extends Menu implements InventoryHolder {
@@ -36,21 +37,27 @@ public class GensSubMenu extends Menu implements InventoryHolder {
     @Override
     public Inventory initialize() {
 
-        Inventory inventory = GuiConstructor.chestInventory(String.format("Select %s Generator", generatorType.getName()), 27, this);
+        List<Material> materials = new ArrayList<>(generatorType.getMaterials());
 
-        List<Material> materials = new java.util.ArrayList<>(generatorType.getMaterials().stream().sorted().toList());
+        int invSize = 27 + (int) Math.round(Math.ceil(((double) materials.size()) / 7.0) - 1 ) * 9;
+
+        Inventory inventory = GuiConstructor.chestInventory(String.format("Select %s Generator", generatorType.getName()), invSize, this);
 
         int[] slots = GuiConstructor.determineCenteredSlots(Math.min(materials.size(), 7));
 
         for (int i = 1; i < 6; i++) {
 
+            if (materials.isEmpty()) break;
+
             for (int j = 0; j < 7; j++) {
+
+                if (materials.isEmpty()) break;
 
                 Material material = materials.removeFirst();
 
                 ItemStack item = Item.create(material, "");
 
-                if (!Unlocks.hasGenUnlocked(getViewer(), material)) inventory.setItem(j, Item.create(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + item.getType().toString() + " (LOCKED)", Unlocks.requirementsTranslation(generatorType.getGenerators().get(material))));
+                if (!Unlocks.hasGenUnlocked(getViewer(), material)) item = Item.create(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + item.getType().toString() + " (LOCKED)", Unlocks.requirementsTranslation(generatorType.getGenerators().get(material)));
 
                 inventory.setItem(slots[j] + (i * 9), item);
 
@@ -62,7 +69,7 @@ public class GensSubMenu extends Menu implements InventoryHolder {
 
     @Override
     public void open() {
-
+        getViewer().openInventory(inventory);
     }
 
     @Override

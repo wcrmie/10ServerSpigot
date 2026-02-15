@@ -165,13 +165,12 @@ public class AbilitiesSubMenu extends Menu implements InventoryHolder {
                 return;
             }
 
-            Abilities abilities = new Abilities();
-            if (abilities.getActiveAbilities(p).contains(selectedAbility.getId()) && selectedAbility.getId() != 0) {
+            if (Abilities.getActiveAbilities(p).contains(selectedAbility.getId()) && selectedAbility.getId() != 0) {
                 p.sendMessage(Message.create(MessageType.FAIL, "You already have this ability active in another slot!"));
                 return;
             }
 
-            if (abilities.hasAbilityOnCooldown(p)) {
+            if (Abilities.hasAbilityOnCooldown(p)) {
                 p.sendMessage(Message.create(MessageType.FAIL, "You have an ability on cooldown!"));
                 return;
             }

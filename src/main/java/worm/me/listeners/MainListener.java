@@ -50,9 +50,8 @@ public class MainListener implements Listener {
 
     @EventHandler
     public void onTridentHit(ProjectileHitEvent event) {
-        if (!(event.getEntity() instanceof Trident trident)) return;
 
-        if (!(trident.getShooter() instanceof Player)) return;
+        if (!(event.getEntity() instanceof Trident trident)) return;
 
         ItemStack item = trident.getItemStack();
 
@@ -175,6 +174,8 @@ public class MainListener implements Listener {
 
             event.setCancelled(true);
 
+            player.playSound(player, Sound.UI_BUTTON_CLICK, 0.3F, ThreadLocalRandom.current().nextFloat(1.0F, 1.2F));
+
             switch (menu) {
 
                 case PlayerProfileMenu profileGUI -> profileGUI.handleClick(event);
@@ -206,8 +207,6 @@ public class MainListener implements Listener {
             mainGUIMenu.open();
 
         }
-
-        if (event.isCancelled()) ((Player) event.getWhoClicked()).playSound(event.getWhoClicked().getLocation(), Sound.UI_BUTTON_CLICK, 0.3F, ThreadLocalRandom.current().nextFloat(1.0F, 1.2F));
 
     }
 }

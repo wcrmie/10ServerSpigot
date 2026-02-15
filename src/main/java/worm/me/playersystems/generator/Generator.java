@@ -60,16 +60,15 @@ public class Generator {
     // Generates the random item the player is given
     public static ItemStack randomItem(Player player){
         PersistentDataContainer container = player.getPersistentDataContainer();
-        GensMainMenu genEdit = new GensMainMenu(player);
         int RNG = ThreadLocalRandom.current().nextInt(0,100);
         if (1 <= RNG && RNG <= 55) {
-            setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.stoneBlock, PersistentDataType.STRING), Material.COBBLESTONE.toString())));
+            setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(GeneratorType.STONE.getKey(), PersistentDataType.STRING), Material.COBBLESTONE.toString())));
         } else if (55 < RNG && RNG <= 80) {
-            setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.dirtBlock, PersistentDataType.STRING), Material.DIRT.toString())));
+            setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(GeneratorType.LOOSE.getKey(), PersistentDataType.STRING), Material.DIRT.toString())));
         } else if (80 < RNG && RNG <= 90) {
-            setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.woodBlock, PersistentDataType.STRING), Material.OAK_PLANKS.toString())));
+            setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(GeneratorType.WOOD.getKey(), PersistentDataType.STRING), Material.OAK_PLANKS.toString())));
         } else if (90 < RNG && RNG <= 95) {
-            setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(genEdit.miscItem, PersistentDataType.STRING), Material.COAL_ORE.toString())));
+            setRandomItem(Material.valueOf(Objects.requireNonNullElse(container.get(GeneratorType.MISC.getKey(), PersistentDataType.STRING), Material.COAL_ORE.toString())));
             if (randomItem == Material.COAL) setRandomItem(Material.COAL_ORE);
         } else {
             setRandomItem(Material.IRON_ORE);

@@ -7,12 +7,14 @@ import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 import worm.me.data.VoidPlayer;
+import worm.me.utils.GuiConstructor;
 import worm.me.utils.Item;
 
 public class PlayerProfileMenu extends Menu implements InventoryHolder, MainSubMenu {
@@ -41,7 +43,7 @@ public class PlayerProfileMenu extends Menu implements InventoryHolder, MainSubM
 
         }
 
-        Inventory inventory = Bukkit.createInventory(this, 36, Component.text(whose + " Profile"));
+        Inventory inventory = GuiConstructor.chestInventory(whose + " Profile", 36, this);
 
         inventory.setItem(0, Item.create(Material.KNOWLEDGE_BOOK, ChatColor.BLUE + "\uD83D\uDEC8", " ", ChatColor.GRAY + "You are currently viewing " + whose + "profile."));
 

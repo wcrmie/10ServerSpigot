@@ -28,7 +28,7 @@ public class RecipeSpecificMenu extends Menu implements InventoryHolder {
     @Override
     public Inventory initialize() {
 
-        Inventory inventory = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Recipe of " + itemStack.getTranslationKey(), 45, this);
+        Inventory inventory = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Recipe of " + itemStack.displayName(), 45, this);
 
         inventory.setItem(23, Item.create(Material.CRAFTING_TABLE, " "));
 

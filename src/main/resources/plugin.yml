@@ -4,7 +4,7 @@ main: worm.me.Server
 api-version: '1.21'
 authors: [ worm, clem, Boolean ]
 depend: [WorldGuard]
-softdepend: [SkinsRestorer,  MessageHead]
+softdepend: [MessageHead]
 commands:
   setGens:
     description: Allows the player to choose which blocks are generated for them every 10 seconds via a GUI.
@@ -52,6 +52,7 @@ commands:
     usage: /resetworld
     permission: 10VS.worldreset
   suicide:
+    cooldown:
     description: Kills the player
     usage: /<command>
   toggleGens:

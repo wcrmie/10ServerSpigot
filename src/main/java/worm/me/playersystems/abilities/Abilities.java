@@ -161,7 +161,7 @@ public class Abilities {
         return getAbilityCooldownRemaining(p, abilitySlot) > 0;
     }
 
-    public boolean hasAbilityOnCooldown(Player p) {
+    public static boolean hasAbilityOnCooldown(Player p) {
         long now = System.currentTimeMillis();
         long[] cooldowns = Objects.requireNonNullElse(
                 p.getPersistentDataContainer().get(abilityCooldown, PersistentDataType.LONG_ARRAY),

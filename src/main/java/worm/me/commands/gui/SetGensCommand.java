@@ -14,7 +14,7 @@ public class SetGensCommand implements CommandExecutor {
             GensMainMenu genInv = new GensMainMenu(player);
 
             // This opens the GUI for the player
-            genInv.genOptions(player);
+            genInv.open();
             return true;
         } else sender.sendMessage("This command is for the player, silly!");
         return false;
