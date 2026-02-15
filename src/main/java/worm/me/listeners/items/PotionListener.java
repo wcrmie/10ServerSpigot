@@ -53,8 +53,8 @@ public class PotionListener implements Listener {
                     SizeModifier.setPlayerSize(player, playerSize - 0.2 * playerSize);
                     Objects.requireNonNull(player.getAttribute(Attribute.MAX_HEALTH)).setBaseValue(20*(playerSize - 0.2 * playerSize));
                     Objects.requireNonNull(player.getAttribute(Attribute.MOVEMENT_SPEED)).setBaseValue(0.1*((playerSize+0.1)/2));
-                    Objects.requireNonNull(player.getAttribute(Attribute.BLOCK_INTERACTION_RANGE)).setBaseValue(4.5+playerSize);
-                    Objects.requireNonNull(player.getAttribute(Attribute.ENTITY_INTERACTION_RANGE)).setBaseValue(3+playerSize);
+                    Objects.requireNonNull(player.getAttribute(Attribute.BLOCK_INTERACTION_RANGE)).setBaseValue(4.5+(playerSize*(3)));
+                    Objects.requireNonNull(player.getAttribute(Attribute.ENTITY_INTERACTION_RANGE)).setBaseValue(3+(playerSize*(3)));
 
                     break;
                 }

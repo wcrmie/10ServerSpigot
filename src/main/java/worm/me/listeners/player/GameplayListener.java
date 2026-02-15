@@ -323,8 +323,8 @@ public class GameplayListener implements Listener {
             World world = e.getPlayer().getWorld();
             Location center = new Location(world, 0, 220, 0);
 
-            int radius = 10;
-            int height = 7;
+            int radius = 6;
+            int height = 6;
 
             int totalBlocks = 0;
             int nonAirBlocks = 0;
@@ -355,7 +355,7 @@ public class GameplayListener implements Listener {
                 }
             }
 
-            if (nonAirBlocks >= totalBlocks / 2.5) {
+            if (nonAirBlocks >= totalBlocks / 3) {
 
                 TNTPrimed tnt = (TNTPrimed) world.spawnEntity(
                         center,
