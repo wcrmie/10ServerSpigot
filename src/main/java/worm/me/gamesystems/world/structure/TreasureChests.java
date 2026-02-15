@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.WorldBorder;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.plugin.Plugin;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 import org.bukkit.entity.Display;
@@ -22,16 +24,18 @@ public class TreasureChests {
 
     private final World world = Bukkit.getWorld("ul_Void");
     private final WorldBorder worldBorder = world.getWorldBorder();
+    private final Plugin plugin;
 
     private int xMoreThan, xLessThan, yMoreThan, yLessThan, zMoreThan, zLessThan;
 
     private final Map<Location, BlockDisplay> chestDisplays = new HashMap<>();
 
-    // Loot table from enum
     private final List<TreasureChestLootType> lootTable =
             Arrays.asList(TreasureChestLootType.values());
 
-    public TreasureChests() {
+    private static final long CHEST_SPAWN_INTERVAL = 30 * 60 * 20L;
+    public TreasureChests(Plugin plugin) {
+        this.plugin = plugin;
         updateBorderValues();
     }
 
@@ -43,6 +47,21 @@ public class TreasureChests {
         zLessThan = (int) (borderSize / 2) - 1;
         yMoreThan = 219;
         yLessThan = 280;
+    }
+
+    public void onPluginEnable() {
+
+
+        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(
+                plugin,
+                this::chestSpawn,
+                CHEST_SPAWN_INTERVAL,
+                CHEST_SPAWN_INTERVAL
+        );
+    }
+
+    public void onPluginDisable() {
+        removeAllDisplays();
     }
 
     public Location worldBorderGetRandomBlock() {

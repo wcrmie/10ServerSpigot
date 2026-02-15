@@ -93,8 +93,8 @@ public final class Server extends JavaPlugin {
         assert world != null;
         WorldBorderSizeHandler = new WorldBorderSizeHandler(this);
         playerspawning = new PlayerSpawning(this);
-        this.treasureChests = new TreasureChests();
-        setupChestSpawnSchedule();
+        this.treasureChests = new TreasureChests(this);
+        treasureChests.onPluginEnable();
 
         // Add custom recipes
 
@@ -368,6 +368,8 @@ public final class Server extends JavaPlugin {
             playerspawning.removeAllBlocks();
         }
 
+        treasureChests.onPluginDisable();
+
         WorldReset.getInstance().saveData();
 
         if (treasureChests != null) treasureChests.removeAllDisplays();
@@ -388,30 +390,6 @@ public final class Server extends JavaPlugin {
         DoubleJump.cancelAllPlatforms();
     }
 
-    private void setupChestSpawnSchedule() {
-        long lastSpawn = getConfig().getLong(LAST_CHEST_SPAWN_KEY, 0);
-        long currentTime = System.currentTimeMillis();
-        long timeSinceLastSpawn = currentTime - lastSpawn;
-
-        long intervalMillis = 30 * 60 * 1000;
-
-        long initialDelay;
-        if (lastSpawn == 0) {
-            initialDelay = 0;
-        } else if (timeSinceLastSpawn >= intervalMillis) {
-            initialDelay = 0;
-        } else {
-            initialDelay = intervalMillis - timeSinceLastSpawn;
-        }
-
-        long initialDelayTicks = initialDelay / 50;
-
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
-            treasureChests.chestSpawn();
-            getConfig().set(LAST_CHEST_SPAWN_KEY, System.currentTimeMillis());
-            saveConfig();
-        }, initialDelayTicks, CHEST_SPAWN_INTERVAL);
-    }
 
     public static void pluginMessage(String message, Player p){
         p.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "10" + ChatColor.DARK_GRAY + "] " + message);
