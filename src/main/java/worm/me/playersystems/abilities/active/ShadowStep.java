@@ -36,7 +36,7 @@ public class ShadowStep {
 
         Vector direction = p.getLocation().getDirection().normalize();
 
-        double maxAngle = Math.toRadians(30);
+        double maxAngle = Math.toRadians(28);
         double pitch = Math.toRadians(-p.getLocation().getPitch());
 
         if (pitch > maxAngle) pitch = maxAngle;

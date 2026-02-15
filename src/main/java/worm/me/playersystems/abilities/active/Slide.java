@@ -41,11 +41,11 @@ public class Slide {
                 Vector direction = p.getLocation().getDirection();
 
                 if (ticks < 6){
-                    speed += 0.175;
+                    speed += 0.2;
                 }
 
-                if (ticks > 16){
-                    speed -= 0.1;
+                if (ticks > 24){
+                    speed = Math.max(0.1, speed - 0.1);
                 }
 
                 direction.multiply(speed);

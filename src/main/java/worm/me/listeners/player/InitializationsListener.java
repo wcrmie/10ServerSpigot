@@ -1,9 +1,7 @@
 package worm.me.listeners.player;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
-import org.bukkit.boss.BarColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,7 +15,6 @@ import worm.me.Server;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.FeatherDash;
 import worm.me.data.VoidPlayer;
-import worm.me.playersystems.abilities.active.HeavyMiner;
 import worm.me.playersystems.generator.Generator;
 import worm.me.utils.info.Tips;
 import worm.me.utils.join.FirstJoin;
@@ -103,7 +100,7 @@ public class InitializationsListener implements Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event){
 
-        HeavyMiner.cancel(event.getPlayer());
+
 
         if (!event.isBedSpawn()) {
 

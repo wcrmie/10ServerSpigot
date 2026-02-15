@@ -13,7 +13,7 @@ public class SlowFalling {
 
     public void slowFalling(Player p){
 
-        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 50, 1, false, false));
+        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 60, 1, false, false));
 
         p.getWorld().playSound(
                 p.getLocation(),
@@ -35,7 +35,7 @@ public class SlowFalling {
 
                 Vector velocity = p.getVelocity();
 
-                velocity.setY(0.1);
+                velocity.setY(0.18);
                 p.setVelocity(velocity);
 
                 ticks++;
