@@ -1,35 +1,48 @@
 package worm.me.playersystems.abilities.active;
 
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import worm.me.Server;
 import worm.me.data.levels.Levels;
 
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class HeavyMiner {
+
+    private static final Map<UUID, BukkitTask> activeTasks = new ConcurrentHashMap<>();
 
     public void heavyMiner(Player p){
 
+        cancel(p);
+
         p.getWorld().playSound(p.getLocation(), Sound.BLOCK_CONDUIT_AMBIENT, .8f, 1.5f);
+
         p.addPotionEffect(new PotionEffect(PotionEffectType.HASTE, 20 * 10, 2, false, false));
         p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20 * 10, 1, false, true));
         p.addPotionEffect(new PotionEffect(PotionEffectType.DARKNESS, 20 * 10, 1, false, true));
         p.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 20 * 10, 2, false, true));
 
-        new BukkitRunnable() {
+        BukkitTask task = new BukkitRunnable() {
+
             int ticks = 0;
+
             @Override
             public void run() {
-                if (ticks++ > 20*10) {
-                    cancel();
+
+                if (!p.isOnline() || p.isDead() || ticks++ > 20 * 10) {
+                    HeavyMiner.cancel(p);
+                    return;
                 }
-                if (ticks == 10*20){
+
+                if (ticks == 10 * 20){
                     p.getWorld().playSound(p.getLocation(), Sound.BLOCK_CONDUIT_AMBIENT, .8f, 1.5f);
                 }
 
@@ -40,12 +53,24 @@ public class HeavyMiner {
 
                 p.setVelocity(vel.add(resistance).add(gravity));
 
-                p.getWorld().spawnParticle(Particle.SQUID_INK, p.getLocation(), 2, 0.2, 0.05, 0.2, 0.01);
+                p.getWorld().spawnParticle(
+                        Particle.SQUID_INK,
+                        p.getLocation(),
+                        2, 0.2, 0.05, 0.2, 0.01
+                );
             }
+
         }.runTaskTimer(Server.getPlugin(), 0L, 1L);
 
-        Levels.addExp(5L, Levels.skillTranslation("Mining"), p);
+        activeTasks.put(p.getUniqueId(), task);
 
+        Levels.addExp(5L, Levels.skillTranslation("Mining"), p);
     }
 
+    public static void cancel(Player p) {
+        BukkitTask task = activeTasks.remove(p.getUniqueId());
+        if (task != null) {
+            task.cancel();
+        }
+    }
 }

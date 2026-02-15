@@ -17,6 +17,7 @@ import worm.me.Server;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.FeatherDash;
 import worm.me.data.VoidPlayer;
+import worm.me.playersystems.abilities.active.HeavyMiner;
 import worm.me.playersystems.generator.Generator;
 import worm.me.utils.info.Tips;
 import worm.me.utils.join.FirstJoin;
@@ -101,6 +102,8 @@ public class InitializationsListener implements Listener {
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event){
+
+        HeavyMiner.cancel(event.getPlayer());
 
         if (!event.isBedSpawn()) {
 
