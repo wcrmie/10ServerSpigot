@@ -79,6 +79,8 @@ public class Abilities {
         abilityGuiComponents.put(16, List.of("Crescent Left", "PUMKIN_PIE",
                 ChatColor.DARK_GRAY + " " + ChatColor.GRAY + " "));
 
+        abilityGuiComponents.put(17, List.of("Slow Falling", "PHANTOM_MEMBRANE",
+                ChatColor.DARK_GRAY + " " + ChatColor.GRAY + " "));
 
     }
 

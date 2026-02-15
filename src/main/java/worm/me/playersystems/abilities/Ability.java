@@ -147,7 +147,16 @@ public enum Ability {
             new Reqs.RequirementBuilder().smithing(10).agility(18).build(),
             10,
             AbilityType.DOUBLE_SPACE,
-            player -> new CrescentLeft().crescentLeft(player));
+            player -> new CrescentLeft().crescentLeft(player)),
+    SlowFalling(17,
+                 Material.PHANTOM_MEMBRANE,
+            "Slow Falling",
+                         "<dark_gray>Fall slowly and get a little boost up</dark_gray>",
+                         new Reqs.RequirementBuilder().agility(13).farming(5).build(),
+            18,
+    AbilityType.DOUBLE_SPACE,
+    player -> new SlowFalling().slowFalling(player));
+
 
 
     private final int id;
