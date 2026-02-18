@@ -322,14 +322,6 @@ public class GameplayListener implements Listener {
             e.setDamage(SizeModifier.calculateDamage(attacker, e.getDamage()));
         }
 
-        if (e.getDamageSource() != null &&
-                e.getDamageSource().getCausingEntity() instanceof Entity source) {
-
-            if (source.getScoreboardTags().contains("noDamage")) {
-                e.setCancelled(true);
-            }
-        }
-
         if (e.getEntity() instanceof Player player) {
             if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
                 if (!player.isSneaking()) {
