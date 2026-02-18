@@ -6,6 +6,8 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import worm.me.Server;
@@ -68,10 +70,7 @@ public class CrescentLeft {
             }
         }.runTaskTimer(Server.getPlugin(), 0L, 1L);
 
-        Vector velocity = p.getVelocity();
-
-        velocity.setY(0.01);
-        p.setVelocity(velocity);
+        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 1, 1, false, false));
     }
 
 
