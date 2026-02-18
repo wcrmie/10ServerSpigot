@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import worm.me.Server;
 import worm.me.gamesystems.world.border.WorldBorderSizeHandler;
+import worm.me.gamesystems.world.structure.TreasureChests;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 
@@ -112,6 +113,7 @@ public class WorldReset {
     public void triggerReset(Player p){
         isBlockPlacingDisabled = true;
         Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "WORLD RESET STARTING!");
+        Server.getPlugin().getTreasureChests().removeAllDisplays();
         worldStartingSize = ThreadLocalRandom.current().nextInt(150, 200);
         this.originalBorderSize = (int) worldBorder.getSize();
         this.originalCenter = worldBorder.getCenter().clone();
