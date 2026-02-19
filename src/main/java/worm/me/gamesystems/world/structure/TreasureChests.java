@@ -252,11 +252,21 @@ public class TreasureChests {
     }
 
     public void removeAllDisplays() {
-        for (BlockDisplay display : chestDisplays.values()) {
-            if (display != null && !display.isDead()) display.remove();
+
+        Iterator<Map.Entry<Location, BlockDisplay>> iterator = chestDisplays.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<Location, BlockDisplay> entry = iterator.next();
+            BlockDisplay display = entry.getValue();
+
+            if (display != null && display.isValid()) {
+                display.remove();
+            }
+
+            iterator.remove();
         }
-        chestDisplays.clear();
     }
+
 
     public void removeClosestDisplay(Location loc, double radius) {
         BlockDisplay closest = null;

@@ -316,72 +316,10 @@ public class GameplayListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerRespawn(PlayerRespawnEvent e) {
-
-        if (!e.isBedSpawn()) {
-
-            World world = e.getPlayer().getWorld();
-            Location center = new Location(world, 0, 220, 0);
-
-            int radius = 6;
-            int height = 6;
-
-            int totalBlocks = 0;
-            int nonAirBlocks = 0;
-
-            int baseX = center.getBlockX();
-            int baseY = center.getBlockY();
-            int baseZ = center.getBlockZ();
-
-            for (int y = 0; y < height; y++) {
-                for (int x = -radius; x <= radius; x++) {
-                    for (int z = -radius; z <= radius; z++) {
-
-                        if (x * x + z * z <= radius * radius) {
-
-                            totalBlocks++;
-
-                            Block block = world.getBlockAt(
-                                    baseX + x,
-                                    baseY + y,
-                                    baseZ + z
-                            );
-
-                            if (block.getType() != Material.AIR) {
-                                nonAirBlocks++;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (nonAirBlocks >= totalBlocks / 3) {
-
-                TNTPrimed tnt = (TNTPrimed) world.spawnEntity(
-                        center,
-                        EntityType.TNT
-                );
-
-                tnt.setIsIncendiary(false);
-                tnt.setYield(32F);
-                tnt.setFuseTicks(40);
-            }
-        }
-    }
-
-    @EventHandler
     public void onEntityDamage(EntityDamageEvent e){
 
         if (e.getDamageSource() instanceof Player attacker && SizeModifier.getSize(attacker) <= 1) {
             e.setDamage(SizeModifier.calculateDamage(attacker, e.getDamage()));
-        }
-
-        if (e.getDamageSource() != null &&
-                e.getDamageSource().getCausingEntity() instanceof Entity source) {
-
-            if (source.getScoreboardTags().contains("noDamage")) {
-                e.setCancelled(true);
-            }
         }
 
         if (e.getEntity() instanceof Player player) {
