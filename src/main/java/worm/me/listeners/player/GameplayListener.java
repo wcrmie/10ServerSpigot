@@ -622,7 +622,7 @@ public class GameplayListener implements Listener {
                 event.getResult().addUnsafeEnchantment(ench, 3);
             }
 
-            if ((ench.equals(Enchantment.SHARPNESS))) {
+            if ((ench.equals(Enchantment.SHARPNESS) && result.getEnchantments().get(ench) > 4)) {
                 event.getResult().removeEnchantment(ench);
                 event.getResult().addUnsafeEnchantment(ench, 4);
             }
