@@ -1,7 +1,5 @@
 package worm.me.playersystems.quests;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 

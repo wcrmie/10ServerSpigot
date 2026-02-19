@@ -61,34 +61,9 @@
             <url>https://repo.destroystokyo.com/repository/maven-public//</url>
         </repository>
 
-        <repository>
-            <id>retrooper-repo</id>
-            <url>https://repo.retrooper.net/repository/maven-public/</url>
-        </repository>
     </repositories>
 
     <dependencies>
-
-        <dependency>
-            <groupId>net.luckperms</groupId>
-            <artifactId>api</artifactId>
-            <version>5.4</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.38</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>net.dv8tion</groupId>
-            <artifactId>JDA</artifactId>
-            <version>5.6.1</version>
-            <scope>compile</scope>
-        </dependency>
 
         <dependency>
             <groupId>io.papermc.paper</groupId>
@@ -96,16 +71,12 @@
             <version>1.21.11-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+
         <dependency>
+
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.21.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.skinsrestorer</groupId>
-            <artifactId>skinsrestorer-api</artifactId>
-            <version>15.4.4</version>
             <scope>provided</scope>
         </dependency>
 
@@ -113,20 +84,6 @@
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
             <version>7.0.12</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>net.coreprotect</groupId>
-            <artifactId>coreprotect</artifactId>
-            <version>23.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.retrooper</groupId>
-            <artifactId>packetevents-spigot</artifactId>
-            <version>2.7.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

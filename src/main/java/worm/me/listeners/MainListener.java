@@ -14,8 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import worm.me.menu.Menu;
-import worm.me.menu.PlayerProfileMenu;
+import worm.me.menu.*;
 import worm.me.menu.abilities.AbilitiesSubMenu;
 import worm.me.menu.generators.GensSubMenu;
 import worm.me.menu.recipes.RecipeSpecificMenu;
@@ -26,12 +25,10 @@ import worm.me.menu.abilities.AbilitiesMainMenu;
 import worm.me.gamesystems.items.gear.Upgrade;
 import worm.me.menu.generators.GensMainMenu;
 import worm.me.data.*;
-import worm.me.menu.SkillsMenu;
 //import worm.me.playersystems.social.legacyhats.Hats;
 import worm.me.utils.info.GuideBook;
 //import worm.me.playersystems.social.skins.SkinGui;
 import worm.me.gamesystems.items.gear.tools.ToolsEvents;
-import worm.me.menu.MainGUIMenu;
 import worm.me.utils.Item;
 
 import java.util.*;
@@ -170,43 +167,21 @@ public class MainListener implements Listener {
             event.setCancelled(true);
         }
 
+        if (inventory.getHolder() instanceof MainSubMenu && Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).getType() == Material.SPECTRAL_ARROW && event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Go Back")) {
+            MainGUIMenu mainGUIMenu = new MainGUIMenu(player);
+            mainGUIMenu.open();
+        }
+
         if (inventory.getHolder() instanceof Menu menu) {
 
             event.setCancelled(true);
 
             player.playSound(player, Sound.UI_BUTTON_CLICK, 0.3F, ThreadLocalRandom.current().nextFloat(1.0F, 1.2F));
 
-            switch (menu) {
-
-                case PlayerProfileMenu profileGUI -> profileGUI.handleClick(event);
-
-                case MainGUIMenu mainMenu -> mainMenu.handleClick(event);
-
-                case SkillsMenu skillsMenu -> skillsMenu.handleClick(event);
-
-                case RecipeBrowserMenu recipeBrowserMenu -> recipeBrowserMenu.handleClick(event);
-
-                case RecipeSpecificMenu recipeSpecificMenu -> recipeSpecificMenu.handleClick(event);
-
-                case GensMainMenu gensMainMenu -> gensMainMenu.handleClick(event);
-
-                case GensSubMenu gensSubMenu -> gensSubMenu.handleClick(event);
-
-                case AbilitiesMainMenu abilitiesMainMenu -> abilitiesMainMenu.handleClick(event);
-
-                case AbilitiesSubMenu abilitiesSubMenu -> abilitiesSubMenu.handleClick(event);
-
-                default -> Server.getPlugin().getLogger().info("bruh");
-            }
+            menu.handleClick(event);
         }
 
         if (Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).isSimilar(Item.create(Material.BARRIER, ChatColor.RED + "Close Menu", " ", ChatColor.GRAY + "Close this menu."))) player.closeInventory();
-
-        if (Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).getType() == Material.SPECTRAL_ARROW && event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Go Back")){
-            MainGUIMenu mainGUIMenu = new MainGUIMenu(player);
-            mainGUIMenu.open();
-
-        }
 
     }
 }

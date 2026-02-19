@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.structure.Structure;
 import org.bukkit.structure.StructureManager;
 import org.bukkit.util.Vector;
@@ -19,31 +18,20 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Island {
 
-    private static JavaPlugin plugin;
-    private static World world;
-    private static WorldBorder worldBorder;
-
-    public Island(Server server) {
-    }
-
-    public static void init(JavaPlugin pluginInstance) {
-        plugin = pluginInstance;
-    }
-
-    private static StructureManager structureManager = Bukkit.getStructureManager();
+    private static final StructureManager structureManager = Bukkit.getStructureManager();
 
     public static void spawnIslandType(String typeName) {
         IslandType type;
         try {
             type = IslandType.valueOf(typeName.toUpperCase()); // Convert string to enum
         } catch (IllegalArgumentException e) {
-            Bukkit.getLogger().warning("[Island] Invalid island type: " + typeName.toUpperCase());
+            Server.getPlugin().getLogger().warning("[Island] Invalid island type: " + typeName.toUpperCase());
             return;
         }
 
-        File folder = new File(plugin.getDataFolder(), "structures");
+        File folder = new File(Server.getPlugin().getDataFolder(), "structures");
         if (!folder.exists()) {
-            Bukkit.getLogger().warning("[Island] No structures folder found");
+            Server.getPlugin().getLogger().warning("[Island] No structures folder found");
             return;
         }
 
@@ -51,7 +39,7 @@ public class Island {
                 name.startsWith(type.name() + "_") && name.endsWith(".nbt"));
 
         if (files == null || files.length == 0) {
-            Bukkit.getLogger().warning("[Island] No structures found for type: " + type);
+            Server.getPlugin().getLogger().warning("[Island] No structures found for type: " + type);
             return;
         }
 
@@ -76,7 +64,7 @@ public class Island {
         }
 
         if (candidates.isEmpty()) {
-            Bukkit.getLogger().warning("[Island] No structures found for type: " + type + " in any size");
+            Server.getPlugin().getLogger().warning("[Island] No structures found for type: " + type + " in any size");
             return;
         }
 
@@ -91,13 +79,13 @@ public class Island {
         try {
             type = IslandType.valueOf(typeName.toUpperCase()); // Convert string to enum
         } catch (IllegalArgumentException e) {
-            Bukkit.getLogger().warning("[Island] Invalid island type: " + typeName.toUpperCase());
+            Server.getPlugin().getLogger().warning("[Island] Invalid island type: " + typeName.toUpperCase());
             return;
         }
 
-        File folder = new File(plugin.getDataFolder(), "structures");
+        File folder = new File(Server.getPlugin().getDataFolder(), "structures");
         if (!folder.exists()) {
-            Bukkit.getLogger().warning("[Island] No structures folder found");
+            Server.getPlugin().getLogger().warning("[Island] No structures folder found");
             return;
         }
 
@@ -105,7 +93,7 @@ public class Island {
                 name.startsWith(type.name() + "_") && name.endsWith(".nbt"));
 
         if (files == null || files.length == 0) {
-            Bukkit.getLogger().warning("[Island] No structures found for type: " + type);
+            Server.getPlugin().getLogger().warning("[Island] No structures found for type: " + type);
             return;
         }
 
@@ -130,7 +118,7 @@ public class Island {
         }
 
         if (candidates.isEmpty()) {
-            Bukkit.getLogger().warning("[Island] No structures found for type: " + type + " in any size");
+            Server.getPlugin().getLogger().warning("[Island] No structures found for type: " + type + " in any size");
             return;
         }
 
@@ -143,15 +131,15 @@ public class Island {
 
     public static void spawnIsland(String name) {
         try {
-            File file = new File(plugin.getDataFolder(), "structures/" + name + ".nbt");
+            File file = new File(Server.getPlugin().getDataFolder(), "structures/" + name + ".nbt");
             if (!file.exists()) {
-                Bukkit.getLogger().warning("[Island] Structure not found: " + name);
+                Server.getPlugin().getLogger().warning("[Island] Structure not found: " + name);
                 return;
             }
 
             Structure structure = structureManager.loadStructure(file);
             if (structure == null) {
-                Bukkit.getLogger().warning("[Island] Failed to load: " + name);
+                Server.getPlugin().getLogger().warning("[Island] Failed to load: " + name);
                 return;
             }
 
@@ -162,14 +150,14 @@ public class Island {
 
             Location loc = PlayArea.validSpawnLocation(xSize, ySize, zSize);
             if (loc == null) {
-                Bukkit.getLogger().warning("[Island] Could not find valid location for: " + name);
+                Server.getPlugin().getLogger().warning("[Island] Could not find valid location for: " + name);
                 return;
             }
 
             if (Generate.placeStructureStatic(loc, name)) {
-                Bukkit.getLogger().info("[Island] Spawned island: " + name + " at " + loc);
+                Server.getPlugin().getLogger().info("[Island] Spawned island: " + name + " at " + loc);
             } else {
-                Bukkit.getLogger().warning("[Island] Failed to place island: " + name);
+                Server.getPlugin().getLogger().warning("[Island] Failed to place island: " + name);
             }
 
         } catch (Exception e) {
@@ -180,15 +168,15 @@ public class Island {
     public static void forceSpawnIsland(String name) {
         try {
             for (int i = 1; i <= 50 ; i++) {
-                File file = new File(plugin.getDataFolder(), "structures/" + name + ".nbt");
+                File file = new File(Server.getPlugin().getDataFolder(), "structures/" + name + ".nbt");
                 if (!file.exists()) {
-                    Bukkit.getLogger().warning("[Island] Structure not found: " + name);
+                    Server.getPlugin().getLogger().warning("[Island] Structure not found: " + name);
                     return;
                 }
 
                 Structure structure = structureManager.loadStructure(file);
                 if (structure == null) {
-                    Bukkit.getLogger().warning("[Island] Failed to load: " + name);
+                    Server.getPlugin().getLogger().warning("[Island] Failed to load: " + name);
                     return;
                 }
 
@@ -199,16 +187,16 @@ public class Island {
 
                 Location loc = PlayArea.validSpawnLocation(xSize, ySize, zSize);
                 if (loc == null) {
-                    world = Bukkit.getWorld("ul_Void");
-                    worldBorder = world.getWorldBorder();
+                    World world = Bukkit.getWorld("ul_Void");
+                    WorldBorder worldBorder = world.getWorldBorder();
                     worldBorder.setSize((worldBorder.getSize() + 2));
                     continue;
                 }
 
                 if (Generate.placeStructureStatic(loc, name)) {
-                    Bukkit.getLogger().info("[Island] Spawned island: " + name + " at " + loc);
+                    Server.getPlugin().getLogger().info("[Island] Spawned island: " + name + " at " + loc);
                 } else {
-                    Bukkit.getLogger().warning("[Island] Failed to place island: " + name);
+                    Server.getPlugin().getLogger().warning("[Island] Failed to place island: " + name);
                 }
             }
         } catch (Exception e) {

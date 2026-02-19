@@ -1,8 +1,5 @@
 package worm.me.gamesystems.fishing.voidfishing;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -194,7 +191,6 @@ public class VoidBobber {
         activeBobbers.remove(this);
     }
 
-    @Getter
     public static class VoidFishPath implements CurveFactory{
 
         private final Location end;

@@ -20,6 +20,7 @@ import worm.me.gamesystems.world.structure.TreasureChests;
 import worm.me.gamesystems.world.reset.WorldReset;
 import worm.me.listeners.MainListener;
 import worm.me.listeners.items.PotionListener;
+import worm.me.listeners.items.ToolListener;
 import worm.me.listeners.player.*;
 import worm.me.listeners.world.WorldListener;
 import worm.me.listeners.world.mobs.CustomMobsListener;
@@ -111,8 +112,6 @@ public final class Server extends JavaPlugin {
 
 
         Generate generate = new Generate(this);
-        Island Island = new Island(this);
-        Island.init(this);
 
         // Register commands
         getCommand("spawntreasure").setExecutor(new TreasureChestCommand(treasureChests));
@@ -145,6 +144,7 @@ public final class Server extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new VillagerListener(), this);
 
         getServer().getPluginManager().registerEvents(new PotionListener(), this);
+        getServer().getPluginManager().registerEvents(new ToolListener(), this);
 
         // Allows Command classes to register commands
         configManager = new ConfigManager();
