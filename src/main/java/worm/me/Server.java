@@ -14,6 +14,7 @@ import worm.me.commands.gui.OpenLevelsGUICommand;
 import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.gamesystems.recipes.SmeltingRecipes;
+import worm.me.gamesystems.world.generation.island.IslandManager;
 import worm.me.gamesystems.world.structure.generation.Generate;
 import worm.me.gamesystems.world.structure.Island;
 import worm.me.gamesystems.world.structure.TreasureChests;
@@ -99,6 +100,8 @@ public final class Server extends JavaPlugin {
 
         // Add custom recipes
 
+        IslandManager islandManager = new IslandManager();
+
         ShapedRecipes shapedRecipes = new ShapedRecipes();
 
         ShapelessRecipes shapelessRecipes = new ShapelessRecipes();
@@ -114,6 +117,8 @@ public final class Server extends JavaPlugin {
         Generate generate = new Generate(this);
 
         // Register commands
+        getCommand("generateisland").setExecutor(new IslandGenerationCommand());
+        getCommand("handbook").setExecutor(new HandBookCommand());
         getCommand("spawntreasure").setExecutor(new TreasureChestCommand(treasureChests));
         getCommand("setresettimer").setExecutor(new WorldResetSetTimeCommand());
         getCommand("resetworld").setExecutor(new WorldResetCommand());

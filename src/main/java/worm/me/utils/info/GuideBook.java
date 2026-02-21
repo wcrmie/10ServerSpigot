@@ -1,5 +1,7 @@
 package worm.me.utils.info;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -15,202 +17,202 @@ public class GuideBook {
     public static void guideBook(Player p){
         ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta meta = (BookMeta) book.getItemMeta();
-        List<BaseComponent[]> pages = new ArrayList<>();
+        List<Component> pages = new ArrayList<>();
 
         // Welcome Page
-        pages.add(new ComponentBuilder("Welcome to 10: void!").underlined(true)
-                .append("\n\nThis book is meant to help you learn about some of the fun and unique features this server offers!\n\nMake sure to follow the rules (").reset()
-                .append("/rules").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/rules"))
-                .append(") and have a good time! :)").reset().create());
+        pages.add(MiniMessage.miniMessage().deserialize(
+                "Introduction\n" +
+                        "-----------\n" +
+                        "\n" +
+                        "Welcome to 10. This handbook has been created to help players in their trek among <#6432c8>Void Civilization</#6432c8>.\n" +
+                        "\n" +
+                        "The information contained within will be vital to your success and experience on the server."
+        ));
 
         // How to Use This Book
-        pages.add(new ComponentBuilder("How to use this book").underlined(true)
-                .append("\n\nAny time you see a gold button of text [Example] you can click it to go to that section.\n\nAny time you see (").reset()
-                .append("/command").color(ChatColor.AQUA).bold(true)
-                .append(") clicking on this will exit out of this book and execute that command for you.").reset().create());
+        pages.add(MiniMessage.miniMessage().deserialize(
+
+                "Introduction (cont.)\n" +
+                        "-----------\n" +
+                        "\n" +
+                        "We hope you enjoy your stay, and remember: You can always <gold><b><click:run_command:/handbook>/handbook</click></b></gold> to read this again any time! \n" +
+                        "\n" +
+                        "<aqua>Voice Chat is enabled and recommended:</aqua> <hover:show_text:'<gray>https://modrinth.com/plugin/simple-voice-chat</gray>'><click:open_url:https://modrinth.com/plugin/simple-voice-chat><gold><b>[CLICK HERE]</b></gold></click></hover>"
+
+        ));
 
         // Table of Contents - All on one page
-        pages.add(new ComponentBuilder("Table of Contents").underlined(true)
-                .append("\n\n").reset()
-                .append("[Rules]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "4"))
-                .append("\n").reset()
-                .append("[Useful Commands]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "6"))
-                .append("\n").reset()
-                .append("[Tools]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "7"))
-                .append("\n").reset()
-                .append("[Item Generation]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "8"))
-                .append("\n").reset()
-                .append("[Leveling]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "10"))
-                .append("\n").reset()
-                .append("[Abilities]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "13"))
-                .append("\n").reset()
-                .append("[Progression]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "16"))
-                .append("\n").reset()
-                .append("[Communication]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "23"))
-                .append("\n").reset()
-                .append("[Reputation]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "27"))
-                .append("\n").reset()
-                .append("[Hats]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "29"))
-                .append("\n").reset()
-                .append("[Enchantments]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "32"))
-                .append("\n").reset()
-                .append("[World]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "34")).create());
+        pages.add(MiniMessage.miniMessage().deserialize(
+
+                "Rules (shortened)\n" +
+                        "-----------\n" +
+                        "\n" +
+                        "1. No Hacking/Exploits\n" +
+                        "2. No Racism/Bigotry\n" +
+                        "3. No Undue Weirdness\n" +
+                        "4. No Spam\n" +
+                        "5. No Advertising\n" +
+                        "6. Do not ruin the player experience.\n" +
+                        "7. USE COMMON SENSE!\n" +
+                        "\n" +
+                        "Make sure to <red>/report</red> Cheaters!"
+
+        ));
 
         // Rules
-        pages.add(new ComponentBuilder("Rules").underlined(true)
-                .append("\n\n1. No Hacking\n2. Don't be excessively toxic\n3. No racism/bigotry\n4. DON'T SPAM! WE CAN SEE YOUR MESSAGES!\n5. Don't advertise your Server; nobody wants to join it anyways\n\n").reset().create());
-        pages.add(new ComponentBuilder("Rules (cont.)").underlined(true)
-                .append("\n\nYou can see these rules any time by doing (").reset()
-                .append("/rules").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/rules"))
-                .append(")\n\nAlso if you see someone breaking these rules at any time make sure to (").reset()
-                .append("/report").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/report"))
-                .append(") them\n\n\n").reset()
-                .append("[Table of Contents]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "3")).create());
+        pages.add(MiniMessage.miniMessage().deserialize(
+
+                "Fundamentals\n" +
+                        "-----------\n" +
+                        "\n" +
+                        "On 10 many vanilla features remain while others have been modified or removed.\n" +
+                        "\n" +
+                        "Custom <gold><click:run_command:/recipes><hover:show_text:'<gray>[CLICK]</gray> to run /recipes'>/recipes</click></gold> exist, many rebalanced with price reductions. \n" +
+                        "\n" +
+                        "Some stack sizes have been changed as well."
+
+        ));
+        pages.add(MiniMessage.miniMessage().deserialize(
+
+                "Tools\n" +
+                        "-----------\n" +
+                        "\n" +
+                        "You can upgrade some tools and armor by clicking material onto the item in your inventory. \n" +
+                        "\n" +
+                        "Requirements are listed in the tooltip, seen by hovering over the tool."
+
+        ));
 
         // Useful Commands
-        pages.add(new ComponentBuilder("Useful Commands").underlined(true)
-                .append("\n\n(").reset()
-                .append("/menu").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/menu"))
-                .append(")\n(").reset()
-                .append("/profile").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/profile"))
-                .append(")\n(").reset()
-                .append("/levels").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/levels"))
-                .append(")\n(").reset()
-                .append("/setgens").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/setgens"))
-                .append(")\n(").reset()
-                .append("/abilities").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/abilities"))
-                .append(")\n(").reset()
-                .append("/report").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/report"))
-                .append(")\n(").reset()
-                .append("/recipes").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/recipes"))
-                .append(")\n(").reset()
-                .append("/rules").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/rules"))
-                .append(")\n(").reset()
-                .append("/sit").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/sit"))
-                .append(")\n\n\n").reset()
-                .append("[Table of Contents]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "3")).create());
+        pages.add(MiniMessage.miniMessage().deserialize(
+
+                "Tools (cont.)\n" +
+                        "-----------\n" +
+                        "\n" +
+                        "If a tool breaks it'll revert to the previous tier - you cannot skip tiers when upgrading. \n" +
+                        "\n" +
+                        "Throughout 10 there are many sidegrades like Unbreakable copper tools and emerald armor."
+
+        ));
 
         // Tools
-        pages.add(new ComponentBuilder("Tools").underlined(true)
-                .append("\n\nEveryone starts with wooden tools and can't craft others. Upgrade them with cobble or iron by hovering over the tool to see requirements, then place the material onto it inside your inventory.\n").reset()
-                .append("[Table of Contents]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "3")).create());
+        pages.add(MiniMessage.miniMessage().deserialize(
+
+                "Enchantments (cont.)\n" +
+                        "-----------\n" +
+                        "\n" +
+                        "Upgrading a tool rolls a 10% chance it will gain an enchant related to it's primary use-case.\n" +
+                        "\n" +
+                        "If an enchanted item breaks there's a 20% chance per enchant it'll reduce the level by one."
+
+        ));
 
         // Item Generation
-        pages.add(new ComponentBuilder("Item Generation").underlined(true)
-                .append("\n\nYou get an item every 10 seconds. Each time you receive an item, it will have a chance of coming from 4 categories: Stones, Loose Blocks, Woods, Iron Ore.").reset().create());
-        pages.add(new ComponentBuilder("Item Generation (cont.").underlined(true)
-                .append("\n\nYou can change what item you get in these categories as you level up your skills with (").reset()
-                .append("/setgens").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/setgens"))
-                .append(").\n\n\n\n\n\n\n").reset()
-                .append("[Table of Contents]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "3")).create());
+        pages.add(MiniMessage.miniMessage().deserialize(
+
+                "Enchantments (cont.)\n" +
+                        "-----------\n" +
+                        "\n" +
+                        "Certain enchantments are capped such as protection and power. \n" +
+                        "\n" +
+                        "Tool tiers hold the same, with lower tiers being more restricted.\n" +
+                        "\n" +
+                        "These rarities, even when sold are done so at low levels."
+
+        ));
+
+        pages.add(MiniMessage.miniMessage().deserialize(
+
+                "Leveling\n" +
+                        "-----------\n" +
+                        "Leveling is a cornerstone of the server with multiple features locked behind it such as movement <click:run_command:/abilities><hover:show_text:'<gray>[CLICK]</gray> to run /abilities'><aqua>/abilities</aqua></hover></click> and block <green>generators</green>.\n" +
+                        "\n" +
+                        "You gain exp in various categories by doing related actions."
+
+        ));
 
         // Leveling
-        pages.add(new ComponentBuilder("Leveling").underlined(true)
-                .append("\n\nYou gain skill experience, and therefore levels, by doing certain actions related to the area they represent.\n\nThese are:\n1. Agility from using movement abilities.\n2. Combat from killing mobs (not players).\n").reset().create());
+        pages.add(MiniMessage.miniMessage().deserialize(
 
-        pages.add(new ComponentBuilder("Leveling (cont.)").underlined(true)
-                .append("\n\n3. Mining from breaking certain blocks (ores and stones).\n4. Foraging from breaking natural blocks (dirt, tall grass).\n5. Farming from, well, farming.\n6. Fishing from, as you would assume, fishing.").reset().create());
-        pages.add(new ComponentBuilder("Leveling (cont.)").underlined(true)
-                .append("\n\n7. Smithing from smelting items.\n8. Crafting from crafting items.\n\n\n\n\n\n\n\n").reset()
-                .append("[Table of Contents]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "3")).create());
+                "Leveling (cont.)\n" +
+                        "-----------\n" +
+                        "\n" +
+                        "Agility - use abilities. Combat - slay mobs.\n" +
+                        "Foraging - Break nature blocks.\n" +
+                        "Mining - Mine ores and stones.\n" +
+                        "Smithing - Smelt.\n" +
+                        "Farming - Farm.\n" +
+                        "Fishing - Fish.\n" +
+                        "Crafting - Craft."
+
+        ));
+
+        pages.add(MiniMessage.miniMessage().deserialize(
+
+                "Abilities\n" +
+                        "-----------\n" +
+                        "\n" +
+                        "Powerful <click:run_command:/abilities><hover:show_text:'<gray>[CLICK]</gray> to run /abilities'><aqua>/abilities</aqua></hover></click> exist, they're based on three categories:\n" +
+                        "basic, horizontal, and vertical.\n" +
+                        "\n" +
+                        "Activate them by tapping the spacebar twice, or crouching and right clicking with \n" +
+                        "a Sword/Axe! "
+
+        ));
+        pages.add(MiniMessage.miniMessage().deserialize(
+
+                "Generators\n" +
+                        "-----------\n" +
+                        "\n" +
+                        "You <green>generate</green> blocks every <#6432c8>10</#6432c8> seconds from four customizable sections\n" +
+                        "and one set block, the % chance is distributed between them.\n"
+
+        ));
 
         // Abilities
-        pages.add(new ComponentBuilder("Abilities").underlined(true)
-                .append("\n\nAbilities are tools used to move around the world in different and unique ways, there are 3 abilities slots one for basic abilities, one for horizontal ability and one for vertical abilities.").reset().create());
+        pages.add(MiniMessage.miniMessage().deserialize(
 
-        pages.add(new ComponentBuilder("Abilities (cont.)").underlined(true)
-                .append("\n\nYou start with the basic ability, Double Jump. you can use this now just by pressing your jump button twice in quick succession.").reset().create());
-        pages.add(new ComponentBuilder("Abilities (cont.)").underlined(true)
-                .append("\n\nTo unlock new abilities, the player must attain the correct skill level requirement. To equip an ability do (").reset()
-                .append("/abilities").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/abilities"))
-                .append(")\n\n\n\n\n\n").reset()
-                .append("[Table of Contents]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "3")).create());
+                "The World\n" +
+                        "-----------\n" +
+                        "\n" +
+                        "The world border grows depending on the amount of blocks placed and broken.\n" +
+                        "\n" +
+                        "Map resets happen regularly, with the world border being sized within an approved range after."
 
-        // Progression
-        pages.add(new ComponentBuilder("Progression").underlined(true)
-                .append("\n\nThere are 3 main resources in this game: iron, gold, and emeralds.\n\nIron is mostly used for upgrading tools, making anvils, and summoning iron golems.").reset().create());
+        ));
 
-        pages.add(new ComponentBuilder("Progression (cont.)").underlined(true)
-                .append("\n\nGold is the main resource used to trade with wandering traders, villagers, and the easiest way to get it is with a mob farm smelting down the gold armor.").reset().create());
+        pages.add(MiniMessage.miniMessage().deserialize(
 
-        pages.add(new ComponentBuilder("Progression (cont.)").underlined(true)
-                .append("\n\nEmeralds are gotten from killing endermen and doing raids, they are used for some of the latter trades with villagers and to craft emerald armor.").reset().create());
+                "The World (cont).\n" +
+                        "-----------\n" +
+                        "\n" +
+                        "Set events happen randomly like island spawns or treasure chests.\n" +
+                        "\n" +
+                        "If you ever wish to see information about the World please visit <click:run_command:/menu><hover:show_text:'<gray>[CLICK]</gray> to run /menu'><dark_aqua>/menu</dark_aqua></hover></click>."
 
-        pages.add(new ComponentBuilder("Progression (cont.)").underlined(true)
-                .append("\n\nThe main source of mid game items is from the wandering trader which naturally spawns rarely but, you can also fish one up if you really want to trade with one.").reset().create());
 
-        pages.add(new ComponentBuilder("Progression (cont.)").underlined(true)
-                .append("\n\nLate game we have Villagers, they are a little unique on this server, you can cure them to get them as in normal minecraft with a witch or potion and a golden apple. However, on this server that creates a nitwit that you need to teach with a").reset().create());
+        ));
+        pages.add(MiniMessage.miniMessage().deserialize(
 
-        pages.add(new ComponentBuilder("Progression (cont.)").underlined(true)
-                .append("\n\nknowledge tome in order for it to take a job.\n\nKnowledge tomes are obtained from placing down an iron golem and killing the mini boss that spawns.").reset().create());
+                "Commands\n" +
+                        "-----------\n" +
+                        "\n" +
+                        "<gold><click:run_command:/handbook><hover:show_text:'<gray>[CLICK]</gray> to run /handbook'>/handbook</hover></click></gold> \n" +
+                        "<click:run_command:/menu><hover:show_text:'<gray>[CLICK]</gray> to run /menu'><dark_aqua>/menu</dark_aqua></hover></click> \n" +
+                        "<click:run_command:/rules><hover:show_text:'<gray>[CLICK]</gray> to run /rules'><red>/rules</red></hover></click>\n" +
+                        "<click:suggest_command:/report><hover:show_text:'<gray>[CLICK]</gray> to run /report'><red>/report user</red></hover></click>\n" +
+                        "<click:suggest_command:/profile><hover:show_text:'<gray>[CLICK]</gray> to run /profile'><aqua>/profile user</aqua></hover></click>\n" +
+                        "\n" +
+                        "Commands exist for entries inside <click:run_command:/menu><hover:show_text:'<gray>[CLICK]</gray> to run /menu'><dark_aqua>/menu</dark_aqua></hover></click>. They use the same names listed there."
 
-        pages.add(new ComponentBuilder("Progression (cont.)").underlined(true)
-                .append("\n\nBoth villagers and wandering traders have completely custom trades.\n\nWhen smelting ores or gear you might want to craft a blast furnace, you get more nuggets.\n\n\n").reset()
-                .append("[Table of Contents]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "3")).create());
-
-        // Communication
-        pages.add(new ComponentBuilder("Communication").underlined(true)
-                .append("\n\nThis server uses Simple Voice Chat. If you would like to speak to players without using chat, feel free to install it.").reset().create());
-
-        pages.add(new ComponentBuilder("Communication (cont.)").underlined(true)
-                .append("\n\nOn this server, chat is slightly different. When a message is sent through chat, it will display a darker color dependent on how far away you are from the person that sent it.").reset().create());
-
-        pages.add(new ComponentBuilder("Communication (cont.)").underlined(true)
-                .append("\n\nWhen you or another player sends a message through chat, the message will be displayed above the head of the player who wrote it.\n\nThis text can become red depending on the player's reputation.").reset().create());
-
-        pages.add(new ComponentBuilder("Communication (cont.)").underlined(true)
-                .append("\n\nThis message above the head will also play a sound as it types out.\nThis sound can be changed with the (").reset()
-                .append("/setvoice").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/setvoice"))
-                .append(") command.\n\n\n\n\n").reset()
-                .append("[Table of Contents]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "3")).create());
-
-        // Reputation
-        pages.add(new ComponentBuilder("Reputation").underlined(true)
-                .append("\n\nPlayer reputation is a value to show how violent a player is, in terms of the amount of players they have killed in ratio to the amount of time they have spent in their reputation session.").reset().create());
-
-        pages.add(new ComponentBuilder("Reputation (cont.)").underlined(true)
-                .append("\n\nThe worse your reputation the more damage you take from players.\nA reputation session is a period of time starting on join and continuing as long as there is never more than an hour of inactivity.\n").reset()
-                .append("[Table of Contents]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "3")).create());
-
-        // Hats
-        pages.add(new ComponentBuilder("Hats").underlined(true)
-                .append("\n\nHelmets are non-existent on this server.\n\nInstead, this server has the feature to put any item or block on your head with the use of (").reset()
-                .append("/hat").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/hat"))
-                .append(")").reset().create());
-
-        pages.add(new ComponentBuilder("Hats (cont.)").underlined(true)
-                .append("\n\nSome items, when put on your head, may have additional functionality on top of being cosmetic.\n\nSome examples include:\n\nSaddles allow you to pick up mobs and players, and throw them").reset().create());
-
-        pages.add(new ComponentBuilder("Hats (cont.)").underlined(true)
-                .append("\n\nWhen you have a Bell on your head it chimes whenever you take damage.\n\n\n\n\n\n\n\n").reset()
-                .append("[Table of Contents]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "3")).create());
-
-        // Enchantments
-        pages.add(new ComponentBuilder("Enchantments").underlined(true)
-                .append("\n\nSome enchantments are limited on this server.\n\nUnbreaking is limited to level 1 except on armor.").reset().create());
-
-        pages.add(new ComponentBuilder("Enchantments(cont.)").underlined(true)
-                .append("\nSharpness, power, protection, and feather falling are all limited to level 3.\n\nWhen a tool or weapon down grades there's a chance for it to downgrade the enchantment level of that tool/weapon.\n\n").reset()
-                .append("[Table of Contents]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "3")).create());
-
-        // World
-        pages.add(new ComponentBuilder("World").underlined(true)
-                .append("\n\nEvery once in a while islands will spawn in random areas around the map.\nFor the rest of this information you can see the current status of the server right now using (").reset()
-                .append("/menu").color(ChatColor.AQUA).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/menu"))
-                .append(") and looking at the enchanted book.").reset().create());
-
-        pages.add(new ComponentBuilder("World (cont.)").underlined(true)
-                .append("\n\nThe world resets every 60 to 120 hours.\n\nthe world will expand depending on how many blocks are placed/broken, so in which the density of the world is the expansion percentage.\n").reset()
-                .append("[Table of Contents]").color(ChatColor.GOLD).event(new ClickEvent(ClickEvent.Action.CHANGE_PAGE, "3")).create());
-
+        ));
         // Set all pages
-        for (BaseComponent[] page : pages) {
-            meta.spigot().addPage(page);
+        for (Component page : pages) {
+            meta.addPages(page);
         }
 
         meta.setAuthor("§u§7w§do§7r§dm§7y");
-        meta.setTitle("10: void Guide Book");
+        meta.setTitle("Void Handbook");
         book.setItemMeta(meta);
         p.openBook(book);
     }
