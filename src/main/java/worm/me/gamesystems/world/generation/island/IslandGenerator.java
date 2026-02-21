@@ -1,9 +1,11 @@
 package worm.me.gamesystems.world.generation.island;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import worm.me.Server;
 import worm.me.gamesystems.world.generation.poisson.PoissonDisc;
@@ -27,7 +29,10 @@ public class IslandGenerator {
 
         generateUnderside(location, terrain, island);
         generateTop(location, terrain, island);
-        placeTrees(location, island);
+
+        Bukkit.getScheduler().runTaskLater(Server.getPlugin(), () -> {
+            placeTrees(location, island);
+        }, 1L);
 
     }
 
@@ -68,12 +73,11 @@ public class IslandGenerator {
 
     public static Material determineBlockMaterial(List<Material> palette, float densityValue) {
 
-        // considering densityValue ranges from 0 to 1
         int size = palette.size();
 
-        densityValue = Math.abs(densityValue); // Normalize to 0-1
+        densityValue = Math.abs(densityValue);
 
-        densityValue = Math.round(densityValue * size - (float) 1 /size); // Scale to palette size
+        densityValue = Math.round(densityValue * size - (float) 1 /size);
 
         int index = Math.min((int) Math.max(densityValue, 0), size - 1);
 
@@ -83,55 +87,35 @@ public class IslandGenerator {
     }
 
     private static void placeTrees(Location location, Island island) {
+        World world = location.getWorld();
+        int size = island.getSize();
 
-        Location corner1 = location.clone();
-        Location corner2 = location.clone().add(island.getSize(), 0, island.getSize());
+        Location corner1 = location.clone().add(0, 0, 0);
+        Location corner2 = location.clone().add(size, 0, size);
 
-        ArrayList<Location> points = PoissonDisc.generatePoints(location.getWorld(), corner1.add((double) island.getSize() /4,0, (double) island.getSize() /4), corner2.subtract((double) island.getSize() /4,0, (double) island.getSize() /4), 8, 12, 20);
-        Iterator<Location> iterator = points.iterator();
+        ArrayList<Location> points = PoissonDisc.generatePoints(world, corner1, corner2, 8, 12.0, 30);
 
-        HashMap<Location, String> treeLocations = new HashMap<>();
+        String[] treeTypes = {
+                "oak_tree_medium_1",
+                "oak_tree_small_1",
+                "tiny_oak_tree_1"
+        };
+        Random random = new Random();
 
-        while (iterator.hasNext()) {
-            Location point = iterator.next();
+        for (Location point : points) {
+            Block topBlock = world.getHighestBlockAt(point.getBlockX(), point.getBlockZ());
 
-            TreeStructure structure = TreeStructure.OAK;
-            String structureName = structure.getStructureNames().get(ThreadLocalRandom.current().nextInt(0, structure.getStructureNames().size()));
+            if (topBlock.getType().isSolid() && !topBlock.getType().isAir()) {
 
-            Block ground;
+                Location spawnLoc = topBlock.getLocation().add(0.5, 1, 0.5);
 
-            try {
+                String selectedTree = treeTypes[random.nextInt(treeTypes.length)];
 
-                ground = Objects.requireNonNull(location.getWorld()).getHighestBlockAt(point);
-
-            } catch (Exception e) {
-                iterator.remove();
-                break;
-
+                StructureSupplier.placeStructure(selectedTree, spawnLoc);
             }
-
-            Location groundLocation = ground.getLocation().add(1,0,1);
-
-            groundLocation.add(0,1,0);
-
-            treeLocations.put(groundLocation, structureName);
-
         }
-
-        for (Map.Entry<Location, String> entry : treeLocations.entrySet()) {
-
-            Server.getPlugin().getLogger().info("generating tree at " + entry.getKey().toString() + " for " + entry.getValue());
-
-            StructureSupplier.placeStructure(
-                    entry.getValue(),
-                    entry.getKey(),
-                    false
-            );
-
-
-        }
-
     }
+
 
 
     /** Generates the underside of the island

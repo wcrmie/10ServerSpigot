@@ -3,6 +3,7 @@ package worm.me.gamesystems.world.generation.structure;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.structure.Mirror;
@@ -10,9 +11,12 @@ import org.bukkit.block.structure.StructureRotation;
 import org.bukkit.structure.Palette;
 import org.bukkit.structure.Structure;
 import org.bukkit.structure.StructureManager;
+import org.bukkit.util.BlockVector;
+import org.bukkit.util.Vector;
 import worm.me.Server;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -50,49 +54,45 @@ public class StructureSupplier {
      * @param structureName The name of the structure to place.
      * @param location The location to place the structure at.
      */
-    public static void placeStructure(String structureName, Location location, boolean canFloat) {
+    public static void placeStructure(String structureName, Location location) {
+        Server plugin = Server.getPlugin();
+        StructureManager manager = Bukkit.getStructureManager();
 
-        Structure structure = createStructure(structureName);
+        File folder = new File(plugin.getDataFolder(), "structures");
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
 
-        if (structure == null) {
-            Server.getPlugin().getLogger().warning("Failed to create structure: " + structureName);
+        File structureFile = new File(folder, structureName + ".nbt");
+
+        if (!structureFile.exists()) {
+            plugin.getLogger().warning("Structure file missing: " + structureFile.getName());
             return;
         }
 
+        try {
+            Structure structure = manager.loadStructure(structureFile);
 
-        // Thank you clem
-        int sizeX = structure.getSize().getBlockX();
-        int sizeZ = structure.getSize().getBlockZ();
-
-        // we are not centering the tree on the y-axis that is stupid I got stuck in the center of a tree
-
-        // .subtract() works because if the location is negative, then subtracting a negative number adds it (duh)
-        Location centered = location.clone().subtract(sizeX / 2.0, 0, sizeZ / 2.0);
-
-
-        if (!canFloat) {
-
-            Palette palette = structure.getPalettes().get(structure.getPaletteCount() - 1);
-
-            int lowest = palette.getBlocks().stream().mapToInt(BlockState::getY).min().orElseThrow();
-
-            for (BlockState state : palette.getBlocks()) {
-
-                if (state.getY() != lowest) continue;
-                if (!state.getBlockData().getMaterial().isSolid()) continue;
-
-                Location checkLoc = location.clone().add(state.getX(), -1, state.getZ());
-
-                if (checkLoc.getBlock().getType().equals(Material.AIR)) return;
+            if (structure == null) {
+                plugin.getLogger().warning("Could not load NBT data for: " + structureName);
+                return;
             }
+
+            BlockVector size = structure.getSize();
+
+
+            int xOffset = size.getBlockX() / 2;
+            int zOffset = size.getBlockZ() / 2;
+
+            Location origin = location.clone().subtract(xOffset, 0, zOffset);
+
+            structure.place(origin, true, StructureRotation.NONE, Mirror.NONE, 0, 1.0f, new Random());
+
+        } catch (IOException e) {
+            plugin.getLogger().severe("IO Error loading structure: " + e.getMessage());
+        } catch (Exception e) {
+            plugin.getLogger().severe("Unexpected error during structure placement: " + e.getMessage());
         }
-
-        // Place the structure centered at the location, with no random rotation or mirroring
-        // palette 0 and integrity 1 (no weathering or anything)
-        // new Random() for the random seed is irrelevant but required i think
-        structure.place(centered, true, StructureRotation.NONE, Mirror.NONE, 0, 1.0f, new Random());
-
-
     }
 
     public static boolean isEdge(Block block) {
