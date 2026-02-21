@@ -14,8 +14,9 @@ import worm.me.commands.gui.OpenLevelsGUICommand;
 import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.gamesystems.recipes.SmeltingRecipes;
+import worm.me.gamesystems.world.border.Custom.BorderVisuals;
+import worm.me.gamesystems.world.border.Custom.ZoneGridManager;
 import worm.me.gamesystems.world.structure.generation.Generate;
-import worm.me.gamesystems.world.structure.Island;
 import worm.me.gamesystems.world.structure.TreasureChests;
 import worm.me.gamesystems.world.reset.WorldReset;
 import worm.me.listeners.MainListener;
@@ -52,6 +53,7 @@ public final class Server extends JavaPlugin {
     private TreasureChests treasureChests;
     private static final long CHEST_SPAWN_INTERVAL = 2 * 60 * 60 * 20;
     private static final String LAST_CHEST_SPAWN_KEY = "lastChestSpawn";
+    public static ZoneGridManager zoneGridManager;
 
     public Map<Material, Long> miningBlocks = new HashMap<>();
 
@@ -80,6 +82,9 @@ public final class Server extends JavaPlugin {
     public TreasureChests getTreasureChests() {
         return this.treasureChests;
     }
+
+    private ZoneGridManager gridManager;
+    private BorderVisuals borderManager;
 
     @Override
     public void onEnable() {
@@ -124,6 +129,21 @@ public final class Server extends JavaPlugin {
         getCommand("structuresplacetype").setExecutor(new StructuresPlaceTypeCommand());
         getCommand("structureslist").setExecutor(new StructuresListCommand(generate));
         getCommand("structuresremove").setExecutor(new StructuresRemoveCommand(generate));
+
+
+        zoneGridManager = new ZoneGridManager(this);
+        zoneGridManager.initialize();
+
+        borderManager = new BorderVisuals(this, zoneGridManager);
+        zoneGridManager.setBorderVisuals(borderManager);
+
+        borderManager.start();
+
+        getCommand("setbordergrid")
+                .setExecutor(new SetBorderGrid(zoneGridManager));
+
+        getCommand("getbordergrid")
+                .setExecutor(new GetBorderGrid(zoneGridManager));
 
         // start worldreset score adder
         WorldReset.getInstance().scoreAdder();
@@ -366,6 +386,10 @@ public final class Server extends JavaPlugin {
         // Plugin shutdown logic
         if (playerspawning != null) {
             playerspawning.removeAllBlocks();
+        }
+
+        if (zoneGridManager != null) {
+            zoneGridManager.removeGridRegions();
         }
 
         treasureChests.onPluginDisable();

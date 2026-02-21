@@ -96,3 +96,11 @@ commands:
     description: Spawns a treasure chest in the world
     usage: /spawntreasure
     permission: 10VS.spawntreasure
+  setbordergrid:
+    description: Sets a border grid cell
+    usage: /setbordergrid <row> <col> <0|1>
+    permission: 10VS.setbordergrid
+  getbordergrid:
+    description: Displays the current border grid
+    usage: /getbordergrid
+    permission: 10VS.getbordergrid

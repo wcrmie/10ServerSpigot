@@ -29,6 +29,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.Vector;
 import worm.me.Server;
 import worm.me.gamesystems.fishing.FishingTables;
 import worm.me.gamesystems.halloween.Candy;
@@ -36,6 +37,7 @@ import worm.me.gamesystems.items.ExperienceBottle;
 import worm.me.gamesystems.items.gear.armor.ArmorBreak;
 import worm.me.gamesystems.items.gear.tools.ToolsEvents;
 import worm.me.gamesystems.world.blocks.ArtBlocks;
+import worm.me.gamesystems.world.border.Custom.OutOfBorDer;
 import worm.me.gamesystems.world.mobs.traders.Trader;
 import worm.me.gamesystems.world.mobs.traders.VillagerProfession;
 import worm.me.gamesystems.world.structure.generation.CartographerCompass;
@@ -166,7 +168,22 @@ public class GameplayListener implements Listener {
 
         if (e.getFrom() == e.getTo()) return;
 
-        if (Objects.requireNonNull(e.getTo()).getY() < 200) e.getPlayer().damage(1000000);
+        if (Objects.requireNonNull(e.getTo()).getY() < 200) {
+            e.getPlayer().damage(1000000);
+        }
+        else {
+            boolean allowed = Server.zoneGridManager.isInAllowedGrid(e.getTo());
+
+            if (!allowed) {
+                OutOfBorDer.apply(player);
+                //e.setCancelled(true);
+
+                //Vector direction = player.getLocation().getDirection();
+                //direction.multiply(0);
+                //direction.setY(-1);
+                //player.setVelocity(direction);
+            }
+        }
 
         if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
 
