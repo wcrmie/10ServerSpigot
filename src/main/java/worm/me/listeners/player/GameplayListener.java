@@ -79,13 +79,6 @@ public class GameplayListener implements Listener {
             Vault.storeItems(prunedItems, p);
         }
 
-//        if (e.getView().getTitle().contains(ChatColor.RED + "Hat Storage ")){
-//
-//            HatsStorage hatsStorage = new HatsStorage();
-//            hatsStorage.eventHandler(e);
-//
-//        }
-
     }
 
     @EventHandler
@@ -126,10 +119,6 @@ public class GameplayListener implements Listener {
 
         if (item.getType().equals(Material.ENCHANTED_GOLDEN_APPLE)) {
             VoidPlayer.registerStats(player, 5);
-        }
-
-        if (Candy.isCandy(item) && item.getType().equals(Material.BLUE_EGG)) {
-            //jawbreaker
         }
     }
 
@@ -198,9 +187,8 @@ public class GameplayListener implements Listener {
     }
 
     public static boolean isSlot1Empty(Player player) {
-        Abilities abilities = new Abilities();
-        List<Integer> active = abilities.getActiveAbilities(player);
-        int abilityId = active.get(0);
+        List<Integer> active = Abilities.getActiveAbilities(player);
+        int abilityId = active.getFirst();
         return abilityId == Ability.EMPTY.getId();
     }
 
@@ -217,9 +205,6 @@ public class GameplayListener implements Listener {
         if (e.getItemStack().getType().equals(Material.GLASS_BOTTLE) && p.isSneaking()) {
             e.setCancelled(true);
             ExperienceBottle.fillBottle(p);
-        }
-        if (e.getItemStack().getType().equals(Material.GLASS_BOTTLE) && p.isSneaking()) {
-
         }
     }
 
@@ -328,8 +313,7 @@ public class GameplayListener implements Listener {
                                 PersistentDataContainer data = meta.getPersistentDataContainer();
                                 NamespacedKey key = new NamespacedKey(Server.getPlugin(), "slimeboots");
                                 if (data.has(key, PersistentDataType.STRING)) {
-                                    SlimeBoots slimeBoots = new SlimeBoots();
-                                    slimeBoots.bounce(player);
+                                    SlimeBoots.bounce(player);
                                     e.setCancelled(true);
                                 }
                             }

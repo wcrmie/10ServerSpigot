@@ -69,7 +69,7 @@ public enum VillagerProfession {
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.COAL, 3), 5, 15, true, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.RABBIT), 5, 25, true, 5)
-                    .newTrade(new Item.ItemBuilder(Item.create(Material.STICK, ChatColor.WHITE + "Slim Jim")).addComponent(DataComponentTypes.CONSUMABLE, Consumable.consumable().hasConsumeParticles(true).consumeSeconds(3).build()).addComponent(DataComponentTypes.FOOD, FoodProperties.food().nutrition(5).saturation(2).build()).build(), new ItemStack(Material.GOLD_NUGGET, 8), 1, 5, true, 5)
+                    .newTrade(new Item.ItemBuilder(Item.create(Material.STICK, "<white><!i>Slim Jim")).addComponent(DataComponentTypes.CONSUMABLE, Consumable.consumable().hasConsumeParticles(true).consumeSeconds(3).build()).addComponent(DataComponentTypes.FOOD, FoodProperties.food().nutrition(5).saturation(2).build()).build(), new ItemStack(Material.GOLD_NUGGET, 8), 1, 5, true, 5)
                     .build(),
 
             new Trader.TradeBuilder()

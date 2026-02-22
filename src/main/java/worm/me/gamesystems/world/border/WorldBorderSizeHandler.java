@@ -257,17 +257,6 @@ public class WorldBorderSizeHandler {
         }
     }
 
-    public void addBlockCount(int amount) {
-        blockCount += amount;
-        Bukkit.getLogger().info("Adding blocks: " + amount + ", New block count: " + blockCount);
-        saveAndAdjustWorldBorder();
-    }
-
-    public void removeBlockCount(int amount) {
-        blockCount -= amount;
-        saveBlockCount();
-    }
-
     private void saveAndAdjustWorldBorder() {
         saveBlockCount();
         adjustWorldBorder();

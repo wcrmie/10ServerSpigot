@@ -119,7 +119,6 @@ public class Wandering {
                 if (newRecipe != null) {
                     trades.add(newRecipe);
                 } else {
-                    Bukkit.getLogger().warning("TRADE IS NULL");
                     i--;
                 }
 
@@ -156,8 +155,6 @@ public class Wandering {
             }
 
         }
-
-        Bukkit.getLogger().warning("TRADE CREATION FAILED");
         return null;
     }
 }
