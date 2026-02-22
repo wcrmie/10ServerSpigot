@@ -11,8 +11,8 @@ import java.util.List;
 
 public abstract class Boss {
 
-    private static ArrayList<BossBar> bossBars = new ArrayList<>();
-    private static ArrayList<Entity> bossEntities = new ArrayList<>();
+    private static final ArrayList<BossBar> bossBars = new ArrayList<>();
+    private static final ArrayList<Entity> bossEntities = new ArrayList<>();
 
     private final Entity boss;
     private final double maxHealth;

@@ -9,15 +9,12 @@ import org.bukkit.block.structure.Mirror;
 import org.bukkit.block.structure.StructureRotation;
 import org.bukkit.structure.Palette;
 import org.bukkit.structure.Structure;
-import org.bukkit.structure.StructureManager;
 import org.bukkit.util.Vector;
 import worm.me.Server;
 
 import java.io.File;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 public class StructureSupplier {
 
@@ -112,19 +109,6 @@ public class StructureSupplier {
         structure.place(centered, true, rotation, Mirror.NONE, 0, 1.0f, new Random());
 
 
-    }
-
-    public static boolean isEdge(Block block) {
-
-        for (int x = -1; x <= 1; x++) {
-            for (int z = -1; z <= 1; z++) {
-
-                Location location = block.getLocation().clone().add(x, 0, z);
-                if (!location.getBlock().getType().isSolid()) return true;
-
-            }
-        }
-        return false;
     }
 
 }
