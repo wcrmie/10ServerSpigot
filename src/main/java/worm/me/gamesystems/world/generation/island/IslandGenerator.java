@@ -1,9 +1,11 @@
 package worm.me.gamesystems.world.generation.island;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import worm.me.Server;
 import worm.me.gamesystems.world.generation.poisson.PoissonDisc;
@@ -27,7 +29,10 @@ public class IslandGenerator {
 
         generateUnderside(location, terrain, island);
         generateTop(location, terrain, island);
-        placeTrees(location, island);
+
+        Bukkit.getScheduler().runTaskLater(Server.getPlugin(), () -> {
+            placeTrees(location, island);
+        }, 1L);
 
     }
 
@@ -68,12 +73,11 @@ public class IslandGenerator {
 
     public static Material determineBlockMaterial(List<Material> palette, float densityValue) {
 
-        // considering densityValue ranges from 0 to 1
         int size = palette.size();
 
-        densityValue = Math.abs(densityValue); // Normalize to 0-1
+        densityValue = Math.abs(densityValue);
 
-        densityValue = Math.round(densityValue * size - (float) 1 /size); // Scale to palette size
+        densityValue = Math.round(densityValue * size - (float) 1 /size);
 
         int index = Math.min((int) Math.max(densityValue, 0), size - 1);
 
@@ -133,7 +137,6 @@ public class IslandGenerator {
 
         }
 
-    }
 
 
     /** Generates the underside of the island
