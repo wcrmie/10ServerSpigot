@@ -8,7 +8,7 @@ public class IslandProperties {
 
     public enum IslandShape {
         //FLAT(1.5f/3.0f, 7.5f, 0.5f),
-        STRAWBERRY(7.0f/12.0f, 3.5f, 1.8f),
+        STRAWBERRY(9.0f/12.0f, 3.0f, 2f),
         //SPIKY(9.0f/18.0f, 6f, 1.8f)
         ;
 

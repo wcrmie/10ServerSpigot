@@ -13,6 +13,7 @@ import worm.me.gamesystems.world.generation.structure.StructureSupplier;
 import worm.me.gamesystems.world.generation.structure.TreeStructure;
 import worm.me.utils.FastNoiseLite;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -56,7 +57,7 @@ public class IslandGenerator {
             for (int z = 0; z < size; z++) {
                 float nx = (float) ((double) x /size - 0.5);
                 float nz = (float) ((double) z /size - 0.5);
-                arr[x][z] = noise.GetNoise(nx, nz);
+                arr[x][z] = (noise.GetNoise(nx, nz));
             }
         }
 
@@ -91,7 +92,7 @@ public class IslandGenerator {
         Location corner1 = location.clone();
         Location corner2 = location.clone().add(island.getSize(), 0, island.getSize());
 
-        ArrayList<Location> points = PoissonDisc.generatePoints(location.getWorld(), corner1.add((double) island.getSize() / 6,0, (double) island.getSize() / 6), corner2.subtract((double) island.getSize() /6,0, (double) island.getSize() /6), 6, 9, 20);
+        ArrayList<Location> points = PoissonDisc.generatePoints(location.getWorld(), corner1.add((double) island.getSize() / 6, 0, (double) island.getSize() / 6), corner2.subtract((double) island.getSize() / 6, 0, (double) island.getSize() / 6), 6, 9, 20);
         Iterator<Location> iterator = points.iterator();
 
         HashMap<Location, String> treeLocations = new HashMap<>();
@@ -116,9 +117,9 @@ public class IslandGenerator {
 
             if (ground.getLocation().getBlockY() <= -60) break;
 
-            Location groundLocation = ground.getLocation().add(1,0,1);
+            Location groundLocation = ground.getLocation().add(1, 0, 1);
 
-            groundLocation.add(0,1,0);
+            groundLocation.add(0, 1, 0);
 
             treeLocations.put(groundLocation, structureName);
 
@@ -136,6 +137,7 @@ public class IslandGenerator {
 
 
         }
+    }
 
 
 
