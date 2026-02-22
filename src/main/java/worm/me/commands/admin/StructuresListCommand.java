@@ -3,7 +3,7 @@ package worm.me.commands.admin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import worm.me.gamesystems.world.structure.generation.Generate;
+import worm.me.gamesystems.world.legacystructure.generation.Generate;
 
 public class StructuresListCommand implements CommandExecutor {
 

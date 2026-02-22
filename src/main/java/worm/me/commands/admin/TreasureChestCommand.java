@@ -3,7 +3,7 @@ package worm.me.commands.admin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import worm.me.gamesystems.world.structure.TreasureChests;
+import worm.me.gamesystems.world.legacystructure.TreasureChests;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 

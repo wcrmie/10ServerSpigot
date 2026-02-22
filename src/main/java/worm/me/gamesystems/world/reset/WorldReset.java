@@ -4,8 +4,6 @@ import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import worm.me.Server;
-import worm.me.gamesystems.world.border.WorldBorderSizeHandler;
-import worm.me.gamesystems.world.structure.TreasureChests;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 

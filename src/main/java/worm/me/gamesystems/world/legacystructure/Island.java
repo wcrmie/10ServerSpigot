@@ -1,4 +1,4 @@
-package worm.me.gamesystems.world.structure;
+package worm.me.gamesystems.world.legacystructure;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -8,7 +8,7 @@ import org.bukkit.structure.Structure;
 import org.bukkit.structure.StructureManager;
 import org.bukkit.util.Vector;
 import worm.me.Server;
-import worm.me.gamesystems.world.structure.generation.Generate;
+import worm.me.gamesystems.world.legacystructure.generation.Generate;
 import worm.me.gamesystems.world.PlayArea;
 
 import java.io.File;

@@ -8,14 +8,22 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import worm.me.gamesystems.items.gear.tools.LodestoneTeleporter;
 
 public class ToolListener implements Listener {
 
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
-            Player player = event.getPlayer();
+        Player player = event.getPlayer();
+
+        if (player.getInventory().getItemInMainHand().getType() == Material.COMPASS) {
+
+            LodestoneTeleporter.handleClick(event);
+
+        }
+
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
             EquipmentSlot hand;
 
@@ -35,6 +43,7 @@ public class ToolListener implements Listener {
             }
 
         }
+
     }
 
 }

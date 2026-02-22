@@ -17,8 +17,8 @@ import worm.me.gamesystems.recipes.SmeltingRecipes;
 import worm.me.gamesystems.world.generation.island.IslandManager;
 import worm.me.gamesystems.world.border.Custom.BorderVisuals;
 import worm.me.gamesystems.world.border.Custom.ZoneGridManager;
-import worm.me.gamesystems.world.structure.generation.Generate;
-import worm.me.gamesystems.world.structure.TreasureChests;
+import worm.me.gamesystems.world.legacystructure.generation.Generate;
+import worm.me.gamesystems.world.legacystructure.TreasureChests;
 import worm.me.gamesystems.world.reset.WorldReset;
 import worm.me.listeners.MainListener;
 import worm.me.listeners.items.PotionListener;
@@ -175,7 +175,8 @@ public final class Server extends JavaPlugin {
         configManager = new ConfigManager();
         configManager.loadConfig();
 
-        this.getCommand("setGens").setExecutor(new SetGensCommand());
+        this.getCommand("generators").setExecutor(new SetGensCommand());
+        this.getCommand("placetree").setExecutor(new PlaceTreeCommand());
         this.getCommand("rules").setExecutor(new RulesCommand());
         this.getCommand("sit").setExecutor(new SitCommand());
         this.getCommand("abilities").setExecutor(new OpenAbilitiesGUICommand());

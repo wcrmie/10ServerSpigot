@@ -1,4 +1,4 @@
-package worm.me.gamesystems.world.structure;
+package worm.me.gamesystems.world.legacystructure;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -7,14 +7,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.WorldBorder;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.plugin.Plugin;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
-import org.bukkit.entity.Display;
 import org.bukkit.entity.BlockDisplay;
-import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
 
 
 import java.util.*;

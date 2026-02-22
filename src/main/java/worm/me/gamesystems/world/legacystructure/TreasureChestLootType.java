@@ -1,4 +1,4 @@
-package worm.me.gamesystems.world.structure;
+package worm.me.gamesystems.world.legacystructure;
 
 import org.bukkit.Material;
 

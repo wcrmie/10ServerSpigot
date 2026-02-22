@@ -1,4 +1,4 @@
-package worm.me.gamesystems.world.structure;
+package worm.me.gamesystems.world.legacystructure;
 
 public enum IslandType {
     DEFAULT("Plains"),

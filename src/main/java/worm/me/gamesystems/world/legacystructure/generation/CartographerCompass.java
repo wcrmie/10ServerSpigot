@@ -1,4 +1,4 @@
-package worm.me.gamesystems.world.structure.generation;
+package worm.me.gamesystems.world.legacystructure.generation;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
@@ -10,7 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
-import worm.me.gamesystems.world.structure.IslandType;
+import worm.me.gamesystems.world.legacystructure.IslandType;
 import worm.me.utils.Item;
 
 import java.util.List;

@@ -9,7 +9,7 @@ import org.bukkit.block.data.type.Slab;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import worm.me.gamesystems.world.structure.Island;
+import worm.me.gamesystems.world.legacystructure.Island;
 import worm.me.Server;
 
 import java.util.Arrays;

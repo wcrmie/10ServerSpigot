@@ -6,13 +6,17 @@ authors: [ worm, clem, Boolean ]
 depend: [WorldGuard]
 softdepend: [MessageHead]
 commands:
+  placetree:
+    permission: admin
+    usage: /<command>
   generateisland:
     permission: admin
     usage: /<command>
   handbook:
     description: opens the handbook
     usage: /<command>
-  setGens:
+  generators:
+    alias: setgens, gens
     description: Allows the player to choose which blocks are generated for them every 10 seconds via a GUI.
     usage: /<command>
   rules:

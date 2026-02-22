@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import worm.me.gamesystems.world.mobs.traders.VillagerProfession;
 import worm.me.listeners.world.mobs.CustomMobsListener;
 import worm.me.utils.Item;
 

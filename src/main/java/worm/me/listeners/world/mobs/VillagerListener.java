@@ -8,8 +8,8 @@ import org.bukkit.event.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import worm.me.Server;
-import worm.me.gamesystems.world.mobs.traders.Trader;
-import worm.me.gamesystems.world.mobs.traders.VillagerProfession;
+import worm.me.gamesystems.world.mob.traders.Trader;
+import worm.me.gamesystems.world.mob.traders.VillagerProfession;
 import worm.me.utils.Item;
 
 import java.util.Arrays;

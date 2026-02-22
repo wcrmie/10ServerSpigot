@@ -63,7 +63,7 @@ public class IslandGenerator {
      * @return An integer representing the diameter of the island
      */
     public static int determineSize() {
-        return ThreadLocalRandom.current().nextInt(25,50);
+        return ThreadLocalRandom.current().nextInt(25,35);
     }
 
     public static Material determineBlockMaterial(List<Material> palette, float densityValue) {
@@ -87,7 +87,7 @@ public class IslandGenerator {
         Location corner1 = location.clone();
         Location corner2 = location.clone().add(island.getSize(), 0, island.getSize());
 
-        ArrayList<Location> points = PoissonDisc.generatePoints(location.getWorld(), corner1.add((double) island.getSize() /4,0, (double) island.getSize() /4), corner2.subtract((double) island.getSize() /4,0, (double) island.getSize() /4), 8, 12, 20);
+        ArrayList<Location> points = PoissonDisc.generatePoints(location.getWorld(), corner1.add((double) island.getSize() / 6,0, (double) island.getSize() / 6), corner2.subtract((double) island.getSize() /6,0, (double) island.getSize() /6), 6, 9, 20);
         Iterator<Location> iterator = points.iterator();
 
         HashMap<Location, String> treeLocations = new HashMap<>();
@@ -109,6 +109,8 @@ public class IslandGenerator {
                 break;
 
             }
+
+            if (ground.getLocation().getBlockY() <= -60) break;
 
             Location groundLocation = ground.getLocation().add(1,0,1);
 

@@ -1,4 +1,4 @@
-package worm.me.gamesystems.world.mobs.traders;
+package worm.me.gamesystems.world.mob.traders;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
@@ -12,8 +12,8 @@ import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import worm.me.gamesystems.items.ExperienceBottle;
-import worm.me.gamesystems.world.structure.IslandType;
-import worm.me.gamesystems.world.structure.generation.CartographerCompass;
+import worm.me.gamesystems.world.legacystructure.IslandType;
+import worm.me.gamesystems.world.legacystructure.generation.CartographerCompass;
 import worm.me.utils.Item;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package worm.me.gamesystems.world.structure.generation;
+package worm.me.gamesystems.world.legacystructure.generation;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

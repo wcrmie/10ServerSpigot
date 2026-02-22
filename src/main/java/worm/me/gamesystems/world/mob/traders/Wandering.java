@@ -1,4 +1,4 @@
-package worm.me.gamesystems.world.mobs.traders;
+package worm.me.gamesystems.world.mob.traders;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

@@ -10,6 +10,7 @@ import org.bukkit.block.structure.StructureRotation;
 import org.bukkit.structure.Palette;
 import org.bukkit.structure.Structure;
 import org.bukkit.structure.StructureManager;
+import org.bukkit.util.Vector;
 import worm.me.Server;
 
 import java.io.File;
@@ -64,10 +65,28 @@ public class StructureSupplier {
         int sizeX = structure.getSize().getBlockX();
         int sizeZ = structure.getSize().getBlockZ();
 
+        StructureRotation rotation = StructureRotation.values()[ThreadLocalRandom.current().nextInt(0, StructureRotation.values().length)];
+
         // we are not centering the tree on the y-axis that is stupid I got stuck in the center of a tree
 
         // .subtract() works because if the location is negative, then subtracting a negative number adds it (duh)
         Location centered = location.clone().subtract(sizeX / 2.0, 0, sizeZ / 2.0);
+
+        Vector vector = new Vector(0, 0, 0);
+
+        if (rotation == StructureRotation.CLOCKWISE_90) {
+            vector = new Vector(sizeX, 0, 0);
+        }
+
+        if (rotation == StructureRotation.CLOCKWISE_180) {
+            vector = new Vector(sizeX, 0, sizeZ);
+        }
+
+        if (rotation == StructureRotation.COUNTERCLOCKWISE_90) {
+            vector = new Vector(0, 0, sizeZ);
+        }
+
+        centered.add(vector);
 
 
         if (!canFloat) {
@@ -81,7 +100,7 @@ public class StructureSupplier {
                 if (state.getY() != lowest) continue;
                 if (!state.getBlockData().getMaterial().isSolid()) continue;
 
-                Location checkLoc = location.clone().add(state.getX(), -1, state.getZ());
+                Location checkLoc = location.clone().add(state.getX(), -1, state.getZ()).add(vector);
 
                 if (checkLoc.getBlock().getType().equals(Material.AIR)) return;
             }
@@ -90,7 +109,7 @@ public class StructureSupplier {
         // Place the structure centered at the location, with no random rotation or mirroring
         // palette 0 and integrity 1 (no weathering or anything)
         // new Random() for the random seed is irrelevant but required i think
-        structure.place(centered, true, StructureRotation.NONE, Mirror.NONE, 0, 1.0f, new Random());
+        structure.place(centered, true, rotation, Mirror.NONE, 0, 1.0f, new Random());
 
 
     }

@@ -1,6 +1,5 @@
 package worm.me.listeners.player;
 
-import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.event.inventory.UseItemEvent;
@@ -8,10 +7,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import io.papermc.paper.event.player.PlayerArmSwingEvent;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
-import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.damage.DamageSource;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -21,26 +17,23 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.util.Vector;
 import worm.me.Server;
 import worm.me.gamesystems.fishing.FishingTables;
 import worm.me.gamesystems.halloween.Candy;
 import worm.me.gamesystems.items.ExperienceBottle;
 import worm.me.gamesystems.items.gear.armor.ArmorBreak;
+import worm.me.gamesystems.items.gear.tools.LodestoneTeleporter;
 import worm.me.gamesystems.items.gear.tools.ToolsEvents;
 import worm.me.gamesystems.world.blocks.ArtBlocks;
 import worm.me.gamesystems.world.border.Custom.OutOfBorDer;
-import worm.me.gamesystems.world.mobs.traders.Trader;
-import worm.me.gamesystems.world.mobs.traders.VillagerProfession;
-import worm.me.gamesystems.world.structure.generation.CartographerCompass;
+import worm.me.gamesystems.world.mob.traders.Trader;
+import worm.me.gamesystems.world.mob.traders.VillagerProfession;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.Ability;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
@@ -176,13 +169,13 @@ public class GameplayListener implements Listener {
 
             if (!allowed) {
                 OutOfBorDer.apply(player);
-                //e.setCancelled(true);
-
-                //Vector direction = player.getLocation().getDirection();
-                //direction.multiply(0);
-                //direction.setY(-1);
-                //player.setVelocity(direction);
             }
+        }
+
+        if (LodestoneTeleporter.isTeleporting(player)) {
+
+            LodestoneTeleporter.cancelTeleport(player);
+
         }
 
         if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
@@ -273,21 +266,6 @@ public class GameplayListener implements Listener {
                 villager.remove();
 
             }
-        }
-
-        if (player.getInventory().getItemInMainHand().getType().equals(Material.COMPASS)) {
-
-            ItemStack compass = player.getInventory().getItemInMainHand();
-
-            if (CartographerCompass.getTypeFromCompass(compass) != null) {
-
-                player.sendMessage(Message.create(MessageType.FAIL, "This item is currently disabled."));
-
-                // TODO: make island spawn
-
-            }
-
-
         }
     }
 
@@ -532,6 +510,12 @@ public class GameplayListener implements Listener {
         if (!p.getPassengers().isEmpty() && p.getPassengers().getFirst().getType() != EntityType.PLAYER){
             e.setCancelled(true);
         }
+
+        try {
+            LodestoneTeleporter.cancelTeleport(p);
+        } catch (Exception ignored) {
+        }
+
     }
 
     @EventHandler
