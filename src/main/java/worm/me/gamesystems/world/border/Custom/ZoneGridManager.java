@@ -27,11 +27,11 @@ public class ZoneGridManager {
     }
 
     private final int GRID_SIZE = 5;
-    private final int CELL_SIZE = 250;
+    private final int CELL_SIZE = 50;
 
     private final int[][] grid = {
-            {0,0,0,0,0},
-            {0,0,0,0,0},
+            {0,0,1,0,0},
+            {0,0,1,0,0},
             {0,0,1,0,0},
             {0,0,0,0,0},
             {0,0,0,0,0}
@@ -56,6 +56,13 @@ public class ZoneGridManager {
         try { manager.save(); } catch (Exception ignored) {}
     }
 
+    private void applyFlags(ProtectedRegion region, boolean allowed) {
+        StateFlag.State state = allowed ? StateFlag.State.ALLOW : StateFlag.State.DENY;
+        region.setFlag(com.sk89q.worldguard.protection.flags.Flags.BLOCK_PLACE, state);
+        region.setFlag(com.sk89q.worldguard.protection.flags.Flags.BLOCK_BREAK, state);
+        region.setFlag(com.sk89q.worldguard.protection.flags.Flags.USE, state);
+    }
+
     private void createMainRegion(RegionManager manager) {
         if (manager.getRegion("world_main") != null) return;
 
@@ -66,7 +73,7 @@ public class ZoneGridManager {
         );
 
         region.setPriority(0);
-
+        applyFlags(region, false);
         manager.addRegion(region);
     }
 
@@ -89,10 +96,8 @@ public class ZoneGridManager {
                         BlockVector3.at(minX + CELL_SIZE, 320, minZ + CELL_SIZE)
                 );
 
-                region.setPriority(10);
-
-                boolean safe = grid[row][col] == 1;
-
+                region.setPriority(1);
+                applyFlags(region, grid[row][col] == 1);
                 manager.addRegion(region);
             }
         }
@@ -144,6 +149,20 @@ public class ZoneGridManager {
     public void setGridValue(int row, int col, int value) {
         if (row < 0 || row >= GRID_SIZE || col < 0 || col >= GRID_SIZE) return;
         grid[row][col] = value;
+
+        World world = Bukkit.getWorld("ul_Void");
+        if (world != null) {
+            RegionManager manager = WGUtil.getRegionManager(world);
+            if (manager != null) {
+                String id = "grid_" + row + "_" + col;
+                ProtectedRegion region = manager.getRegion(id);
+                if (region != null) {
+                    applyFlags(region, value == 1);
+                    try { manager.save(); } catch (Exception ignored) {}
+                }
+            }
+        }
+
         if (borderVisuals != null) {
             borderVisuals.refreshWalls();
         }
@@ -204,5 +223,33 @@ public class ZoneGridManager {
 
             sender.sendMessage(line.toString());
         }
+    }
+
+    public Location getClosestAllowedLocation(Location loc) {
+        int start = -(GRID_SIZE * CELL_SIZE) / 2;
+        double bestDist = Double.MAX_VALUE;
+        Location bestLoc = null;
+
+        for (int row = 0; row < GRID_SIZE; row++) {
+            for (int col = 0; col < GRID_SIZE; col++) {
+                if (grid[row][col] != 1) continue;
+
+                double cellCenterX = start + col * CELL_SIZE + CELL_SIZE / 2.0;
+                double cellCenterZ = start + row * CELL_SIZE + CELL_SIZE / 2.0;
+
+                double clampedX = Math.max(start + col * CELL_SIZE, Math.min(start + col * CELL_SIZE + CELL_SIZE, loc.getX()));
+                double clampedZ = Math.max(start + row * CELL_SIZE, Math.min(start + row * CELL_SIZE + CELL_SIZE, loc.getZ()));
+
+                double dx = loc.getX() - clampedX;
+                double dz = loc.getZ() - clampedZ;
+                double dist = dx * dx + dz * dz;
+
+                if (dist < bestDist) {
+                    bestDist = dist;
+                    bestLoc = new Location(loc.getWorld(), clampedX, loc.getY(), clampedZ);
+                }
+            }
+        }
+        return bestLoc;
     }
 }
