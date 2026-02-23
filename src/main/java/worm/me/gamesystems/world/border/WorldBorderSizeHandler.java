@@ -266,7 +266,7 @@ public class WorldBorderSizeHandler {
         FileConfiguration config = plugin.getConfig();
         config.set(BLOCK_COUNT_CONFIG_KEY, blockCount);
         plugin.saveConfig();
-        spawnthings();
+        //spawnthings();
     }
 
     public long getBlockCount() {

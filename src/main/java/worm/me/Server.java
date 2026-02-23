@@ -52,8 +52,8 @@ public final class Server extends JavaPlugin {
     private PlayerSpawning playerspawning;
     private FeatherDash featherDash = new FeatherDash();
     private TreasureChests treasureChests;
-    private static final long CHEST_SPAWN_INTERVAL = 2 * 60 * 60 * 20;
-    private static final String LAST_CHEST_SPAWN_KEY = "lastChestSpawn";
+    //private static final long CHEST_SPAWN_INTERVAL = 2 * 60 * 60 * 20;
+    //private static final String LAST_CHEST_SPAWN_KEY = "lastChestSpawn";
     public static ZoneGridManager zoneGridManager;
 
     public Map<Material, Long> miningBlocks = new HashMap<>();
@@ -100,8 +100,8 @@ public final class Server extends JavaPlugin {
         assert world != null;
         WorldBorderSizeHandler = new WorldBorderSizeHandler(this);
         playerspawning = new PlayerSpawning(this);
-        this.treasureChests = new TreasureChests(this);
-        treasureChests.onPluginEnable();
+        //this.treasureChests = new TreasureChests(this);
+        //treasureChests.onPluginEnable();
 
         // Add custom recipes
 
@@ -398,11 +398,11 @@ public final class Server extends JavaPlugin {
             zoneGridManager.removeGridRegions();
         }
 
-        treasureChests.onPluginDisable();
+        //treasureChests.onPluginDisable();
 
         WorldReset.getInstance().saveData();
 
-        if (treasureChests != null) treasureChests.removeAllDisplays();
+        //if (treasureChests != null) treasureChests.removeAllDisplays();
 
         FileConfiguration config = getConfig();
         WorldBorderSizeHandler WorldBorderSizeHandler = new WorldBorderSizeHandler(this);
