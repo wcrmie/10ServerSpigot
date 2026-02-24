@@ -5,7 +5,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import worm.me.Server;
 import worm.me.gamesystems.world.generation.poisson.PoissonDisc;
@@ -13,7 +12,6 @@ import worm.me.gamesystems.world.generation.structure.StructureSupplier;
 import worm.me.gamesystems.world.generation.structure.TreeStructure;
 import worm.me.utils.FastNoiseLite;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -26,7 +24,7 @@ public class IslandGenerator {
 
         Island island = IslandManager.getInstance().createIsland(players);
 
-        float[][] terrain = fillPerlinArray(island.getSize(), island.getShape());
+        float[][] terrain = fillTaperedPerlinArray(island.getSize(), island.getShape());
 
         generateUnderside(location, terrain, island);
         generateTop(location, terrain, island);
@@ -42,7 +40,7 @@ public class IslandGenerator {
      * @param shape The shape of the island
      * @return A 2D array of floats representing noise values
      */
-    private static float[][] fillPerlinArray(int size, IslandProperties.IslandShape shape) {
+    private static float[][] fillTaperedPerlinArray (int size, IslandProperties.IslandShape shape) {
         float[][] arr = new float[size][size];
 
         worm.me.utils.FastNoiseLite noise = new worm.me.utils.FastNoiseLite();
@@ -53,11 +51,17 @@ public class IslandGenerator {
 
         noise.SetFrequency(frequency);
 
+        int radius = size / 2;
+
         for (int x = 0; x < size; x++) {
             for (int z = 0; z < size; z++) {
+
+                double distance = radius - (radius - (float) Math.sqrt(Math.pow(x - radius, 2) + Math.pow(z - radius, 2)));
+                double taper = distance / size;
+
                 float nx = (float) ((double) x /size - 0.5);
                 float nz = (float) ((double) z /size - 0.5);
-                arr[x][z] = (noise.GetNoise(nx, nz));
+                arr[x][z] = (float) (noise.GetNoise(nx, nz) - taper);
             }
         }
 

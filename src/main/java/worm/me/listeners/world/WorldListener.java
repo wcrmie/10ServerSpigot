@@ -26,7 +26,7 @@ import worm.me.gamesystems.halloween.PumpkinPatch;
 import worm.me.gamesystems.items.ExperienceBottle;
 import worm.me.gamesystems.items.SnowballKnockback;
 import worm.me.gamesystems.world.mob.traders.Wandering;
-import worm.me.gamesystems.world.reset.WorldReset;
+import worm.me.gamesystems.world.cleanup.WorldReset;
 import worm.me.gamesystems.world.legacystructure.TreasureChests;
 import worm.me.data.VoidPlayer;
 

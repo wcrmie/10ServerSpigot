@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import worm.me.gamesystems.world.border.WorldBorderSizeHandler;
 import worm.me.menu.recipes.RecipeBrowserMenu;
 import worm.me.utils.GuiConstructor;
-import worm.me.gamesystems.world.reset.WorldReset;
+import worm.me.gamesystems.world.cleanup.WorldReset;
 import worm.me.menu.abilities.AbilitiesMainMenu;
 import worm.me.menu.generators.GensMainMenu;
 //import worm.me.playersystems.social.legacyhats.Hats;

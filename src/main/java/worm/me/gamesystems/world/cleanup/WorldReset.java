@@ -1,4 +1,4 @@
-package worm.me.gamesystems.world.reset;
+package worm.me.gamesystems.world.cleanup;
 
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;

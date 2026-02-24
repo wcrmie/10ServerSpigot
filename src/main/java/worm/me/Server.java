@@ -19,7 +19,7 @@ import worm.me.gamesystems.world.border.Custom.BorderVisuals;
 import worm.me.gamesystems.world.border.Custom.ZoneGridManager;
 import worm.me.gamesystems.world.legacystructure.generation.Generate;
 import worm.me.gamesystems.world.legacystructure.TreasureChests;
-import worm.me.gamesystems.world.reset.WorldReset;
+import worm.me.gamesystems.world.cleanup.WorldReset;
 import worm.me.listeners.MainListener;
 import worm.me.listeners.items.PotionListener;
 import worm.me.listeners.items.ToolListener;

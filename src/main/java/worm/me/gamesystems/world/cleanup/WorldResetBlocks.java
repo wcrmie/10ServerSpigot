@@ -1,4 +1,4 @@
-package worm.me.gamesystems.world.reset;
+package worm.me.gamesystems.world.cleanup;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -7,19 +7,10 @@ import worm.me.Server;
 public class WorldResetBlocks {
     private final World world;
     private int originalBorderSize;
-    private final int worldHeightTop = 280+40;
-    private final int worldHeightBottom = -64;
     private int currentLayer;
     private static boolean isResetting = false;
     private int taskId = -1;
     private Location originalCenter;
-
-    private final int minExcludeX = -4;
-    private final int maxExcludeX = 4;
-    private final int minExcludeY = 218;
-    private final int maxExcludeY = 224;
-    private final int minExcludeZ = -4;
-    private final int maxExcludeZ = 4;
 
     public WorldResetBlocks() {
         this.world = Bukkit.getWorld("ul_Void");
@@ -30,8 +21,8 @@ public class WorldResetBlocks {
 
         this.originalBorderSize = originalSize;
         this.originalCenter = originalCenter;
-        this.currentLayer = worldHeightTop;
-        this.isResetting = true;
+        this.currentLayer = 280 + 40;
+        isResetting = true;
 
         taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Server.getPlugin(), this::processLayer, 0L, 1L);
 
@@ -39,6 +30,7 @@ public class WorldResetBlocks {
     }
 
     private void processLayer() {
+        int worldHeightBottom = -64;
         if (currentLayer < worldHeightBottom) {
             completeReset();
             return;
@@ -52,6 +44,12 @@ public class WorldResetBlocks {
 
         for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {
+                int minExcludeX = -3;
+                int maxExcludeX = 3;
+                int minExcludeY = 210;
+                int maxExcludeY = 224;
+                int minExcludeZ = -3;
+                int maxExcludeZ = 3;
                 if (currentLayer >= minExcludeY && currentLayer <= maxExcludeY &&
                         x >= minExcludeX && x <= maxExcludeX &&
                         z >= minExcludeZ && z <= maxExcludeZ) {

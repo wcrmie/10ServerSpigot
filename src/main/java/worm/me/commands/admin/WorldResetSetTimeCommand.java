@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import worm.me.gamesystems.world.reset.WorldReset;
+import worm.me.gamesystems.world.cleanup.WorldReset;
 
 public class WorldResetSetTimeCommand implements CommandExecutor {
 
