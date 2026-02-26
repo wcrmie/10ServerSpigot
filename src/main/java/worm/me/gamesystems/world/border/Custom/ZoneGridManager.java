@@ -71,7 +71,6 @@ public class ZoneGridManager {
                 BlockVector3.at(-10000, -64, -10000),
                 BlockVector3.at(10000, 320, 10000)
         );
-
         region.setPriority(0);
         applyFlags(region, false);
         manager.addRegion(region);
