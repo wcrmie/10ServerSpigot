@@ -425,6 +425,10 @@ public final class Server extends JavaPlugin {
         p.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "10" + ChatColor.DARK_GRAY + "] " + message);
     }
 
+    public static ZoneGridManager getZoneGridManager() {
+        return zoneGridManager;
+    }
+
     public static Server getPlugin() {
         return plugin;
     }

@@ -22,7 +22,7 @@ public class ToolsEvents {
 
         if (brokenTool != e.getItem()) p.playSound(p, Sound.ENTITY_ENDER_EYE_DEATH, 1F, 0.5F);
 
-        if (brokenTool.getType().name().startsWith("GOLDEN_") && brokenTool.getEnchantments().isEmpty()) {
+        if ((brokenTool.getType().name().startsWith("GOLDEN_") || brokenTool.getType().name().startsWith("COPPER_") )&& brokenTool.getEnchantments().isEmpty()) {
             int RNG = ThreadLocalRandom.current().nextInt(0, 10);
             if (RNG == 0) {
                 p.getInventory().setItem(p.getInventory().getHeldItemSlot(), null);

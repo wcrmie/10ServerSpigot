@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import worm.me.gamesystems.world.border.Custom.ZoneGridManager;
 import worm.me.gamesystems.world.border.WorldBorderSizeHandler;
 import worm.me.menu.recipes.RecipeBrowserMenu;
 import worm.me.utils.GuiConstructor;
@@ -25,6 +26,9 @@ import worm.me.utils.Item;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 import worm.me.utils.info.GuideBook;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainGUIMenu extends Menu implements InventoryHolder {
 
@@ -128,45 +132,60 @@ public class MainGUIMenu extends Menu implements InventoryHolder {
     }
 
     public static ItemStack createResetInfoBook() {
-        WorldBorderSizeHandler borderHandler = Server.getPlugin().getWorldBorderHandler();
-        WorldReset worldReset = WorldReset.getInstance();
 
-        long currentBlocks = borderHandler.getBlockCount();
-        double currentSize = borderHandler.getWorldBorderSize();
+        ZoneGridManager gridManager = Server.getZoneGridManager();
+        int[][] grid = gridManager.getGrid();
 
-        double percentageToReset = (double) ((long) worldReset.resetScore() / worldReset.scoreNeededForReset()) *100;
+        // TEMP PLACEHOLDERS
+        String worldResetTime = "temp";
+        String timeTillExpansion = "temp";
 
-        long blocksForNextIncrease = (long) (borderHandler.calculateWorldBlockSize() *
-                (borderHandler.getExpansionPercentage() / 100.0));
-        long blocksRemainingToNext = Math.max(0, blocksForNextIncrease - (currentBlocks % blocksForNextIncrease));
-        double percentageToNext = blocksForNextIncrease == 0 ? 0 :
-                (double) (currentBlocks % blocksForNextIncrease) / blocksForNextIncrease * 100;
+        List<String> lore = new ArrayList<>();
 
-        String timerStatus = worldReset.projectedTimeTillReset() > 0 ?
-                ChatColor.GRAY + "Time until reset: " + ChatColor.WHITE + formatTime((long) (worldReset.projectedTimeTillReset())) :
-                ChatColor.GRAY + "No timer active";
+        lore.add(ChatColor.GRAY + "World Reset Time:");
+        lore.add(ChatColor.WHITE + worldResetTime);
+
+        lore.add(" ");
+
+        lore.add(ChatColor.GRAY + "Time Till Expansion:");
+        lore.add(ChatColor.WHITE + timeTillExpansion);
+
+        lore.add(" ");
+        lore.add(ChatColor.DARK_GRAY + "Grid Status:");
+
+        int center = grid.length / 2;
+
+        for (int row = 0; row < grid.length; row++) {
+
+            StringBuilder line = new StringBuilder();
+
+            for (int col = 0; col < grid[row].length; col++) {
+
+                if (row == center && col == center) {
+                    line.append(ChatColor.AQUA).append("■ ");
+                }
+                else if (grid[row][col] == 1) {
+                    line.append(ChatColor.GREEN).append("■ ");
+                }
+                else {
+                    line.append(ChatColor.RED).append("■ ");
+                }
+            }
+
+            lore.add(line.toString());
+        }
 
         ItemStack book = Item.create(
                 Material.WRITTEN_BOOK,
-                ChatColor.AQUA + "Reset Info",
-                " ",
-                ChatColor.DARK_AQUA + "" + ChatColor.UNDERLINE + "World Reset",
-                timerStatus,
-                ChatColor.GRAY + "Progress: " + ChatColor.WHITE + (long) worldReset.resetScore() + "/" + (long) worldReset.scoreNeededForReset(),
-                ChatColor.GRAY + "Completed: " + ChatColor.WHITE + String.format("%.1f", percentageToReset) + "%",
-                ChatColor.GRAY + "Expansion percentage: " + ChatColor.WHITE + String.format("%.2f", borderHandler.getExpansionPercentage()) + "%",
-                ChatColor.GRAY + " ",
-                ChatColor.DARK_AQUA + "" + ChatColor.UNDERLINE + "Border Size",
-                ChatColor.GRAY + "Current: " + ChatColor.WHITE + String.format("%.1f", currentSize),
-                ChatColor.GRAY + "Next at: " + ChatColor.WHITE + (blocksForNextIncrease - blocksRemainingToNext) + "/" + blocksForNextIncrease,
-                ChatColor.GRAY + "Blocks needed for Next: " + ChatColor.WHITE + (blocksRemainingToNext),
-                ChatColor.GRAY + "Progress: " + ChatColor.WHITE + String.format("%.1f", percentageToNext) + "%"
+                ChatColor.AQUA + "" + "Border and World Reset Info",
+                lore.toArray(new String[0])
         );
 
         ItemMeta meta = book.getItemMeta();
         meta.getPersistentDataContainer().set(
                 new NamespacedKey(Server.getPlugin(), "reset_info_book"),
-                PersistentDataType.STRING, "true"
+                PersistentDataType.STRING,
+                "true"
         );
         book.setItemMeta(meta);
 
