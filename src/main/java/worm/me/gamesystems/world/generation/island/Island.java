@@ -1,51 +1,54 @@
 package worm.me.gamesystems.world.generation.island;
 
 import org.bukkit.entity.Player;
+import worm.me.gamesystems.world.generation.island.biome.Biome;
+import worm.me.gamesystems.world.generation.island.biome.SubBiome;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Island {
 
-    private final IslandProperties.IslandTopper topper;
-    private final IslandProperties.IslandShape shape;
-    private final IslandProperties.IslandBottom bottom;
-    private final int size;
-    private final List<Player> players;
-    private final String id;
+    private final Biome m_biome;
+    private final SubBiome m_subBiome;
+    private final int m_size;
+    private final IslandProperties.IslandShape m_shape;
+    private final IslandProperties.IslandBottom m_bottom;
+    private final IslandProperties.IslandTopper m_topper;
 
+    public Island(Biome biome, SubBiome subBiome, IslandProperties.IslandShape shape, int size) {
+        this.m_biome = biome;
+        this.m_subBiome = subBiome;
+        this.m_shape = shape;
+        this.m_size = size;
+        this.m_bottom = biome.getBottoms().get(ThreadLocalRandom.current().nextInt(0, biome.getBottoms().size()));
+        this.m_topper = biome.getToppers().get(ThreadLocalRandom.current().nextInt(0, biome.getToppers().size()));
 
-
-    public Island(IslandProperties.IslandTopper topper, IslandProperties.IslandShape shape, IslandProperties.IslandBottom bottom, int size, List<Player> players) {
-        this.topper = topper;
-        this.shape = shape;
-        this.bottom = bottom;
-        this.size = size;
-        this.players = players;
-        this.id = UUID.randomUUID().toString();
     }
 
-    public IslandProperties.IslandTopper getTopper() {
-        return topper;
+    public Biome getBiome() {
+        return m_biome;
+    }
+
+    public SubBiome getSubBiome() {
+        return m_subBiome;
     }
 
     public IslandProperties.IslandShape getShape() {
-        return shape;
-    }
-
-    public IslandProperties.IslandBottom getBottom() {
-        return bottom;
+        return m_shape;
     }
 
     public int getSize() {
-        return size;
+        return m_size;
     }
 
-    public List<Player> getPlayers() {
-        return players;
+    public IslandProperties.IslandBottom getBottom() {
+        return m_bottom;
     }
 
-    public String getId() {
-        return id;
+    public IslandProperties.IslandTopper getTopper() {
+        return m_topper;
     }
+
 }

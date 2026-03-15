@@ -17,7 +17,7 @@ public class IslandGenerationCommand implements CommandExecutor {
 
             Location location = player.getLocation();
 
-            IslandGenerator.generateIsland(location, List.of(player));
+            IslandGenerator.generateIsland(location);
 
             player.sendMessage("Attempting to generate an island at your location... get rady");
 

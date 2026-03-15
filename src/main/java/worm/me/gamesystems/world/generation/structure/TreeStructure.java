@@ -5,7 +5,7 @@ import java.util.List;
 public enum TreeStructure {
 
     OAK(List.of("tiny_oak_tree_1", "oak_tree_small_1", "oak_tree_medium_1")),
-    BIRCH(List.of("placeholder_tree")),
+    BIRCH(List.of("small_birch_tree_1", "large_birch_tree_1", "large_birch_tree_2", "birch_tree_1", "birch_tree_2")),
     SPRUCE(List.of("placeholder_tree")),
     CACTUS(List.of("placeholder_tree")),
     RED_MUSHROOM(List.of("placeholder_tree")),

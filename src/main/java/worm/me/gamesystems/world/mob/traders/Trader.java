@@ -8,6 +8,7 @@ import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
+import worm.me.utils.RNG;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -41,7 +42,7 @@ public class Trader {
 
         for (int i = 0; i < 1000; i++) {
 
-            MerchantRecipe newRecipe = getRandomTrade(villagerProfession.getTrades().get(level - 1));
+            MerchantRecipe newRecipe = RNG.chooseRandom(villagerProfession.getTrades().get(level - 1));
 
             for (MerchantRecipe trade : trades) {
 
@@ -61,31 +62,6 @@ public class Trader {
         }
         return null;
 
-    }
-
-    public static MerchantRecipe getRandomTrade(Map<MerchantRecipe, Integer> trades){
-
-        int totalWeight = 0;
-
-        for (int weight : trades.values()){
-            totalWeight += weight;
-        }
-
-        int weight = ThreadLocalRandom.current().nextInt(0, totalWeight);
-
-        int tempWeight = 0;
-
-        for (MerchantRecipe recipe : trades.keySet()){
-
-            tempWeight += trades.get(recipe);
-            if (weight < tempWeight) {
-                return recipe;
-            }
-
-        }
-
-        Bukkit.getLogger().warning("TRADE CREATION FAILED");
-        return null;
     }
 
     public static void addGenetics(Villager villager, int[] genetics) {

@@ -540,7 +540,7 @@ public class GameplayListener implements Listener {
         Enchantment[] enchantments = result.getEnchantments().keySet().toArray(new Enchantment[0]);
 
         for (Enchantment ench : enchantments) {
-            if (ench.equals(Enchantment.POWER) || ench.equals(Enchantment.PROTECTION) || ench.equals(Enchantment.FEATHER_FALLING)&& result.getEnchantments().get(ench) > 3) {
+            if ((ench.equals(Enchantment.POWER) || ench.equals(Enchantment.PROTECTION) || ench.equals(Enchantment.FEATHER_FALLING)) && result.getEnchantments().get(ench) > 3) {
                 event.getResult().removeEnchantment(ench);
                 event.getResult().addUnsafeEnchantment(ench, 3);
             }

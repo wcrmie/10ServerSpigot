@@ -2,6 +2,9 @@ package worm.me.gamesystems.world.generation.island;
 
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import worm.me.gamesystems.world.generation.island.biome.Biome;
+import worm.me.gamesystems.world.generation.island.biome.SubBiome;
+import worm.me.utils.RNG;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -16,33 +19,20 @@ public class IslandManager {
         instance = this;
     }
 
-    private List<Island> islands = new java.util.ArrayList<>();
-
     /** Creates a new island object with random properties
      * @return The newly created island
      */
-    public Island createIsland(List<Player> players) {
+    public Island createIsland() {
 
         IslandProperties.IslandShape shape = IslandProperties.IslandShape.values()[ThreadLocalRandom.current().nextInt(0, IslandProperties.IslandShape.values().length)];
 
+        Biome biome = Biome.values()[ThreadLocalRandom.current().nextInt(0, Biome.values().length - 1)];
+
+        SubBiome subBiome = biome.getRandomSubBiome();
+
         int size = determineSize();
 
-        // to do with the blocks used for the island
-        IslandProperties.IslandTopper topper = IslandProperties.IslandTopper.GRASSY;
-        IslandProperties.IslandBottom palette = IslandProperties.IslandBottom.STONE;
-
-        Island island = new Island(topper, shape, palette, size, players);
-        islands.add(island);
-
-        return island;
-    }
-
-    public World getIslandWorld() {
-        return org.bukkit.Bukkit.getWorld("islands");
-    }
-
-    public List<Island> getIslands() {
-        return islands;
+        return new Island(biome, subBiome, shape, size);
     }
 
     public static IslandManager getInstance() {

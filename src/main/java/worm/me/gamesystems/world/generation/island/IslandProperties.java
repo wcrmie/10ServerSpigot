@@ -69,8 +69,8 @@ public class IslandProperties {
 
         STONE(List.of(Material.STONE, Material.TUFF, Material.CYAN_TERRACOTTA, Material.GRAY_CONCRETE)),
         GRANITE(List.of(Material.GRANITE, Material.TERRACOTTA)),
-        ANDESITE(List.of(Material.LIGHT_GRAY_CONCRETE_POWDER, Material.ANDESITE, Material.LIGHT_GRAY_CONCRETE)),
-        DIORITE(List.of(Material.WHITE_CONCRETE_POWDER, Material.CALCITE, Material.DIORITE)),
+        ANDESITE(List.of(Material.ANDESITE, Material.LIGHT_GRAY_CONCRETE)),
+        DIORITE(List.of(Material.CALCITE, Material.DIORITE)),
         DRIPSTONE(List.of(Material.JUNGLE_PLANKS, Material.BROWN_MUSHROOM_BLOCK, Material.PACKED_MUD, Material.LIGHT_GRAY_TERRACOTTA, Material.DRIPSTONE_BLOCK)),
         BASALT(List.of(Material.CRACKED_DEEPSLATE_TILES, Material.SMOOTH_BASALT, Material.COBBLED_DEEPSLATE, Material.DEEPSLATE));
 
@@ -83,13 +83,6 @@ public class IslandProperties {
 
         public List<Material> getGradientMaterials() {
             return gradientMaterials;
-        }
-    }
-
-    public enum IslandBiome {
-        ;
-
-        IslandBiome() {
         }
     }
 }

@@ -11,7 +11,9 @@ import worm.me.gamesystems.world.generation.poisson.PoissonDisc;
 import worm.me.gamesystems.world.generation.structure.StructureSupplier;
 import worm.me.gamesystems.world.generation.structure.TreeStructure;
 import worm.me.utils.FastNoiseLite;
+import worm.me.utils.RNG;
 
+import java.rmi.ServerError;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -20,18 +22,18 @@ public class IslandGenerator {
     /** Generates an island at the specified location
      * @param location The location to generate the island at
      */
-    public static void generateIsland(Location location, List<Player> players) {
+    public static void generateIsland(Location location) {
 
-        Island island = IslandManager.getInstance().createIsland(players);
+        Island island = IslandManager.getInstance().createIsland();
 
         float[][] terrain = fillTaperedPerlinArray(island.getSize(), island.getShape());
 
         generateUnderside(location, terrain, island);
         generateTop(location, terrain, island);
 
-        Bukkit.getScheduler().runTaskLater(Server.getPlugin(), () -> {
-            placeTrees(location, island);
-        }, 1L);
+        placeTrees(location, island);
+
+        placeFoliage(location, island);
 
     }
 
@@ -96,7 +98,7 @@ public class IslandGenerator {
         Location corner1 = location.clone();
         Location corner2 = location.clone().add(island.getSize(), 0, island.getSize());
 
-        ArrayList<Location> points = PoissonDisc.generatePoints(location.getWorld(), corner1.add((double) island.getSize() / 6, 0, (double) island.getSize() / 6), corner2.subtract((double) island.getSize() / 6, 0, (double) island.getSize() / 6), 6, 9, 20);
+        ArrayList<Location> points = PoissonDisc.generatePoints(location.getWorld(), corner1, corner2, 4, 6, 100);
         Iterator<Location> iterator = points.iterator();
 
         HashMap<Location, String> treeLocations = new HashMap<>();
@@ -104,7 +106,7 @@ public class IslandGenerator {
         while (iterator.hasNext()) {
             Location point = iterator.next();
 
-            TreeStructure structure = TreeStructure.OAK;
+            TreeStructure structure = RNG.chooseRandom(island.getSubBiome().getTreesMap());
             String structureName = structure.getStructureNames().get(ThreadLocalRandom.current().nextInt(0, structure.getStructureNames().size()));
 
             Block ground;
@@ -115,11 +117,16 @@ public class IslandGenerator {
 
             } catch (Exception e) {
                 iterator.remove();
+
+                Server.getPlugin().getLogger().info("Can't find ground at " + point);
+
                 break;
 
             }
 
-            if (ground.getLocation().getBlockY() <= -60) break;
+            Server.getPlugin().getLogger().info("Found ground at " + point);
+
+            if (ground.getLocation().getBlockY() <= -60) continue;
 
             Location groundLocation = ground.getLocation().add(1, 0, 1);
 
@@ -143,6 +150,45 @@ public class IslandGenerator {
         }
     }
 
+    private static void placeFoliage(Location location, Island island) {
+
+        for (int x = 0; x < island.getSize(); x++) {
+            for (int z = 0; z < island.getSize(); z++) {
+
+                int foliageChance = ThreadLocalRandom.current().nextInt(0, 100);
+
+                if (foliageChance > 60) continue; // generate foliage 80% of the time
+
+                Block ground;
+
+                try {
+
+                    ground = Objects.requireNonNull(location.getWorld()).getHighestBlockAt(location.clone().add(x, 0, z));
+
+                } catch (Exception e) {
+
+                    Server.getPlugin().getLogger().info("could not place foliage");
+                    continue;
+
+                }
+
+                if (ground.getLocation().getBlockY() <= -60) continue;
+
+                if (!island.getTopper().getTopMaterials().contains(ground.getType())) continue;
+
+                Location groundLocation = ground.getLocation();
+
+                groundLocation.add(0, 1, 0);
+
+                try {
+                    groundLocation.getBlock().setType(Objects.requireNonNull(RNG.chooseRandom(island.getSubBiome().getFoliageMap())));
+                } catch (Exception e) {
+                    Server.getPlugin().getLogger().info("foliage type was null " + ground.getLocation());
+                }
+            }
+        }
+
+    }
 
 
     /** Generates the underside of the island
@@ -156,6 +202,7 @@ public class IslandGenerator {
 
         int size = island.getSize();
         IslandProperties.IslandShape shape = island.getShape();
+
         IslandProperties.IslandBottom palette = island.getBottom();
         IslandProperties.IslandTopper topper = island.getTopper();
 
@@ -294,7 +341,5 @@ public class IslandGenerator {
         }
 
     }
-
-
 
 }
