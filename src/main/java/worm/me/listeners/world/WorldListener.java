@@ -7,6 +7,7 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -55,7 +56,10 @@ public class WorldListener implements Listener {
             event.setCancelled(true);
             return;
         }
-
+        if(!Server.zoneGridManager.isInAllowedGrid(event.getBlock().getLocation())) {
+            event.setCancelled(true);
+            return;
+        }
         if (!event.isCancelled()) plugin.getWorldBorderHandler().incrementBlockCount(event);
         if (event.getPlayer() != null) {
             VoidPlayer.registerStats(event.getPlayer(), 0);
@@ -63,18 +67,42 @@ public class WorldListener implements Listener {
     }
 
     @EventHandler
-    public void onFlow(BlockFromToEvent event) {
+    public void onPistonExtend(BlockPistonExtendEvent event) {
+        BlockFace direction = event.getDirection();
 
-        ProtectedRegion region = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(event.getToBlock().getWorld())).getRegion("spawn");
-        if (region.contains(event.getToBlock().getX(), event.getToBlock().getY(), event.getToBlock().getZ())) {
+        for (Block pushed : event.getBlocks()) {
+            Block destination = pushed.getRelative(direction);
+
+            if (!Server.zoneGridManager.isInAllowedGrid(destination.getLocation())) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+    }
+
+    @EventHandler
+    public void onFlow(BlockFromToEvent event) {
+        Block from = event.getBlock();
+        Block to   = event.getToBlock();
+
+        ProtectedRegion region = WorldGuard.getInstance()
+                .getPlatform().getRegionContainer()
+                .get(BukkitAdapter.adapt(to.getWorld()))
+                .getRegion("spawn");
+        if (region != null && region.contains(to.getX(), to.getY(), to.getZ())) {
             event.setCancelled(true);
             return;
         }
 
-        if (event.getToBlock().getLocation().getBlockY() > 210) return;
-
-        if (event.getBlock().getType() == Material.WATER || event.getBlock().getType() == Material.LAVA) {
+        if (!Server.zoneGridManager.isInAllowedGrid(to.getLocation())) {
             event.setCancelled(true);
+            return;
+        }
+
+        if (to.getLocation().getBlockY() <= 210) {
+            if (from.getType() == Material.WATER || from.getType() == Material.LAVA) {
+                event.setCancelled(true);
+            }
         }
     }
 

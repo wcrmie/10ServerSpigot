@@ -1,17 +1,11 @@
 package worm.me.gamesystems.world.border.Custom;
 
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import com.sk89q.worldguard.protection.flags.StateFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import worm.me.Server;
-import worm.me.utils.world.WGUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +26,6 @@ public class ZoneGridManager {
             {0, 0, 0, 0, 0}
     };
 
-    private final List<String> gridRegionIds = new ArrayList<>();
-
     public ZoneGridManager(Server plugin) {
         this.plugin = plugin;
     }
@@ -41,99 +33,14 @@ public class ZoneGridManager {
     public void setBorderVisuals(BorderVisuals borderVisuals) {
         this.borderVisuals = borderVisuals;
     }
-
-
     public void initialize() {
         loadGrid();
-
-        World world = Bukkit.getWorld("ul_void");
-        if (world == null) return;
-
-        RegionManager manager = WGUtil.getRegionManager(world);
-        if (manager == null) return;
-
-        createMainRegion(manager);
-        createGrid(manager);
-
-        try { manager.save(); } catch (Exception ignored) {}
-    }
-
-    private void applyFlags(ProtectedRegion region, boolean allowed) {
-        StateFlag.State state = allowed ? StateFlag.State.ALLOW : StateFlag.State.DENY;
-        region.setFlag(com.sk89q.worldguard.protection.flags.Flags.BLOCK_PLACE, state);
-        region.setFlag(com.sk89q.worldguard.protection.flags.Flags.BLOCK_BREAK, state);
-        region.setFlag(com.sk89q.worldguard.protection.flags.Flags.USE, state);
-    }
-
-    private void createMainRegion(RegionManager manager) {
-        if (manager.getRegion("world_main") != null) return;
-        ProtectedCuboidRegion region = new ProtectedCuboidRegion(
-                "world_main",
-                BlockVector3.at(-10000, -64, -10000),
-                BlockVector3.at(10000, 320, 10000)
-        );
-        region.setPriority(-2);
-        applyFlags(region, false);
-        manager.addRegion(region);
-    }
-
-    private void createGrid(RegionManager manager) {
-        int start = -(GRID_SIZE * CELL_SIZE) / 2;
-        for (int row = 0; row < GRID_SIZE; row++) {
-            for (int col = 0; col < GRID_SIZE; col++) {
-                String id = "grid_" + row + "_" + col;
-                ProtectedRegion existing = manager.getRegion(id);
-                if (existing != null) {
-                    applyFlags(existing, grid[row][col] == 1);
-                    if (!gridRegionIds.contains(id)) gridRegionIds.add(id);
-                    continue;
-                }
-
-                gridRegionIds.add(id);
-                int minX = start + col * CELL_SIZE;
-                int minZ = start + row * CELL_SIZE;
-                ProtectedCuboidRegion region = new ProtectedCuboidRegion(
-                        id,
-                        BlockVector3.at(minX, -64, minZ),
-                        BlockVector3.at(minX + CELL_SIZE, 320, minZ + CELL_SIZE)
-                );
-                region.setPriority(-1);
-                applyFlags(region, grid[row][col] == 1);
-                manager.addRegion(region);
-            }
-        }
-    }
-
-    public void removeGridRegions() {
-        World world = Bukkit.getWorld("ul_void");
-        if (world == null) return;
-        RegionManager manager = WGUtil.getRegionManager(world);
-        if (manager == null) return;
-        for (String id : gridRegionIds) {
-            manager.removeRegion(id);
-        }
-        gridRegionIds.clear();
-        try { manager.save(); } catch (Exception ignored) {}
     }
 
     public void setGridValue(int row, int col, int value) {
         if (row < 0 || row >= GRID_SIZE || col < 0 || col >= GRID_SIZE) return;
         grid[row][col] = value;
-
         saveGrid();
-
-        World world = Bukkit.getWorld("ul_void");
-        if (world != null) {
-            RegionManager manager = WGUtil.getRegionManager(world);
-            if (manager != null) {
-                String id = "grid_" + row + "_" + col;
-                ProtectedRegion region = manager.getRegion(id);
-                if (region != null) {
-                    applyFlags(region, value == 1);
-                    try { manager.save(); } catch (Exception ignored) {}
-                }
-            }
-        }
 
         if (borderVisuals != null) {
             borderVisuals.refreshWalls();
@@ -148,7 +55,6 @@ public class ZoneGridManager {
     public int[][] getGrid()  { return grid; }
     public int getCellSize()  { return CELL_SIZE; }
 
-
     public void saveGrid() {
         FileConfiguration config = plugin.getConfig();
         for (int row = 0; row < GRID_SIZE; row++) {
@@ -158,6 +64,7 @@ public class ZoneGridManager {
         }
         plugin.saveConfig();
     }
+
     public void loadGrid() {
         FileConfiguration config = plugin.getConfig();
         for (int row = 0; row < GRID_SIZE; row++) {

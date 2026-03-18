@@ -392,10 +392,6 @@ public final class Server extends JavaPlugin {
             playerspawning.removeAllBlocks();
         }
 
-        if (zoneGridManager != null) {
-            zoneGridManager.removeGridRegions();
-        }
-
         //treasureChests.onPluginDisable();
 
         WorldTimer.getInstance().saveData();
