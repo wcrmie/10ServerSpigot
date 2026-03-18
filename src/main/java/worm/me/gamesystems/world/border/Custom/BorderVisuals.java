@@ -59,7 +59,7 @@ public class BorderVisuals {
                         double dx = px - closestX;
                         double dz = pz - closestZ;
 
-                        if (dx * dx + dz * dz <= 512 * 512) {
+                        if (dx * dx + dz * dz <= 256 * 256) {
                             segmentNearby = true;
                             break;
                         }
@@ -144,7 +144,7 @@ public class BorderVisuals {
         int endX = startX + length;
         for (int x = startX; x < endX; x += 20) {
             for (int y = 200; y <= 300; y += 20) {
-                if (isPlayerNearby(players, x, y, z, 512)) {
+                if (isPlayerNearby(players, x, y, z, 128)) {
                     world.spawnParticle(
                             Particle.TRIAL_SPAWNER_DETECTION_OMINOUS,
                             x, y, z,
@@ -172,7 +172,7 @@ public class BorderVisuals {
         int endZ = startZ + length;
         for (int z = startZ; z < endZ; z += 20) {
             for (int y = 200; y <= 300; y += 20) {
-                if (isPlayerNearby(players, x, y, z, 512)) {
+                if (isPlayerNearby(players, x, y, z, 128)) {
                     world.spawnParticle(
                             Particle.TRIAL_SPAWNER_DETECTION_OMINOUS,
                             x, y, z,

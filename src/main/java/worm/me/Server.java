@@ -14,6 +14,7 @@ import worm.me.commands.gui.OpenLevelsGUICommand;
 import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.gamesystems.recipes.SmeltingRecipes;
+import worm.me.gamesystems.world.WorldTimer;
 import worm.me.gamesystems.world.generation.island.IslandManager;
 import worm.me.gamesystems.world.border.Custom.BorderVisuals;
 import worm.me.gamesystems.world.border.Custom.ZoneGridManager;
@@ -105,6 +106,8 @@ public final class Server extends JavaPlugin {
 
         // Add custom recipes
 
+        WorldTimer.getInstance().start();
+
         IslandManager islandManager = new IslandManager();
 
         ShapedRecipes shapedRecipes = new ShapedRecipes();
@@ -125,7 +128,6 @@ public final class Server extends JavaPlugin {
         getCommand("generateisland").setExecutor(new IslandGenerationCommand());
         getCommand("handbook").setExecutor(new HandBookCommand());
         getCommand("spawntreasure").setExecutor(new TreasureChestCommand(treasureChests));
-        getCommand("setresettimer").setExecutor(new WorldResetSetTimeCommand());
         getCommand("resetworld").setExecutor(new WorldResetCommand());
         getCommand("blockcount").setExecutor(new BlockCountCommand(WorldBorderSizeHandler));
         getCommand("expansionpercentage").setExecutor(new ExpansionPercentageCommand(WorldBorderSizeHandler));
@@ -149,9 +151,6 @@ public final class Server extends JavaPlugin {
 
         getCommand("getbordergrid")
                 .setExecutor(new GetBorderGrid(zoneGridManager));
-
-        // start worldreset score adder
-        WorldReset.getInstance().scoreAdder();
 
         // Allows listeners to receive events.
         getServer().getPluginManager().registerEvents(new MainListener(), this);
@@ -187,7 +186,6 @@ public final class Server extends JavaPlugin {
         this.getCommand("suicide").setExecutor(new SuicideCommand());
         this.getCommand("togglegens").setExecutor(new ToggleGensCommand());
         this.getCommand("hat").setExecutor(new HatCommand());
-        this.getCommand("setresettimer").setExecutor(new WorldResetSetTimeCommand());
         this.getCommand("givebook").setExecutor(new GiveClericBookCommand());
         this.getCommand("discord").setExecutor(new DiscordCommand());
 
@@ -400,7 +398,7 @@ public final class Server extends JavaPlugin {
 
         //treasureChests.onPluginDisable();
 
-        WorldReset.getInstance().saveData();
+        WorldTimer.getInstance().saveData();
 
         //if (treasureChests != null) treasureChests.removeAllDisplays();
 

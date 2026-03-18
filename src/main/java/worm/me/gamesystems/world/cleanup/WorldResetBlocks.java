@@ -5,54 +5,48 @@ import org.bukkit.block.Block;
 import worm.me.Server;
 
 public class WorldResetBlocks {
+
+    private static final int FULL_SIZE = 250;
+
+    private static final int GRID_HALF = (FULL_SIZE / 2) + 30;
+
     private final World world;
-    private int originalBorderSize;
-    private int currentLayer;
     private static boolean isResetting = false;
     private int taskId = -1;
-    private Location originalCenter;
+    private int currentLayer;
 
     public WorldResetBlocks() {
         this.world = Bukkit.getWorld("ul_Void");
     }
 
-    public void startBlockReset(int originalSize, Location originalCenter) {
+    public static boolean isResetting() {
+        return isResetting;
+    }
+
+    public void startBlockReset() {
         if (isResetting) return;
-
-        this.originalBorderSize = originalSize;
-        this.originalCenter = originalCenter;
-        this.currentLayer = 280 + 40;
+        this.currentLayer = 320;
         isResetting = true;
-
-        taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Server.getPlugin(), this::processLayer, 0L, 1L);
-
-
+        taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(
+                Server.getPlugin(), this::processLayer, 0L, 1L);
     }
 
     private void processLayer() {
-        int worldHeightBottom = -64;
-        if (currentLayer < worldHeightBottom) {
+        if (currentLayer < -64) {
             completeReset();
             return;
         }
 
-        int clearanceRadius = (originalBorderSize / 2) + 50;
-        int minX = (int) (originalCenter.getX() - clearanceRadius);
-        int maxX = (int) (originalCenter.getX() + clearanceRadius);
-        int minZ = (int) (originalCenter.getZ() - clearanceRadius);
-        int maxZ = (int) (originalCenter.getZ() + clearanceRadius);
+        final int EXCL_MIN_X = -3,  EXCL_MAX_X = 3;
+        final int EXCL_MIN_Y = 210, EXCL_MAX_Y = 224;
+        final int EXCL_MIN_Z = -3,  EXCL_MAX_Z = 3;
 
-        for (int x = minX; x <= maxX; x++) {
-            for (int z = minZ; z <= maxZ; z++) {
-                int minExcludeX = -3;
-                int maxExcludeX = 3;
-                int minExcludeY = 210;
-                int maxExcludeY = 224;
-                int minExcludeZ = -3;
-                int maxExcludeZ = 3;
-                if (currentLayer >= minExcludeY && currentLayer <= maxExcludeY &&
-                        x >= minExcludeX && x <= maxExcludeX &&
-                        z >= minExcludeZ && z <= maxExcludeZ) {
+        for (int x = -GRID_HALF; x <= GRID_HALF; x++) {
+            for (int z = -GRID_HALF; z <= GRID_HALF; z++) {
+
+                if (currentLayer >= EXCL_MIN_Y && currentLayer <= EXCL_MAX_Y
+                        && x >= EXCL_MIN_X && x <= EXCL_MAX_X
+                        && z >= EXCL_MIN_Z && z <= EXCL_MAX_Z) {
                     continue;
                 }
 

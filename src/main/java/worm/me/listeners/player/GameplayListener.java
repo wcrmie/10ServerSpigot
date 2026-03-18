@@ -148,14 +148,10 @@ public class GameplayListener implements Listener {
 
         Player player = e.getPlayer();
 
-        if (e.getFrom() == e.getTo()) return;
-
-        if (Objects.requireNonNull(e.getTo()).getY() < 200) {
-            e.getPlayer().damage(1000000);
-        }
-        else {
+        if (e.getTo().getY() < 200) {
+            player.damage(1000000);
+        } else {
             boolean allowed = Server.zoneGridManager.isInAllowedGrid(e.getTo());
-
             if (!allowed) {
                 OutOfBorDer.apply(player);
             }
