@@ -4,10 +4,11 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import worm.me.Server;
 import worm.me.gamesystems.world.PlayArea;
+import worm.me.gamesystems.world.border.ZoneGridManager;
 
 public class WorldResetBlocks {
 
-    private static final int FULL_SIZE = 250;
+    private static final int FULL_SIZE = Server.getZoneGridManager().getCellSize() * Server.getZoneGridManager().getGridSize();
 
     private static final int GRID_HALF = (FULL_SIZE / 2) + 30;
 

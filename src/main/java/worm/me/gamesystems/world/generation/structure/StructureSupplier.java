@@ -75,7 +75,7 @@ public class StructureSupplier {
 
         int[] offset = placementOffset(rotation, sizeX, sizeZ);
 
-        Location centered = location.clone().add(offset[0], 0, offset[1]);
+        Location centered = location.clone().add(offset[0] - sizeX/2, 0, offset[1] - sizeZ/2);
 
         if (!canFloat) {
 

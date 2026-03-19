@@ -54,6 +54,8 @@ public class ZoneGridManager {
     public int[][] getGrid()  { return grid; }
     public int getCellSize()  { return CELL_SIZE; }
 
+    public int getGridSize() { return GRID_SIZE; }
+
     public void saveGrid() {
         FileConfiguration config = Server.getPlugin().getConfig();
         for (int row = 0; row < GRID_SIZE; row++) {

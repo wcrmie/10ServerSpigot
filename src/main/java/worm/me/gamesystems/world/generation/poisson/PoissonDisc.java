@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class PoissonDisc {
 
-    public static ArrayList<Location> generatePoints(World world, Location corner1, Location corner2, double minDistance, double maxDistance, int maxCandidates, @Nullable List<Location> validLocations) {
+    public static ArrayList<Location> generatePoints(World world, Location corner1, Location corner2, double minDistance, double maxDistance, int maxCandidates, @Nullable List<Location> validLocations, @Nullable Integer amount, @Nullable Location startingPoint) {
         double x1 = Math.floor(corner1.getX());
         double z1 = Math.floor(corner1.getZ());
         double x2 = Math.floor(corner2.getX());
@@ -27,7 +27,12 @@ public class PoissonDisc {
             Server.getPlugin().getLogger().info(point.x + " " + point.z);
         }
 
-        List<Point2D> points2D = generate(x1, z1, x2, z2, minDistance, maxDistance, maxCandidates, validPoints);
+        Point2D startingPoint2D;
+
+        if (startingPoint == null) startingPoint2D = null;
+        else startingPoint2D = new  Point2D(startingPoint.getX(), startingPoint.getY());
+
+        List<Point2D> points2D = generate(x1, z1, x2, z2, minDistance, maxDistance, maxCandidates, validPoints, amount, startingPoint2D);
 
         ArrayList<Location> locations = new ArrayList<>();
         for (Point2D point : points2D) {
@@ -67,7 +72,7 @@ public class PoissonDisc {
      * @return list of generated points
      *
      */
-    private static List<Point2D> generate(double x1, double z1, double x2, double z2, double minDistance, double maxDistance, int maxCandidates, List<Point2D> validPoints) {
+    private static List<Point2D> generate(double x1, double z1, double x2, double z2, double minDistance, double maxDistance, int maxCandidates, List<Point2D> validPoints, Integer amount, @Nullable Point2D startingPoint) {
         double minX = Math.min(x1, x2);
         double maxX = Math.max(x1, x2);
         double minZ = Math.min(z1, z2);
@@ -85,7 +90,7 @@ public class PoissonDisc {
         List<Point2D> activeList = new ArrayList<>();
         List<Point2D> points = new ArrayList<>();
 
-        Point2D initialPoint = null;
+        Point2D initialPoint = startingPoint;
 
         while (initialPoint == null) {
 
@@ -110,7 +115,7 @@ public class PoissonDisc {
         activeList.add(initialPoint);
         addToGrid(grid, initialPoint, minX, minZ, cellSize);
 
-        while (!activeList.isEmpty()) {
+        while (!activeList.isEmpty() && (amount == null || points.size() < amount)) {
 
             int activeIndex = ThreadLocalRandom.current().nextInt(activeList.size());
             Point2D activePoint = activeList.get(activeIndex);

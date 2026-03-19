@@ -5,7 +5,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import worm.me.Server;
 import worm.me.gamesystems.world.generation.poisson.PoissonDisc;
 import worm.me.gamesystems.world.generation.structure.StructureSupplier;
@@ -13,62 +12,29 @@ import worm.me.gamesystems.world.generation.structure.TreeStructure;
 import worm.me.utils.FastNoiseLite;
 import worm.me.utils.RNG;
 
-import javax.annotation.Nullable;
-import java.rmi.ServerError;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class IslandGenerator {
 
     /** Generates an island at the specified location
-     * @param location The location to generate the island at
+     * @param location The bottom middle point to generate the island at
      */
-    public static void generateIsland(Location location, @Nullable Integer diameter) {
+    public static void generate(Island island, Location location) {
 
-        Island island = IslandManager.createIsland(diameter);
+        int size = island.getSize();
 
-        float[][] terrain = fillTaperedPerlinArray(island.getSize(), island.getShape());
 
-        generateUnderside(location, terrain, island);
-        generateTop(location, terrain, island);
+        Location spawnLoc = location.clone().add(-(size / 2), Island.getMaxUndersideDepth(island), -(size / 2));
 
-        placeTrees(location, island);
+        float[][] terrain = island.getTerrain();
 
-        placeFoliage(location, island);
+        generateUnderside(spawnLoc, terrain, island);
+        generateTop(spawnLoc, terrain, island);
 
-    }
+        placeTrees(spawnLoc, island);
 
-    /** Fills a 2D array with noise values
-     * @param size The diameter of the island you are trying to generate
-     * @param shape The shape of the island
-     * @return A 2D array of floats representing noise values
-     */
-    private static float[][] fillTaperedPerlinArray (int size, IslandProperties.IslandShape shape) {
-        float[][] arr = new float[size][size];
-
-        worm.me.utils.FastNoiseLite noise = new worm.me.utils.FastNoiseLite();
-        noise.SetNoiseType(worm.me.utils.FastNoiseLite.NoiseType.Perlin);
-        noise.SetSeed(ThreadLocalRandom.current().nextInt(Integer.MIN_VALUE, Integer.MAX_VALUE));
-
-        float frequency = shape.getFrequency();
-
-        noise.SetFrequency(frequency);
-
-        int radius = size / 2;
-
-        for (int x = 0; x < size; x++) {
-            for (int z = 0; z < size; z++) {
-
-                double distance = radius - (radius - (float) Math.sqrt(Math.pow(x - radius, 2) + Math.pow(z - radius, 2)));
-                double taper = distance / size;
-
-                float nx = (float) ((double) x /size - 0.5);
-                float nz = (float) ((double) z /size - 0.5);
-                arr[x][z] = (float) (noise.GetNoise(nx, nz) - taper);
-            }
-        }
-
-        return arr;
+        placeFoliage(spawnLoc, island);
 
     }
 
@@ -94,7 +60,7 @@ public class IslandGenerator {
         return palette.get(index);
     }
 
-    private static List<Location> findValidLocations(Location location, Island island) {
+    private static List<Location> findValidGroundLocations(Location location, Island island) {
 
         ArrayList<Location> validLocations = new ArrayList<>();
 
@@ -150,61 +116,58 @@ public class IslandGenerator {
 
     private static void placeTrees(Location location, Island island) {
 
-        List<Location> validLocations = findValidLocations(location, island);
 
-        Location corner1 = location.clone();
-        Location corner2 = location.clone().add(island.getSize(), 0, island.getSize());
+            List<Location> validLocations = findValidGroundLocations(location, island);
 
-        ArrayList<Location> points = PoissonDisc.generatePoints(location.getWorld(), corner1, corner2, 5, 8, 100, validLocations);
-        Iterator<Location> iterator = points.iterator();
+            Location corner1 = location.clone();
+            Location corner2 = location.clone().add(island.getSize(), 0, island.getSize());
 
-        HashMap<Location, String> treeLocations = new HashMap<>();
+            ArrayList<Location> points = PoissonDisc.generatePoints(location.getWorld(), corner1, corner2, 5, 8, 100, validLocations, null, null);
+            Iterator<Location> iterator = points.iterator();
 
-        while (iterator.hasNext()) {
-            Location point = iterator.next();
+            HashMap<Location, String> treeLocations = new HashMap<>();
 
-            TreeStructure structure = RNG.chooseRandom(island.getSubBiome().getTreesMap());
-            String structureName = structure.getStructureNames().get(ThreadLocalRandom.current().nextInt(0, structure.getStructureNames().size()));
+            while (iterator.hasNext()) {
+                Location point = iterator.next();
 
-            Block ground;
+                TreeStructure structure = RNG.chooseRandom(island.getSubBiome().getTreesMap());
+                String structureName = structure.getStructureNames().get(ThreadLocalRandom.current().nextInt(0, structure.getStructureNames().size()));
 
-            try {
+                Block ground;
 
-                ground = Objects.requireNonNull(location.getWorld()).getHighestBlockAt(point);
+                try {
 
-            } catch (Exception e) {
-                iterator.remove();
+                    ground = Objects.requireNonNull(location.getWorld()).getHighestBlockAt(point);
 
-                Server.getPlugin().getLogger().info("Can't find ground at " + point);
+                } catch (Exception e) {
+                    iterator.remove();
 
-                break;
+                    Server.getPlugin().getLogger().info("Can't find ground at " + point);
+
+                    break;
+
+                }
+
+                if (ground.getLocation().getBlockY() <= -60) continue;
+
+                Location groundLocation = ground.getLocation();
+
+                groundLocation.add(0, 1, 0);
+
+                treeLocations.put(groundLocation, structureName);
 
             }
 
-            Server.getPlugin().getLogger().info("Found ground at " + point);
+            for (Map.Entry<Location, String> entry : treeLocations.entrySet()) {
 
-            if (ground.getLocation().getBlockY() <= -60) continue;
+                    StructureSupplier.placeStructure(
+                            entry.getValue(),
+                            entry.getKey(),
+                            false
+                    );
 
-            Location groundLocation = ground.getLocation();
+            }
 
-            groundLocation.add(0, 1, 0);
-
-            treeLocations.put(groundLocation, structureName);
-
-        }
-
-        for (Map.Entry<Location, String> entry : treeLocations.entrySet()) {
-
-            Server.getPlugin().getLogger().info("generating tree at " + entry.getKey().toString() + " for " + entry.getValue());
-
-            StructureSupplier.placeStructure(
-                    entry.getValue(),
-                    entry.getKey(),
-                    false
-            );
-
-
-        }
     }
 
     private static void placeFoliage(Location location, Island island) {

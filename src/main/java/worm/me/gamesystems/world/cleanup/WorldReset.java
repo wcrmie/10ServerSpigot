@@ -4,6 +4,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import worm.me.Server;
 import worm.me.gamesystems.world.WorldTimer;
+import worm.me.gamesystems.world.generation.island.IslandManager;
 
 public class WorldReset {
 
@@ -56,6 +57,8 @@ public class WorldReset {
         Server.zoneGridManager.setGridValue(GRID_MID, GRID_MID, 1);
 
         WorldTimer.getInstance().resetTimer();
+
+        IslandManager.generateIslands();
 
         Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "WORLD RESET COMPLETE!");
         Bukkit.broadcastMessage(ChatColor.RED + "The border will expand every 6 hours.");
