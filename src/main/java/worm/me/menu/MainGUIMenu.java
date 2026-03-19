@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import worm.me.gamesystems.world.WorldTimer;
 import worm.me.gamesystems.world.border.ZoneGridManager;
 import worm.me.menu.recipes.RecipeBrowserMenu;
 import worm.me.utils.GuiConstructor;
@@ -130,46 +131,43 @@ public class MainGUIMenu extends Menu implements InventoryHolder {
     }
 
     public static ItemStack createResetInfoBook() {
-
         ZoneGridManager gridManager = Server.getZoneGridManager();
         int[][] grid = gridManager.getGrid();
 
-        // TEMP PLACEHOLDERS
-        String worldResetTime = "temp";
-        String timeTillExpansion = "temp";
+        WorldTimer timer = WorldTimer.getInstance();
+
+        long expansionSecs = timer.secondsUntilNextExpansion();
+        long resetSecs = timer.secondsUntilReset();
+
+        String timeTillExpansion = (expansionSecs < 0)
+                ? ChatColor.RED + "Grid is fully open!"
+                : formatTime(expansionSecs);
+
+        String worldResetTime = (resetSecs < 0)
+                ? ChatColor.RED + "Not yet active"
+                : formatTime(resetSecs);
 
         List<String> lore = new ArrayList<>();
-
         lore.add(ChatColor.GRAY + "World Reset Time:");
         lore.add(ChatColor.WHITE + worldResetTime);
-
         lore.add(" ");
-
         lore.add(ChatColor.GRAY + "Time Till Expansion:");
         lore.add(ChatColor.WHITE + timeTillExpansion);
-
         lore.add(" ");
         lore.add(ChatColor.DARK_GRAY + "Grid Status:");
 
         int center = grid.length / 2;
-
         for (int row = 0; row < grid.length; row++) {
-
             StringBuilder line = new StringBuilder();
-
             for (int col = 0; col < grid[row].length; col++) {
-
                 if (row == center && col == center) {
                     line.append(ChatColor.AQUA).append("■ ");
-                }
-                else if (grid[row][col] == 1) {
+                } else if (grid[row][col] == 1) {
                     line.append(ChatColor.GREEN).append("■ ");
-                }
-                else {
+                } else {
                     line.append(ChatColor.RED).append("■ ");
                 }
             }
-
             lore.add(line.toString());
         }
 
@@ -178,7 +176,6 @@ public class MainGUIMenu extends Menu implements InventoryHolder {
                 ChatColor.AQUA + "" + "Border and World Reset Info",
                 lore.toArray(new String[0])
         );
-
         ItemMeta meta = book.getItemMeta();
         meta.getPersistentDataContainer().set(
                 new NamespacedKey(Server.getPlugin(), "reset_info_book"),
@@ -186,7 +183,6 @@ public class MainGUIMenu extends Menu implements InventoryHolder {
                 "true"
         );
         book.setItemMeta(meta);
-
         return book;
     }
 

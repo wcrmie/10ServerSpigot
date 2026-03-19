@@ -301,7 +301,7 @@ public final class Server extends JavaPlugin {
         combatMobs.put(EntityType.RAVAGER, 50L);
         combatMobs.put(EntityType.VEX, 10L);
         combatMobs.put(EntityType.WITHER_SKELETON, 10L);
-        combatMobs.put(EntityType.ENDERMITE, 5L);
+        combatMobs.put(EntityType.ENDERMITE, 1L);
         combatMobs.put(EntityType.GUARDIAN, 10L);
         combatMobs.put(EntityType.ELDER_GUARDIAN, 20L);
         combatMobs.put(EntityType.SHULKER, 10L);
