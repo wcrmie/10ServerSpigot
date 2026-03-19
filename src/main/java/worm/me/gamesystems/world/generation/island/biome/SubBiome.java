@@ -134,22 +134,23 @@ public enum SubBiome {
             ),
 
             Biome.FLOWER_FOREST),
-    DARK_FOREST(
-            Map.of(
-
-                    Material.SHORT_GRASS, 50,
-                    Material.DANDELION, 5,
-                    Material.POPPY, 10
-
-            ),
-
-            Map.of(
-
-                    TreeStructure.DARK_OAK, 100
-
-            ),
-
-            Biome.DARK_FOREST),
+//    DARK_FOREST(
+//            Map.of(
+//
+//                    Material.SHORT_GRASS, 50,
+//                    Material.BUSH, 35,
+//                    Material.AZURE_BLUET, 5,
+//                    Material.LILY_OF_THE_VALLEY, 10
+//
+//            ),
+//
+//            Map.of(
+//
+//                    TreeStructure.DARK_OAK, 100
+//
+//            ),
+//
+//            Biome.DARK_FOREST),
 
 //    // Cold biomes
 //    TUNDRA(15),
@@ -160,7 +161,25 @@ public enum SubBiome {
 //
 //    // Hot biomes
 //    SAVANNA(25),
-//    DESERT(25),
+    DESERT(
+
+            Map.of(
+
+                    Material.SHORT_DRY_GRASS, 50,
+                    Material.DEAD_BUSH, 10,
+                    Material.TALL_DRY_GRASS, 35
+
+            ),
+
+            Map.of(
+
+                    TreeStructure.CACTUS, 100
+
+            ),
+
+        Biome.DESERT
+
+),
 //    BADLANDS(15),
 //    WOODED_BADLANDS(10),
 //    JUNGLE(25),

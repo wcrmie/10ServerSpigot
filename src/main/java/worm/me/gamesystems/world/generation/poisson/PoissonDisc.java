@@ -2,20 +2,32 @@ package worm.me.gamesystems.world.generation.poisson;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import worm.me.Server;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class PoissonDisc {
 
-    public static ArrayList<Location> generatePoints(World world, Location corner1, Location corner2, double minDistance, double maxDistance, int maxCandidates) {
-        double x1 = corner1.getX();
-        double z1 = corner1.getZ();
-        double x2 = corner2.getX();
-        double z2 = corner2.getZ();
+    public static ArrayList<Location> generatePoints(World world, Location corner1, Location corner2, double minDistance, double maxDistance, int maxCandidates, @Nullable List<Location> validLocations) {
+        double x1 = Math.floor(corner1.getX());
+        double z1 = Math.floor(corner1.getZ());
+        double x2 = Math.floor(corner2.getX());
+        double z2 = Math.floor(corner2.getZ());
 
-        List<Point2D> points2D = generate(x1, z1, x2, z2, minDistance, maxDistance, maxCandidates, new Random());
+        if (validLocations == null) {
+            validLocations = new ArrayList<>();
+        }
+
+        List<Point2D> validPoints = validLocations.stream().map(loc -> new Point2D(Math.floor(loc.getX()), Math.floor(loc.getZ()))).toList();
+
+        for (Point2D point : validPoints) {
+            Server.getPlugin().getLogger().info(point.x + " " + point.z);
+        }
+
+        List<Point2D> points2D = generate(x1, z1, x2, z2, minDistance, maxDistance, maxCandidates, validPoints);
 
         ArrayList<Location> locations = new ArrayList<>();
         for (Point2D point : points2D) {
@@ -25,7 +37,37 @@ public class PoissonDisc {
         return locations;
     }
 
-    private static List<Point2D> generate(double x1, double z1, double x2, double z2, double minDistance, double maxDistance, int k, Random random) {
+    private static boolean invalidPoint(List<Point2D> validPoints, Point2D point) {
+
+        for (var pointA : validPoints) {
+
+            if (pointA.equals(point)) return false;
+
+        }
+
+        return true;
+    }
+
+    /**
+     *
+     * @param x1 x-coordinate of corner 1
+     * @param z1 z-coordinate of corner 1
+     *
+     * @param x2 x-coordinate of corner 2
+     * @param z2 z-coordinate of corner 2
+     *
+     * @param minDistance minimum distance between points
+     * @param maxDistance maximum distance between points
+     *
+     * @param maxCandidates max attempts before an active point is dropped (higher values mean more even dist.)
+     *
+     * @param validPoints list of points that will be kept if they are generated
+     *
+     *
+     * @return list of generated points
+     *
+     */
+    private static List<Point2D> generate(double x1, double z1, double x2, double z2, double minDistance, double maxDistance, int maxCandidates, List<Point2D> validPoints) {
         double minX = Math.min(x1, x2);
         double maxX = Math.max(x1, x2);
         double minZ = Math.min(z1, z2);
@@ -43,10 +85,26 @@ public class PoissonDisc {
         List<Point2D> activeList = new ArrayList<>();
         List<Point2D> points = new ArrayList<>();
 
-        Point2D initialPoint = new Point2D(
-                minX + random.nextDouble() * width,
-                minZ + random.nextDouble() * height
-        );
+        Point2D initialPoint = null;
+
+        while (initialPoint == null) {
+
+            double x = minX + ThreadLocalRandom.current().nextDouble() * width;
+            double z = minZ + ThreadLocalRandom.current().nextDouble() * height;
+
+            initialPoint = new Point2D(
+
+                    (Math.floor(x)),
+                    (Math.floor(z))
+
+            );
+
+            if (validPoints.isEmpty()) break;
+
+            if (invalidPoint(validPoints, initialPoint)) initialPoint = null;
+
+
+        }
 
         points.add(initialPoint);
         activeList.add(initialPoint);
@@ -54,14 +112,14 @@ public class PoissonDisc {
 
         while (!activeList.isEmpty()) {
 
-            int activeIndex = random.nextInt(activeList.size());
+            int activeIndex = ThreadLocalRandom.current().nextInt(activeList.size());
             Point2D activePoint = activeList.get(activeIndex);
 
             boolean foundPoint = false;
 
-            for (int i = 0; i < k; i++) {
-                double angle = random.nextDouble() * 2 * Math.PI;
-                double radius = minDistance + random.nextDouble() * (maxDistance - minDistance);
+            for (int i = 0; i < maxCandidates; i++) {
+                double angle = ThreadLocalRandom.current().nextDouble() * 2 * Math.PI;
+                double radius = minDistance + ThreadLocalRandom.current().nextDouble() * (maxDistance - minDistance);
 
                 double newX = activePoint.x + radius * Math.cos(angle);
                 double newZ = activePoint.z + radius * Math.sin(angle);
@@ -70,7 +128,9 @@ public class PoissonDisc {
                     continue;
                 }
 
-                Point2D candidate = new Point2D(newX, newZ);
+                Point2D candidate = new Point2D(Math.floor(newX), Math.floor(newZ));
+
+                if (!validPoints.isEmpty() && invalidPoint(validPoints, candidate)) continue;
 
                 if (isValidPoint(grid, candidate, minX, minZ, cellSize, gridWidth, gridHeight, minDistance)) {
                     points.add(candidate);
@@ -124,8 +184,8 @@ public class PoissonDisc {
     }
 
     private static class Point2D {
-        public final double x;
-        public final double z;
+        public double x;
+        public double z;
 
         public Point2D(double x, double z) {
             this.x = x;
@@ -136,6 +196,12 @@ public class PoissonDisc {
             double dx = this.x - other.x;
             double dz = this.z - other.z;
             return Math.sqrt(dx * dx + dz * dz);
+        }
+
+        public boolean equals(Point2D other) {
+
+            return this.x == other.x && this.z == other.z;
+
         }
     }
 }

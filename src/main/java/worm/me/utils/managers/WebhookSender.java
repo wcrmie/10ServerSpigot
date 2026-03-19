@@ -1,5 +1,8 @@
 package worm.me.utils.managers;
 
+import org.bukkit.Bukkit;
+import worm.me.Server;
+
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;

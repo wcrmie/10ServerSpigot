@@ -7,7 +7,7 @@ public enum TreeStructure {
     OAK(List.of("tiny_oak_tree_1", "oak_tree_small_1", "oak_tree_medium_1")),
     BIRCH(List.of("small_birch_tree_1", "large_birch_tree_1", "large_birch_tree_2", "birch_tree_1", "birch_tree_2")),
     SPRUCE(List.of("placeholder_tree")),
-    CACTUS(List.of("placeholder_tree")),
+    CACTUS(List.of("cactus_large","cactus_flowered_large_1","cactus_flowered_medium","cactus_flowered_small")),
     RED_MUSHROOM(List.of("placeholder_tree")),
     BROWN_MUSHROOM(List.of("placeholder_tree")),
     JUNGLE(List.of("placeholder_tree")),

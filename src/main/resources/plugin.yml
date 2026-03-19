@@ -28,17 +28,9 @@ commands:
   setSkin:
     description: Opens the set skin GUI.
     usage: /<command>
-  blockcount:
-    description: Check or set the current block count
-    usage: /<command> <integer>
-    permission: 10VS.blockcount
   discord:
     description: Provides a link to the server's Discord.
     usage: /<command>
-  expansionpercentage:
-    description: Set the percentage of blocks needed for world border expansion
-    usage: /<command> <float>
-    permission: 10VS.expansionpercentage
   abilities:
     description: Opens the ability selection GUI for the player.
     usage: /<command>

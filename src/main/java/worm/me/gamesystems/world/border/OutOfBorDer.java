@@ -1,4 +1,4 @@
-package worm.me.gamesystems.world.border.Custom;
+package worm.me.gamesystems.world.border;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;

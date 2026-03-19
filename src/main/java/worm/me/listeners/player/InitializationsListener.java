@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
+import worm.me.gamesystems.world.PlayArea;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.FeatherDash;
 import worm.me.data.VoidPlayer;
@@ -56,15 +57,9 @@ public class InitializationsListener implements Listener {
 
             event.joinMessage(joinMessage);
 
-            player.teleport(
-                    new Location(
-                            Bukkit.getWorld("ul_Void"),
-                            0.5, 220, 0.5,
-                            0, 0
-                    ));
+            player.teleport(PlayArea.getSpawnLocation());
 
-            FirstJoin firstJoin = new FirstJoin();
-            firstJoin.firstJoin(player);
+            FirstJoin.firstJoin(player);
 
         }
 
@@ -104,11 +99,7 @@ public class InitializationsListener implements Listener {
 
         if (!event.isBedSpawn()) {
 
-            event.setRespawnLocation(new Location(
-                    Bukkit.getWorld("ul_Void"),
-                    0.5, 220, 0.5,
-                    0, 0
-            ));
+            event.setRespawnLocation(PlayArea.getSpawnLocation());
 
         }
     }

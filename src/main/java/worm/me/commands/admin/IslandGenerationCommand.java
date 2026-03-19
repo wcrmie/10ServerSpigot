@@ -11,13 +11,13 @@ import java.util.List;
 
 public class IslandGenerationCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String s, String[] strings) {
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
 
         if (sender instanceof Player player) {
 
             Location location = player.getLocation();
 
-            IslandGenerator.generateIsland(location);
+            IslandGenerator.generateIsland(location, args.length < 1 ? null : Integer.parseInt(args[0]));
 
             player.sendMessage("Attempting to generate an island at your location... get rady");
 

@@ -10,6 +10,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import worm.me.Server;
+import worm.me.gamesystems.world.PlayArea;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -211,7 +212,7 @@ public class VoidBobber {
             double xCoord = (float) (end.getX() + distance * Math.cos(Math.toRadians(angle)));
             double zCoord = (float) (end.getZ() + angle * Math.sin(Math.toRadians(angle)));
 
-            return new Location(Bukkit.getWorld("ul_Void"), xCoord, end.getY(), zCoord);
+            return new Location(PlayArea.getPlayWorld(), xCoord, end.getY(), zCoord);
 
         }
 
@@ -219,14 +220,14 @@ public class VoidBobber {
             int xOffset = ThreadLocalRandom.current().nextInt(-2,3);
             int yOffset = ThreadLocalRandom.current().nextInt(-1,2);
             int zOffset = ThreadLocalRandom.current().nextInt(-2,3);
-            return new Location(Bukkit.getWorld("ul_Void"), start.getX() + xOffset, start.getY() + yOffset, start.getZ() + zOffset);
+            return new Location(PlayArea.getPlayWorld(), start.getX() + xOffset, start.getY() + yOffset, start.getZ() + zOffset);
         }
 
         private Location generateRandomPointEnd() {
             int xOffset = ThreadLocalRandom.current().nextInt(-1,2);
             int yOffset = ThreadLocalRandom.current().nextInt(-1,2);
             int zOffset = ThreadLocalRandom.current().nextInt(-1,2);
-            return new Location(Bukkit.getWorld("ul_Void"), end.getX() + xOffset, end.getY() + yOffset, end.getZ() + zOffset);
+            return new Location(PlayArea.getPlayWorld(), end.getX() + xOffset, end.getY() + yOffset, end.getZ() + zOffset);
         }
 
         private Location getStart() {
@@ -263,7 +264,7 @@ public class VoidBobber {
                         3 * (1 - t) * Math.pow(t, 2) * p2.getZ() +
                         Math.pow(t, 3) * p3.getZ();
 
-                locations.add(new Location(Bukkit.getWorld("ul_Void"), x, getEnd().getY(), z));
+                locations.add(new Location(PlayArea.getPlayWorld(), x, getEnd().getY(), z));
 
             }
 

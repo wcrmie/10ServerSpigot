@@ -45,7 +45,6 @@ public class WorldReset {
         }
 
 
-        Server.getPlugin().getWorldBorderHandler().setBlockCount(0);
         resetBlocks.startBlockReset();
     }
 
@@ -55,9 +54,6 @@ public class WorldReset {
 
         setAllGridCells(0);
         Server.zoneGridManager.setGridValue(GRID_MID, GRID_MID, 1);
-
-        double expansionPct = java.util.concurrent.ThreadLocalRandom.current().nextInt(40, 120) / 100D;
-        Server.getPlugin().getWorldBorderHandler().setExpansionPercentage(expansionPct);
 
         WorldTimer.getInstance().resetTimer();
 

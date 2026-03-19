@@ -13,6 +13,7 @@ import worm.me.gamesystems.world.generation.structure.TreeStructure;
 import worm.me.utils.FastNoiseLite;
 import worm.me.utils.RNG;
 
+import javax.annotation.Nullable;
 import java.rmi.ServerError;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -22,9 +23,9 @@ public class IslandGenerator {
     /** Generates an island at the specified location
      * @param location The location to generate the island at
      */
-    public static void generateIsland(Location location) {
+    public static void generateIsland(Location location, @Nullable Integer diameter) {
 
-        Island island = IslandManager.getInstance().createIsland();
+        Island island = IslandManager.createIsland(diameter);
 
         float[][] terrain = fillTaperedPerlinArray(island.getSize(), island.getShape());
 
@@ -93,12 +94,68 @@ public class IslandGenerator {
         return palette.get(index);
     }
 
+    private static List<Location> findValidLocations(Location location, Island island) {
+
+        ArrayList<Location> validLocations = new ArrayList<>();
+
+        for (int x = 0; x < island.getSize(); x++) {
+            for (int z = 0; z < island.getSize(); z++) {
+
+                Location currentLoc = location.clone().add(x, 0, z);
+
+                Block ground;
+
+                try {
+
+                    ground = Objects.requireNonNull(location.getWorld()).getHighestBlockAt(currentLoc);
+
+                } catch (Exception e) {
+
+                    break;
+
+                }
+
+                if (ground.getLocation().getBlockY() <= -60) continue;
+
+                Location groundLocation = ground.getLocation();
+
+                boolean isValid = true;
+
+                for (int localX = -1; localX <= 1; localX++) {
+
+                    if (!isValid) break;
+
+                    for (int localZ = -1; localZ <= 1; localZ++) {
+
+                        if (!isValid) break;
+
+                        // if the island topper materials does not contain a block that is touching the block we want
+                        if (!island.getTopper().getTopMaterials().contains(
+                                groundLocation.clone().add(localX, 0, localZ).getBlock().getType())
+                        ) isValid = false;
+
+                    }
+                }
+
+                if (!isValid) continue;
+
+                validLocations.add(groundLocation);
+
+            }
+        }
+
+        return validLocations;
+
+    }
+
     private static void placeTrees(Location location, Island island) {
+
+        List<Location> validLocations = findValidLocations(location, island);
 
         Location corner1 = location.clone();
         Location corner2 = location.clone().add(island.getSize(), 0, island.getSize());
 
-        ArrayList<Location> points = PoissonDisc.generatePoints(location.getWorld(), corner1, corner2, 4, 6, 100);
+        ArrayList<Location> points = PoissonDisc.generatePoints(location.getWorld(), corner1, corner2, 5, 8, 100, validLocations);
         Iterator<Location> iterator = points.iterator();
 
         HashMap<Location, String> treeLocations = new HashMap<>();
@@ -128,7 +185,7 @@ public class IslandGenerator {
 
             if (ground.getLocation().getBlockY() <= -60) continue;
 
-            Location groundLocation = ground.getLocation().add(1, 0, 1);
+            Location groundLocation = ground.getLocation();
 
             groundLocation.add(0, 1, 0);
 
@@ -157,7 +214,7 @@ public class IslandGenerator {
 
                 int foliageChance = ThreadLocalRandom.current().nextInt(0, 100);
 
-                if (foliageChance > 60) continue; // generate foliage 80% of the time
+                if (foliageChance > 45) continue; // generate foliage 45% of the time
 
                 Block ground;
 
@@ -326,15 +383,20 @@ public class IslandGenerator {
 
                 for (int h = 0; h < elevation; h++) {
 
-
-
                     Location currentBlock = new Location(world, loc.getBlockX() + i, loc.getBlockY() + h, loc.getBlockZ() + j);
 
                     Material blockMaterial;
 
                     blockMaterial = determineBlockMaterial(topper.getTopMaterials(), density[i][h][j]);
 
-                    currentBlock.getBlock().setType(blockMaterial);
+                    if (h < elevation - 1) {
+
+                        blockMaterial = determineBlockMaterial(topper.getTransitionMaterials(), density[i][h][j]);
+
+                    }
+
+                    // or setblockdata
+                    currentBlock.getBlock().setType(blockMaterial, false);
 
                 }
             }

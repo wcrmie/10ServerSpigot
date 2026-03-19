@@ -187,7 +187,7 @@ public class Island {
 
                 Location loc = PlayArea.validSpawnLocation(xSize, ySize, zSize);
                 if (loc == null) {
-                    World world = Bukkit.getWorld("ul_Void");
+                    World world = PlayArea.getPlayWorld();
                     WorldBorder worldBorder = world.getWorldBorder();
                     worldBorder.setSize((worldBorder.getSize() + 2));
                     continue;

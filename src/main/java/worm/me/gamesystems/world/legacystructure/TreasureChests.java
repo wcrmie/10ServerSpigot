@@ -8,6 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.WorldBorder;
 import org.bukkit.plugin.Plugin;
+import worm.me.gamesystems.world.PlayArea;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
 import org.bukkit.entity.BlockDisplay;
@@ -18,7 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class TreasureChests {
 
-    private final World world = Bukkit.getWorld("ul_Void");
+    private final World world = PlayArea.getPlayWorld();
     private final WorldBorder worldBorder = world.getWorldBorder();
     private final Plugin plugin;
 
@@ -41,8 +42,8 @@ public class TreasureChests {
         xLessThan = (int) (borderSize / 2) - 1;
         zMoreThan = (int) ((borderSize / 2) * -1);
         zLessThan = (int) (borderSize / 2) - 1;
-        yMoreThan = 219;
-        yLessThan = 280;
+        yMoreThan = PlayArea.getMinHeight() - 1;
+        yLessThan = PlayArea.getMaxHeight();
     }
 
     public void onPluginEnable() {
@@ -61,7 +62,7 @@ public class TreasureChests {
     }
 
     public Location worldBorderGetRandomBlock() {
-        Location spawnCenter = new Location(world, 0.5, 220, 0.5);
+        Location spawnCenter = PlayArea.getSpawnLocation();
         int excludeRadius = 20;
 
         Location randomLocation;

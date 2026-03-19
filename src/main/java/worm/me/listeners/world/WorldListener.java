@@ -60,7 +60,6 @@ public class WorldListener implements Listener {
             event.setCancelled(true);
             return;
         }
-        if (!event.isCancelled()) plugin.getWorldBorderHandler().incrementBlockCount(event);
         if (event.getPlayer() != null) {
             VoidPlayer.registerStats(event.getPlayer(), 0);
         }
@@ -108,7 +107,6 @@ public class WorldListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
-        plugin.getWorldBorderHandler().decrementBlockCount(event);
         if (event.getPlayer() != null) {
             VoidPlayer.registerStats(event.getPlayer(), 1);
         }

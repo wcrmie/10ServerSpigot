@@ -30,8 +30,9 @@ import worm.me.gamesystems.items.ExperienceBottle;
 import worm.me.gamesystems.items.gear.armor.ArmorBreak;
 import worm.me.gamesystems.items.gear.tools.LodestoneTeleporter;
 import worm.me.gamesystems.items.gear.tools.ToolsEvents;
+import worm.me.gamesystems.world.PlayArea;
 import worm.me.gamesystems.world.blocks.ArtBlocks;
-import worm.me.gamesystems.world.border.Custom.OutOfBorDer;
+import worm.me.gamesystems.world.border.OutOfBorDer;
 import worm.me.gamesystems.world.mob.traders.Trader;
 import worm.me.gamesystems.world.mob.traders.VillagerProfession;
 import worm.me.playersystems.abilities.Abilities;
@@ -262,17 +263,17 @@ public class GameplayListener implements Listener {
         // Height limit for building
         if (player.getGameMode() == GameMode.CREATIVE) return;
         if (Objects.requireNonNull(e.getBlock().getLocation().getWorld()).getName().equals("ul_Void_nether")) return;
-        if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < 219){
+        if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < PlayArea.getMinHeight() - 1) {
             e.setCancelled(true);
-            player.sendMessage(Message.create(MessageType.FAIL, "The build area is between y = 220 and y = 280."));
+            player.sendMessage(Message.create(MessageType.FAIL, "The build area is between y = 200 and y = 280."));
         }
     }
 
     @EventHandler
     public void onWaterPlace(PlayerBucketEmptyEvent e) {
-        if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < 219) {
+        if (e.getBlock().getLocation().getBlockY() > 280 || e.getBlock().getLocation().getBlockY() < PlayArea.getMinHeight() - 1) {
             e.setCancelled(true);
-            e.getPlayer().sendMessage(Message.create(MessageType.FAIL, "The build area is between y = 220 and y = 280."));
+            e.getPlayer().sendMessage(Message.create(MessageType.FAIL, "The build area is between y = 200 and y = 280."));
         }
     }
 

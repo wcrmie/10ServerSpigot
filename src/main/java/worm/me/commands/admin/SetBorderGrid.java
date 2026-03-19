@@ -3,7 +3,7 @@ package worm.me.commands.admin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import worm.me.gamesystems.world.border.Custom.ZoneGridManager;
+import worm.me.gamesystems.world.border.ZoneGridManager;
 
 public class SetBorderGrid implements CommandExecutor {
 

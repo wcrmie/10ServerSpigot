@@ -3,6 +3,7 @@ package worm.me.gamesystems.world.cleanup;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import worm.me.Server;
+import worm.me.gamesystems.world.PlayArea;
 
 public class WorldResetBlocks {
 
@@ -16,7 +17,7 @@ public class WorldResetBlocks {
     private int currentLayer;
 
     public WorldResetBlocks() {
-        this.world = Bukkit.getWorld("ul_Void");
+        this.world = PlayArea.getPlayWorld();
     }
 
     public static boolean isResetting() {

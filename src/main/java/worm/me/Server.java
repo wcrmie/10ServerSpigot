@@ -15,12 +15,10 @@ import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.gamesystems.recipes.ShapelessRecipes;
 import worm.me.gamesystems.recipes.SmeltingRecipes;
 import worm.me.gamesystems.world.WorldTimer;
-import worm.me.gamesystems.world.generation.island.IslandManager;
-import worm.me.gamesystems.world.border.Custom.BorderVisuals;
-import worm.me.gamesystems.world.border.Custom.ZoneGridManager;
+import worm.me.gamesystems.world.border.BorderVisuals;
+import worm.me.gamesystems.world.border.ZoneGridManager;
 import worm.me.gamesystems.world.legacystructure.generation.Generate;
 import worm.me.gamesystems.world.legacystructure.TreasureChests;
-import worm.me.gamesystems.world.cleanup.WorldReset;
 import worm.me.listeners.MainListener;
 import worm.me.listeners.items.PotionListener;
 import worm.me.listeners.items.ToolListener;
@@ -41,7 +39,7 @@ import worm.me.data.levels.Reqs;
 import worm.me.playersystems.generator.Generator;
 import worm.me.playersystems.quests.QuestInitialize;
 import worm.me.playersystems.PlayerSpawning;
-import worm.me.gamesystems.world.border.WorldBorderSizeHandler;
+
 import java.util.*;
 
 public final class Server extends JavaPlugin {
@@ -49,7 +47,6 @@ public final class Server extends JavaPlugin {
     private static Server plugin;
     private ConfigManager configManager;
 
-    private WorldBorderSizeHandler WorldBorderSizeHandler;
     private PlayerSpawning playerspawning;
     private FeatherDash featherDash = new FeatherDash();
     private TreasureChests treasureChests;
@@ -75,17 +72,12 @@ public final class Server extends JavaPlugin {
 
     public static Map<String, List<Material>> tools = new HashMap<>();
 
-    public WorldBorderSizeHandler getWorldBorderHandler() {
-        return this.WorldBorderSizeHandler;
-    }
-
     private SpeedStep speedStep = new SpeedStep();
 
     public TreasureChests getTreasureChests() {
         return this.treasureChests;
     }
 
-    private ZoneGridManager gridManager;
     private BorderVisuals borderManager;
 
     @Override
@@ -97,18 +89,13 @@ public final class Server extends JavaPlugin {
         saveDefaultConfig();
         getLogger().info("Plugin enabled");
 
-        World world = Bukkit.getWorld("ul_Void");
-        assert world != null;
-        WorldBorderSizeHandler = new WorldBorderSizeHandler(this);
-        playerspawning = new PlayerSpawning(this);
+        playerspawning = new PlayerSpawning();
         //this.treasureChests = new TreasureChests(this);
         //treasureChests.onPluginEnable();
 
         // Add custom recipes
 
         WorldTimer.getInstance().start();
-
-        IslandManager islandManager = new IslandManager();
 
         ShapedRecipes shapedRecipes = new ShapedRecipes();
 
@@ -129,8 +116,6 @@ public final class Server extends JavaPlugin {
         getCommand("handbook").setExecutor(new HandBookCommand());
         getCommand("spawntreasure").setExecutor(new TreasureChestCommand(treasureChests));
         getCommand("resetworld").setExecutor(new WorldResetCommand());
-        getCommand("blockcount").setExecutor(new BlockCountCommand(WorldBorderSizeHandler));
-        getCommand("expansionpercentage").setExecutor(new ExpansionPercentageCommand(WorldBorderSizeHandler));
         getCommand("structuresmake").setExecutor(new StructuresMakeCommand(generate));
         getCommand("structuresplace").setExecutor(new StructuresPlaceCommand(generate));
         getCommand("structuresplacetype").setExecutor(new StructuresPlaceTypeCommand());
@@ -138,7 +123,7 @@ public final class Server extends JavaPlugin {
         getCommand("structuresremove").setExecutor(new StructuresRemoveCommand(generate));
 
 
-        zoneGridManager = new ZoneGridManager(this);
+        zoneGridManager = new ZoneGridManager();
         zoneGridManager.initialize();
 
         borderManager = new BorderVisuals(this, zoneGridManager);
@@ -399,7 +384,6 @@ public final class Server extends JavaPlugin {
         //if (treasureChests != null) treasureChests.removeAllDisplays();
 
         FileConfiguration config = getConfig();
-        WorldBorderSizeHandler WorldBorderSizeHandler = new WorldBorderSizeHandler(this);
         config.set("pluginEnabled", false);
         saveConfig();
         HandlerList.unregisterAll(this);

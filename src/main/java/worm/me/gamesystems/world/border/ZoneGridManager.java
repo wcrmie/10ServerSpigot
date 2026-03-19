@@ -1,22 +1,20 @@
-package worm.me.gamesystems.world.border.Custom;
+package worm.me.gamesystems.world.border;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import worm.me.Server;
+import worm.me.gamesystems.world.PlayArea;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ZoneGridManager {
 
-    private final Server plugin;
     private BorderVisuals borderVisuals;
 
     private final int GRID_SIZE = 5;
-    private final int CELL_SIZE = 50;
+    private final int CELL_SIZE = 500;
 
     private final int[][] grid = {
             {0, 0, 0, 0, 0},
@@ -26,8 +24,9 @@ public class ZoneGridManager {
             {0, 0, 0, 0, 0}
     };
 
-    public ZoneGridManager(Server plugin) {
-        this.plugin = plugin;
+    private final List<String> gridRegionIds = new ArrayList<>();
+
+    public ZoneGridManager() {
     }
 
     public void setBorderVisuals(BorderVisuals borderVisuals) {
@@ -56,17 +55,17 @@ public class ZoneGridManager {
     public int getCellSize()  { return CELL_SIZE; }
 
     public void saveGrid() {
-        FileConfiguration config = plugin.getConfig();
+        FileConfiguration config = Server.getPlugin().getConfig();
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
                 config.set("zoneGrid." + row + "_" + col, grid[row][col]);
             }
         }
-        plugin.saveConfig();
+        Server.getPlugin().saveConfig();
     }
 
     public void loadGrid() {
-        FileConfiguration config = plugin.getConfig();
+        FileConfiguration config = Server.getPlugin().getConfig();
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
                 String key = "zoneGrid." + row + "_" + col;
@@ -78,7 +77,7 @@ public class ZoneGridManager {
     }
 
     public boolean isInAllowedGrid(Location loc) {
-        if (loc.getWorld() == null || !loc.getWorld().getName().equals("ul_void")) {
+        if (loc.getWorld() != PlayArea.getPlayWorld()) {
             return true;
         }
         int start = -(GRID_SIZE * CELL_SIZE) / 2;

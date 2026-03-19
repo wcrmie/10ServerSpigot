@@ -13,30 +13,23 @@ import static worm.me.gamesystems.world.generation.island.IslandGenerator.determ
 
 public class IslandManager {
 
-    private static IslandManager instance;
-
     public IslandManager() {
-        instance = this;
     }
 
     /** Creates a new island object with random properties
      * @return The newly created island
      */
-    public Island createIsland() {
+    public static Island createIsland(Integer diameter) {
 
         IslandProperties.IslandShape shape = IslandProperties.IslandShape.values()[ThreadLocalRandom.current().nextInt(0, IslandProperties.IslandShape.values().length)];
 
-        Biome biome = Biome.values()[ThreadLocalRandom.current().nextInt(0, Biome.values().length - 1)];
+        Biome biome = Biome.values()[ThreadLocalRandom.current().nextInt(0, Biome.values().length)];
 
         SubBiome subBiome = biome.getRandomSubBiome();
 
-        int size = determineSize();
+        int size = diameter == null ? determineSize() : diameter;
 
         return new Island(biome, subBiome, shape, size);
-    }
-
-    public static IslandManager getInstance() {
-        return instance;
     }
 
 }

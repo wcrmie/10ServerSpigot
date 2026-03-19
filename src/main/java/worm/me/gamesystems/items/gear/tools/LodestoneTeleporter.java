@@ -11,6 +11,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
 import worm.me.Server;
+import worm.me.gamesystems.world.PlayArea;
 import worm.me.utils.Item;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class LodestoneTeleporter {
 
     private static HashMap<Player, BukkitTask> teleporting = new HashMap<>();
-    private static World world = Bukkit.getWorld("ul_Void");
+    private static final World world = PlayArea.getPlayWorld();
 
     public static boolean isLodestoneCompass(ItemStack item) {
 

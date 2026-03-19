@@ -6,20 +6,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.WorldBorder;
 import worm.me.Server;
+import worm.me.gamesystems.world.PlayArea;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class PlayerSpawning {
-    private final JavaPlugin plugin;
     private final World world;
     private final WorldBorder worldBorder;
     private int xMoreThan, xLessThan, yMoreThan, yLessThan, zMoreThan, zLessThan;
     private static final Map<Location, Boolean> blocksToRemove = new HashMap<>();
 
-    public PlayerSpawning(Server plugin) {
-        this.plugin = plugin;
-        this.world = Bukkit.getWorld("ul_Void");
+    public PlayerSpawning() {
+        this.world = PlayArea.getPlayWorld();
         this.worldBorder = world.getWorldBorder();
         updateBorderValues();
     }
@@ -33,12 +33,12 @@ public class PlayerSpawning {
         zMoreThan = (int) ((center.getZ() - (borderSize / 2)))/3;
         zLessThan = (int) ((center.getZ() + (borderSize / 2)) - 1)/3;
 
-        yMoreThan = Math.max(world.getMinHeight(), 219);
-        yLessThan = Math.min(world.getMaxHeight(), 280);
+        yMoreThan = PlayArea.getMinHeight() - 1;
+        yLessThan = PlayArea.getMaxHeight();
     }
 
     public Location worldBorderGetRandomBlock() {
-        Location spawnCenter = new Location(world, 0.5, 220, 0.5);
+        Location spawnCenter = PlayArea.getSpawnLocation();
         int excludeRadius = 10;
 
         Location randomLocation;

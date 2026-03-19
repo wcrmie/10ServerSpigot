@@ -41,7 +41,7 @@ public class IslandProperties {
     public enum IslandTopper {
 
         GRASSY(List.of(Material.GRASS_BLOCK), List.of(Material.DIRT, Material.COARSE_DIRT)),
-        SANDY(List.of(Material.SAND, Material.SUSPICIOUS_SAND, Material.SMOOTH_SANDSTONE), List.of(Material.SAND, Material.SMOOTH_SANDSTONE, Material.SANDSTONE)),
+        SANDY(List.of(Material.SAND, Material.SUSPICIOUS_SAND, Material.SMOOTH_SANDSTONE), List.of(Material.SMOOTH_SANDSTONE, Material.SANDSTONE)),
         SNOWY(List.of(Material.SNOW_BLOCK), List.of(Material.DIRT, Material.COARSE_DIRT)),
         ROCKY(List.of(Material.GRAVEL, Material.STONE, Material.TUFF, Material.CYAN_TERRACOTTA), List.of(Material.STONE, Material.ANDESITE, Material.DIORITE, Material.GRANITE)),
         MUSHROOM(List.of(Material.MYCELIUM), List.of(Material.DIRT, Material.COARSE_DIRT)),

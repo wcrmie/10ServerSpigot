@@ -1,9 +1,10 @@
-package worm.me.gamesystems.world.border.Custom;
+package worm.me.gamesystems.world.border;
 
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import worm.me.Server;
+import worm.me.gamesystems.world.PlayArea;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class BorderVisuals {
 
         wallSegments.clear();
 
-        World world = Bukkit.getWorld("ul_Void");
+        World world = PlayArea.getPlayWorld();
         if (world != null) {
             calculateWalls();
         }
@@ -37,7 +38,7 @@ public class BorderVisuals {
         activeTask = new BukkitRunnable() {
             @Override
             public void run() {
-                World world = Bukkit.getWorld("ul_Void");
+                World world = PlayArea.getPlayWorld();
                 if (world == null) return;
 
                 List<Player> players = world.getPlayers();

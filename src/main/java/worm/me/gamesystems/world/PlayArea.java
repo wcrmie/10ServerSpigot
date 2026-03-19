@@ -9,19 +9,31 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class PlayArea {
 
-    private static JavaPlugin plugin;
-    private static World world;
-    private static WorldBorder worldBorder;
+    private static final World world = Bukkit.getWorld("ul_Void");
+    private static final Location spawn = new Location(world, 0.5, 220, 0.5);
+    private static final int maxHeight = 280;
+    private static final int minHeight = 200;
+
     private static int xMoreThan, xLessThan, yMoreThan, yLessThan, zMoreThan, zLessThan;
 
-    public static void init(Server serverPlugin) {
-        plugin = serverPlugin;
+    public static World getPlayWorld() {
+        return world;
+    }
+
+    public static int getMaxHeight() {
+        return maxHeight;
+    }
+
+    public static int getMinHeight() {
+        return minHeight;
+    }
+
+    public static Location getSpawnLocation() {
+        return spawn;
     }
 
     public static void updateBorderValues(int edgeBufferX, int edgeBufferY, int edgeBufferZ) {
-        world = Bukkit.getWorld("ul_Void");
-
-        worldBorder = world.getWorldBorder();
+        WorldBorder worldBorder = world.getWorldBorder();
 
         double borderSize = worldBorder.getSize();
         Location center = worldBorder.getCenter();
@@ -31,13 +43,13 @@ public class PlayArea {
         zMoreThan = (int) (center.getZ() - (borderSize / 2) + edgeBufferZ);
         zLessThan = (int) (center.getZ() + (borderSize / 2) - edgeBufferZ);
 
-        yMoreThan = 220 + edgeBufferY;
-        yLessThan = 280 - edgeBufferY;
+        yMoreThan = minHeight + edgeBufferY;
+        yLessThan = maxHeight - edgeBufferY;
     }
 
     public static Location worldBorderGetRandomBlock(int xSize, int ySize, int zSize) {
         PlayArea.updateBorderValues(2,2,2);
-        Location spawnCenter = new Location(world, 0.5, 220, 0.5);
+        Location spawnCenter = PlayArea.getSpawnLocation();
         int excludeRadius = Math.max(ySize, Math.max(xSize, zSize)) + 10;
 
         Location randomLocation;

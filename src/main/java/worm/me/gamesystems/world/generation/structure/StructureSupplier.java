@@ -13,6 +13,7 @@ import org.bukkit.util.Vector;
 import worm.me.Server;
 
 import java.io.File;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -43,6 +44,15 @@ public class StructureSupplier {
         }
     }
 
+    public static int[] placementOffset(StructureRotation rotation, int structWidth, int structDepth) {
+        return switch (rotation) {
+            case NONE   -> new int[]{ 0,      0      };
+            case CLOCKWISE_90  -> new int[]{ structDepth - 1, 0      };
+            case CLOCKWISE_180 -> new int[]{ structWidth - 1, structDepth - 1 };
+            case COUNTERCLOCKWISE_90 -> new int[]{ 0,      structWidth - 1 };
+        };
+    }
+
     /**
      * Places a structure at the specified location.
      * @param structureName The name of the structure to place.
@@ -57,34 +67,15 @@ public class StructureSupplier {
             return;
         }
 
-
         // Thank you clem
         int sizeX = structure.getSize().getBlockX();
         int sizeZ = structure.getSize().getBlockZ();
 
         StructureRotation rotation = StructureRotation.values()[ThreadLocalRandom.current().nextInt(0, StructureRotation.values().length)];
 
-        // we are not centering the tree on the y-axis that is stupid I got stuck in the center of a tree
+        int[] offset = placementOffset(rotation, sizeX, sizeZ);
 
-        // .subtract() works because if the location is negative, then subtracting a negative number adds it (duh)
-        Location centered = location.clone().subtract(sizeX / 2.0, 0, sizeZ / 2.0);
-
-        Vector vector = new Vector(0, 0, 0);
-
-        if (rotation == StructureRotation.CLOCKWISE_90) {
-            vector = new Vector(sizeX, 0, 0);
-        }
-
-        if (rotation == StructureRotation.CLOCKWISE_180) {
-            vector = new Vector(sizeX, 0, sizeZ);
-        }
-
-        if (rotation == StructureRotation.COUNTERCLOCKWISE_90) {
-            vector = new Vector(0, 0, sizeZ);
-        }
-
-        centered.add(vector);
-
+        Location centered = location.clone().add(offset[0], 0, offset[1]);
 
         if (!canFloat) {
 
@@ -97,9 +88,12 @@ public class StructureSupplier {
                 if (state.getY() != lowest) continue;
                 if (!state.getBlockData().getMaterial().isSolid()) continue;
 
-                Location checkLoc = location.clone().add(state.getX(), -1, state.getZ()).add(vector);
+                Location checkLoc = centered.clone().add(state.getX(), -1, state.getZ());
 
-                if (checkLoc.getBlock().getType().equals(Material.AIR)) return;
+                if (checkLoc.getBlock().getType().equals(Material.AIR)) {
+                    Server.getPlugin().getLogger().warning("Placement at " + centered + " canceled due to air block at " + checkLoc);
+                    return;
+                }
             }
         }
 
