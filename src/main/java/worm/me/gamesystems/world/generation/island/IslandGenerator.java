@@ -1,11 +1,9 @@
 package worm.me.gamesystems.world.generation.island;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import worm.me.Server;
 import worm.me.gamesystems.world.generation.poisson.PoissonDisc;
 import worm.me.gamesystems.world.generation.structure.StructureSupplier;
@@ -14,7 +12,6 @@ import worm.me.utils.FastNoiseLite;
 import worm.me.utils.RNG;
 
 import javax.annotation.Nullable;
-import java.rmi.ServerError;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -24,18 +21,18 @@ public class IslandGenerator {
      * @param location The location to generate the island at
      */
     public static void generateIsland(Location location, @Nullable Integer diameter) {
-
         Island island = IslandManager.createIsland(diameter);
 
+        int maxUnderside = IslandManager.getMaxUndersideDepth(island);
+        int size = island.getSize();
+
+        Location spawnLoc = location.clone().add(-(size / 2), maxUnderside, -(size / 2));
+
         float[][] terrain = fillTaperedPerlinArray(island.getSize(), island.getShape());
-
-        generateUnderside(location, terrain, island);
-        generateTop(location, terrain, island);
-
-        placeTrees(location, island);
-
-        placeFoliage(location, island);
-
+        generateUnderside(spawnLoc, terrain, island);
+        generateTop(spawnLoc, terrain, island);
+        placeTrees(spawnLoc, island);
+        placeFoliage(spawnLoc, island);
     }
 
     /** Fills a 2D array with noise values
