@@ -58,7 +58,7 @@ public class WorldReset {
 
         WorldTimer.getInstance().resetTimer();
 
-        //IslandManager.generateIslands();
+        IslandManager.generateIslands();
 
         Bukkit.broadcastMessage(ChatColor.RED + "" + ChatColor.BOLD + "WORLD RESET COMPLETE!");
         Bukkit.broadcastMessage(ChatColor.RED + "The border will expand every 6 hours.");
