@@ -42,7 +42,11 @@ public class IslandPlacement {
 
         Bukkit.getScheduler().runTaskTimer(Server.getPlugin(), gamer -> {
 
-            if (islandLocations.isEmpty()) gamer.cancel();
+            if (islandLocations.isEmpty() || m_islands.isEmpty()) {
+                Server.getPlugin().getLogger().warning("No islands found. Attempting cancel (placeIslands)");
+                gamer.cancel();
+                return;
+            }
 
             Island island = m_islands.removeFirst();
             Location location = islandLocations.removeFirst();

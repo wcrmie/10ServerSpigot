@@ -67,7 +67,11 @@ public class IslandManager {
 
         Bukkit.getScheduler().runTaskTimer(Server.getPlugin(), gamer -> {
 
-            if (islands.isEmpty()) gamer.cancel();
+            if (islands.isEmpty()) {
+                Server.getPlugin().getLogger().warning("No islands found. Attempting cancel (generateIslands)");
+                gamer.cancel();
+                return;
+            }
 
             Location location = islands.removeFirst();
 
@@ -89,7 +93,7 @@ public class IslandManager {
 
         World world = PlayArea.getPlayWorld();
 
-        return PoissonDisc.generatePoints(world, new Location(world, 1170, 200, 1170), new Location(world, -1170, 200, -1170), 150, 200, 20, null, null, null);
+        return PoissonDisc.generatePoints(world, new Location(world, 1170, 200, 1170), new Location(world, -1170, 200, -1170), 150, 200, 50, null, null, null);
     }
 
 }

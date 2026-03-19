@@ -30,7 +30,7 @@ public class PoissonDisc {
         Point2D startingPoint2D;
 
         if (startingPoint == null) startingPoint2D = null;
-        else startingPoint2D = new  Point2D(startingPoint.getX(), startingPoint.getY());
+        else startingPoint2D = new Point2D(Math.floor(startingPoint.getX()), Math.floor(startingPoint.getZ()));
 
         List<Point2D> points2D = generate(x1, z1, x2, z2, minDistance, maxDistance, maxCandidates, validPoints, amount, startingPoint2D);
 
