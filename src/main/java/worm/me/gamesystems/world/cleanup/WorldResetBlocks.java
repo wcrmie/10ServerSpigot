@@ -88,6 +88,7 @@ public class WorldResetBlocks {
             }
             loadPhase(currentPhase);
         }
+
         int layersThisTick = 1;
 
         for (int i = 0; i < layersThisTick; i++) {
@@ -99,6 +100,8 @@ public class WorldResetBlocks {
 
                 for (int x = minX; x <= maxX; x++) {
                     for (int z = minZ; z <= maxZ; z++) {
+
+                        if (!world.isChunkLoaded(x >> 4, z >> 4)) continue;
 
                         if (currentLayer >= EXCL_MIN_Y && currentLayer <= EXCL_MAX_Y
                                 && x >= EXCL_MIN_X && x <= EXCL_MAX_X
