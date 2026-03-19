@@ -6,63 +6,130 @@ import worm.me.Server;
 import worm.me.gamesystems.world.PlayArea;
 import worm.me.gamesystems.world.border.ZoneGridManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WorldResetBlocks {
 
-    private static final int FULL_SIZE = Server.getZoneGridManager().getCellSize() * Server.getZoneGridManager().getGridSize();
+    private static final int EXCL_MIN_X = -3,  EXCL_MAX_X = 3;
+    private static final int EXCL_MIN_Y = 210, EXCL_MAX_Y = 224;
+    private static final int EXCL_MIN_Z = -3,  EXCL_MAX_Z = 3;
 
-    private static final int GRID_HALF = (FULL_SIZE / 2) + 30;
+    private static final int[][][] PHASES = {
+            {
+                    {0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0},
+                    {0, 0, 1, 0, 0},
+                    {0, 0, 0, 0, 0},
+                    {0, 0, 0, 0, 0}
+            },
+            {
+                    {0, 0, 0, 0, 0},
+                    {0, 1, 1, 1, 0},
+                    {0, 1, 0, 1, 0},
+                    {0, 1, 1, 1, 0},
+                    {0, 0, 0, 0, 0}
+            },
+            {
+                    {1, 1, 1, 1, 1},
+                    {1, 0, 0, 0, 1},
+                    {1, 0, 0, 0, 1},
+                    {1, 0, 0, 0, 1},
+                    {1, 1, 1, 1, 1}
+            }
+    };
 
     private final World world;
     private static boolean isResetting = false;
     private int taskId = -1;
+
+    private int currentPhase;
     private int currentLayer;
+
+    private List<int[]> phaseCellBounds;
 
     public WorldResetBlocks() {
         this.world = PlayArea.getPlayWorld();
     }
 
-    public static boolean isResetting() {
-        return isResetting;
-    }
+    public static boolean isResetting() { return isResetting; }
 
     public void startBlockReset() {
         if (isResetting) return;
-        this.currentLayer = 320;
-        isResetting = true;
+
+        currentPhase = 0;
+        isResetting  = true;
+
+        loadPhase(currentPhase);
+
         taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(
-                Server.getPlugin(), this::processLayer, 0L, 1L);
+                Server.getPlugin(), this::tick, 0L, 1L);
     }
 
-    private void processLayer() {
+    private void tick() {
+
         if (currentLayer < -64) {
-            completeReset();
-            return;
+            currentPhase++;
+            if (currentPhase >= PHASES.length) {
+                finishReset();
+                return;
+            }
+            loadPhase(currentPhase);
         }
 
-        final int EXCL_MIN_X = -3,  EXCL_MAX_X = 3;
-        final int EXCL_MIN_Y = 210, EXCL_MAX_Y = 224;
-        final int EXCL_MIN_Z = -3,  EXCL_MAX_Z = 3;
+        int layersThisTick = (currentLayer < 190) ? 4 : 1;
 
-        for (int x = -GRID_HALF; x <= GRID_HALF; x++) {
-            for (int z = -GRID_HALF; z <= GRID_HALF; z++) {
+        for (int i = 0; i < layersThisTick; i++) {
+            if (currentLayer < -64) break;
 
-                if (currentLayer >= EXCL_MIN_Y && currentLayer <= EXCL_MAX_Y
-                        && x >= EXCL_MIN_X && x <= EXCL_MAX_X
-                        && z >= EXCL_MIN_Z && z <= EXCL_MAX_Z) {
-                    continue;
+            for (int[] bounds : phaseCellBounds) {
+                int minX = bounds[0], maxX = bounds[1];
+                int minZ = bounds[2], maxZ = bounds[3];
+
+                for (int x = minX; x <= maxX; x++) {
+                    for (int z = minZ; z <= maxZ; z++) {
+
+                        if (currentLayer >= EXCL_MIN_Y && currentLayer <= EXCL_MAX_Y
+                                && x >= EXCL_MIN_X && x <= EXCL_MAX_X
+                                && z >= EXCL_MIN_Z && z <= EXCL_MAX_Z) continue;
+
+                        Block block = world.getBlockAt(x, currentLayer, z);
+                        if (!block.getType().isAir()) {
+                            block.setType(Material.AIR, false);
+                        }
+                    }
                 }
+            }
+            currentLayer--;
+        }
+    }
 
-                Block block = world.getBlockAt(x, currentLayer, z);
-                if (!block.getType().isAir()) {
-                    block.setType(Material.AIR, false);
-                }
+    private void loadPhase(int phase) {
+        ZoneGridManager zgm = Server.getZoneGridManager();
+        int cellSize        = zgm.getCellSize();
+        int gridSize        = zgm.getGridSize();
+        int worldStart      = -(gridSize * cellSize) / 2;
+
+        int[][] phaseGrid   = PHASES[phase];
+        phaseCellBounds     = new ArrayList<>();
+
+        for (int row = 0; row < gridSize; row++) {
+            for (int col = 0; col < gridSize; col++) {
+                if (phaseGrid[row][col] != 1) continue;
+
+                int minX = worldStart + col * cellSize;
+                int maxX = minX + cellSize - 1;
+                int minZ = worldStart + row * cellSize;
+                int maxZ = minZ + cellSize - 1;
+
+                phaseCellBounds.add(new int[]{minX, maxX, minZ, maxZ});
             }
         }
 
-        currentLayer--;
+        currentLayer = 320;
     }
 
-    private void completeReset() {
+    private void finishReset() {
         Bukkit.getScheduler().cancelTask(taskId);
         isResetting = false;
         WorldReset.getInstance().completeReset();
