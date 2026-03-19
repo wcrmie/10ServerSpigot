@@ -71,8 +71,11 @@ public class WorldListener implements Listener {
 
         for (Block pushed : event.getBlocks()) {
             Block destination = pushed.getRelative(direction);
-
             if (!Server.zoneGridManager.isInAllowedGrid(destination.getLocation())) {
+                event.setCancelled(true);
+                return;
+            }
+            if (destination.getY() < 193) {
                 event.setCancelled(true);
                 return;
             }

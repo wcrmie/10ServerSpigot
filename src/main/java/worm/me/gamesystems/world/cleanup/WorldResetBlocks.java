@@ -68,7 +68,7 @@ public class WorldResetBlocks {
 
     private void tick() {
 
-        if (currentLayer < -64) {
+        if (currentLayer < 190) {
             currentPhase++;
             if (currentPhase >= PHASES.length) {
                 finishReset();
@@ -76,11 +76,10 @@ public class WorldResetBlocks {
             }
             loadPhase(currentPhase);
         }
-
-        int layersThisTick = (currentLayer < 190) ? 4 : 1;
+        int layersThisTick = 1;
 
         for (int i = 0; i < layersThisTick; i++) {
-            if (currentLayer < -64) break;
+            if (currentLayer < 190) break;
 
             for (int[] bounds : phaseCellBounds) {
                 int minX = bounds[0], maxX = bounds[1];
