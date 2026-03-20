@@ -20,43 +20,43 @@ public class FeatherDash {
     private final int DASH_DURATION = 20;
     private final double DASH_SPEED = 0.5;
 
-    public void featherDash(Player p) {
-        cancelDash(p.getUniqueId());
+    public void featherDash(Player player) {
+        cancelDash(player.getUniqueId());
 
-        p.setGravity(false);
+        player.setGravity(false);
 
         BukkitTask dashTask = new BukkitRunnable() {
             private int ticks = 0;
 
             @Override
             public void run() {
-                if (!p.isOnline()) {
-                    cleanup(p);
+                if (!player.isOnline()) {
+                    cleanup(player);
                     this.cancel();
                     return;
                 }
 
                 if (ticks < DASH_DURATION) {
-                    Vector direction = p.getLocation().getDirection().normalize();
-                    p.setVelocity(direction.multiply(DASH_SPEED));
+                    Vector direction = player.getLocation().getDirection().normalize();
+                    player.setVelocity(direction.multiply(DASH_SPEED));
                     PotionEffect effect = new PotionEffect(PotionEffectType.SLOW_FALLING, 20, 1);
-                    p.addPotionEffect(effect);
-                    p.setFallDistance(0);
+                    player.addPotionEffect(effect);
+                    player.setFallDistance(0);
                     ticks++;
                 } else {
-                    cleanup(p);
-                    Levels.addExp(5L, Levels.skillTranslation("Agility"), p);
+                    cleanup(player);
+                    Levels.addExp(5L, Levels.skillTranslation("Agility"), player);
                     PotionEffect effect = new PotionEffect(PotionEffectType.SLOW_FALLING, 30, 1);
-                    p.addPotionEffect(effect);
+                    player.addPotionEffect(effect);
                     this.cancel();
                 }
                 if (ticks % 4 == 0 && ticks != 20) {
-                    p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PARROT_FLY, 1f, 1f);
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PARROT_FLY, 1f, 1f);
                 }
             }
         }.runTaskTimer(Server.getPlugin(), 0L, 1L);
 
-        activeDashes.put(p.getUniqueId(), dashTask);
+        activeDashes.put(player.getUniqueId(), dashTask);
     }
 
     public void cleanup(Player p) {

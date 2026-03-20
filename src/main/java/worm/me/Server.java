@@ -398,11 +398,6 @@ public final class Server extends JavaPlugin {
         DoubleJump.cancelAllPlatforms();
     }
 
-
-    public static void pluginMessage(String message, Player p){
-        p.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.BLUE + "10" + ChatColor.DARK_GRAY + "] " + message);
-    }
-
     public static ZoneGridManager getZoneGridManager() {
         return zoneGridManager;
     }

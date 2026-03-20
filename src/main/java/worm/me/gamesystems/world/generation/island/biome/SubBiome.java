@@ -28,21 +28,21 @@ public enum SubBiome {
             Biome.PLAINS
     ),
 
-    SUNFLOWER_PLAINS(
-            Map.of(
-
-                    Material.SHORT_GRASS, 50
-
-            ),
-
-            Map.of(
-
-                    TreeStructure.OAK, 100
-
-            ),
-
-            Biome.SUNFLOWER_PLAINS
-    ),
+//    SUNFLOWER_PLAINS(
+//            Map.of(
+//
+//                    Material.SHORT_GRASS, 50
+//
+//            ),
+//
+//            Map.of(
+//
+//                    TreeStructure.OAK, 100
+//
+//            ),
+//
+//            Biome.SUNFLOWER_PLAINS
+//    ),
 
     MEADOW(
             Map.of(
@@ -60,6 +60,28 @@ public enum SubBiome {
             ),
 
             Biome.MEADOW
+    ),
+
+    SAVANNA(
+
+            Map.of(
+
+                    Material.SHORT_GRASS,35,
+                    Material.BUSH, 35,
+                    Material.FIREFLY_BUSH,15,
+                    Material.DEAD_BUSH,15
+
+            ),
+
+            Map.of(
+
+                    TreeStructure.ACACIA, 100
+
+            ),
+
+            Biome.SAVANNA_PLATEAU
+
+
     ),
 
     // Forest biomes
@@ -85,8 +107,9 @@ public enum SubBiome {
             Map.of(
 
                     Material.SHORT_GRASS, 65,
-                    Material.DANDELION, 5,
-                    Material.POPPY, 10
+                    Material.DANDELION, 8,
+                    Material.WILDFLOWERS, 10,
+                    Material.POPPY, 5
 
             ),
 
@@ -104,7 +127,7 @@ public enum SubBiome {
 
                     Material.SHORT_GRASS, 65,
                     Material.DANDELION, 5,
-                    Material.POPPY, 10
+                    Material.WILDFLOWERS, 10
 
             ),
 
@@ -121,8 +144,12 @@ public enum SubBiome {
             Map.of(
 
                     Material.SHORT_GRASS, 65,
-                    Material.DANDELION, 5,
-                    Material.POPPY, 10
+                    Material.RED_TULIP, 5,
+                    Material.WHITE_TULIP, 5,
+                    Material.PINK_TULIP, 5,
+                    Material.ORANGE_TULIP, 5,
+                    Material.ALLIUM,5
+
 
             ),
 
@@ -180,9 +207,61 @@ public enum SubBiome {
         Biome.DESERT
 
 ),
+
+    TAIGA(
+
+            Map.of(
+
+                    Material.SHORT_GRASS, 15,
+                    Material.BUSH, 15,
+                    Material.FERN, 35,
+                    Material.SWEET_BERRY_BUSH,5,
+                    Material.FIREFLY_BUSH,5
+
+
+            ),
+
+            Map.of(
+                    TreeStructure.SPRUCE, 100
+            ),
+
+            Biome.TAIGA
+
+    ),
+
+    SNOWY_TAIGA(
+
+            Map.of(
+
+                    Material.SNOW, 100
+
+            ),
+
+            Map.of(
+                    TreeStructure.SNOWY_SPRUCE, 100
+            ),
+
+            Biome.SNOWY_TAIGA
+    ),
 //    BADLANDS(15),
 //    WOODED_BADLANDS(10),
-//    JUNGLE(25),
+    JUNGLE(
+
+            Map.of(
+
+                    Material.SHORT_GRASS, 100
+
+            ),
+
+        Map.of(
+
+                TreeStructure.JUNGLE, 100
+
+        ),
+
+        Biome.JUNGLE
+
+)
 //
 //    // Mushroom biome
 //    MUSHROOM(100)

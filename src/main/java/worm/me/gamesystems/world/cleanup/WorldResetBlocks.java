@@ -101,7 +101,7 @@ public class WorldResetBlocks {
                 for (int x = minX; x <= maxX; x++) {
                     for (int z = minZ; z <= maxZ; z++) {
 
-                        if (!world.isChunkLoaded(x >> 4, z >> 4)) continue;
+                        if (!world.isChunkLoaded(x >> 4, z >> 4)) world.loadChunk(x >> 4, z >> 4);
 
                         if (currentLayer >= EXCL_MIN_Y && currentLayer <= EXCL_MAX_Y
                                 && x >= EXCL_MIN_X && x <= EXCL_MAX_X

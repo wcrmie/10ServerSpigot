@@ -13,7 +13,7 @@ public enum Biome {
             Map.of(
 
                     SubBiome.PLAINS, 60,
-                    SubBiome.SUNFLOWER_PLAINS, 20,
+                    SubBiome.SAVANNA, 20,
                     SubBiome.MEADOW, 20
 
             )
@@ -33,6 +33,19 @@ public enum Biome {
             )
     ),
 
+    TAIGA(
+
+            List.of(IslandProperties.IslandTopper.GRASSY, IslandProperties.IslandTopper.PODZOL),
+            List.of(IslandProperties.IslandBottom.STONE, IslandProperties.IslandBottom.GRANITE, IslandProperties.IslandBottom.ANDESITE, IslandProperties.IslandBottom.DIORITE),
+            Map.of(
+
+                    SubBiome.TAIGA, 50,
+                    SubBiome.SNOWY_TAIGA, 25
+
+            )
+
+    ),
+
     DESERT(
             List.of(IslandProperties.IslandTopper.SANDY),
             List.of(IslandProperties.IslandBottom.STONE, IslandProperties.IslandBottom.GRANITE, IslandProperties.IslandBottom.ANDESITE),
@@ -42,16 +55,16 @@ public enum Biome {
 
             )
     ),
-//
-//    JUNGLE(
-//            List.of(IslandProperties.IslandTopper.GRASSY),
-//            List.of(IslandProperties.IslandBottom.STONE, IslandProperties.IslandBottom.GRANITE, IslandProperties.IslandBottom.ANDESITE, IslandProperties.IslandBottom.DIORITE),
-//            Map.of(
-//
-//
-//
-//            )
-//    ),
+
+            JUNGLE(
+                    List.of(IslandProperties.IslandTopper.GRASSY),
+                    List.of(IslandProperties.IslandBottom.STONE, IslandProperties.IslandBottom.GRANITE, IslandProperties.IslandBottom.ANDESITE, IslandProperties.IslandBottom.DIORITE),
+                    Map.of(
+
+                        SubBiome.JUNGLE, 100
+
+                    )
+            ),
 //
 //    MUSHROOM(
 //            List.of(IslandProperties.IslandTopper.GRASSY),
