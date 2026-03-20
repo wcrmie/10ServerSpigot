@@ -171,6 +171,24 @@ public class ShapedRecipes {
         );
 
         shapedRecipeMap.put(
+                (new ItemStack(Material.LODESTONE, 1)),
+                List.of(
+                        List.of(
+                                new ItemStack(Material.CHISELED_STONE_BRICKS),
+                                new ItemStack(Material.CHISELED_STONE_BRICKS),
+                                new ItemStack(Material.CHISELED_STONE_BRICKS),
+                                new ItemStack(Material.CHISELED_STONE_BRICKS),
+                                new ItemStack(Material.IRON_BLOCK),
+                                new ItemStack(Material.CHISELED_STONE_BRICKS),
+                                new ItemStack(Material.CHISELED_STONE_BRICKS),
+                                new ItemStack(Material.CHISELED_STONE_BRICKS),
+                                new ItemStack(Material.CHISELED_STONE_BRICKS)
+                        ),
+                        List.of(Item.create(Material.STONE, "LODESTONE"))
+                )
+        );
+
+        shapedRecipeMap.put(
                 (new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 1)),
                 List.of(
                         List.of(
@@ -366,6 +384,8 @@ public class ShapedRecipes {
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "iron_chestplate"));
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "iron_leggings"));
         Bukkit.removeRecipe(new NamespacedKey("minecraft", "iron_boots"));
+
+        Bukkit.removeRecipe(new NamespacedKey("minecraft", "lodestone"));
 
 
     }
