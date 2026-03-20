@@ -32,7 +32,7 @@ public enum Ability {
             "Dash",
             "<dark_gray>Dash forward</dark_gray>",
             new Reqs.RequirementBuilder().combat(5).agility(3).build(),
-            12,
+            11,
             AbilityType.HORIZONTAL,
             player -> new Dash().dash(player)),
 
@@ -41,7 +41,7 @@ public enum Ability {
             "Leap",
             "<dark_gray>Leap up in the air</dark_gray>",
             new Reqs.RequirementBuilder().combat(5).agility(8).build(),
-            11,
+            10,
             AbilityType.VERTICAL,
             player -> new Leap().leap(player)),
 
@@ -77,7 +77,7 @@ public enum Ability {
             "Feather-Float",
             "<dark_gray>Float through the air swiftly</dark_gray>",
             new Reqs.RequirementBuilder().farming(25).fishing(5).agility(10).build(),
-            16,
+            18,
             AbilityType.VERTICAL,
             player -> new FeatherDash().featherDash(player)),
 
@@ -86,7 +86,7 @@ public enum Ability {
             "Speed-Step",
             "<dark_gray>Speed off in the direction you are looking</dark_gray>",
             new Reqs.RequirementBuilder().combat(5).mining(5).agility(25).foraging(10).build(),
-            24,
+            20,
             AbilityType.HORIZONTAL,
             player -> new SpeedStep().SpeedStep(player)),
 
@@ -95,7 +95,7 @@ public enum Ability {
             "Tactical Retreat",
             "<dark_gray>Gain some distance on your opponent</dark_gray>",
             new Reqs.RequirementBuilder().combat(10).farming(1).mining(2).agility(10).foraging(2).build(),
-            8,
+            10,
             AbilityType.HORIZONTAL,
             player -> new TacticalRetreat().retreat(player)),
 
@@ -113,7 +113,7 @@ public enum Ability {
           "Slide",
           "<dark_gray>Slide all about</dark_gray>",
           new Reqs.RequirementBuilder().agility(15).fishing(5).build(),
-          4,
+          5,
           AbilityType.DOUBLE_SPACE,
           player -> new Slide().slide(player)),
     Zig_zag(14,
@@ -121,7 +121,7 @@ public enum Ability {
           "Zig zag",
                         "<dark_gray>zip to the right and left</dark_gray>",
                         new Reqs.RequirementBuilder().combat(20).agility(45).build(),
-          18,
+          17,
     AbilityType.HORIZONTAL,
             player -> new ZigZag().zigzag(player)),
     CrescentRight(15,
