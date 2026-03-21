@@ -1,5 +1,12 @@
 package worm.me.gamesystems.world.cleanup;
 
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.math.Vector3;
+import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.world.biome.BiomeType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import worm.me.Server;
@@ -72,6 +79,8 @@ public class WorldResetBlocks {
         currentPhase = 0;
         isResetting  = true;
 
+        resetBiome();
+
         loadPhase(currentPhase);
 
         taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(
@@ -141,6 +150,31 @@ public class WorldResetBlocks {
         }
 
         currentLayer = 320;
+    }
+
+    private void resetBiome() {
+
+        Bukkit.getAsyncScheduler().runNow(Server.getPlugin(), $ -> {
+
+                CuboidRegion globalRegion = new CuboidRegion(BlockVector3.at(1300, 180, 1300), BlockVector3.at(-1300, 300, -1300));
+
+                World world = PlayArea.getPlayWorld();
+
+                try (EditSession editSession = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(world))) {
+
+                    for (BlockVector3 block : globalRegion) {
+
+                        editSession.setBiome(block, BiomeType.REGISTRY.get("minecraft:meadow"));
+
+                    }
+
+                    editSession.commit();
+
+                }
+
+
+            }
+        );
     }
 
     private void finishReset() {

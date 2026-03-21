@@ -59,14 +59,14 @@ public enum SubBiome {
 
             ),
 
-            Biome.MEADOW
+            Biome.MEADOWisla
     ),
 
     SAVANNA(
 
             Map.of(
 
-                    Material.SHORT_GRASS,35,
+                    Material.SHORT_GRASS,75,
                     Material.BUSH, 35,
                     Material.FIREFLY_BUSH,15,
                     Material.DEAD_BUSH,15
@@ -125,9 +125,9 @@ public enum SubBiome {
     BIRCH_FOREST(
             Map.of(
 
-                    Material.SHORT_GRASS, 65,
-                    Material.DANDELION, 5,
-                    Material.WILDFLOWERS, 10
+                    Material.SHORT_GRASS, 40,
+                    Material.DANDELION, 15,
+                    Material.WILDFLOWERS, 20
 
             ),
 

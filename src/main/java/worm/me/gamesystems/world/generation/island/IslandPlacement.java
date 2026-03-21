@@ -1,10 +1,17 @@
 package worm.me.gamesystems.world.generation.island;
 
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.world.biome.BiomeType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitTask;
 import worm.me.Server;
+import worm.me.gamesystems.world.PlayArea;
 import worm.me.gamesystems.world.generation.island.biome.Biome;
 import worm.me.gamesystems.world.generation.island.biome.SubBiome;
 import worm.me.gamesystems.world.generation.poisson.PoissonDisc;
@@ -39,6 +46,28 @@ public class IslandPlacement {
     public void placeIslands() {
 
         ArrayList<Location> islandLocations = generateIslandLocations();
+
+        Bukkit.getAsyncScheduler().runNow(Server.getPlugin(), $ -> {
+
+                    CuboidRegion globalRegion = new CuboidRegion(BlockVector3.at(80 + m_center.getBlockX(), 180, 80 + m_center.getBlockZ()), BlockVector3.at(-80 + m_center.getBlockX(), 300, -80 + m_center.getBlockZ()));
+
+                    World world = PlayArea.getPlayWorld();
+
+                    try (EditSession editSession = WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(world))) {
+
+                        for (BlockVector3 block : globalRegion) {
+
+                            editSession.setBiome(block, BiomeType.REGISTRY.get("minecraft:" + m_subBiome.getVanillaBiome().getKey().getKey()));
+
+                        }
+
+                        editSession.commit();
+
+                    }
+
+
+                }
+        );
 
         Bukkit.getScheduler().runTaskTimer(Server.getPlugin(), gamer -> {
 
