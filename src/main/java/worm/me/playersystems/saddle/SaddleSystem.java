@@ -120,9 +120,13 @@ public class SaddleSystem {
     private void applySpecialEffects(Entity entity, Player player, boolean apply) {
         switch (entity.getType()) {
             case BAT:
-                if (apply) {
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 2, 1 , false, false, true));
-                } else {
+                if (player.getLocation().getBlockY() < 350) {
+                    if (apply) {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 2, 1, false, false, true));
+                    } else {
+                        player.removePotionEffect(PotionEffectType.LEVITATION);
+                    }
+                }else {
                     player.removePotionEffect(PotionEffectType.LEVITATION);
                 }
                 break;
