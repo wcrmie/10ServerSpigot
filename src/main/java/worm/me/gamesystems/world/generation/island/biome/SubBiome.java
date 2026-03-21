@@ -59,7 +59,7 @@ public enum SubBiome {
 
             ),
 
-            Biome.MEADOWisla
+            Biome.MEADOW
     ),
 
     SAVANNA(
