@@ -12,16 +12,20 @@ public class OutOfBorDer {
 
     public static void apply(Player player) {
         if (player.getGameMode() != GameMode.CREATIVE) {
-            player.damage(1.0);
-
             Location playerLoc = player.getLocation();
             Location closest = Server.zoneGridManager.getClosestAllowedLocation(playerLoc);
-
             if (closest == null) return;
 
             double dx = closest.getX() - playerLoc.getX();
             double dz = closest.getZ() - playerLoc.getZ();
             double dist = Math.sqrt(dx * dx + dz * dz);
+
+            if (dist > 50) {
+                player.teleport(closest);
+                return;
+            }
+
+            player.damage(1.0);
 
             Vector push;
             if (dist < 0.001) {
@@ -29,13 +33,10 @@ public class OutOfBorDer {
             } else {
                 push = new Vector(dx / dist, 0, dz / dist);
             }
-
             double strength = Math.max(MIN_PUSH, dist * 0.2);
             push.multiply(strength);
-
             Vector current = player.getVelocity();
             push.setY(Math.max(current.getY(), -0.5));
-
             player.setVelocity(push);
         }
     }
