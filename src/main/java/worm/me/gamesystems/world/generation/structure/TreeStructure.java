@@ -11,9 +11,9 @@ public enum TreeStructure {
     CACTUS(List.of("cactus_large","cactus_flowered_large_1","cactus_flowered_medium","cactus_flowered_small")),
     RED_MUSHROOM(List.of("placeholder_tree")),
     BROWN_MUSHROOM(List.of("placeholder_tree")),
-    JUNGLE(List.of("placeholder_tree")),
-    ACACIA(List.of("placeholder_tree")),
-    DARK_OAK(List.of("placeholder_tree"));
+    JUNGLE(List.of("jungle_1", "jungle_2", "jungle_3")),
+    ACACIA(List.of("acacia_1", "acacia_2", "acacia_3", "large_acacia_1")),
+    DARK_OAK(List.of("dark_oak_1", "dark_oak_2", "large_dark_oak_1", "small_dark_oak_1")),;
 
     private final List<String> structures;
 

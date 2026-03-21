@@ -11,6 +11,9 @@ public enum SubBiome {
 
     // Plains biomes
     PLAINS(
+
+            45,
+
             Map.of(
 
                     Material.SHORT_GRASS, 50,
@@ -18,6 +21,8 @@ public enum SubBiome {
                     Material.POPPY, 5
 
             ),
+
+            new int[]{5, 8},
 
             Map.of(
 
@@ -45,6 +50,9 @@ public enum SubBiome {
 //    ),
 
     MEADOW(
+
+            45,
+
             Map.of(
 
                     Material.SHORT_GRASS, 65,
@@ -52,6 +60,8 @@ public enum SubBiome {
                     Material.OXEYE_DAISY, 10
 
             ),
+
+            new int[]{5, 8},
 
             Map.of(
 
@@ -64,6 +74,8 @@ public enum SubBiome {
 
     SAVANNA(
 
+            35,
+
             Map.of(
 
                     Material.SHORT_GRASS,75,
@@ -72,6 +84,8 @@ public enum SubBiome {
                     Material.DEAD_BUSH,15
 
             ),
+
+            new int[]{5, 8},
 
             Map.of(
 
@@ -86,6 +100,9 @@ public enum SubBiome {
 
     // Forest biomes
     OAK_FOREST(
+
+            55,
+
             Map.of(
 
                     Material.SHORT_GRASS, 65,
@@ -93,6 +110,8 @@ public enum SubBiome {
                     Material.POPPY, 10
 
             ),
+
+            new int[]{5, 8},
 
             Map.of(
 
@@ -104,6 +123,9 @@ public enum SubBiome {
             ),
 
     MIXED_FOREST(
+
+            45,
+
             Map.of(
 
                     Material.SHORT_GRASS, 65,
@@ -112,6 +134,8 @@ public enum SubBiome {
                     Material.POPPY, 5
 
             ),
+
+            new int[]{5, 8},
 
             Map.of(
 
@@ -123,6 +147,9 @@ public enum SubBiome {
             Biome.FOREST),
 
     BIRCH_FOREST(
+
+            45,
+
             Map.of(
 
                     Material.SHORT_GRASS, 40,
@@ -130,6 +157,8 @@ public enum SubBiome {
                     Material.WILDFLOWERS, 20
 
             ),
+
+            new int[]{5, 8},
 
             Map.of(
 
@@ -141,6 +170,9 @@ public enum SubBiome {
 
     // TODO: add more flowers
     FLOWER_FOREST(
+
+            55,
+
             Map.of(
 
                     Material.SHORT_GRASS, 65,
@@ -153,6 +185,8 @@ public enum SubBiome {
 
             ),
 
+            new int[]{5, 8},
+
             Map.of(
 
                     TreeStructure.OAK, 70,
@@ -161,23 +195,30 @@ public enum SubBiome {
             ),
 
             Biome.FLOWER_FOREST),
-//    DARK_FOREST(
-//            Map.of(
-//
-//                    Material.SHORT_GRASS, 50,
-//                    Material.BUSH, 35,
-//                    Material.AZURE_BLUET, 5,
-//                    Material.LILY_OF_THE_VALLEY, 10
-//
-//            ),
-//
-//            Map.of(
-//
-//                    TreeStructure.DARK_OAK, 100
-//
-//            ),
-//
-//            Biome.DARK_FOREST),
+    DARK_FOREST(
+
+            45,
+
+            Map.of(
+
+                    Material.SHORT_GRASS, 50,
+                    Material.BUSH, 35,
+                    Material.RED_MUSHROOM, 10,
+                    Material.BROWN_MUSHROOM, 10,
+                    Material.AZURE_BLUET, 5,
+                    Material.LILY_OF_THE_VALLEY, 10
+
+            ),
+
+            new int[]{4, 7},
+
+            Map.of(
+
+                    TreeStructure.DARK_OAK, 100
+
+            ),
+
+            Biome.DARK_FOREST),
 
 //    // Cold biomes
 //    TUNDRA(15),
@@ -190,6 +231,8 @@ public enum SubBiome {
 //    SAVANNA(25),
     DESERT(
 
+        25,
+
             Map.of(
 
                     Material.SHORT_DRY_GRASS, 50,
@@ -197,6 +240,8 @@ public enum SubBiome {
                     Material.TALL_DRY_GRASS, 35
 
             ),
+
+            new int[]{5, 8},
 
             Map.of(
 
@@ -210,6 +255,9 @@ public enum SubBiome {
 
     TAIGA(
 
+
+            45,
+
             Map.of(
 
                     Material.SHORT_GRASS, 15,
@@ -221,6 +269,8 @@ public enum SubBiome {
 
             ),
 
+            new int[]{5, 8},
+
             Map.of(
                     TreeStructure.SPRUCE, 100
             ),
@@ -231,11 +281,15 @@ public enum SubBiome {
 
     SNOWY_TAIGA(
 
+            100,
+
             Map.of(
 
                     Material.SNOW, 100
 
             ),
+
+            new int[]{5, 8},
 
             Map.of(
                     TreeStructure.SNOWY_SPRUCE, 100
@@ -247,11 +301,18 @@ public enum SubBiome {
 //    WOODED_BADLANDS(10),
     JUNGLE(
 
+        55,
+
             Map.of(
 
-                    Material.SHORT_GRASS, 100
+                    Material.SHORT_GRASS, 100,
+                    Material.BUSH, 35,
+                    Material.POPPY, 10,
+                    Material.DANDELION, 10
 
             ),
+
+        new int[]{3, 5},
 
         Map.of(
 
@@ -267,26 +328,43 @@ public enum SubBiome {
 //    MUSHROOM(100)
     ;
 
-    private final Map<Material, Integer> materials;
-    private final Map<TreeStructure, Integer> trees;
-    private final Biome vanillaBiome;
+    private final int m_foliageDensity;
+    private final Map<Material, Integer> m_materials;
 
-    SubBiome(Map<Material, Integer> materials, Map<TreeStructure, Integer> trees, Biome vanillaBiome) {
-        this.materials = materials;
-        this.trees = trees;
-        this.vanillaBiome = vanillaBiome;
+    private final int[] m_treeSeparation;
+    private final Map<TreeStructure, Integer> m_trees;
+
+    private final Biome m_vanillaBiome;
+
+    SubBiome(int foliageDensity, Map<Material, Integer> materials, int[] treeSeparation, Map<TreeStructure, Integer> trees, Biome vanillaBiome) {
+
+        this.m_foliageDensity = foliageDensity;
+        this.m_materials = materials;
+
+        this.m_treeSeparation = treeSeparation;
+        this.m_trees = trees;
+
+        this.m_vanillaBiome = vanillaBiome;
+    }
+
+    public int getFoliageDensity() {
+        return m_foliageDensity;
     }
 
     public Map<Material, Integer> getFoliageMap() {
-        return materials;
+        return m_materials;
     }
 
     public Map<TreeStructure, Integer> getTreesMap() {
-        return trees;
+        return m_trees;
     }
 
-    public Biome getVanillaBiome() {
-        return vanillaBiome;
+    public int[] getTreeSeparation() {
+        return m_treeSeparation;
+    }
+
+    public Biome getM_vanillaBiome() {
+        return m_vanillaBiome;
     }
 
     /**

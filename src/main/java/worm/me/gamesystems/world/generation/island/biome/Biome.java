@@ -27,8 +27,8 @@ public enum Biome {
                     SubBiome.OAK_FOREST, 25,
                     SubBiome.MIXED_FOREST, 15,
                     SubBiome.BIRCH_FOREST, 15,
-                    SubBiome.FLOWER_FOREST, 10
-//                    ,SubBiome.DARK_FOREST, 15
+                    SubBiome.FLOWER_FOREST, 10,
+                    SubBiome.DARK_FOREST, 15
 
             )
     ),
@@ -56,7 +56,7 @@ public enum Biome {
             )
     ),
 
-            JUNGLE(
+    JUNGLE(
                     List.of(IslandProperties.IslandTopper.GRASSY),
                     List.of(IslandProperties.IslandBottom.STONE, IslandProperties.IslandBottom.GRANITE, IslandProperties.IslandBottom.ANDESITE, IslandProperties.IslandBottom.DIORITE),
                     Map.of(
@@ -64,7 +64,7 @@ public enum Biome {
                         SubBiome.JUNGLE, 100
 
                     )
-            ),
+    ),
 //
 //    MUSHROOM(
 //            List.of(IslandProperties.IslandTopper.GRASSY),

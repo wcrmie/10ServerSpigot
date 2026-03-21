@@ -9,7 +9,6 @@ import com.sk89q.worldedit.world.biome.BiomeType;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.scheduler.BukkitTask;
 import worm.me.Server;
 import worm.me.gamesystems.world.PlayArea;
 import worm.me.gamesystems.world.generation.island.biome.Biome;
@@ -17,7 +16,6 @@ import worm.me.gamesystems.world.generation.island.biome.SubBiome;
 import worm.me.gamesystems.world.generation.poisson.PoissonDisc;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class IslandPlacement {
@@ -57,7 +55,7 @@ public class IslandPlacement {
 
                         for (BlockVector3 block : globalRegion) {
 
-                            editSession.setBiome(block, BiomeType.REGISTRY.get("minecraft:" + m_subBiome.getVanillaBiome().getKey().getKey()));
+                            editSession.setBiome(block, BiomeType.REGISTRY.get("minecraft:" + m_subBiome.getM_vanillaBiome().getKey().getKey()));
 
                         }
 

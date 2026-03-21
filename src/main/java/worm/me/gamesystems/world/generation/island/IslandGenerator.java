@@ -122,7 +122,10 @@ public class IslandGenerator {
             Location corner1 = location.clone();
             Location corner2 = location.clone().add(island.getSize(), 0, island.getSize());
 
-            ArrayList<Location> points = PoissonDisc.generatePoints(location.getWorld(), corner1, corner2, 5, 8, 100, validLocations, null, null);
+            int minTreeDistance = island.getSubBiome().getTreeSeparation()[0];
+            int maxTreeDistance = island.getSubBiome().getTreeSeparation()[1];
+
+            ArrayList<Location> points = PoissonDisc.generatePoints(location.getWorld(), corner1, corner2, minTreeDistance, maxTreeDistance, 100, validLocations, null, null);
             Iterator<Location> iterator = points.iterator();
 
             HashMap<Location, String> treeLocations = new HashMap<>();
@@ -177,7 +180,7 @@ public class IslandGenerator {
 
                 int foliageChance = ThreadLocalRandom.current().nextInt(0, 100);
 
-                if (foliageChance > 45) continue; // generate foliage 45% of the time
+                if (foliageChance >= island.getSubBiome().getFoliageDensity()) continue;
 
                 Block ground;
 
