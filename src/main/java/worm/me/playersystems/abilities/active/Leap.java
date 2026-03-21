@@ -13,7 +13,7 @@ public class Leap {
     public void leap(Player p){
         Vector direction = p.getLocation().getDirection();
         direction.multiply(0.1);
-        direction.setY(1.3);
+        direction.setY(1.45);
         p.setVelocity(direction);
         Levels.addExp(5L, Levels.skillTranslation("Agility"), p);
 

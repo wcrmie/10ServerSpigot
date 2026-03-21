@@ -53,8 +53,10 @@ public class Slide {
                 p.setVelocity(direction);
 
                 Block blockBelow = p.getLocation().subtract(0, 1, 0).getBlock();
+                Block block = p.getLocation().getBlock();
                 p.getWorld().spawnParticle(Particle.SNOWFLAKE, p.getLocation(), 2, 0.2, 0.05, 0.2, 0.01);
-                if (blockBelow.getType() == Material.AIR) cancel();
+                if (blockBelow.getType() == Material.AIR && block.getType() == Material.AIR)
+                    cancel();
             }
         }.runTaskTimer(Server.getPlugin(), 0L, 1L);
 

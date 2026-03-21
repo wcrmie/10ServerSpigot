@@ -13,7 +13,7 @@ public class SlowFalling {
 
     public void slowFalling(Player p){
 
-        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 60, 1, false, false));
+        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 70, 1, false, false));
 
         p.getWorld().playSound(
                 p.getLocation(),
@@ -28,7 +28,7 @@ public class SlowFalling {
             @Override
             public void run() {
 
-                if (ticks >= 20) {
+                if (ticks >= 10) {
                     cancel();
                     return;
                 }

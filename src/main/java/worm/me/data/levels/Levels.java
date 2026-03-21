@@ -180,7 +180,9 @@ public class Levels {
                         EntityType type = event.getEntityType();
                         if (type != EntityType.SILVERFISH && type != EntityType.SLIME) {
                             int goldChance = getGoldChance(p);
-                            int chance = ThreadLocalRandom.current().nextInt(1, 80);
+                            int bound = 80;
+                            if (type == EntityType.ENDERMITE){ bound *= 3;}
+                            int chance = ThreadLocalRandom.current().nextInt(1, bound);
                             if (chance <= goldChance) {
                                 event.getDrops().add(new ItemStack(Material.GOLD_NUGGET));
                                 p.playSound(p, Sound.ITEM_AXE_SCRAPE, 1F, 2F);
