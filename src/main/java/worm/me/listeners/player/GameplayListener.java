@@ -158,10 +158,10 @@ public class GameplayListener implements Listener {
             }
         }
 
-        if (LodestoneTeleporter.isTeleporting(player)) {
-
-            LodestoneTeleporter.cancelTeleport(player);
-
+        if (e.getFrom().getX() != e.getTo().getX() || e.getFrom().getY() != e.getTo().getY() || e.getFrom().getZ() != e.getTo().getZ()) {
+            if (LodestoneTeleporter.isTeleporting(player)) {
+                LodestoneTeleporter.cancelTeleport(player);
+            }
         }
 
         if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) return;
