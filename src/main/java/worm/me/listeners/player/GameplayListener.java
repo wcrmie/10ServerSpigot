@@ -319,10 +319,83 @@ public class GameplayListener implements Listener {
                 }
             }
 
-            if (player.getInventory().getHelmet().getType().equals(Material.BELL)) {
+            switch (player.getInventory().getHelmet().getType()) {
 
-                player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BELL_USE, 1F, 2F);
+                case BELL: {
 
+                    player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BELL_USE, 1F, 2F);
+
+                }
+
+                case NOTE_BLOCK: {
+
+                    // TODO: make it so it makes the note block sound from beneath their feet
+
+                }
+
+                case HONEY_BLOCK: {
+                    player.getWorld().playSound(player.getLocation(), Sound.BLOCK_HONEY_BLOCK_PLACE, 1F, 0.5F);
+                }
+
+                case CHEST: {
+
+                    int RNG = ThreadLocalRandom.current().nextInt(0, 1);
+
+                    if (RNG == 0) player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 1F, 2F);
+
+                    if (RNG == 1) player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1F, 2F);
+
+                }
+
+                case SLIME_BLOCK: {
+
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_SLIME_JUMP, 1F, 2F);
+
+                }
+
+                case ZOMBIE_HEAD: {
+
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ZOMBIE_HURT, 1F, 1.3F);
+
+                }
+
+                case SKELETON_SKULL: {
+
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_SKELETON_HURT, 1F, 1.3F);
+
+                }
+
+                case CREEPER_HEAD: {
+
+
+                    int RNG = ThreadLocalRandom.current().nextInt(0, 25);
+
+                    if (RNG == 25) {
+
+                        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_CREEPER_PRIMED, 1F, 1.3F);
+
+                    } else player.getWorld().playSound(player.getLocation(), Sound.ENTITY_CREEPER_HURT, 1F, 1.3F);
+
+                }
+
+                case PIGLIN_HEAD: {
+
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PIGLIN_HURT, 1F, 1.3F);
+
+                }
+
+                case BEE_NEST: {
+
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BEE_HURT, 1F, 1.3F);
+
+                }
+
+                case DECORATED_POT: {
+
+                    player.getWorld().playSound(player.getLocation(), Sound.BLOCK_DECORATED_POT_SHATTER, 1F, 1.3F);
+
+                }
+                
             }
 
             ProtectedRegion region = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld())).getRegion("spawn");
