@@ -115,6 +115,7 @@ public final class Server extends JavaPlugin {
         getCommand("generateisland").setExecutor(new IslandGenerationCommand());
         getCommand("handbook").setExecutor(new HandBookCommand());
         getCommand("spawntreasure").setExecutor(new TreasureChestCommand(treasureChests));
+        getCommand("resetspawn").setExecutor(new ResetSpawnCommand());
         getCommand("resetworld").setExecutor(new WorldResetCommand());
         getCommand("structuresmake").setExecutor(new StructuresMakeCommand(generate));
         getCommand("structuresplace").setExecutor(new StructuresPlaceCommand(generate));

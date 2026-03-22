@@ -2,6 +2,7 @@ package worm.me.gamesystems.world;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import worm.me.Server;
+import worm.me.gamesystems.world.cleanup.SpawnReset;
 import worm.me.gamesystems.world.cleanup.WorldReset;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
@@ -15,11 +16,13 @@ public class WorldTimer {
     private static WorldTimer instance;
     private final Server plugin;
 
+    private static final long SPAWN_RESET_INTERVAL = 3L * 60 * 60; // 3 hours
     private static final long EXPANSION_INTERVAL = 6L * 60 * 60;   // 6 hours
     private static final long FULL_GRID_DELAY    = 12L * 60 * 60;  // 12 hours
 
     private long expansionSecs = 0;
     private long fullGridSecs  = 0;
+    private long spawnResetSecs = 0;
     private boolean gridFull   = false;
 
     private boolean resetting = false;
@@ -46,7 +49,22 @@ public class WorldTimer {
 
         plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
 
+            // ---------- SPAWN RESET ----------
+
             if (resetting) return;
+
+            if (spawnResetSecs <= SPAWN_RESET_INTERVAL) {
+
+                spawnResetSecs++;
+
+            } else {
+
+                spawnResetSecs = 0;
+                SpawnReset.replaceSpawn();
+
+            }
+
+            // ---------- END SPAWN RESET ----------
 
             if (!gridFull) {
                 expansionSecs++;

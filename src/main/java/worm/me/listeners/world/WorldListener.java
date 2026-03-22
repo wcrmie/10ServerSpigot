@@ -231,7 +231,7 @@ public class WorldListener implements Listener {
         if (entity.getType().equals(EntityType.TNT) || entity.getType().equals(EntityType.TNT_MINECART)) {
             event.setCancelled(true);
             World world = entity.getWorld();
-            world.createExplosion(entity.getLocation(), 6);
+            world.createExplosion(entity.getLocation(), 4);
         }
     }
 

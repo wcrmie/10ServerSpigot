@@ -6,6 +6,9 @@ authors: [ worm, clem, Boolean ]
 depend: [WorldGuard]
 softdepend: [MessageHead]
 commands:
+  resetspawn:
+    permission: admin
+    usage: /<command>
   placetree:
     permission: admin
     usage: /<command>
