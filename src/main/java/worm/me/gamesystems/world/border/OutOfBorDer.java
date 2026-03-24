@@ -29,7 +29,7 @@ public class OutOfBorDer {
                 player.damage(1.0);
             } else if (dist < 20) {
                 player.damage(3.0);
-            } else if (dist > 35) {
+            } else if (dist < 100) {
                 player.damage(6.0);
             }
 
