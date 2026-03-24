@@ -101,7 +101,7 @@ public class WorldListener implements Listener {
             return;
         }
 
-        if (to.getLocation().getBlockY() <= 210) {
+        if (to.getLocation().getBlockY() <= 195) {
             if (from.getType() == Material.WATER || from.getType() == Material.LAVA) {
                 event.setCancelled(true);
             }

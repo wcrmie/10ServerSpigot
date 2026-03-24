@@ -151,7 +151,7 @@ public class GameplayListener implements Listener {
 
         Player player = e.getPlayer();
 
-        if (e.getTo().getY() < 200) {
+        if (e.getTo().getY() < 190) {
             player.damage(1000000);
         } else {
             boolean allowed = Server.zoneGridManager.isInAllowedGrid(e.getTo());
