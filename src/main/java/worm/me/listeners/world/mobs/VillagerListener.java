@@ -14,6 +14,8 @@ import worm.me.utils.Item;
 
 import java.util.Arrays;
 
+import static worm.me.gamesystems.world.mob.traders.Trader.getGenetics;
+
 public class VillagerListener implements Listener {
 
     @EventHandler
@@ -38,7 +40,7 @@ public class VillagerListener implements Listener {
 
             villy.setProfession(Villager.Profession.NITWIT);
 
-            if (!Arrays.equals(Trader.getGenetics(villy), new int[VillagerProfession.values().length])) villy.setProfession(Villager.Profession.NONE);
+            if (!Arrays.equals(getGenetics(villy), new int[VillagerProfession.values().length])) villy.setProfession(Villager.Profession.NONE);
 
         }
 
@@ -52,27 +54,13 @@ public class VillagerListener implements Listener {
             Villager mother = (Villager) event.getMother();
             Villager father = (Villager) event.getFather();
 
-            int[] motherGenetics = Trader.getGenetics(mother);
-            int[] fatherGenetics = Trader.getGenetics(father);
+            int[] motherGenetics = getGenetics(mother);
+            int[] fatherGenetics = getGenetics(father);
 
             Trader.addGenetics(child, motherGenetics);
             Trader.addGenetics(child, fatherGenetics);
 
         }
-    }
-
-    @EventHandler
-    public void onVillagerEmploy(VillagerCareerChangeEvent event) {
-
-        Villager villager = event.getEntity();
-
-        if (event.getProfession() == Villager.Profession.NONE) {
-            event.setCancelled(true);
-            return;
-        }
-
-        if (Trader.getGenetics(villager)[VillagerProfession.valueOf(event.getProfession().toString()).ordinal()] != 1) event.setCancelled(true);
-
     }
 
     @EventHandler
@@ -97,5 +85,38 @@ public class VillagerListener implements Listener {
 
     }
 
+    @EventHandler
+    public void onProfessionChange(VillagerCareerChangeEvent event) {
+        Villager villager = event.getEntity();
+        Villager.Profession currentProf = villager.getProfession();
+        Villager.Profession newProf = event.getProfession();
+
+        if (currentProf != Villager.Profession.NONE && currentProf != Villager.Profession.NITWIT) {
+            event.setCancelled(true);
+            return;
+        }
+
+        if (newProf == Villager.Profession.NONE || newProf == Villager.Profession.NITWIT) {
+            return;
+        }
+
+        NamespacedKey professionKey = newProf.getKey();
+        int[] genetics = getGenetics(villager);
+
+        boolean hasGeneticMatch = false;
+        for (VillagerProfession myEnum : VillagerProfession.values()) {
+            if (myEnum.getBukkitProfession().getKey().equals(professionKey)) {
+                int index = myEnum.ordinal();
+                if (index < genetics.length && genetics[index] == 1) {
+                    hasGeneticMatch = true;
+                }
+                break;
+            }
+        }
+
+        if (!hasGeneticMatch) {
+            event.setCancelled(true);
+        }
+    }
 
 }

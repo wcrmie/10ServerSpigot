@@ -1,6 +1,5 @@
 package worm.me.gamesystems.world.mob.traders;
 
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
@@ -11,12 +10,13 @@ import worm.me.Server;
 import worm.me.utils.RNG;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Trader {
 
-    public static class TradeBuilder {
+    private static final NamespacedKey GENETICS_KEY = new NamespacedKey(Server.getPlugin(), "genetics");
+    private static final NamespacedKey FIRST_GEN_KEY = new NamespacedKey(Server.getPlugin(), "firstGen");
 
+    public static class TradeBuilder {
         private final Map<MerchantRecipe, Integer> trades = new HashMap<>();
 
         public TradeBuilder newTrade(ItemStack selling, ItemStack buying, int maxUses, int weight, boolean experienceReward, int villagerExperience) {
@@ -29,132 +29,103 @@ public class Trader {
         public Map<MerchantRecipe, Integer> build() {
             return Collections.unmodifiableMap(trades);
         }
+    }
 
+    public static VillagerProfession getCustomProfession(Villager.Profession bukkitProf) {
+        for (VillagerProfession customProf : VillagerProfession.values()) {
+            if (customProf.getBukkitProfession().equals(bukkitProf)) {
+                return customProf;
+            }
+        }
+        return null;
     }
 
     public static MerchantRecipe replaceTrade(Villager villager, int level) {
-
         Villager.Profession profession = villager.getProfession();
+        VillagerProfession customProf = getCustomProfession(profession);
 
-        VillagerProfession villagerProfession = VillagerProfession.valueOf(profession.name().toUpperCase());
+        if (customProf == null) return null;
 
-        List<MerchantRecipe> trades = new ArrayList<>(villager.getRecipes());
+        List<MerchantRecipe> currentRecipes = villager.getRecipes();
+
+        if (level <= 0 || level > customProf.getTrades().size()) {
+            return null;
+        }
 
         for (int i = 0; i < 1000; i++) {
+            MerchantRecipe newRecipe = RNG.chooseRandom(customProf.getTrades().get(level - 1));
+            if (newRecipe == null) continue;
 
-            MerchantRecipe newRecipe = RNG.chooseRandom(villagerProfession.getTrades().get(level - 1));
-
-            for (MerchantRecipe trade : trades) {
-
-                if (trade.getIngredients().equals(newRecipe.getIngredients()) && trade.getResult().equals(newRecipe.getResult())) {
-
-                    newRecipe = null;
-
+            boolean duplicate = false;
+            for (MerchantRecipe existingTrade : currentRecipes) {
+                if (existingTrade.getIngredients().equals(newRecipe.getIngredients()) &&
+                        existingTrade.getResult().equals(newRecipe.getResult())) {
+                    duplicate = true;
+                    break;
                 }
             }
 
-            if (newRecipe != null) {
-
+            if (!duplicate) {
                 return newRecipe;
-
             }
-
         }
         return null;
-
     }
 
-    public static void addGenetics(Villager villager, int[] genetics) {
+    public static void addGenetics(Villager villager, int[] incomingGenetics) {
+        int[] currentGenetics = getGenetics(villager);
 
-        int[] newGenetics = getGenetics(villager);
-
-        for (int i = 0; i < genetics.length; i++) {
-            if (newGenetics[i] == 0 && genetics[i] == 1) {
-                newGenetics[i] = 1; // Add the genetic if it was not already present
+        for (int i = 0; i < Math.min(currentGenetics.length, incomingGenetics.length); i++) {
+            if (incomingGenetics[i] == 1) {
+                currentGenetics[i] = 1;
             }
         }
 
-        PersistentDataContainer pdc = villager.getPersistentDataContainer();
-        pdc.set(new NamespacedKey(Server.getPlugin(), "genetics"), PersistentDataType.INTEGER_ARRAY, newGenetics);
-
+        villager.getPersistentDataContainer().set(GENETICS_KEY, PersistentDataType.INTEGER_ARRAY, currentGenetics);
     }
 
     public static int[] getGenetics(Villager villager) {
         PersistentDataContainer pdc = villager.getPersistentDataContainer();
-        return pdc.getOrDefault(new NamespacedKey(Server.getPlugin(), "genetics"), PersistentDataType.INTEGER_ARRAY, new int[VillagerProfession.values().length]);
+        int[] data = pdc.get(GENETICS_KEY, PersistentDataType.INTEGER_ARRAY);
+        return (data != null) ? data : new int[VillagerProfession.values().length];
     }
 
     public static boolean getFirstGen(Villager villager) {
-        PersistentDataContainer pdc = villager.getPersistentDataContainer();
-        return pdc.getOrDefault(new NamespacedKey(Server.getPlugin(), "firstGen"), PersistentDataType.BOOLEAN, false);
+        return villager.getPersistentDataContainer().getOrDefault(FIRST_GEN_KEY, PersistentDataType.BOOLEAN, false);
     }
 
     public static void setFirstGen(Villager villager, boolean firstGen) {
-        PersistentDataContainer pdc = villager.getPersistentDataContainer();
-        pdc.set(new NamespacedKey(Server.getPlugin(), "firstGen"), PersistentDataType.BOOLEAN, firstGen);
+        villager.getPersistentDataContainer().set(FIRST_GEN_KEY, PersistentDataType.BOOLEAN, firstGen);
     }
 
     public static class GeneticsBuilder {
-
         private final int[] genetics;
-
 
         public GeneticsBuilder() {
             this.genetics = new int[VillagerProfession.values().length];
         }
 
-        public GeneticsBuilder addGenetic(VillagerProfession profession){
-
+        public GeneticsBuilder addGenetic(VillagerProfession profession) {
             genetics[profession.ordinal()] = 1;
-
             return this;
         }
 
-        public GeneticsBuilder armorer() {
-            return addGenetic(VillagerProfession.ARMORER);
-        }
-        public GeneticsBuilder butcher() {
-            return addGenetic(VillagerProfession.BUTCHER);
-        }
-        public GeneticsBuilder cartographer() {
-            return addGenetic(VillagerProfession.CARTOGRAPHER);
-        }
-        public GeneticsBuilder cleric() {
-            return addGenetic(VillagerProfession.CLERIC);
-        }
-        public GeneticsBuilder farmer() {
-            return addGenetic(VillagerProfession.FARMER);
-        }
-        public GeneticsBuilder fisherman() {
-            return addGenetic(VillagerProfession.FISHERMAN);
-        }
-        public GeneticsBuilder fletcher() {
-            return addGenetic(VillagerProfession.FLETCHER);
-        }
-        public GeneticsBuilder leatherworker() {
-            return addGenetic(VillagerProfession.LEATHERWORKER);
-        }
-        public GeneticsBuilder librarian() {
-            return addGenetic(VillagerProfession.LIBRARIAN);
-        }
-        public GeneticsBuilder mason() {
-            return addGenetic(VillagerProfession.MASON);
-        }
-        public GeneticsBuilder shepherd() {
-            return addGenetic(VillagerProfession.SHEPHERD);
-        }
-        public GeneticsBuilder toolsmith() {
-            return addGenetic(VillagerProfession.TOOLSMITH);
-        }
-        public GeneticsBuilder weaponsmith() {
-            return addGenetic(VillagerProfession.WEAPONSMITH);
-        }
+        public GeneticsBuilder armorer() { return addGenetic(VillagerProfession.ARMORER); }
+        public GeneticsBuilder butcher() { return addGenetic(VillagerProfession.BUTCHER); }
+        public GeneticsBuilder cartographer() { return addGenetic(VillagerProfession.CARTOGRAPHER); }
+        public GeneticsBuilder cleric() { return addGenetic(VillagerProfession.CLERIC); }
+        public GeneticsBuilder farmer() { return addGenetic(VillagerProfession.FARMER); }
+        public GeneticsBuilder fisherman() { return addGenetic(VillagerProfession.FISHERMAN); }
+        public GeneticsBuilder fletcher() { return addGenetic(VillagerProfession.FLETCHER); }
+        public GeneticsBuilder leatherworker() { return addGenetic(VillagerProfession.LEATHERWORKER); }
+        public GeneticsBuilder librarian() { return addGenetic(VillagerProfession.LIBRARIAN); }
+        public GeneticsBuilder mason() { return addGenetic(VillagerProfession.MASON); }
+        public GeneticsBuilder shepherd() { return addGenetic(VillagerProfession.SHEPHERD); }
+        public GeneticsBuilder toolsmith() { return addGenetic(VillagerProfession.TOOLSMITH); }
+        public GeneticsBuilder weaponsmith() { return addGenetic(VillagerProfession.WEAPONSMITH); }
 
         public int[] build() {
-
-            int[] copy = new int[genetics.length];
-            System.arraycopy(genetics, 0, copy, 0, genetics.length);
-            return copy;
+            return genetics.clone();
         }
     }
 }
