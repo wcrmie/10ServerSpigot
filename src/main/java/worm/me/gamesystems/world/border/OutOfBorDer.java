@@ -25,7 +25,13 @@ public class OutOfBorDer {
                 return;
             }
 
-            player.damage(1.0);
+            if (dist < 10) {
+                player.damage(1.0);
+            } else if (dist < 20) {
+                player.damage(3.0);
+            } else if (dist > 35) {
+                player.damage(6.0);
+            }
 
             Vector push;
             if (dist < 0.001) {
