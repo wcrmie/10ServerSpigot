@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.menu.Menu;
-import worm.me.utils.GuiConstructor;
+import worm.me.utils.menu.GuiConstructor;
 import worm.me.utils.Item;
 
 public class RecipeSpecificMenu extends Menu implements InventoryHolder {

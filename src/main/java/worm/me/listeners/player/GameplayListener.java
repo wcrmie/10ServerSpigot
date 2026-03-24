@@ -7,7 +7,9 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import io.papermc.paper.event.player.PlayerArmSwingEvent;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -324,17 +326,20 @@ public class GameplayListener implements Listener {
                 case BELL: {
 
                     player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BELL_USE, 1F, 2F);
+                    break;
 
                 }
 
                 case NOTE_BLOCK: {
 
-                    // TODO: make it so it makes the note block sound from beneath their feet
+                    player.getWorld().playSound(player.getLocation(), Objects.requireNonNull(Instrument.values()[ThreadLocalRandom.current().nextInt(0, 15)].getSound()), 1F, ThreadLocalRandom.current().nextFloat(1.0f,2.0f));
+                    break;
 
                 }
 
                 case HONEY_BLOCK: {
                     player.getWorld().playSound(player.getLocation(), Sound.BLOCK_HONEY_BLOCK_PLACE, 1F, 0.5F);
+                    break;
                 }
 
                 case CHEST: {
@@ -345,23 +350,29 @@ public class GameplayListener implements Listener {
 
                     if (RNG == 1) player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1F, 2F);
 
+                    break;
+
                 }
 
                 case SLIME_BLOCK: {
 
                     player.getWorld().playSound(player.getLocation(), Sound.ENTITY_SLIME_JUMP, 1F, 2F);
 
+                    break;
+
                 }
 
                 case ZOMBIE_HEAD: {
 
                     player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ZOMBIE_HURT, 1F, 1.3F);
+                    break;
 
                 }
 
                 case SKELETON_SKULL: {
 
                     player.getWorld().playSound(player.getLocation(), Sound.ENTITY_SKELETON_HURT, 1F, 1.3F);
+                    break;
 
                 }
 
@@ -376,11 +387,15 @@ public class GameplayListener implements Listener {
 
                     } else player.getWorld().playSound(player.getLocation(), Sound.ENTITY_CREEPER_HURT, 1F, 1.3F);
 
+                    break;
+
                 }
 
                 case PIGLIN_HEAD: {
 
                     player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PIGLIN_HURT, 1F, 1.3F);
+
+                    break;
 
                 }
 
@@ -388,11 +403,14 @@ public class GameplayListener implements Listener {
 
                     player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BEE_HURT, 1F, 1.3F);
 
+                    break;
+
                 }
 
                 case DECORATED_POT: {
 
                     player.getWorld().playSound(player.getLocation(), Sound.BLOCK_DECORATED_POT_SHATTER, 1F, 1.3F);
+                    break;
 
                 }
                 

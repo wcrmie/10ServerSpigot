@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import worm.me.gamesystems.world.WorldTimer;
 import worm.me.gamesystems.world.border.ZoneGridManager;
 import worm.me.menu.recipes.RecipeBrowserMenu;
-import worm.me.utils.GuiConstructor;
+import worm.me.utils.menu.GuiConstructor;
 import worm.me.menu.abilities.AbilitiesMainMenu;
 import worm.me.menu.generators.GensMainMenu;
 //import worm.me.playersystems.social.legacyhats.Hats;

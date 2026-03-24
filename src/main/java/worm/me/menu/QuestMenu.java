@@ -13,7 +13,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import worm.me.playersystems.quests.QuestAssign;
 import worm.me.playersystems.quests.QuestInitialize;
-import worm.me.utils.GuiConstructor;
+import worm.me.utils.menu.GuiConstructor;
 import worm.me.utils.Item;
 
 import java.util.List;

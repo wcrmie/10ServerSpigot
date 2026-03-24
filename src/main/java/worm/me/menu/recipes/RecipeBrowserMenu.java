@@ -8,13 +8,15 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.menu.MainSubMenu;
 import worm.me.menu.PagedMenu;
-import worm.me.utils.GuiConstructor;
+import worm.me.utils.menu.GuiConstructor;
 import worm.me.menu.MainGUIMenu;
 import worm.me.utils.Item;
+import worm.me.utils.menu.MenuItem;
 
 public class RecipeBrowserMenu extends PagedMenu implements InventoryHolder, MainSubMenu {
 
@@ -34,17 +36,17 @@ public class RecipeBrowserMenu extends PagedMenu implements InventoryHolder, Mai
     @Override
     public Inventory initialize() {
 
-        Inventory inventory = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Recipes Page " + getPage(), 54, this);
+        Inventory inventory = GuiConstructor.chestInventory("<dark_gray>Recipes Page " + getPage(), 54, this);
 
         if (getPage() > 1){
 
-            inventory.setItem(48, Item.create(Material.ARROW, ChatColor.GRAY + "Previous Page"));
+            inventory.setItem(48, MenuItem.PREVIOUS_PAGE.getItem());
 
         }
 
-        inventory.setItem(50, Item.create(Material.ARROW, ChatColor.GRAY + "Next Page"));
+        inventory.setItem(50, MenuItem.NEXT_PAGE.getItem());
 
-        inventory.setItem(4, Item.create(Material.CRAFTING_TABLE, ChatColor.GRAY + "Recipes"));
+        inventory.setItem(4, Item.create(Material.CRAFTING_TABLE, "<gray>Recipes"));
 
         int slot = 9;
 

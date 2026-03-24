@@ -1,20 +1,17 @@
 package worm.me.menu;
 
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 import worm.me.data.VoidPlayer;
-import worm.me.utils.GuiConstructor;
+import worm.me.utils.menu.GuiConstructor;
 import worm.me.utils.Item;
 
 public class PlayerProfileMenu extends Menu implements InventoryHolder, MainSubMenu {

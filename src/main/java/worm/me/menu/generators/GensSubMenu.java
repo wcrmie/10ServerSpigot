@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import worm.me.data.Unlocks;
 import worm.me.menu.Menu;
 import worm.me.playersystems.generator.GeneratorType;
-import worm.me.utils.GuiConstructor;
+import worm.me.utils.menu.GuiConstructor;
 import worm.me.utils.Item;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;

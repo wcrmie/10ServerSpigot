@@ -17,7 +17,7 @@ import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.Ability;
 import worm.me.playersystems.abilities.AbilityType;
 import worm.me.playersystems.abilities.CooldownDisplay;
-import worm.me.utils.GuiConstructor;
+import worm.me.utils.menu.GuiConstructor;
 import worm.me.Server;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;

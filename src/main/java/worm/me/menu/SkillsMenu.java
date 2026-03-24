@@ -8,7 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import worm.me.data.levels.Levels;
-import worm.me.utils.GuiConstructor;
+import worm.me.utils.menu.GuiConstructor;
 import worm.me.utils.Item;
 
 public class SkillsMenu extends Menu implements InventoryHolder, MainSubMenu{

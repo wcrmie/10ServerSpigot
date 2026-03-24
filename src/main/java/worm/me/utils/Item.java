@@ -5,12 +5,18 @@ import io.papermc.paper.datacomponent.DataComponentType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.checkerframework.checker.units.qual.N;
+import worm.me.Server;
 
+import javax.lang.model.type.PrimitiveType;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +46,18 @@ public class Item {
         return item;
     }
 
+    public static <P, T> T getPersistent(ItemStack item, PersistentDataType<P, T> type, String key) throws Exception {
+
+        ItemMeta meta = item.getItemMeta();
+        PersistentDataContainer container = meta.getPersistentDataContainer();
+
+        NamespacedKey namespace = new NamespacedKey(Server.getPlugin(), key);
+
+        if (!container.has(namespace, type)) throw new NoSuchFieldException("The key or type was not found in this item.");
+
+        return container.get(namespace, type);
+    }
+
     public static void giveOrDrop(ItemStack item, org.bukkit.entity.Player player) {
         if (player.getInventory().firstEmpty() != -1) {
             player.getInventory().addItem(item);
@@ -66,6 +84,27 @@ public class Item {
             item.setData(type, value);
             return this;
 
+        }
+
+        public <T, P> ItemBuilder addPersistent(PersistentDataType<P, T> type, T data, String key) {
+
+            try {
+
+                ItemMeta meta = item.getItemMeta();
+                PersistentDataContainer container = meta.getPersistentDataContainer();
+
+                NamespacedKey namespace = new NamespacedKey(Server.getPlugin(), key);
+
+                if (!container.has(namespace, type)) throw new NoSuchFieldException("The key or type was not found in this item.");
+
+                container.set(namespace, type, data);
+
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            return this;
         }
 
         public ItemBuilder setName(String name) {

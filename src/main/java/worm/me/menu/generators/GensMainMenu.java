@@ -1,21 +1,16 @@
 package worm.me.menu.generators;
 
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import worm.me.menu.MainSubMenu;
 import worm.me.menu.Menu;
 import worm.me.playersystems.generator.GeneratorType;
-import worm.me.utils.GuiConstructor;
-import worm.me.data.Unlocks;
-import worm.me.Server;
+import worm.me.utils.menu.GuiConstructor;
 import worm.me.utils.Item;
 
 public class GensMainMenu extends Menu implements InventoryHolder, MainSubMenu {
