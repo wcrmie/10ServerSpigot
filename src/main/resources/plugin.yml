@@ -109,3 +109,6 @@ commands:
     description: Displays the current border grid
     usage: /getbordergrid
     permission: 10VS.getbordergrid
+  givecurecarrot:
+      description: Gives the Enchanted Golden Carrot to cure Zombified Piglins
+      permission: 10VS.givecurecarrot

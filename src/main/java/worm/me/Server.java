@@ -19,6 +19,7 @@ import worm.me.gamesystems.world.border.BorderVisuals;
 import worm.me.gamesystems.world.border.ZoneGridManager;
 import worm.me.gamesystems.world.legacystructure.generation.Generate;
 import worm.me.gamesystems.world.legacystructure.TreasureChests;
+import worm.me.gamesystems.world.mob.PiglinTraders.PiglinCure;
 import worm.me.listeners.MainListener;
 import worm.me.listeners.items.PotionListener;
 import worm.me.listeners.items.ToolListener;
@@ -28,6 +29,7 @@ import worm.me.listeners.world.mobs.CustomMobsListener;
 import worm.me.listeners.player.custom.AbilitiesListener;
 import worm.me.listeners.player.custom.LevellingListener;
 import worm.me.listeners.player.custom.QuestListener;
+import worm.me.listeners.world.mobs.PiglinListener;
 import worm.me.listeners.world.mobs.VillagerListener;
 import worm.me.utils.managers.ConfigManager;
 import worm.me.playersystems.abilities.Abilities;
@@ -155,6 +157,7 @@ public final class Server extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new PotionListener(), this);
         getServer().getPluginManager().registerEvents(new ToolListener(), this);
+        getServer().getPluginManager().registerEvents(new PiglinListener(), this);
 
         // Allows Command classes to register commands
         configManager = new ConfigManager();
@@ -174,6 +177,7 @@ public final class Server extends JavaPlugin {
         this.getCommand("hat").setExecutor(new HatCommand());
         this.getCommand("givebook").setExecutor(new GiveClericBookCommand());
         this.getCommand("discord").setExecutor(new DiscordCommand());
+        this.getCommand("givecurecarrot").setExecutor(new GivePiglinCureCarrot());
 
         // Create Map for tools
         List<Material> pickaxes = new ArrayList<>();
@@ -377,6 +381,8 @@ public final class Server extends JavaPlugin {
         if (playerspawning != null) {
             playerspawning.removeAllBlocks();
         }
+
+        PiglinCure.cancelAll();
 
         //treasureChests.onPluginDisable();
 
