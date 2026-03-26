@@ -109,6 +109,18 @@ public class WorldListener implements Listener {
     }
 
     @EventHandler
+    public void onVineGrowth(BlockSpreadEvent event) {
+        Material type = event.getSource().getType();
+        if (type != Material.VINE && type != Material.WEEPING_VINES && type != Material.TWISTING_VINES) {
+            return;
+        }
+
+        if (event.getBlock().getY() < 195) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     public void onBlockBreak(BlockBreakEvent event){
         if (event.getPlayer() != null) {
             VoidPlayer.registerStats(event.getPlayer(), 1);
