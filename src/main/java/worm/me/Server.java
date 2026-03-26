@@ -29,6 +29,7 @@ import worm.me.listeners.world.mobs.CustomMobsListener;
 import worm.me.listeners.player.custom.AbilitiesListener;
 import worm.me.listeners.player.custom.LevellingListener;
 import worm.me.listeners.world.mobs.VillagerListener;
+import worm.me.playersystems.attributes.LocatorBar;
 import worm.me.utils.managers.ConfigManager;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.DoubleJump;
@@ -377,6 +378,7 @@ public final class Server extends JavaPlugin {
 
         //treasureChests.onPluginDisable();
 
+        LocatorBar.cleanup();
         WorldTimer.getInstance().saveData();
 
         //if (treasureChests != null) treasureChests.removeAllDisplays();
