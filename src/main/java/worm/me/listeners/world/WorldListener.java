@@ -346,9 +346,19 @@ public class WorldListener implements Listener {
 
         if (entity instanceof Zombie zombie && entity.getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.NATURAL)) {
 
-            int RNG = ThreadLocalRandom.current().nextInt(0, 10);
+            int RNG = ThreadLocalRandom.current().nextInt(0, 1000);
 
-            if (zombie.getWorld().isThundering() && RNG == 0) {
+            if (zombie.getWorld().isThundering() && RNG <= 200) {
+                zombie.getWorld().playSound(zombie.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1F, 0.5F);
+                zombie.getWorld().spawnEntity(zombie.getLocation(), EntityType.ZOMBIFIED_PIGLIN);
+                zombie.remove();
+            }
+            else if (zombie.getWorld().isThundering() && RNG <= 20) {
+                zombie.getWorld().playSound(zombie.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1F, 0.5F);
+                zombie.getWorld().spawnEntity(zombie.getLocation(), EntityType.ZOMBIFIED_PIGLIN);
+                zombie.remove();
+            }
+            else if (RNG <= 2) {
                 zombie.getWorld().playSound(zombie.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1F, 0.5F);
                 zombie.getWorld().spawnEntity(zombie.getLocation(), EntityType.ZOMBIFIED_PIGLIN);
                 zombie.remove();
