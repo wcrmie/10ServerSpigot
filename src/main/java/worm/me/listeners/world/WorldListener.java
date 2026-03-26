@@ -485,6 +485,11 @@ public class WorldListener implements Listener {
                 event.getDrops().add(new ItemStack(Material.EMERALD, nuggetCount));
             }
         }
+        if (event.getEntity().getType() == EntityType.ZOMBIFIED_PIGLIN) {
+            if (ThreadLocalRandom.current().nextInt(100) < 3) {
+                event.getDrops().add(new ItemStack(Material.PIGLIN_HEAD, 1));
+            }
+        }
 
         for (ItemStack itemStack : event.getDrops()) {
 
