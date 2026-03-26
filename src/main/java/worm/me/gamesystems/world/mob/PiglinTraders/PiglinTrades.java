@@ -15,7 +15,7 @@ public enum PiglinTrades {
         loot.add(new LootEntry(new ItemStack(Material.CRYING_OBSIDIAN, 1),  15));
         return loot;
     }),
-    ARMORER("sirhelm", "will give you helm", () -> {
+    HELM("sirhelm", "will give you helm", () -> {
         List<LootEntry> loot = new ArrayList<>();
         loot.add(new LootEntry(new ItemStack(Material.GOLDEN_HELMET, 1),    25));
         return loot;

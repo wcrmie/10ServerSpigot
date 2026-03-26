@@ -1,6 +1,5 @@
 package worm.me.gamesystems.world.mob.PiglinTraders;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -17,30 +16,21 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class PiglinTradeManager {
 
-    private static NamespacedKey tomeTypeKey;
-    private static NamespacedKey piglinTypeKey;
-
-    private static NamespacedKey getTomeTypeKey() {
-        if (tomeTypeKey == null) tomeTypeKey = new NamespacedKey(Server.getPlugin(), "piglin_tome_type");
-        return tomeTypeKey;
-    }
-
-    private static NamespacedKey getPiglinTypeKey() {
-        if (piglinTypeKey == null) piglinTypeKey = new NamespacedKey(Server.getPlugin(), "piglin_type");
-        return piglinTypeKey;
-    }
+    private static final NamespacedKey TOME_TYPE_KEY = new NamespacedKey(Server.getPlugin(), "piglin_tome_type");
+    private static final NamespacedKey PIGLIN_TYPE_KEY = new NamespacedKey(Server.getPlugin(), "piglin_type");
 
     public static ItemStack generateTome(PiglinTrades type) {
         if (!type.requiresTome()) throw new IllegalArgumentException("Cannot create a tome for DEFAULT.");
 
         ItemStack tome = new ItemStack(Material.KNOWLEDGE_BOOK);
-        ItemMeta meta  = Bukkit.getItemFactory().getItemMeta(Material.KNOWLEDGE_BOOK);
+        ItemMeta meta = tome.getItemMeta();
+
         if (meta == null) {
             Server.getPlugin().getLogger().severe("Failed to create ItemMeta for KNOWLEDGE_BOOK.");
             return null;
         }
 
-        meta.getPersistentDataContainer().set(getTomeTypeKey(), PersistentDataType.STRING, type.name());
+        meta.getPersistentDataContainer().set(TOME_TYPE_KEY, PersistentDataType.STRING, type.name());
         meta.setDisplayName(ChatColor.GOLD + "Piglin Knowledge Tome");
 
         List<String> lore = new ArrayList<>();
@@ -64,22 +54,22 @@ public class PiglinTradeManager {
 
     public static boolean isTome(ItemStack item) {
         if (item == null || item.getType() != Material.KNOWLEDGE_BOOK || !item.hasItemMeta()) return false;
-        return item.getItemMeta().getPersistentDataContainer().has(getTomeTypeKey(), PersistentDataType.STRING);
+        return item.getItemMeta().getPersistentDataContainer().has(TOME_TYPE_KEY, PersistentDataType.STRING);
     }
 
     public static PiglinTrades getTomeType(ItemStack item) {
         if (!isTome(item)) return null;
-        String stored = item.getItemMeta().getPersistentDataContainer().get(getTomeTypeKey(), PersistentDataType.STRING);
+        String stored = item.getItemMeta().getPersistentDataContainer().get(TOME_TYPE_KEY, PersistentDataType.STRING);
         try {
             return PiglinTrades.valueOf(stored);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NullPointerException e) {
             return null;
         }
     }
 
     public static PiglinTrades getPiglinType(Piglin piglin) {
         String stored = piglin.getPersistentDataContainer()
-                .getOrDefault(getPiglinTypeKey(), PersistentDataType.STRING, PiglinTrades.DEFAULT.name());
+                .getOrDefault(PIGLIN_TYPE_KEY, PersistentDataType.STRING, PiglinTrades.DEFAULT.name());
         try {
             return PiglinTrades.valueOf(stored);
         } catch (IllegalArgumentException e) {
@@ -88,7 +78,7 @@ public class PiglinTradeManager {
     }
 
     public static void setPiglinType(Piglin piglin, PiglinTrades type) {
-        piglin.getPersistentDataContainer().set(getPiglinTypeKey(), PersistentDataType.STRING, type.name());
+        piglin.getPersistentDataContainer().set(PIGLIN_TYPE_KEY, PersistentDataType.STRING, type.name());
     }
 
     public static boolean hasType(Piglin piglin) {
