@@ -15,7 +15,8 @@ public class RulesCommand implements CommandExecutor {
         Component rulesMessage = MiniMessage.miniMessage().deserialize(
 
                 """
-                        <red><b><u>RULES</u></b>\
+                        <red><b>RULES</b>\
+                        
                         
                         <red>1. No hacking, exploiting, scripting, or using any program to get an unfair advantage over other players\
                         
