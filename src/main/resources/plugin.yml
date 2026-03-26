@@ -112,3 +112,6 @@ commands:
   givecurecarrot:
       description: Gives the Enchanted Golden Carrot to cure Zombified Piglins
       permission: 10VS.givecurecarrot
+  givepiglingtome:
+      description: Give a Piglin Knowledge Tome to a player
+      permission: 10VS.givepiglinlome

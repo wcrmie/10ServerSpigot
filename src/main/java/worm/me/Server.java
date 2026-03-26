@@ -124,6 +124,7 @@ public final class Server extends JavaPlugin {
         getCommand("structuresplacetype").setExecutor(new StructuresPlaceTypeCommand());
         getCommand("structureslist").setExecutor(new StructuresListCommand(generate));
         getCommand("structuresremove").setExecutor(new StructuresRemoveCommand(generate));
+        getCommand("givepiglingtome").setExecutor(new GivePiglinTomeCommand());
 
 
         zoneGridManager = new ZoneGridManager();
