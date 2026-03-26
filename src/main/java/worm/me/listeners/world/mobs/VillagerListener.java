@@ -9,6 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import worm.me.Server;
 import worm.me.gamesystems.world.mob.traders.Trader;
+import worm.me.gamesystems.world.mob.traders.VillagerProfession;
+import worm.me.playersystems.attributes.LocatorBar;
 import worm.me.gamesystems.world.mob.traders.CustomProfession;
 import worm.me.utils.Item;
 
@@ -22,6 +24,7 @@ public class VillagerListener implements Listener {
     public void onVillagerSpawn(EntitySpawnEvent event) {
 
         if (event.getEntity() instanceof Villager villy) {
+            LocatorBar.attachVillager(villy);
 
             if (villy.getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.CURED)) {
 

@@ -16,6 +16,7 @@ import worm.me.gamesystems.world.PlayArea;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.active.FeatherDash;
 import worm.me.data.VoidPlayer;
+import worm.me.playersystems.attributes.LocatorBar;
 import worm.me.playersystems.generator.Generator;
 import worm.me.utils.info.Tips;
 import worm.me.utils.join.FirstJoin;
@@ -63,8 +64,7 @@ public class InitializationsListener implements Listener {
 
         }
 
-        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "waypoint modify " + player.getName() + " color " + "white");
-
+        LocatorBar.attachPlayer(player);
     }
 
     @EventHandler
@@ -73,6 +73,7 @@ public class InitializationsListener implements Listener {
         Player p = e.getPlayer();
 
         e.quitMessage(null);
+        LocatorBar.removeAnchor(e.getPlayer());
 
         worm.me.Server.getPlugin().generating.remove(e.getPlayer());
 
