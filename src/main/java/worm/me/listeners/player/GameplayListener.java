@@ -41,6 +41,7 @@ import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.Ability;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
 import worm.me.playersystems.abilities.passive.SlimeBoots;
+import worm.me.playersystems.attributes.LocatorBar;
 import worm.me.playersystems.attributes.SizeModifier;
 import worm.me.data.Vault;
 import worm.me.data.VoidPlayer;
@@ -158,6 +159,10 @@ public class GameplayListener implements Listener {
             if (!allowed) {
                 OutOfBorDer.apply(player);
             }
+        }
+
+        if (e.getFrom().distanceSquared(e.getTo()) > 0.01) {
+            LocatorBar.handlePlayerMovement(e.getPlayer());
         }
 
         if (e.getFrom().getX() != e.getTo().getX() || e.getFrom().getY() != e.getTo().getY() || e.getFrom().getZ() != e.getTo().getZ()) {
