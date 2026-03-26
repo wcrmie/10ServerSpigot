@@ -113,6 +113,7 @@ public final class Server extends JavaPlugin {
         Generate generate = new Generate(this);
 
         // Register commands
+        getCommand("tutorial").setExecutor(new TutorialCommand());
         getCommand("generateisland").setExecutor(new IslandGenerationCommand());
         getCommand("handbook").setExecutor(new HandBookCommand());
         getCommand("spawntreasure").setExecutor(new TreasureChestCommand(treasureChests));
