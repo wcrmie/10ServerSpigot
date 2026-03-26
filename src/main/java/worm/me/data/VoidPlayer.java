@@ -10,7 +10,6 @@ import org.bukkit.scoreboard.Team;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.CooldownDisplay;
 import worm.me.gamesystems.items.gear.tools.Tools;
-import worm.me.playersystems.quests.QuestAssign;
 import worm.me.Server;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
@@ -97,10 +96,6 @@ public class VoidPlayer {
             nHide.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.NEVER);
         }
         nHide.addEntry(player.getName());
-
-        // Assign quests
-        QuestAssign questAssign = new QuestAssign();
-        questAssign.dailyCheck(player);
 
         CooldownDisplay.getInstance().refresh(player);
 

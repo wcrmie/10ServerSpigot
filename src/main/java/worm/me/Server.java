@@ -19,6 +19,7 @@ import worm.me.gamesystems.world.border.BorderVisuals;
 import worm.me.gamesystems.world.border.ZoneGridManager;
 import worm.me.gamesystems.world.legacystructure.generation.Generate;
 import worm.me.gamesystems.world.legacystructure.TreasureChests;
+import worm.me.gamesystems.world.mob.traders.Trader;
 import worm.me.listeners.MainListener;
 import worm.me.listeners.items.PotionListener;
 import worm.me.listeners.items.ToolListener;
@@ -27,7 +28,6 @@ import worm.me.listeners.world.WorldListener;
 import worm.me.listeners.world.mobs.CustomMobsListener;
 import worm.me.listeners.player.custom.AbilitiesListener;
 import worm.me.listeners.player.custom.LevellingListener;
-import worm.me.listeners.player.custom.QuestListener;
 import worm.me.listeners.world.mobs.VillagerListener;
 import worm.me.utils.managers.ConfigManager;
 import worm.me.playersystems.abilities.Abilities;
@@ -37,7 +37,6 @@ import worm.me.playersystems.abilities.active.ShadowStep;
 import worm.me.playersystems.abilities.active.SpeedStep;
 import worm.me.data.levels.Reqs;
 import worm.me.playersystems.generator.Generator;
-import worm.me.playersystems.quests.QuestInitialize;
 import worm.me.playersystems.PlayerSpawning;
 
 import java.util.*;
@@ -95,6 +94,8 @@ public final class Server extends JavaPlugin {
 
         // Add custom recipes
 
+        Trader.mapProfessions();
+
         WorldTimer.getInstance().start();
 
         ShapedRecipes shapedRecipes = new ShapedRecipes();
@@ -149,7 +150,6 @@ public final class Server extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new LevellingListener(), this);
 
         getServer().getPluginManager().registerEvents(new WorldListener(this), this);
-        getServer().getPluginManager().registerEvents(new QuestListener(), this);
         getServer().getPluginManager().registerEvents(new CustomMobsListener(), this);
         getServer().getPluginManager().registerEvents(new VillagerListener(), this);
 
@@ -356,10 +356,6 @@ public final class Server extends JavaPlugin {
         miscs.put(Material.QUARTZ, new Reqs.RequirementBuilder().smithing(25).mining(25).build());
         miscs.put(Material.REDSTONE, new Reqs.RequirementBuilder().crafting(10).smithing(25).mining(10).build());
         miscs.put(Material.GLOWSTONE_DUST, new Reqs.RequirementBuilder().smithing(15).build());
-
-        // CREATE QUESTS
-        QuestInitialize questInitialize = new QuestInitialize();
-        questInitialize.questInitialize();
 
         // Initialize Ability GUI Components
         Abilities.abilitiesInit();

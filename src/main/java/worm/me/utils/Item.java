@@ -2,8 +2,10 @@ package worm.me.utils;
 
 import io.papermc.paper.datacomponent.DataComponentType;
 import io.papermc.paper.datacomponent.DataComponentType;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -16,6 +18,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.checkerframework.checker.units.qual.N;
 import worm.me.Server;
 
+import javax.annotation.Nullable;
 import javax.lang.model.type.PrimitiveType;
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +27,7 @@ import java.util.stream.Stream;
 
 public class Item {
 
-    public static ItemStack create(Material material, String name, String... lore){
+    public static ItemStack create(Material material, @Nullable String name, String... lore){
         ItemStack item = new ItemStack(material, 1);
         ItemMeta meta = item.getItemMeta();
 
@@ -33,11 +36,11 @@ public class Item {
 
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ATTRIBUTES);
 
-        meta.displayName(Component.text(name));
+        if (name != null) meta.customName(MiniMessage.miniMessage().deserialize(name));
 
         List<String> loreStrings = Arrays.asList(lore);
 
-        List<TextComponent> loreComponents = loreStrings.stream().flatMap(line -> Stream.of(Component.text(line))).toList();
+        List<TextComponent> loreComponents = loreStrings.stream().flatMap(line -> Stream.of((TextComponent) MiniMessage.miniMessage().deserialize(line))).toList();
 
         meta.lore(loreComponents);
 
@@ -56,6 +59,25 @@ public class Item {
         if (!container.has(namespace, type)) throw new NoSuchFieldException("The key or type was not found in this item.");
 
         return container.get(namespace, type);
+    }
+
+    public static <T, P> ItemStack addPersistent(ItemStack item, PersistentDataType<P, T> type, T data, String key) {
+
+        try {
+
+            ItemMeta meta = item.getItemMeta();
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+
+            NamespacedKey namespace = new NamespacedKey(Server.getPlugin(), key);
+
+            container.set(namespace, type, data);
+
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return item;
     }
 
     public static void giveOrDrop(ItemStack item, org.bukkit.entity.Player player) {
@@ -86,6 +108,13 @@ public class Item {
 
         }
 
+        public ItemBuilder setUnbreakable(boolean unbreakable) {
+
+            item.setData(DataComponentTypes.UNBREAKABLE);
+            return this;
+
+        }
+
         public <T, P> ItemBuilder addPersistent(PersistentDataType<P, T> type, T data, String key) {
 
             try {
@@ -94,8 +123,6 @@ public class Item {
                 PersistentDataContainer container = meta.getPersistentDataContainer();
 
                 NamespacedKey namespace = new NamespacedKey(Server.getPlugin(), key);
-
-                if (!container.has(namespace, type)) throw new NoSuchFieldException("The key or type was not found in this item.");
 
                 container.set(namespace, type, data);
 
@@ -110,7 +137,7 @@ public class Item {
         public ItemBuilder setName(String name) {
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
-                meta.displayName(Component.text(name));
+                meta.customName(MiniMessage.miniMessage().deserialize(name));
                 item.setItemMeta(meta);
             }
             return this;

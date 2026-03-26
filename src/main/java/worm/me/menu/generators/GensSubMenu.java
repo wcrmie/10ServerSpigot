@@ -57,7 +57,7 @@ public class GensSubMenu extends Menu implements InventoryHolder {
 
                 ItemStack item = Item.create(material, "");
 
-                if (!Unlocks.hasGenUnlocked(getViewer(), material)) item = Item.create(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + item.getType().toString() + " (LOCKED)", Unlocks.requirementsTranslation(generatorType.getGenerators().get(material)));
+                if (!Unlocks.hasGenUnlocked(getViewer(), material)) item = Item.create(Material.RED_STAINED_GLASS_PANE, "<red>" + item.getType() + " (LOCKED)", Unlocks.requirementsTranslation(generatorType.getGenerators().get(material)));
 
                 inventory.setItem(slots[j] + (i * 9), item);
 

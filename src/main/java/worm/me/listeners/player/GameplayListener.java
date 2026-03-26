@@ -7,9 +7,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import io.papermc.paper.event.player.PlayerArmSwingEvent;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -36,7 +34,7 @@ import worm.me.gamesystems.world.PlayArea;
 import worm.me.gamesystems.world.blocks.ArtBlocks;
 import worm.me.gamesystems.world.border.OutOfBorDer;
 import worm.me.gamesystems.world.mob.traders.Trader;
-import worm.me.gamesystems.world.mob.traders.VillagerProfession;
+import worm.me.gamesystems.world.mob.traders.CustomProfession;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.Ability;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
@@ -232,7 +230,7 @@ public class GameplayListener implements Listener {
 
 
                 PersistentDataContainer pdc = tome.getItemMeta().getPersistentDataContainer();
-                int[] genetics = pdc.getOrDefault(new NamespacedKey(Server.getPlugin(), "genetics"), PersistentDataType.INTEGER_ARRAY, new int[VillagerProfession.values().length]);
+                int[] genetics = pdc.getOrDefault(new NamespacedKey(Server.getPlugin(), "genetics"), PersistentDataType.INTEGER_ARRAY, new int[CustomProfession.values().length]);
 
                 player.getInventory().setItem(e.getHand(), new ItemStack(Material.AIR));
 

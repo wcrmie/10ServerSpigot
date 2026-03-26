@@ -17,7 +17,7 @@ public class GuiConstructor {
             i.setItem(j, Item.create(Material.GRAY_STAINED_GLASS_PANE, " "));
         }
 
-        i.setItem(size - 5, Item.create(Material.SPECTRAL_ARROW, ChatColor.GRAY + "Go Back"));
+        i.setItem(size - 5, MenuItem.BACK.getItem());
         return i;
     }
 

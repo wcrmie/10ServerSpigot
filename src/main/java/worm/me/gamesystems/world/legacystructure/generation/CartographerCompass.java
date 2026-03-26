@@ -3,7 +3,6 @@ package worm.me.gamesystems.world.legacystructure.generation;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -22,7 +21,7 @@ public class CartographerCompass {
 
         ItemStack compass = new ItemStack(org.bukkit.Material.COMPASS);
 
-        compass = new Item.ItemBuilder(compass).setName(ChatColor.YELLOW + "Cartographer's Compass").addComponent(DataComponentTypes.MAX_STACK_SIZE, 1).build();
+        compass = new Item.ItemBuilder(compass).setName("<yellow>Cartographer's Compass").addComponent(DataComponentTypes.MAX_STACK_SIZE, 1).build();
 
         ItemMeta meta = compass.getItemMeta();
 

@@ -1,6 +1,9 @@
 package worm.me.gamesystems.recipes;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Tag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapelessRecipe;
@@ -16,7 +19,7 @@ public class ShapelessRecipes {
     public void addRecipes(){
 
         // ID 0
-        shapelessRecipeMap.put(Item.create(Material.COOKED_MUTTON, ChatColor.WHITE + "Salted Jerky"), List.of(List.of(new ItemStack(Material.ROTTEN_FLESH), Item.create(Material.QUARTZ, ChatColor.WHITE + "Salt")), List.of(Item.create(Material.STONE, "SALTED_JERKY"))));
+        shapelessRecipeMap.put(Item.create(Material.COOKED_MUTTON, "<white>Salted Jerky"), List.of(List.of(new ItemStack(Material.ROTTEN_FLESH), Item.create(Material.QUARTZ, "<white>Salt")), List.of(Item.create(Material.STONE, "SALTED_JERKY"))));
 
         // ID 1
         shapelessRecipeMap.put(new ItemStack(Material.STRING, 4), List.of(List.of(new ItemStack(Material.WHITE_WOOL)), List.of(Item.create(Material.STONE, "STRING"))));

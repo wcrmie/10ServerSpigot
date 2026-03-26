@@ -12,6 +12,7 @@ import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.menu.Menu;
 import worm.me.utils.menu.GuiConstructor;
 import worm.me.utils.Item;
+import worm.me.utils.menu.MenuItem;
 
 public class RecipeSpecificMenu extends Menu implements InventoryHolder {
 
@@ -68,7 +69,7 @@ public class RecipeSpecificMenu extends Menu implements InventoryHolder {
     public void handleClick(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        if (event.getCurrentItem().equals(Item.create(Material.SPECTRAL_ARROW, ChatColor.GRAY + "Go Back"))) {
+        if (event.getCurrentItem().equals(MenuItem.BACK.getItem())) {
 
             RecipeBrowserMenu recipeBrowserMenu = new RecipeBrowserMenu(getViewer(), 1);
             recipeBrowserMenu.open();

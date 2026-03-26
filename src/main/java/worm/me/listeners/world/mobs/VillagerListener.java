@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import worm.me.Server;
 import worm.me.gamesystems.world.mob.traders.Trader;
-import worm.me.gamesystems.world.mob.traders.VillagerProfession;
+import worm.me.gamesystems.world.mob.traders.CustomProfession;
 import worm.me.utils.Item;
 
 import java.util.Arrays;
@@ -40,7 +40,7 @@ public class VillagerListener implements Listener {
 
             villy.setProfession(Villager.Profession.NITWIT);
 
-            if (!Arrays.equals(getGenetics(villy), new int[VillagerProfession.values().length])) villy.setProfession(Villager.Profession.NONE);
+            if (!Arrays.equals(getGenetics(villy), new int[CustomProfession.values().length])) villy.setProfession(Villager.Profession.NONE);
 
         }
 
@@ -75,7 +75,7 @@ public class VillagerListener implements Listener {
         MerchantRecipe trade = Trader.replaceTrade(villager, level);
 
         if (trade == null) {
-            trade = new MerchantRecipe(new Item.ItemBuilder(new ItemStack(Material.BARRIER)).setName(ChatColor.RED + "ERROR -- PLS CONTACT ADMINS").build(), 0);
+            trade = new MerchantRecipe(new Item.ItemBuilder(new ItemStack(Material.BARRIER)).setName("<red>ERROR -- PLS CONTACT ADMINS").build(), 0);
             trade.addIngredient(new ItemStack(Material.BARRIER));
         }
 
@@ -104,7 +104,7 @@ public class VillagerListener implements Listener {
         int[] genetics = getGenetics(villager);
 
         boolean hasGeneticMatch = false;
-        for (VillagerProfession myEnum : VillagerProfession.values()) {
+        for (CustomProfession myEnum : CustomProfession.values()) {
             if (myEnum.getBukkitProfession().getKey().equals(professionKey)) {
                 int index = myEnum.ordinal();
                 if (index < genetics.length && genetics[index] == 1) {

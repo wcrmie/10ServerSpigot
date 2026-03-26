@@ -1,6 +1,5 @@
 package worm.me.menu.generators;
 
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -12,6 +11,7 @@ import worm.me.menu.Menu;
 import worm.me.playersystems.generator.GeneratorType;
 import worm.me.utils.menu.GuiConstructor;
 import worm.me.utils.Item;
+import worm.me.utils.menu.MenuItem;
 
 public class GensMainMenu extends Menu implements InventoryHolder, MainSubMenu {
 
@@ -25,18 +25,18 @@ public class GensMainMenu extends Menu implements InventoryHolder, MainSubMenu {
     @Override
     public Inventory initialize() {
 
-        Inventory inventory = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Select Generated Blocks", 27, this);
+        Inventory inventory = GuiConstructor.chestInventory("<dark_gray>Select Generated Blocks", 27, this);
 
         // Add items to inventory
         for (int j = 0; j < 27; j++){
             inventory.setItem(j, Item.create(Material.GRAY_STAINED_GLASS_PANE, " ", ""));
         }
-        inventory.setItem(11, Item.create(Material.COBBLESTONE, ChatColor.GRAY + "Stones", " ", ChatColor.DARK_GRAY + "Choose your generated stone block."));
-        inventory.setItem(12, Item.create(Material.DIRT, ChatColor.GRAY + "Loose Blocks", " ", ChatColor.DARK_GRAY + "Choose your generated loose block."));
-        inventory.setItem(14, Item.create(Material.OAK_PLANKS, ChatColor.GRAY + "Woods", " ", ChatColor.DARK_GRAY + "Choose your generated wood block."));
-        inventory.setItem(15, Item.create(Material.COAL, ChatColor.GRAY + "Misc. Items", " ", ChatColor.DARK_GRAY + "Choose your generated miscellaneous item."));
+        inventory.setItem(11, Item.create(Material.COBBLESTONE, "<gray>Stones", " ", "<dark_gray>Choose your generated stone block."));
+        inventory.setItem(12, Item.create(Material.DIRT, "<gray>Loose Blocks", " ", "<dark_gray>Choose your generated loose block."));
+        inventory.setItem(14, Item.create(Material.OAK_PLANKS, "<gray>Woods", " ", "<dark_gray>Choose your generated wood block."));
+        inventory.setItem(15, Item.create(Material.COAL, "<gray>Misc. Items", " ", "<dark_gray>Choose your generated miscellaneous item."));
 
-        inventory.setItem(22, Item.create(Material.SPECTRAL_ARROW, ChatColor.GRAY + "Go Back"));
+        inventory.setItem(22, MenuItem.BACK.getItem());
 
 
         return inventory;

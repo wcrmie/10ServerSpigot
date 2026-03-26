@@ -17,17 +17,15 @@ import java.util.Map;
 
 public class Tools {
 
-    public static Map<Player, List<ItemStack>> playerTools = new HashMap<>();
-
     public static void toolsGrantInitial(Player p){
 
         // Create tools
         List<ItemStack> tools = new ArrayList<>();
 
-        tools.add(Item.create(Material.WOODEN_PICKAXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
-        tools.add(Item.create(Material.WOODEN_AXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
-        tools.add(Item.create(Material.WOODEN_SWORD, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
-        tools.add(Item.create(Material.WOODEN_SHOVEL, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
+        tools.add(Item.create(Material.WOODEN_PICKAXE, null, "<gray>Upgrade this tool by clicking on it with", "<gray>16 Cobblestone"));
+        tools.add(Item.create(Material.WOODEN_AXE, null, "<gray>Upgrade this tool by clicking on it with", "<gray>16 Cobblestone"));
+        tools.add(Item.create(Material.WOODEN_SWORD, null, "<gray>Upgrade this tool by clicking on it with", "<gray>16 Cobblestone"));
+        tools.add(Item.create(Material.WOODEN_SHOVEL, null, "<gray>Upgrade this tool by clicking on it with", "<gray>16 Cobblestone"));
 
         ItemMeta toolMeta = tools.getFirst().getItemMeta();
 
@@ -56,7 +54,7 @@ public class Tools {
 
             if (newTool.toString().contains("STONE")){
 
-                toolMeta.setLore(List.of(ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "2 Iron Ingots"));
+                toolMeta.setLore(List.of("<gray>Upgrade this tool by clicking on it with", "<gray>2 Iron Ingots"));
             }
 
             ItemStack newToolItem = new ItemStack(newTool);
@@ -85,11 +83,11 @@ public class Tools {
             if (downgrade.toString().contains("WOODEN")){
                 toolMeta.setUnbreakable(true);
 
-                toolMeta.setLore(List.of(ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
+                toolMeta.setLore(List.of("<gray>Upgrade this tool by clicking on it with", "<gray>16 Cobblestone"));
 
             } else if (downgrade.toString().contains("STONE")) {
 
-                toolMeta.setLore(List.of(ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "2 Iron Ingots"));
+                toolMeta.setLore(List.of("<gray>Upgrade this tool by clicking on it with", "<gray>2 Iron Ingots"));
 
             }
 

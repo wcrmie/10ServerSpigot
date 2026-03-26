@@ -17,6 +17,7 @@ import worm.me.utils.info.GuideBook;
 //import worm.me.playersystems.social.skins.SkinGui;
 import worm.me.gamesystems.items.gear.tools.ToolsEvents;
 import worm.me.utils.Item;
+import worm.me.utils.menu.MenuItem;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -154,12 +155,12 @@ public class MainListener implements Listener {
             event.setCancelled(true);
         }
 
-        if (inventory.getHolder() instanceof MainSubMenu && Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).getType() == Material.SPECTRAL_ARROW && event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Go Back")) {
+        if (inventory.getHolder() instanceof MainSubMenu && Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).equals(MenuItem.BACK.getItem())) {
             MainGUIMenu mainGUIMenu = new MainGUIMenu(player);
             mainGUIMenu.open();
         }
 
-        if (inventory.getHolder() instanceof Menu menu) {
+        if (player.getOpenInventory().getTopInventory().getHolder() instanceof Menu menu) {
 
             event.setCancelled(true);
 
@@ -168,7 +169,7 @@ public class MainListener implements Listener {
             menu.handleClick(event);
         }
 
-        if (Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).isSimilar(Item.create(Material.BARRIER, ChatColor.RED + "Close Menu", " ", ChatColor.GRAY + "Close this menu."))) player.closeInventory();
+        if (Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).isSimilar(MenuItem.CLOSE.getItem())) player.closeInventory();
 
     }
 }

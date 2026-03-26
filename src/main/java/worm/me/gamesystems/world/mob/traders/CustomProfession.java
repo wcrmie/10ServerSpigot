@@ -4,7 +4,6 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.FoodProperties;
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Villager;
@@ -20,7 +19,7 @@ import worm.me.utils.Item;
 import java.util.List;
 import java.util.Map;
 
-public enum VillagerProfession {
+public enum CustomProfession {
     ARMORER("Armorer",Villager.Profession.ARMORER, List.of(
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.CHAINMAIL_LEGGINGS), new ItemStack(Material.GOLD_INGOT), 3, 10, true, 5)
@@ -77,7 +76,7 @@ public enum VillagerProfession {
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.BEEF), 5, 20, true, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.PORKCHOP, 2), 5, 20, true, 5)
                     .newTrade(new ItemStack(Material.LEATHER), new ItemStack(Material.GOLD_NUGGET, 3), 3, 10, true, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), Item.create(Material.QUARTZ, ChatColor.WHITE + "Salt"), 5, 7, true, 5)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), Item.create(Material.QUARTZ, "<white><!i>Salt"), 5, 7, true, 5)
                     .build(),
 
             new Trader.TradeBuilder()
@@ -93,7 +92,7 @@ public enum VillagerProfession {
                             .addComponent(DataComponentTypes.CONSUMABLE, Consumable.consumable().addEffect(ConsumeEffect.applyStatusEffects(List.of(new PotionEffect(PotionEffectType.LUCK, 60, 1)), 1f)).consumeSeconds(2).build())
                             .build(),
                             new ItemStack(Material.GOLD_INGOT, 3), 3, 5, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.COOKED_BEEF, 8)).addComponent(DataComponentTypes.FOOD, FoodProperties.food().nutrition(10).saturation(14).build()).setName(ChatColor.WHITE + "Filet Mignon").build(), new ItemStack(Material.EMERALD, 1), 5, 10, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.COOKED_BEEF, 8)).addComponent(DataComponentTypes.FOOD, FoodProperties.food().nutrition(10).saturation(14).build()).setName("<white><!i>Filet Mignon").build(), new ItemStack(Material.EMERALD, 1), 5, 10, true, 5)
                     .build())),
 
     CARTOGRAPHER("Cartographer",Villager.Profession.CARTOGRAPHER, List.of(
@@ -573,7 +572,7 @@ public enum VillagerProfession {
     private final Villager.Profession bukkitProfession;
     private final List<Map<MerchantRecipe, Integer>> trades;
 
-    VillagerProfession(String name, Villager.Profession bukkitProfession, List<Map<MerchantRecipe, Integer>> trades) {
+    CustomProfession(String name, Villager.Profession bukkitProfession, List<Map<MerchantRecipe, Integer>> trades) {
         this.name = name;
         this.bukkitProfession = bukkitProfession;
         this.trades = trades;

@@ -84,7 +84,7 @@ public enum Candy {
             if (time < 0) time = 1.61F;
 
             ItemStack item = new Item.ItemBuilder(
-                    Item.create(candy.getMaterial(), candy.getDisplayName(), ChatColor.GRAY + candy.getLore()))
+                    Item.create(candy.getMaterial(), candy.getDisplayName(), "<gray>" + candy.getLore()))
                     .addComponent(DataComponentTypes.MAX_STACK_SIZE, candy.getStackSize())
                     .addComponent(DataComponentTypes.CONSUMABLE, Consumable.consumable()
                             .consumeSeconds(time)
@@ -93,11 +93,10 @@ public enum Candy {
                     .addComponent(DataComponentTypes.FOOD, FoodProperties.food()
                             .nutrition(3)
                             .build())
+                    .addPersistent(PersistentDataType.STRING,
+                            candy.name(),
+                            "candy")
                     .build();
-
-            ItemMeta meta = item.getItemMeta();
-                    meta.getPersistentDataContainer().set(new NamespacedKey(Server.getPlugin(), "candy"), PersistentDataType.STRING, candy.name());
-                    item.setItemMeta(meta);
 
             return item;
 

@@ -25,7 +25,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import worm.me.Server;
 import worm.me.gamesystems.world.mob.traders.Trader;
-import worm.me.gamesystems.world.mob.traders.VillagerProfession;
+import worm.me.gamesystems.world.mob.traders.CustomProfession;
 import worm.me.utils.Item;
 
 import java.util.ArrayList;
@@ -116,7 +116,7 @@ public class CustomMobsListener implements Listener {
 
     public static ItemStack generateKnowledgeTome() {
 
-        VillagerProfession profession = determineProfession();
+        CustomProfession profession = determineProfession();
 
         int[] genetics = new Trader.GeneticsBuilder().addGenetic(profession).build();
 
@@ -139,10 +139,10 @@ public class CustomMobsListener implements Listener {
 
     }
 
-    public static VillagerProfession determineProfession() {
+    public static CustomProfession determineProfession() {
 
-        int RNG = ThreadLocalRandom.current().nextInt(0, VillagerProfession.values().length);
-        return VillagerProfession.values()[RNG];
+        int RNG = ThreadLocalRandom.current().nextInt(0, CustomProfession.values().length);
+        return CustomProfession.values()[RNG];
 
     }
         

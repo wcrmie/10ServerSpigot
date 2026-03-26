@@ -89,13 +89,13 @@ public class RecipeBrowserMenu extends PagedMenu implements InventoryHolder, Mai
 
         Player player = (Player) e.getWhoClicked();
 
-        if (item.displayName().contains(Component.text("Next Page"))){
+        if (item.equals(MenuItem.NEXT_PAGE.getItem())) {
             turnPage(getPage() + 1);
 
-        } else if (item.displayName().contains(Component.text("Previous Page"))){
+        } else if (item.equals(MenuItem.PREVIOUS_PAGE.getItem())) {
             turnPage(getPage() - 1);
 
-        } else if (e.getCurrentItem().equals(Item.create(Material.SPECTRAL_ARROW, ChatColor.GRAY + "Go Back"))){
+        } else if (item.equals(MenuItem.BACK.getItem())) {
 
             MainGUIMenu menu = new MainGUIMenu(player);
             menu.open();

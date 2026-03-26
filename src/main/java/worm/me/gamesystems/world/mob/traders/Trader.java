@@ -16,6 +16,32 @@ public class Trader {
     private static final NamespacedKey GENETICS_KEY = new NamespacedKey(Server.getPlugin(), "genetics");
     private static final NamespacedKey FIRST_GEN_KEY = new NamespacedKey(Server.getPlugin(), "firstGen");
 
+    private static final HashMap<Villager.Profession, CustomProfession> professionMap = new HashMap<>();
+
+    public static void mapProfessions() {
+
+        professionMap.put(Villager.Profession.ARMORER, CustomProfession.ARMORER);
+        professionMap.put(Villager.Profession.BUTCHER, CustomProfession.BUTCHER);
+        professionMap.put(Villager.Profession.CARTOGRAPHER, CustomProfession.CARTOGRAPHER);
+        professionMap.put(Villager.Profession.CLERIC, CustomProfession.CLERIC);
+        professionMap.put(Villager.Profession.FARMER, CustomProfession.FARMER);
+        professionMap.put(Villager.Profession.FISHERMAN, CustomProfession.FISHERMAN);
+        professionMap.put(Villager.Profession.FLETCHER, CustomProfession.FLETCHER);
+        professionMap.put(Villager.Profession.LEATHERWORKER, CustomProfession.LEATHERWORKER);
+        professionMap.put(Villager.Profession.LIBRARIAN, CustomProfession.LIBRARIAN);
+        professionMap.put(Villager.Profession.MASON, CustomProfession.MASON);
+        professionMap.put(Villager.Profession.SHEPHERD, CustomProfession.SHEPHERD);
+        professionMap.put(Villager.Profession.TOOLSMITH, CustomProfession.TOOLSMITH);
+        professionMap.put(Villager.Profession.WEAPONSMITH, CustomProfession.WEAPONSMITH);
+
+    }
+
+    public static CustomProfession fromBukkitProfession(Villager.Profession profession) {
+
+        return professionMap.get(profession);
+
+    }
+
     public static class TradeBuilder {
         private final Map<MerchantRecipe, Integer> trades = new HashMap<>();
 
@@ -31,18 +57,9 @@ public class Trader {
         }
     }
 
-    public static VillagerProfession getCustomProfession(Villager.Profession bukkitProf) {
-        for (VillagerProfession customProf : VillagerProfession.values()) {
-            if (customProf.getBukkitProfession().equals(bukkitProf)) {
-                return customProf;
-            }
-        }
-        return null;
-    }
-
     public static MerchantRecipe replaceTrade(Villager villager, int level) {
         Villager.Profession profession = villager.getProfession();
-        VillagerProfession customProf = getCustomProfession(profession);
+        CustomProfession customProf = fromBukkitProfession(profession);
 
         if (customProf == null) return null;
 
@@ -87,7 +104,7 @@ public class Trader {
     public static int[] getGenetics(Villager villager) {
         PersistentDataContainer pdc = villager.getPersistentDataContainer();
         int[] data = pdc.get(GENETICS_KEY, PersistentDataType.INTEGER_ARRAY);
-        return (data != null) ? data : new int[VillagerProfession.values().length];
+        return (data != null) ? data : new int[CustomProfession.values().length];
     }
 
     public static boolean getFirstGen(Villager villager) {
@@ -102,27 +119,27 @@ public class Trader {
         private final int[] genetics;
 
         public GeneticsBuilder() {
-            this.genetics = new int[VillagerProfession.values().length];
+            this.genetics = new int[CustomProfession.values().length];
         }
 
-        public GeneticsBuilder addGenetic(VillagerProfession profession) {
+        public GeneticsBuilder addGenetic(CustomProfession profession) {
             genetics[profession.ordinal()] = 1;
             return this;
         }
 
-        public GeneticsBuilder armorer() { return addGenetic(VillagerProfession.ARMORER); }
-        public GeneticsBuilder butcher() { return addGenetic(VillagerProfession.BUTCHER); }
-        public GeneticsBuilder cartographer() { return addGenetic(VillagerProfession.CARTOGRAPHER); }
-        public GeneticsBuilder cleric() { return addGenetic(VillagerProfession.CLERIC); }
-        public GeneticsBuilder farmer() { return addGenetic(VillagerProfession.FARMER); }
-        public GeneticsBuilder fisherman() { return addGenetic(VillagerProfession.FISHERMAN); }
-        public GeneticsBuilder fletcher() { return addGenetic(VillagerProfession.FLETCHER); }
-        public GeneticsBuilder leatherworker() { return addGenetic(VillagerProfession.LEATHERWORKER); }
-        public GeneticsBuilder librarian() { return addGenetic(VillagerProfession.LIBRARIAN); }
-        public GeneticsBuilder mason() { return addGenetic(VillagerProfession.MASON); }
-        public GeneticsBuilder shepherd() { return addGenetic(VillagerProfession.SHEPHERD); }
-        public GeneticsBuilder toolsmith() { return addGenetic(VillagerProfession.TOOLSMITH); }
-        public GeneticsBuilder weaponsmith() { return addGenetic(VillagerProfession.WEAPONSMITH); }
+        public GeneticsBuilder armorer() { return addGenetic(CustomProfession.ARMORER); }
+        public GeneticsBuilder butcher() { return addGenetic(CustomProfession.BUTCHER); }
+        public GeneticsBuilder cartographer() { return addGenetic(CustomProfession.CARTOGRAPHER); }
+        public GeneticsBuilder cleric() { return addGenetic(CustomProfession.CLERIC); }
+        public GeneticsBuilder farmer() { return addGenetic(CustomProfession.FARMER); }
+        public GeneticsBuilder fisherman() { return addGenetic(CustomProfession.FISHERMAN); }
+        public GeneticsBuilder fletcher() { return addGenetic(CustomProfession.FLETCHER); }
+        public GeneticsBuilder leatherworker() { return addGenetic(CustomProfession.LEATHERWORKER); }
+        public GeneticsBuilder librarian() { return addGenetic(CustomProfession.LIBRARIAN); }
+        public GeneticsBuilder mason() { return addGenetic(CustomProfession.MASON); }
+        public GeneticsBuilder shepherd() { return addGenetic(CustomProfession.SHEPHERD); }
+        public GeneticsBuilder toolsmith() { return addGenetic(CustomProfession.TOOLSMITH); }
+        public GeneticsBuilder weaponsmith() { return addGenetic(CustomProfession.WEAPONSMITH); }
 
         public int[] build() {
             return genetics.clone();
