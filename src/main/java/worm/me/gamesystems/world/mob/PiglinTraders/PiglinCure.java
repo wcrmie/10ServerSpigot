@@ -1,6 +1,5 @@
 package worm.me.gamesystems.world.mob.PiglinTraders;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -58,11 +57,11 @@ public class PiglinCure {
     public static ItemStack createCureCarrot() {
         ItemStack item = new ItemStack(Material.GOLDEN_CARROT);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.YELLOW + "Enchanted Golden Carrot");
+        meta.setDisplayName("<yellow>Enchanted Golden Carrot");
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "A carrot soaked in golden magic.");
+        lore.add("<gray>A carrot soaked in golden magic.");
         lore.add("");
-        lore.add(ChatColor.GRAY + "Right-click a " + ChatColor.GOLD + "Zombified Piglin" + ChatColor.GRAY + " to begin curing.");
+        lore.add("<gray>Right-click a " + "<qold>Zombified Piglin" + "<gray> to begin curing.");
         meta.setLore(lore);
         meta.getPersistentDataContainer().set(getCureKey(), PersistentDataType.BYTE, (byte) 1);
 
