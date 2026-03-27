@@ -1,4 +1,4 @@
-package worm.me.menu;
+package worm.me.menu.main;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,6 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import worm.me.gamesystems.world.WorldTimer;
 import worm.me.gamesystems.world.PlayArea;
 import worm.me.gamesystems.world.border.ZoneGridManager;
+import worm.me.menu.Menu;
+import worm.me.menu.PlayerProfileMenu;
 import worm.me.menu.recipes.RecipeBrowserMenu;
 import worm.me.utils.menu.GuiConstructor;
 import worm.me.menu.abilities.AbilitiesMainMenu;
@@ -42,16 +44,12 @@ public class MainGUIMenu extends Menu implements InventoryHolder {
     public Inventory initialize() {
         Inventory inventory = GuiConstructor.chestInventory("<dark_gray>Main Menu", 36, this);
 
-        inventory.setItem(11, Item.create(Material.BOOK, "<aqua>Tutorial Book", " ", "<gray>Read this book to learn about the server!"));
-        inventory.setItem(12, Item.create(Material.LEATHER_CHESTPLATE, "<aqua>Skin Selection", " ", "<gray>Open the skin selection menu."));
-
         ItemStack skull = Item.create(Material.PLAYER_HEAD, "<aqua>Your Profile", " ", "<gray>View your stats and progress.");
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
         skullMeta.setOwningPlayer(getViewer());
         skull.setItemMeta(skullMeta);
         inventory.setItem(13, skull);
 
-        inventory.setItem(14, Item.create(Material.GOLDEN_HELMET, "<aqua>Hats", " ", "<gray>Open the hats menu."));
         inventory.setItem(15, Item.create(Material.SCULK_SHRIEKER, "<aqua>Voices", " ", "<gray>Open the voices menu."));
 
         inventory.setItem(20, createResetInfoBook(getViewer()));

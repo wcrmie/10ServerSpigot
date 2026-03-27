@@ -155,11 +155,6 @@ public class MainListener implements Listener {
             event.setCancelled(true);
         }
 
-        if (inventory.getHolder() instanceof MainSubMenu && Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).equals(MenuItem.BACK.getItem())) {
-            MainGUIMenu mainGUIMenu = new MainGUIMenu(player);
-            mainGUIMenu.open();
-        }
-
         if (player.getOpenInventory().getTopInventory().getHolder() instanceof Menu menu) {
 
             event.setCancelled(true);
@@ -167,6 +162,10 @@ public class MainListener implements Listener {
             player.playSound(player, Sound.UI_BUTTON_CLICK, 0.3F, ThreadLocalRandom.current().nextFloat(1.0F, 1.2F));
 
             menu.handleClick(event);
+        }
+
+        if (inventory.getHolder() instanceof MainSubMenu menu && Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).equals(MenuItem.BACK.getItem())) {
+            menu.goBack(player);
         }
 
         if (Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).isSimilar(MenuItem.CLOSE.getItem())) player.closeInventory();

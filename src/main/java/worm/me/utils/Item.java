@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.checkerframework.checker.units.qual.N;
+import org.jetbrains.annotations.NotNull;
 import worm.me.Server;
 
 import javax.annotation.Nullable;
@@ -36,11 +37,11 @@ public class Item {
 
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_ATTRIBUTES);
 
-        if (name != null) meta.customName(MiniMessage.miniMessage().deserialize(name));
+        if (name != null) meta.customName(MiniMessage.miniMessage().deserialize("<!i>" + name));
 
         List<String> loreStrings = Arrays.asList(lore);
 
-        List<TextComponent> loreComponents = loreStrings.stream().flatMap(line -> Stream.of((TextComponent) MiniMessage.miniMessage().deserialize(line))).toList();
+        List<TextComponent> loreComponents = loreStrings.stream().flatMap(line -> Stream.of((TextComponent) MiniMessage.miniMessage().deserialize("<!i>" + line))).toList();
 
         meta.lore(loreComponents);
 
@@ -138,6 +139,18 @@ public class Item {
             ItemMeta meta = item.getItemMeta();
             if (meta != null) {
                 meta.customName(MiniMessage.miniMessage().deserialize(name));
+                item.setItemMeta(meta);
+            }
+            return this;
+        }
+
+        public ItemBuilder setLore(String... lore) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null) {
+                List<TextComponent> loreComponents = Arrays.stream(lore).flatMap(line -> Stream.of((TextComponent) MiniMessage.miniMessage().deserialize("<!i>" + line))).toList();
+
+                meta.lore(loreComponents);
+
                 item.setItemMeta(meta);
             }
             return this;

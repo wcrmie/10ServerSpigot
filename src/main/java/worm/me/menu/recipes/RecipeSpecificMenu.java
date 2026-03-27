@@ -1,5 +1,6 @@
 package worm.me.menu.recipes;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,7 +30,7 @@ public class RecipeSpecificMenu extends Menu implements InventoryHolder {
     @Override
     public Inventory initialize() {
 
-        Inventory inventory = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Recipe of " + itemStack.displayName(), 45, this);
+        Inventory inventory = GuiConstructor.chestInventory(MiniMessage.miniMessage().deserialize("<dark_gray>Recipe of ").append(itemStack.effectiveName()), 45, this);
 
         inventory.setItem(23, Item.create(Material.CRAFTING_TABLE, " "));
 

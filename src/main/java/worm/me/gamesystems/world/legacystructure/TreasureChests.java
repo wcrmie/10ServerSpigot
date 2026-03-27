@@ -1,5 +1,7 @@
 package worm.me.gamesystems.world.legacystructure;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -192,11 +194,16 @@ public class TreasureChests {
 
         chestDisplays.put(location, display);
 
-        String msg = Message.create(MessageType.GENERIC,
-                "A treasure chest has spawned at " +
-                        location.getBlockX() + ", " +
-                        location.getBlockY() + ", " +
-                        location.getBlockZ() + "!"
+        Component msg = Message.create(MessageType.GENERIC,
+
+                String.format(
+
+                        "A treasure chest has spawned at %s, %s, %s!",
+                        location.getX(),
+                        location.getY(),
+                        location.getZ()
+
+                )
         );
         Message.sendAll(msg);
     }

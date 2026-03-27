@@ -1,5 +1,6 @@
 package worm.me.commands;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -28,7 +29,7 @@ public class SitCommand implements CommandExecutor {
                 a.setMarker(true);
                 a.addPassenger(p);
             } else {
-                p.sendMessage(Message.create(MessageType.FAIL, "You can't sit on air."));
+                p.sendMessage(Message.create(MessageType.FAIL, "You can't sit on air!"));
             }
             return true;
         } else {

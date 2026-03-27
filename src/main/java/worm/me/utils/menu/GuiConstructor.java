@@ -1,18 +1,27 @@
 package worm.me.utils.menu;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemStack;
 import worm.me.utils.Item;
 
 public class GuiConstructor {
 
     public static Inventory chestInventory(String name, Integer size, InventoryHolder holder) {
-        Inventory i = Bukkit.createInventory(holder, size, Component.text(name));
+        Inventory i = Bukkit.createInventory(holder, size, MiniMessage.miniMessage().deserialize(name));
+        for (int j = 0; j < size; j++) {
+            i.setItem(j, Item.create(Material.GRAY_STAINED_GLASS_PANE, " "));
+        }
+
+        i.setItem(size - 5, MenuItem.BACK.getItem());
+        return i;
+    }
+
+    public static Inventory chestInventory(Component name, Integer size, InventoryHolder holder) {
+        Inventory i = Bukkit.createInventory(holder, size, name);
         for (int j = 0; j < size; j++) {
             i.setItem(j, Item.create(Material.GRAY_STAINED_GLASS_PANE, " "));
         }

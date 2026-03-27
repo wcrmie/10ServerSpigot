@@ -1,20 +1,17 @@
 package worm.me.menu.recipes;
 
-import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.menu.MainSubMenu;
 import worm.me.menu.PagedMenu;
 import worm.me.utils.menu.GuiConstructor;
-import worm.me.menu.MainGUIMenu;
+import worm.me.menu.main.MainGUIMenu;
 import worm.me.utils.Item;
 import worm.me.utils.menu.MenuItem;
 

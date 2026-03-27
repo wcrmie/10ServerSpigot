@@ -1,6 +1,7 @@
 package worm.me.menu;
 
 import org.bukkit.entity.Player;
+import worm.me.menu.main.MainGUIMenu;
 
 public interface MainSubMenu {
 
