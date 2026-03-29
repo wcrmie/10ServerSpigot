@@ -11,12 +11,17 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import worm.me.gamesystems.world.mob.boss.Boss;
 import worm.me.gamesystems.world.mob.boss.IronGolemBoss;
 import worm.me.gamesystems.world.mob.boss.ZiglinJouster;
 import worm.me.gamesystems.world.mob.traders.Trader;
@@ -46,6 +51,57 @@ public class CustomMobsListener implements Listener {
             ZiglinJouster.temporaryBlocks.remove(event.getBlock());
         }
     }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        Entity entity = event.getEntity();
+        Boss boss = Boss.getBoss(entity);
+        if (boss == null && entity.getVehicle() != null) {
+            boss = Boss.getBoss(entity.getVehicle());
+        }
+        if (boss != null) {
+            boss.handleTakeDamage(event);
+        }
+    }
+
+    @EventHandler
+    public void onEntityDeath(EntityDeathEvent event) {
+        Entity entity = event.getEntity();
+        Boss boss = Boss.getBoss(entity);
+        if (boss != null) {
+            boss.handleDeath(event);
+            return;
+        }
+        if (entity instanceof Zoglin zoglin && zoglin.getPassenger() instanceof PigZombie rider) {
+            boss = Boss.getBoss(rider);
+            if (boss != null) {
+                boss.onOtherEntityDeath(event);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onVehicleExit(VehicleExitEvent event) {
+        Entity exited = event.getExited();
+        Entity vehicle = event.getVehicle();
+
+        Boss boss = Boss.getBoss(exited);
+        if (boss == null) boss = Boss.getBoss(vehicle);
+        if (boss != null) {
+            boss.onVehicleExit(event);
+        }
+    }
+
+    @EventHandler
+    public void onChunkUnload(ChunkUnloadEvent event) {
+        for (Entity entity : event.getChunk().getEntities()) {
+            Boss boss = Boss.getBoss(entity);
+            if (boss != null) {
+                boss.onChunkUnload(event);
+            }
+        }
+    }
+
 
     public static ItemStack generateKnowledgeTome() {
         VillagerProfession profession = determineProfession();
@@ -78,7 +134,6 @@ public class CustomMobsListener implements Listener {
     }
 
     public static void restoreBosses() {
-        IronGolemBoss.restoreBosses();
         ZiglinJouster.restoreBosses();
     }
 
@@ -86,4 +141,6 @@ public class CustomMobsListener implements Listener {
     public void onChunkLoad(ChunkLoadEvent event) {
         ZiglinJouster.restoreBossesInChunk(event.getChunk());
     }
+
+
 }

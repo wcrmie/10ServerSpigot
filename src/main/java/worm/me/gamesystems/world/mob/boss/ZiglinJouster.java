@@ -7,8 +7,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
@@ -56,7 +54,6 @@ public class ZiglinJouster extends Boss {
     private static final double NORMAL_REGEN_PER_TICK              = (2.0  / 60.0) / 20.0;
     private static final double FAST_REGEN_PER_TICK                = (10.0 / 60.0) / 20.0;
     private static final double DAMAGE_DEALT_MULTIPLIER_PER_PLAYER = 1.5;
-    private static final double CIRCLING_IMMUNE_DIST_SQ            = 6.0 * 6.0;
     private static final double STUCK_MOVE_THRESHOLD_SQ            = 0.04;
 
     private static final double SPEAR_OFFSET_X      =  0.4;
@@ -86,8 +83,6 @@ public class ZiglinJouster extends Boss {
             new NamespacedKey(JavaPlugin.getProvidingPlugin(ZiglinJouster.class), "ziglin_health");
     private static final NamespacedKey ZOGLIN_UUID_KEY =
             new NamespacedKey(JavaPlugin.getProvidingPlugin(ZiglinJouster.class), "ziglin_zoglin_uuid");
-
-
     private static final NamespacedKey SPEAR_DISPLAY_KEY =
             new NamespacedKey(JavaPlugin.getProvidingPlugin(ZiglinJouster.class), "ziglin_spear_display");
 
@@ -105,11 +100,8 @@ public class ZiglinJouster extends Boss {
     private Location lastPosition        = null;
     private int     stuckTicks           = 0;
 
-    private final Location spawnPoint;
     private BukkitRunnable logicLoop;
     private BukkitRunnable regenTask;
-
-
     private ItemDisplay spearDisplay;
 
     public static ZiglinJouster spawnAt(Location location) {
@@ -120,10 +112,9 @@ public class ZiglinJouster extends Boss {
         return boss;
     }
 
-    private ZiglinJouster(Entity rider, Location spawnPoint, int stage) {
-        super(rider, STAGE_2_MAX_HEALTH, BASE_ATTACK_DAMAGE, 1.0F, spawnPoint);
-        this.spawnPoint = spawnPoint.clone();
-        this.stage      = stage;
+    private ZiglinJouster(Entity rider, Location spawnLocation, int stage) {
+        super(rider, STAGE_2_MAX_HEALTH, BASE_ATTACK_DAMAGE, 1.0F, spawnLocation);
+        this.stage = stage;
         regenTask = new BukkitRunnable() {
             @Override
             public void run() {
@@ -142,7 +133,6 @@ public class ZiglinJouster extends Boss {
         if (zoglin != null) bossMap.put(zoglin, this);
         getBossEntities().add(m_boss);
         getBossBars().add(bossBar);
-        Bukkit.getPluginManager().registerEvents(this, Server.getPlugin());
         regenTask.runTaskTimer(Server.getPlugin(), 1L, 1L);
         setupVisuals();
         startLogicLoop();
@@ -150,7 +140,6 @@ public class ZiglinJouster extends Boss {
 
     @Override
     public void disable() {
-        HandlerList.unregisterAll(this);
         bossMap.remove(m_boss);
         if (zoglin != null) bossMap.remove(zoglin);
         getBossEntities().remove(m_boss);
@@ -158,12 +147,11 @@ public class ZiglinJouster extends Boss {
         if (regenTask  != null && !regenTask.isCancelled())  regenTask.cancel();
         removeSpearDisplay();
         cleanupBlocks();
-        destroyBossBar();
+        super.destroyBossBar();
     }
 
     private void disableForUnload() {
         saveToPDC();
-        HandlerList.unregisterAll(this);
         bossMap.remove(m_boss);
         if (zoglin != null) bossMap.remove(zoglin);
         getBossEntities().remove(m_boss);
@@ -171,15 +159,15 @@ public class ZiglinJouster extends Boss {
         if (regenTask  != null && !regenTask.isCancelled())  regenTask.cancel();
         spearDisplay = null;
         cleanupBlocks();
-        destroyBossBar();
+        super.destroyBossBar();
     }
 
     private void saveToPDC() {
         PersistentDataContainer pdc = ((PigZombie) m_boss).getPersistentDataContainer();
         pdc.set(STAGE_KEY,   PersistentDataType.INTEGER, stage);
-        pdc.set(SPAWN_X_KEY, PersistentDataType.DOUBLE,  spawnPoint.getX());
-        pdc.set(SPAWN_Y_KEY, PersistentDataType.DOUBLE,  spawnPoint.getY());
-        pdc.set(SPAWN_Z_KEY, PersistentDataType.DOUBLE,  spawnPoint.getZ());
+        pdc.set(SPAWN_X_KEY, PersistentDataType.DOUBLE,  spawnLocation.getX());
+        pdc.set(SPAWN_Y_KEY, PersistentDataType.DOUBLE,  spawnLocation.getY());
+        pdc.set(SPAWN_Z_KEY, PersistentDataType.DOUBLE,  spawnLocation.getZ());
         LivingEntity primary = getPrimaryEntity();
         if (primary != null && !primary.isDead()) {
             pdc.set(HEALTH_KEY, PersistentDataType.DOUBLE, primary.getHealth());
@@ -188,7 +176,6 @@ public class ZiglinJouster extends Boss {
             pdc.set(ZOGLIN_UUID_KEY, PersistentDataType.STRING, zoglin.getUniqueId().toString());
         }
     }
-
 
     @Override
     public void spawn(Location location) {
@@ -213,9 +200,9 @@ public class ZiglinJouster extends Boss {
         PersistentDataContainer pdc = rider.getPersistentDataContainer();
         pdc.set(BOSS_TYPE_KEY, PersistentDataType.STRING, "ziglin");
         pdc.set(STAGE_KEY,     PersistentDataType.INTEGER, stage);
-        pdc.set(SPAWN_X_KEY,   PersistentDataType.DOUBLE,  spawnPoint.getX());
-        pdc.set(SPAWN_Y_KEY,   PersistentDataType.DOUBLE,  spawnPoint.getY());
-        pdc.set(SPAWN_Z_KEY,   PersistentDataType.DOUBLE,  spawnPoint.getZ());
+        pdc.set(SPAWN_X_KEY,   PersistentDataType.DOUBLE,  spawnLocation.getX());
+        pdc.set(SPAWN_Y_KEY,   PersistentDataType.DOUBLE,  spawnLocation.getY());
+        pdc.set(SPAWN_Z_KEY,   PersistentDataType.DOUBLE,  spawnLocation.getZ());
 
         rider.getEquipment().setItemInMainHand(null);
         rider.getEquipment().setItemInMainHandDropChance(0f);
@@ -223,7 +210,58 @@ public class ZiglinJouster extends Boss {
         zoglin.addPassenger(rider);
     }
 
-    @EventHandler
+    @Override
+    public void handleTakeDamage(EntityDamageEvent event) {
+        Entity entity = event.getEntity();
+        if (!entity.equals(m_boss) && !entity.equals(zoglin)) return;
+
+        if (isInvincibleState(getPrimaryEntity())) {
+            event.setCancelled(true);
+            return;
+        }
+
+        int playerCount = Math.max(1, getPlayersInArena().size());
+
+        if (stage == 1) {
+            if (zoglin == null || zoglin.isDead() || !zoglin.isValid()) {
+                transitionToStage2();
+                return;
+            }
+            if (entity.equals(m_boss)) {
+                event.setCancelled(true);
+                zoglin.damage(event.getFinalDamage() / playerCount);
+            }
+        } else if (stage == 2 && entity.equals(m_boss)) {
+            event.setDamage(event.getDamage() / playerCount);
+        }
+    }
+
+    @Override
+    public void onOtherEntityDeath(EntityDeathEvent event) {
+        if (zoglin == null || !event.getEntity().equals(zoglin)) return;
+        if (stage == 1) transitionToStage2();
+    }
+
+    @Override
+    public void handleDeath(EntityDeathEvent event) {
+        if (!event.getEntity().equals(m_boss)) return;
+        event.getDrops().clear();
+        removeSpearDisplay();
+        disable();
+    }
+
+    @Override
+    public void onVehicleExit(VehicleExitEvent event) {
+        if (stage != 1 || zoglin == null || zoglin.isDead()) return;
+        if (!event.getExited().equals(m_boss) && !event.getVehicle().equals(zoglin)) return;
+        Bukkit.getScheduler().runTaskLater(Server.getPlugin(), () -> {
+            if (zoglin != null && !zoglin.isDead() && m_boss.isValid() && !m_boss.isDead()) {
+                zoglin.addPassenger(m_boss);
+            }
+        }, 1L);
+    }
+
+    @Override
     public void onChunkUnload(ChunkUnloadEvent event) {
         LivingEntity primary = getPrimaryEntity();
         if (primary == null) return;
@@ -232,52 +270,6 @@ public class ZiglinJouster extends Boss {
         if (event.getChunk().getX() != loc.getBlockX() >> 4) return;
         if (event.getChunk().getZ() != loc.getBlockZ() >> 4) return;
         disableForUnload();
-    }
-
-    @EventHandler
-    public void onVehicleExit(VehicleExitEvent event) {
-        if (stage != 1 || zoglin == null) return;
-        if (!event.getExited().equals(m_boss) && !event.getVehicle().equals(zoglin)) return;
-        // Remounting in the same tick is blocked by Bukkit — schedule 1 tick later.
-        Bukkit.getScheduler().runTaskLater(Server.getPlugin(), () -> {
-            if (zoglin != null && !zoglin.isDead() && m_boss.isValid() && !m_boss.isDead()) {
-                zoglin.addPassenger(m_boss);
-            }
-        }, 1L);
-    }
-
-    @EventHandler
-    public void onTakeDamage(EntityDamageEvent event) {
-        Entity entity = event.getEntity();
-        if (!entity.equals(m_boss) && !entity.equals(zoglin)) return;
-        if (isInvincibleState(getPrimaryEntity())) {
-            event.setCancelled(true);
-            return;
-        }
-        int playerCount = getPlayersInArena().size();
-        if (playerCount == 0) return;
-        if (stage == 1 && entity.equals(m_boss)) {
-            event.setCancelled(true);
-            if (zoglin != null) zoglin.damage(event.getFinalDamage() / playerCount);
-            return;
-        }
-        if (stage == 2 && entity.equals(m_boss)) {
-            event.setDamage(event.getDamage() / playerCount);
-        }
-    }
-
-    @EventHandler
-    public void onZoglinDeath(EntityDeathEvent event) {
-        if (zoglin == null || !event.getEntity().equals(zoglin)) return;
-        if (stage == 1) transitionToStage2();
-    }
-
-    @EventHandler
-    public void onDeath(EntityDeathEvent event) {
-        if (!event.getEntity().equals(m_boss)) return;
-        event.getDrops().clear();
-        removeSpearDisplay();
-        disable();
     }
 
     @Override
@@ -314,15 +306,16 @@ public class ZiglinJouster extends Boss {
     @Override
     public List<ItemStack> generateDrops() { return new ArrayList<>(); }
 
+    @Override
+    public void handleDealDamage(EntityDamageEvent event) {}
+
     private void setupVisuals() {
         removeSpearDisplay();
         purgeOrphanedDisplays();
-
         if (m_boss instanceof PigZombie rider) {
             rider.getEquipment().setItemInMainHand(null);
             rider.getEquipment().setItemInMainHandDropChance(0f);
         }
-
         Location startLoc = m_boss.getLocation();
         spearDisplay = startLoc.getWorld().spawn(startLoc, ItemDisplay.class, d -> {
             d.setItemStack(new ItemStack(Material.GOLDEN_SPEAR));
@@ -367,17 +360,14 @@ public class ZiglinJouster extends Boss {
             setupVisuals();
             return;
         }
-
         Location riderLoc = m_boss.getLocation();
         float    yaw      = riderLoc.getYaw();
         double   yawRad   = Math.toRadians(yaw);
         double   sinYaw   = Math.sin(yawRad);
         double   cosYaw   = Math.cos(yawRad);
-
         double worldX = riderLoc.getX() + SPEAR_OFFSET_X * cosYaw - SPEAR_OFFSET_Z * sinYaw;
         double worldY = riderLoc.getY() + SPEAR_OFFSET_Y;
         double worldZ = riderLoc.getZ() + SPEAR_OFFSET_X * sinYaw + SPEAR_OFFSET_Z * cosYaw;
-
         spearDisplay.teleport(new Location(
                 riderLoc.getWorld(),
                 worldX, worldY, worldZ,
@@ -401,18 +391,13 @@ public class ZiglinJouster extends Boss {
                     cancel();
                     return;
                 }
-
                 LivingEntity primary = getPrimaryEntity();
                 if (primary == null || !primary.isValid() || primary.isDead()) {
-                    if (stage == 1 && zoglin != null && (zoglin.isDead() || !zoglin.isValid())) {
-                        transitionToStage2();
-                    }
+                    if (stage == 1) transitionToStage2();
                     updateBossBar();
                     return;
                 }
-
                 enforceArenaBoundary(primary);
-
                 boolean playersInside = !getPlayersInArena().isEmpty();
                 if (!playersInside) {
                     if (!isRetreating) {
@@ -424,17 +409,13 @@ public class ZiglinJouster extends Boss {
                     isRetreating = false;
                     resetCombatState();
                 }
-
                 Player target = playersInside ? getTarget(primary) : null;
-
                 if (!isRetreating && target != null
                         && (state == State.REPOSITIONING || state == State.CHARGING)) {
                     handleBridge(primary);
                 }
-
                 processBlockCleanup();
                 updateStuckStatus(primary);
-
                 boolean pathClear = true;
                 if (!isRetreating && target != null) {
                     pathClear = checkPathClear(primary, target);
@@ -446,7 +427,6 @@ public class ZiglinJouster extends Boss {
                         usingStrictPathCheck = true;
                     }
                 }
-
                 if (state == State.RETREATING) {
                     doRetreat(primary);
                 } else if (target != null) {
@@ -460,14 +440,8 @@ public class ZiglinJouster extends Boss {
                 } else {
                     primary.setVelocity(new Vector(0, -0.1, 0));
                 }
-
-                // The rider always looks at the target independently of the Zoglin mount.
-                // In stage 1, primary is the Zoglin; the rider's rotation needs its own call.
                 if (target != null) lookAt(m_boss, target.getLocation());
-
-                // Spear tracks the rider (m_boss) every tick.
                 updateSpearDisplay();
-
                 updateBossBar();
                 stateTicks++;
             }
@@ -494,39 +468,43 @@ public class ZiglinJouster extends Boss {
 
     private void enforceArenaBoundary(LivingEntity entity) {
         Location loc = entity.getLocation();
-        double dx = loc.getX() - spawnPoint.getX();
-        double dz = loc.getZ() - spawnPoint.getZ();
+        double dx = loc.getX() - spawnLocation.getX();
+        double dz = loc.getZ() - spawnLocation.getZ();
         if (dx * dx + dz * dz <= ARENA_RADIUS_SQ) return;
         double angle = Math.atan2(dz, dx);
         entity.teleport(new Location(loc.getWorld(),
-                spawnPoint.getX() + ARENA_RADIUS * Math.cos(angle),
+                spawnLocation.getX() + ARENA_RADIUS * Math.cos(angle),
                 loc.getY(),
-                spawnPoint.getZ() + ARENA_RADIUS * Math.sin(angle),
+                spawnLocation.getZ() + ARENA_RADIUS * Math.sin(angle),
                 loc.getYaw(), loc.getPitch()));
         entity.setVelocity(new Vector(0, 0, 0));
     }
 
     private void doRetreat(LivingEntity primary) {
-        Vector toSpawn = spawnPoint.toVector().subtract(primary.getLocation().toVector());
+        if (isStuck) {
+            breakBlocksUnderAndAround(primary);
+            isStuck = false;
+            stuckTicks = 0;
+            lastPosition = null;
+        }
+        Vector toSpawn = spawnLocation.toVector().subtract(primary.getLocation().toVector());
         if (toSpawn.lengthSquared() < 1.0) {
             primary.setVelocity(new Vector(0, -0.1, 0));
         } else {
             Vector move = toSpawn.normalize().multiply(RETREAT_SPEED);
-            move.setY(clampY(spawnPoint.getY() - primary.getLocation().getY()));
+            move.setY(clampY(spawnLocation.getY() - primary.getLocation().getY()));
             primary.setVelocity(move);
         }
-        lookAt(primary, spawnPoint);
+        lookAt(primary, spawnLocation);
     }
 
     private void doReposition(LivingEntity primary, Player target, boolean pathClear) {
         double distSq = primary.getLocation().distanceSquared(target.getLocation());
-
         if (isStuck) {
             breakBlocksUnderAndAround(primary);
             isStuck    = false;
             stuckTicks = 0;
         }
-
         if (!pathClear && pathBlockedTicks <= IGNORE_PATH_AFTER_TICKS) {
             isCircling = true;
             double currentDist  = Math.sqrt(distSq);
@@ -541,7 +519,6 @@ public class ZiglinJouster extends Boss {
             lookAt(primary, target.getLocation());
             return;
         }
-
         isCircling = false;
         double repoDist = stage == 1 ? STAGE_1_REPOSITION_DIST_SQ : STAGE_2_REPOSITION_DIST_SQ;
         double speed    = stage == 1 ? STAGE_1_REPOSITION_SPEED   : STAGE_2_REPOSITION_SPEED;
@@ -550,7 +527,6 @@ public class ZiglinJouster extends Boss {
         move.setY(clampY(target.getLocation().getY() - primary.getLocation().getY()));
         primary.setVelocity(move);
         lookAt(primary, target.getLocation());
-
         int windupThreshold = stage == 1 ? STAGE_1_WINDUP_THRESHOLD : STAGE_2_WINDUP_THRESHOLD;
         if (stateTicks > windupThreshold && pathClear) setState(State.WINDUP);
     }
@@ -558,13 +534,8 @@ public class ZiglinJouster extends Boss {
     private void doWindup(LivingEntity primary, Player target) {
         primary.setVelocity(new Vector(0, -0.1, 0));
         lookAt(primary, target.getLocation());
-        if (stage == 2 && stateTicks % 5 == 0) {
-            primary.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME,
-                    primary.getLocation().add(0, 1, 0), 5, 0.3, 0.3, 0.3, 0.1);
-        }
         int duration = stage == 1 ? STAGE_1_WINDUP_DURATION : STAGE_2_WINDUP_DURATION;
         if (stateTicks > duration) {
-            primary.getWorld().playSound(primary.getLocation(), Sound.ENTITY_ZOMBIFIED_PIGLIN_ANGRY, 1f, 1.2f);
             setState(State.CHARGING);
         }
     }
@@ -578,7 +549,7 @@ public class ZiglinJouster extends Boss {
         lookAt(primary, target.getLocation());
         breakBlocksInWay(primary);
         if (primary.getLocation().distance(target.getLocation()) < 2.0) {
-            int    playerCount = getPlayersInArena().size();
+            int    playerCount = Math.max(1, getPlayersInArena().size());
             double damage      = attackDamage * DAMAGE_DEALT_MULTIPLIER_PER_PLAYER * playerCount;
             target.damage(damage, primary);
             target.setVelocity(primary.getVelocity().multiply(KNOCKBACK_MULTIPLIER).setY(0.5));
@@ -619,9 +590,6 @@ public class ZiglinJouster extends Boss {
             zoglin = null;
         }
         setState(State.REPOSITIONING);
-        Location loc = m_boss.getLocation();
-        loc.getWorld().spawnParticle(Particle.EXPLOSION, loc, 1);
-        loc.getWorld().playSound(loc, Sound.ENTITY_WITHER_BREAK_BLOCK, 1.5f, 0.8f);
         updateBossBar();
     }
 
@@ -672,10 +640,9 @@ public class ZiglinJouster extends Boss {
     }
 
     private boolean isInvincibleState(LivingEntity primary) {
-        if (isStuck) return true;
-        if (!isCircling) return false;
-        return getPlayersInArena().stream()
-                .allMatch(p -> p.getLocation().distanceSquared(primary.getLocation()) > CIRCLING_IMMUNE_DIST_SQ);
+        if (isRetreating) return true;
+        if (isCircling && stateTicks < 200) return true;
+        return false;
     }
 
     private void breakBlocksUnderAndAround(LivingEntity entity) {
@@ -694,7 +661,6 @@ public class ZiglinJouster extends Boss {
             Block b = center.clone().add(x, y, z).getBlock();
             if (b.getType().isAir() || UNBREAKABLE_BLOCKS.contains(b.getType())) continue;
             if (b.getType() == Material.NETHERRACK) b.setType(Material.AIR); else b.breakNaturally();
-            b.getWorld().spawnParticle(Particle.BLOCK_CRUMBLE, b.getLocation().add(0.5, 0.5, 0.5), 5, b.getBlockData());
             temporaryBlocks.remove(b);
             blockExpirations.remove(b);
         }
@@ -703,8 +669,6 @@ public class ZiglinJouster extends Boss {
     private void breakSafely(Block block) {
         if (block.getType().isAir() || UNBREAKABLE_BLOCKS.contains(block.getType())) return;
         if (block.getType() == Material.NETHERRACK) block.setType(Material.AIR); else block.breakNaturally();
-        block.getWorld().spawnParticle(Particle.BLOCK_CRUMBLE,
-                block.getLocation().add(0.5, 0.5, 0.5), 10, block.getBlockData());
         temporaryBlocks.remove(block);
         blockExpirations.remove(block);
     }
@@ -727,13 +691,12 @@ public class ZiglinJouster extends Boss {
         blockExpirations.clear();
     }
 
-
     private List<Player> getPlayersInArena() {
-        return spawnPoint.getWorld().getPlayers().stream()
+        return spawnLocation.getWorld().getPlayers().stream()
                 .filter(p -> p.getGameMode() == GameMode.SURVIVAL && !p.isDead())
                 .filter(p -> {
-                    double dx = p.getLocation().getX() - spawnPoint.getX();
-                    double dz = p.getLocation().getZ() - spawnPoint.getZ();
+                    double dx = p.getLocation().getX() - spawnLocation.getX();
+                    double dz = p.getLocation().getZ() - spawnLocation.getZ();
                     return dx * dx + dz * dz <= ARENA_RADIUS_SQ;
                 }).toList();
     }
@@ -759,7 +722,6 @@ public class ZiglinJouster extends Boss {
     private LivingEntity getPrimaryEntity() {
         return (LivingEntity) (stage == 1 && zoglin != null ? zoglin : m_boss);
     }
-
 
     public static void restoreBosses() {
         for (World world : Bukkit.getWorlds()) {
@@ -807,7 +769,6 @@ public class ZiglinJouster extends Boss {
                 primary.setHealth(Math.min(savedHealth, cap));
             }
         }
-
         boss.enable();
         boss.updateBossBar();
     }
