@@ -1,6 +1,6 @@
 package worm.me.playersystems.abilities;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -35,49 +35,49 @@ public class Abilities {
         abilityGuiComponents.put(0, List.of("Empty", "RED_STAINED_GLASS_PANE", "Empty Slot"));
 
         abilityGuiComponents.put(1, List.of("Double Jump", "FEATHER",
-                ChatColor.DARK_GRAY + "Rapidly press space twice in the air to perform a double jump!"));
+                "<dark_gray>Rapidly press space twice in the air to perform a double jump!"));
 
         abilityGuiComponents.put(2, List.of("Dash", "IRON_SWORD",
-                ChatColor.DARK_GRAY + "Dash forward " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK] + [Holding Sword]"));
+                "<dark_gray>Dash forward " + "<gray>[SNEAK] + [RIGHT-CLICK] + [Holding Sword]"));
 
         abilityGuiComponents.put(3, List.of("Leap", "IRON_AXE",
-                ChatColor.DARK_GRAY + "Leap up in the air " + ChatColor.GRAY + "[SNEAK] + [RIGHT-CLICK] + [Holding Axe]"));
+                "<dark_gray>Leap up in the air " + "<gray>[SNEAK] + [RIGHT-CLICK] + [Holding Axe]"));
 
         abilityGuiComponents.put(4, List.of("Wall Jump", "IRON_BARS",
-                ChatColor.DARK_GRAY + "Clutch onto walls using " + ChatColor.GRAY + "[SNEAK]"));
+                "<dark_gray>Clutch onto walls using " + "<gray>[SNEAK]"));
 
         abilityGuiComponents.put(5, List.of("SCREAM", "GOAT_HORN",
-                ChatColor.DARK_GRAY + "Scream as loud as you can using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Note Block]"));
+                "<dark_gray>Scream as loud as you can using " + "<gray>[SNEAK] + [LEFT-CLICK] + [Holding Note Block]"));
 
         abilityGuiComponents.put(6, List.of("Shadow-Step", "TINTED_GLASS",
-                ChatColor.DARK_GRAY + "Step through space using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Tinted Glass] + [Standing on Ground]"));
+                "<dark_gray>Step through space using " + "<gray>[SNEAK] + [LEFT-CLICK] + [Holding Tinted Glass] + [Standing on Ground]"));
 
         abilityGuiComponents.put(8, List.of("Feather-Float", "ELYTRA",
-                ChatColor.DARK_GRAY + "Float through the air swiftly using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Feather]"));
+                "<dark_gray>Float through the air swiftly using " + "<gray>[SNEAK] + [LEFT-CLICK] + [Holding Feather]"));
 
         abilityGuiComponents.put(9, List.of("Speed-Step", "RABBIT_FOOT",
-                ChatColor.DARK_GRAY + "Speed off in the direction you are looking using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Rabbit Foot]"));
+                "<dark_gray>Speed off in the direction you are looking using " + "<gray>[SNEAK] + [LEFT-CLICK] + [Rabbit Foot]"));
 
         abilityGuiComponents.put(10, List.of("Tactical Retreat", "BOW",
-                ChatColor.DARK_GRAY + "Gain some distance on your opponent using " + ChatColor.GRAY + "[SNEAK] + [DROP] + [Holding Bow]"));
+                "<dark_gray>Gain some distance on your opponent using " + "<gray>[SNEAK] + [DROP] + [Holding Bow]"));
 
         abilityGuiComponents.put(11, List.of("Ability 11", "ARROW",
-                ChatColor.DARK_GRAY + "Shoot a weak arrow and ride it using " + ChatColor.GRAY + "[SNEAK] + [LEFT-CLICK] + [Holding Bow]"));
+                "<dark_gray>Shoot a weak arrow and ride it using " + "<gray>[SNEAK] + [LEFT-CLICK] + [Holding Bow]"));
 
         abilityGuiComponents.put(12, List.of("Slide", "ICE",
-                ChatColor.DARK_GRAY + " " + ChatColor.GRAY + " "));
+                "<dark_gray> " + "<gray> "));
 
         abilityGuiComponents.put(14, List.of("Zig zag", "MEGENTA_GLAZED_TERRACOTTA",
-                ChatColor.DARK_GRAY + " " + ChatColor.GRAY + " "));
+                "<dark_gray> " + "<gray> "));
 
         abilityGuiComponents.put(15, List.of("Crescent Right", "PUMKIN_PIE",
-                ChatColor.DARK_GRAY + " " + ChatColor.GRAY + " "));
+                "<dark_gray> " + "<gray> "));
 
         abilityGuiComponents.put(16, List.of("Crescent Left", "PUMKIN_PIE",
-                ChatColor.DARK_GRAY + " " + ChatColor.GRAY + " "));
+                "<dark_gray> " + "<gray> "));
 
         abilityGuiComponents.put(17, List.of("Slow Falling", "PHANTOM_MEMBRANE",
-                ChatColor.DARK_GRAY + " " + ChatColor.GRAY + " "));
+                "<dark_gray> " + "<gray> "));
 
     }
 
@@ -121,8 +121,8 @@ public class Abilities {
 
             int abilityId = active[slot];
             if (abilityId == 0) {
-                player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "X" + ChatColor.DARK_GRAY + "] " +
-                        ChatColor.RED + "No ability in this slot.");
+                player.sendMessage("<dark_gray>[" + "<red>X" + "<dark_gray>] " +
+                        "<red>No ability in this slot.");
                 return;
             }
 
@@ -132,14 +132,27 @@ public class Abilities {
                 Ability ability = Ability.getById(abilityId);
                 String abilityName = ability != null ? ability.getDisplayName() : "Unknown";
 
-                player.sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.RED + "X" + ChatColor.DARK_GRAY + "] " +
-                        ChatColor.RED + "Your " + abilityName + " is on cooldown for " + secondsLeft + "s.");
+                player.sendMessage(
+
+                        MiniMessage.miniMessage().deserialize(
+
+                                String.format(
+
+                                        "<dark_gray>[<red>X<dark_gray>] <red>Your %s is on cooldown for %ss.",
+                                        abilityName,
+                                        secondsLeft
+
+                                )
+
+                        )
+
+                );
                 return;
             }
 
             handleAbility(player, abilityId);
         } catch (Exception e) {
-            player.sendMessage(ChatColor.RED + "Error triggering ability slot!");
+            player.sendMessage("<red>Error triggering ability slot!");
             Server.getPlugin().getLogger().warning("Error triggering ability slot " + slot + " for " + player.getName() + ": " + e.getMessage());
         }
     }
@@ -177,7 +190,7 @@ public class Abilities {
         try {
             Ability ability = Ability.getById(abilityID);
             if (ability == null || abilityID == 0) {
-                player.sendMessage(ChatColor.RED + "Invalid ability!");
+                player.sendMessage("<red>Invalid ability!");
                 return;
             }
 
@@ -185,7 +198,7 @@ public class Abilities {
             setCooldownForAbility(player, abilityID);
 
         } catch (Exception e) {
-            player.sendMessage(ChatColor.RED + "Error using ability!");
+            player.sendMessage("<red>Error using ability!");
             Server.getPlugin().getLogger().severe("Error executing ability " + abilityID + " for " + player.getName() + ": " + e.getMessage());
         }
     }

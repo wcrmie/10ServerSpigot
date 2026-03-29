@@ -80,14 +80,6 @@ public class VoidPlayer {
             container.set(new NamespacedKey(Server.getPlugin(), "10stats"), PersistentDataType.INTEGER_ARRAY, new int[50]);
         }
 
-        if (!container.has(new NamespacedKey(Server.getPlugin(), "dailyprogress"), PersistentDataType.INTEGER_ARRAY)) {
-            container.set(new NamespacedKey(Server.getPlugin(), "dailyprogress"), PersistentDataType.INTEGER_ARRAY, new int[3]);
-        }
-
-        if (!container.has(new NamespacedKey(Server.getPlugin(), "questclaimed"), PersistentDataType.INTEGER_ARRAY)) {
-            container.set(new NamespacedKey(Server.getPlugin(), "questclaimed"), PersistentDataType.INTEGER_ARRAY, new int[3]);
-        }
-
         // Hide the player's nametag
         Scoreboard score = Bukkit.getScoreboardManager().getMainScoreboard();
         Team nHide = score.getTeam("hiddenName");

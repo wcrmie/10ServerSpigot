@@ -47,7 +47,7 @@ public class AbilitiesSubMenu extends Menu implements InventoryHolder {
     public Inventory initialize() {
         try {
             Inventory gui = GuiConstructor.chestInventory(
-                    ChatColor.DARK_GRAY + getSlotTitle() + " Ability Slot",
+                    getSlotTitle() + " Ability Slot",
                     54,
                     this
             );
@@ -57,7 +57,7 @@ public class AbilitiesSubMenu extends Menu implements InventoryHolder {
             return gui;
         } catch (Exception e) {
             Server.getPlugin().getLogger().warning("Error initializing ability selection for " + getViewer().getName() + ": " + e.getMessage());
-            return GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Ability Selection", 54, this);
+            return GuiConstructor.chestInventory("Ability Selection", 54, this);
         }
     }
 

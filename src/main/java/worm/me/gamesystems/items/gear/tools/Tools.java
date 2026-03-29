@@ -53,17 +53,17 @@ public class Tools {
 
             toolMeta.setLore(List.of(" "));
 
+            ItemStack newToolItem = new ItemStack(newTool);
+            newToolItem.setItemMeta(toolMeta);
+            newToolItem = new EnchantsUpgrade().upgradeEnchants(newToolItem);
+
             if (newTool.toString().contains("STONE")){
 
-                ItemStack newToolItem = new ItemStack(newTool);
-                newToolItem = new EnchantsUpgrade().upgradeEnchants(newToolItem);
+
                 return new Item.ItemBuilder(newToolItem).setLore("<yellow>Upgrade this tool by clicking on it with", "<yellow>2 Iron Ingots").build();
 
             }
 
-            ItemStack newToolItem = new ItemStack(newTool);
-            newToolItem.setItemMeta(toolMeta);
-            newToolItem = new EnchantsUpgrade().upgradeEnchants(newToolItem);
             return newToolItem;
         }
 

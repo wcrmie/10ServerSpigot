@@ -1,13 +1,11 @@
 package worm.me.menu.abilities;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +14,7 @@ import worm.me.menu.Menu;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.Ability;
 import worm.me.playersystems.abilities.AbilityType;
+import worm.me.utils.Item;
 import worm.me.utils.menu.GuiConstructor;
 import worm.me.Server;
 
@@ -55,7 +54,7 @@ public class AbilitiesMainMenu extends Menu implements InventoryHolder, MainSubM
     public Inventory initialize() {
         try {
             PersistentDataContainer container = getViewer().getPersistentDataContainer();
-            Inventory gui = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Your Active Abilities", 27, this);
+            Inventory gui = GuiConstructor.chestInventory("Your Active Abilities", 27, this);
 
             int[] active = Objects.requireNonNullElse(
                     container.get(Abilities.abilitiesActive, PersistentDataType.INTEGER_ARRAY),
@@ -74,7 +73,7 @@ public class AbilitiesMainMenu extends Menu implements InventoryHolder, MainSubM
             return gui;
         } catch (Exception e) {
             Server.getPlugin().getLogger().warning("Error initializing abilities menu for " + getViewer().getName() + ": " + e.getMessage());
-            return GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Your Active Abilities", 27, this);
+            return GuiConstructor.chestInventory("Your Active Abilities", 27, this);
         }
     }
 
@@ -102,45 +101,36 @@ public class AbilitiesMainMenu extends Menu implements InventoryHolder, MainSubM
     }
 
     private ItemStack createSlotInfoItem(SlotInfo info) {
-        return createItemStack(Material.BOOK, ChatColor.GRAY + "Slot " + (info.slot + 1) + " Info",
+
+        return Item.create(Material.BOOK,
+                String.format(
+                        "Slot %s Info",
+                        info.slot + 1
+                ),
                 " ",
-                ChatColor.GRAY + "Type: " + ChatColor.WHITE + info.typeName,
-                ChatColor.GRAY + "Trigger: " + ChatColor.WHITE + info.trigger,
+                String.format(
+                        "<gray>Type: <white>%s",
+                        info.typeName
+                ),
+                String.format(
+                        "<gray>Trigger: <white>%s",
+                        info.trigger
+                ),
                 " ",
-                ChatColor.YELLOW + "Click slot below to change");
+                "<yellow>Click slot below to change");
     }
 
     private ItemStack createAbilitySlotItem(int abilityId) {
         Ability ability = Ability.getById(abilityId);
         if (ability != null && ability.getId() != 0) {
-            return createItemStack(ability.getIcon(),
-                    ChatColor.GRAY + ability.getDisplayName(),
-                    colorize(ability.getDescription()));
+            return Item.create(ability.getIcon(),
+                    "<gray>" + ability.getDisplayName(),
+                    ability.getDescription());
         } else {
-            return createItemStack(Material.RED_STAINED_GLASS_PANE,
-                    ChatColor.GRAY + "Empty Slot",
+            return Item.create(Material.RED_STAINED_GLASS_PANE,
+                    "<gray>Empty Slot",
                     "This slot is empty");
         }
-    }
-
-    private String colorize(String input) {
-        if (input == null) return "";
-        return ChatColor.translateAlternateColorCodes('&',
-                input.replace("<dark_gray>", "&8")
-                        .replace("</dark_gray>", "&r"));
-    }
-
-    private ItemStack createItemStack(Material material, String displayName, String... lore) {
-        ItemStack item = new ItemStack(material);
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(displayName);
-            if (lore.length > 0) {
-                meta.setLore(Arrays.asList(lore));
-            }
-            item.setItemMeta(meta);
-        }
-        return item;
     }
 
     @Override

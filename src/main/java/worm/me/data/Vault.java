@@ -26,7 +26,6 @@ public class Vault {
 
         if (items.isEmpty()){
             pdc.set(new NamespacedKey(Server.getPlugin(), "vault"), PersistentDataType.STRING, "");
-            return;
         } else {
 
             try {

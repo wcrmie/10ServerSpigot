@@ -305,6 +305,7 @@ public class ShapedRecipes {
                 shapedRecipe.shape(shape.split(","));
 
                 for (int i = 0; i < 9; i++) {
+
                     if (values.getFirst().get(i).getType() != Material.AIR){
 
                         char c = (char) (i + 64);
@@ -316,6 +317,7 @@ public class ShapedRecipes {
                         } else {
                             shapedRecipe.setIngredient(c, new RecipeChoice.ExactChoice(values.getFirst().get(i)));
                         }
+
                     }
 
                 }

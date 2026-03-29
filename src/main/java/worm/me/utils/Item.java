@@ -64,9 +64,11 @@ public class Item {
 
     public static <T, P> ItemStack addPersistent(ItemStack item, PersistentDataType<P, T> type, T data, String key) {
 
+        ItemMeta meta;
+
         try {
 
-            ItemMeta meta = item.getItemMeta();
+            meta = item.getItemMeta();
             PersistentDataContainer container = meta.getPersistentDataContainer();
 
             NamespacedKey namespace = new NamespacedKey(Server.getPlugin(), key);
@@ -77,6 +79,8 @@ public class Item {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
+        item.setItemMeta(meta);
 
         return item;
     }

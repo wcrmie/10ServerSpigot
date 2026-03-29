@@ -1,6 +1,5 @@
 package worm.me.gamesystems.chat;
 
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 
