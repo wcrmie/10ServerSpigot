@@ -13,9 +13,12 @@ import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.*;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 import worm.me.utils.Item;
 
@@ -27,159 +30,130 @@ import static worm.me.listeners.world.mobs.CustomMobsListener.generateKnowledgeT
 
 public class IronGolemBoss extends Boss {
 
+    private static final NamespacedKey BOSS_TYPE_KEY =
+            new NamespacedKey(JavaPlugin.getProvidingPlugin(IronGolemBoss.class), "iron_golem_boss");
+
     public IronGolemBoss(Entity boss, Location spawnLocation) {
         super(boss, 500.0, 10.0, 1.5F, spawnLocation);
         health = maxHealth;
-        bossMap.put(boss, this);
+    }
+
+    private IronGolemBoss(IronGolem golem) {
+        super(golem, 500.0, 10.0, 1.5F, golem.getLocation());
+        this.health = golem.getHealth();
     }
 
     @Override
     public void spawn(Location location) {
-
-        bossMap.put(m_boss, this);
-
         IronGolem golem = (IronGolem) m_boss;
-
         golem.setPlayerCreated(false);
-
         golem.getWorld().playSound(golem.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 1F, 0.1F);
-
         golem.getAttribute(Attribute.SCALE).setBaseValue(size);
         golem.getAttribute(Attribute.MAX_HEALTH).setBaseValue(maxHealth);
         golem.getAttribute(Attribute.ATTACK_DAMAGE).setBaseValue(attackDamage);
-
-        // Make the golem boss transmit a waypoint
         golem.setWaypointColor(Color.RED);
         golem.getAttribute(Attribute.WAYPOINT_TRANSMIT_RANGE).setBaseValue(1250);
-
         golem.setHealth(maxHealth);
+        golem.getPersistentDataContainer().set(BOSS_TYPE_KEY, PersistentDataType.STRING, "iron_golem");
+    }
 
+    @EventHandler
+    public void onTakeDamage(EntityDamageEvent event) {
+        if (!event.getEntity().equals(m_boss)) return;
+
+        LivingEntity entity = (LivingEntity) event.getEntity();
+        health = entity.getHealth();
+
+        switch (event.getCause()) {
+            case BLOCK_EXPLOSION, PROJECTILE, SUFFOCATION, FIRE, FIRE_TICK, CAMPFIRE, LAVA -> {
+                event.setCancelled(true);
+                entity.getWorld().playSound(entity.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1F, 2F);
+                return;
+            }
+        }
+
+        updateBossBar();
+
+        if (!(event.getDamageSource().getCausingEntity() instanceof Player p)) return;
+        if (p.getLocation().distance(m_boss.getLocation()) < 2.5) return;
+
+        ProtectedRegion region = WorldGuard.getInstance().getPlatform()
+                .getRegionContainer()
+                .get(BukkitAdapter.adapt(p.getWorld()))
+                .getRegion("spawn");
+
+        Location loc = p.getLocation();
+        if (region != null && region.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
+            event.setCancelled(true);
+            return;
+        }
+
+        if (ThreadLocalRandom.current().nextInt(1, 10) == 1) {
+            m_boss.getWorld().spawn(m_boss.getLocation().add(0, 1, 0), Creeper.class, creeper -> {
+                creeper.setPowered(true);
+                creeper.setTarget(p);
+                creeper.setIgnited(true);
+                Vector dir = p.getLocation().toVector()
+                        .subtract(m_boss.getLocation().toVector().multiply(0.5));
+                creeper.setVelocity(dir.normalize());
+            });
+        }
+    }
+
+    @EventHandler
+    public void onDeath(EntityDeathEvent event) {
+        if (!event.getEntity().equals(m_boss)) return;
+
+        event.getDrops().clear();
+        event.getDrops().addAll(generateDrops());
+
+        disable();
     }
 
     @Override
     public BossBar initializeBossBar() {
-
-        BossBar bossBar = BossBar.bossBar(
+        BossBar bar = BossBar.bossBar(
                 MiniMessage.miniMessage().deserialize("<red>Iron Golem - 100% Health"),
                 1.0f,
                 BossBar.Color.RED,
                 BossBar.Overlay.NOTCHED_12
         );
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-
-            bossBar.addViewer(player);
-
-        }
-
-        return bossBar;
+        Bukkit.getOnlinePlayers().forEach(bar::addViewer);
+        return bar;
     }
 
     @Override
     public void updateBossBar() {
-
-        double healthPercentage = health / maxHealth;
-        bossBar.progress((float) healthPercentage);
+        double pct = health / maxHealth;
+        bossBar.progress((float) pct);
         bossBar.name(MiniMessage.miniMessage().deserialize(
-
-                String.format(
-
-                        "<red>Iron Golem - %s%% Health",
-                        (int)(healthPercentage * 100)
-
-                )
-
+                String.format("<red>Iron Golem - %d%% Health", (int)(pct * 100))
         ));
-
-    }
-
-    @Override
-    public void handleDealDamage(EntityDamageEvent event) {
-
-        // nothing here; no custom damage dealt
-
-    }
-
-    @Override
-    public void handleTakeDamage(EntityDamageEvent event) {
-
-        LivingEntity entity = (LivingEntity) event.getEntity();
-
-        health = entity.getHealth();
-
-        if (event.getCause().equals(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) || event.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE) || event.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION) || event.getCause().equals(EntityDamageEvent.DamageCause.FIRE) || event.getCause().equals(EntityDamageEvent.DamageCause.FIRE_TICK) || event.getCause().equals(EntityDamageEvent.DamageCause.CAMPFIRE) || event.getCause().equals(EntityDamageEvent.DamageCause.LAVA)) {
-            event.setCancelled(true);
-            event.getEntity().getWorld().playSound(event.getEntity().getLocation(), Sound.BLOCK_ANVIL_PLACE, 1F, 2F);
-            return; // Ignore explosion damage
-        }
-
-        updateBossBar();
-
-        if (event.getDamageSource().getCausingEntity() instanceof Player p && p.getLocation().distance(m_boss.getLocation()) >= 2.5) {
-
-            ProtectedRegion region = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(p.getWorld())).getRegion("spawn");
-            Location loc = p.getLocation();
-
-            // If the player is in spawn, don't damage them
-            if (region.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())) {
-                event.setCancelled(true);
-                return;
-            }
-
-            int RNG = ThreadLocalRandom.current().nextInt(1, 10);
-
-            if (RNG == 1) {
-
-                m_boss.getWorld().spawn(m_boss.getLocation().add(0, 1, 0), Creeper.class, spawnedCreeper -> {
-                    spawnedCreeper.setPowered(true);
-                    spawnedCreeper.setTarget(p);
-                    spawnedCreeper.setIgnited(true);
-
-                    Vector dir = p.getLocation().toVector().subtract(m_boss.getLocation().toVector().multiply(0.5));
-
-                    spawnedCreeper.setVelocity(dir.normalize());
-
-                });
-
-            }
-
-        }
-
-
     }
 
     @Override
     public List<ItemStack> generateDrops() {
-
-
         List<ItemStack> drops = new ArrayList<>();
-
         drops.add(generateKnowledgeTome());
-
-        drops.add(
-                new Item.ItemBuilder(
-                    new ItemStack(Material.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE))
-                        .addComponent(DataComponentTypes.DAMAGE_RESISTANT, DamageResistant.damageResistant(TagKey.create(RegistryKey.DAMAGE_TYPE, DamageType.EXPLOSION.getKey()))
-                ).build()
-        );
-
+        drops.add(new Item.ItemBuilder(new ItemStack(Material.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE))
+                .addComponent(DataComponentTypes.DAMAGE_RESISTANT,
+                        DamageResistant.damageResistant(
+                                TagKey.create(RegistryKey.DAMAGE_TYPE, DamageType.EXPLOSION.getKey())))
+                .build());
         return drops;
     }
 
-    @Override
-    public void handleDeath(EntityDeathEvent event) {
+    public static void restoreBosses() {
+        for (World world : Bukkit.getWorlds()) {
+            for (Entity entity : world.getEntities()) {
+                if (!(entity instanceof IronGolem golem)) continue;
+                if (!golem.getPersistentDataContainer().has(BOSS_TYPE_KEY, PersistentDataType.STRING)) continue;
+                if (Boss.isBoss(golem)) continue;
 
-        event.getDrops().clear();
-
-        // Generate drops
-
-        List<ItemStack> drops = generateDrops();
-
-        for (ItemStack drop : drops) {
-            event.getDrops().add(drop);
+                IronGolemBoss boss = new IronGolemBoss(golem);
+                boss.enable();
+                boss.updateBossBar();
+            }
         }
-
-        destroyBossBar();
-
     }
 }

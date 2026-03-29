@@ -31,14 +31,14 @@ public class PiglinTradeManager {
         }
 
         meta.getPersistentDataContainer().set(TOME_TYPE_KEY, PersistentDataType.STRING, type.name());
-        meta.setDisplayName(ChatColor.GOLD + "Piglin Knowledge Tome");
+        meta.setDisplayName("<gold>Piglin Knowledge Tome");
 
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "Right-click a " + ChatColor.GOLD + "Cured Piglin" + ChatColor.GRAY + " to teach them the ways of:");
+        lore.add("<gray>Right-click a " + "<gold>Cured Piglin" + "<gray> to teach them the ways of:");
         lore.add("");
-        lore.add(ChatColor.YELLOW + "" + ChatColor.BOLD + type.getName());
+        lore.add("<yellow>" + type.getName());
         lore.add("");
-        lore.add(ChatColor.DARK_GRAY + type.getDescription());
+        lore.add("<dark_grey> "+ type.getDescription());
         meta.setLore(lore);
 
         tome.setItemMeta(meta);

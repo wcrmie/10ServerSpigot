@@ -20,6 +20,8 @@ import worm.me.gamesystems.world.border.ZoneGridManager;
 import worm.me.gamesystems.world.legacystructure.generation.Generate;
 import worm.me.gamesystems.world.legacystructure.TreasureChests;
 import worm.me.gamesystems.world.mob.PiglinTraders.PiglinCure;
+import worm.me.gamesystems.world.mob.boss.Boss;
+import worm.me.gamesystems.world.mob.boss.IronGolemBoss;
 import worm.me.listeners.MainListener;
 import worm.me.listeners.items.PotionListener;
 import worm.me.listeners.items.ToolListener;
@@ -125,6 +127,7 @@ public final class Server extends JavaPlugin {
         getCommand("structureslist").setExecutor(new StructuresListCommand(generate));
         getCommand("structuresremove").setExecutor(new StructuresRemoveCommand(generate));
         getCommand("givepiglingtome").setExecutor(new GivePiglinTomeCommand());
+        getCommand("spawnjouster").setExecutor(new SpawnPiglinJousterBossCommand());
 
 
         zoneGridManager = new ZoneGridManager();
@@ -374,6 +377,8 @@ public final class Server extends JavaPlugin {
             Generator.generateItem(p);
         }
 
+        CustomMobsListener.restoreBosses();
+
     }
 
     @Override
@@ -384,6 +389,7 @@ public final class Server extends JavaPlugin {
         }
 
         PiglinCure.cancelAll();
+        Boss.disableAll();
 
         //treasureChests.onPluginDisable();
 

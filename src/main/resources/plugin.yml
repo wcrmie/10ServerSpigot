@@ -115,3 +115,6 @@ commands:
   givepiglingtome:
       description: Give a Piglin Knowledge Tome to a player
       permission: 10VS.givepiglinlome
+  spawnjouster:
+        description: Spawns the Ziglin Jouster boss at your location.
+        permission: 10VS.spawnjouster

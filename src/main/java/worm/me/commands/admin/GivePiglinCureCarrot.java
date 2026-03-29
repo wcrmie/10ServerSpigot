@@ -1,6 +1,5 @@
 package worm.me.commands.admin;
 
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,7 +18,7 @@ public class GivePiglinCureCarrot implements CommandExecutor {
         }
 
         if (!player.hasPermission("worm.admin")) {
-            player.sendMessage(ChatColor.RED + "no permission >:(");
+            player.sendMessage("<red>no permission >:(");
             return true;
         }
 
@@ -29,7 +28,7 @@ public class GivePiglinCureCarrot implements CommandExecutor {
                 amount = Integer.parseInt(args[0]);
                 amount = Math.max(1, Math.min(64, amount));
             } catch (NumberFormatException e) {
-                player.sendMessage(ChatColor.RED + "Usage: /givecurecarrot [amount]");
+                player.sendMessage("<red>Usage: /givecurecarrot [amount]");
                 return true;
             }
         }
