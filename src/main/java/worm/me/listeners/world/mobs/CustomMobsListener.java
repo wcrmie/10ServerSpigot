@@ -2,6 +2,7 @@ package worm.me.listeners.world.mobs;
 
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.DamageResistant;
+import io.papermc.paper.event.entity.EntityMoveEvent;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.tag.TagKey;
 import org.bukkit.*;
@@ -21,9 +22,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import worm.me.gamesystems.world.PlayArea;
 import worm.me.gamesystems.world.mob.boss.Boss;
 import worm.me.gamesystems.world.mob.boss.IronGolemBoss;
-import worm.me.gamesystems.world.mob.boss.ZiglinJouster;
+import worm.me.gamesystems.world.mob.boss.HoglinJouster;
 import worm.me.gamesystems.world.mob.traders.Trader;
 import worm.me.gamesystems.world.mob.traders.VillagerProfession;
 import worm.me.utils.Item;
@@ -46,9 +48,9 @@ public class CustomMobsListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if (ZiglinJouster.temporaryBlocks.contains(event.getBlock())) {
+        if (HoglinJouster.temporaryBlocks.contains(event.getBlock())) {
             event.setDropItems(false);
-            ZiglinJouster.temporaryBlocks.remove(event.getBlock());
+            HoglinJouster.temporaryBlocks.remove(event.getBlock());
         }
     }
 
@@ -134,13 +136,30 @@ public class CustomMobsListener implements Listener {
     }
 
     public static void restoreBosses() {
-        ZiglinJouster.restoreBosses();
+        HoglinJouster.restoreBosses();
     }
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        ZiglinJouster.restoreBossesInChunk(event.getChunk());
+        HoglinJouster.restoreBossesInChunk(event.getChunk());
     }
 
+    @EventHandler
+    public void onBossMove(EntityMoveEvent event) {
+        if (!Boss.isBoss(event.getEntity())) return;
+        Entity entity = event.getEntity();
+        Boss boss = Boss.getBoss(entity);
+
+        if (entity.getLocation().getBlockY() <= PlayArea.getMinHeight() - 32) {
+            entity.teleport(entity.getLocation().add(0, PlayArea.getMaxHeight() + 64, 0));
+            boss.setFalling(true);
+        }
+
+        if (boss.isFalling() && entity.getLocation().subtract(0, 1, 0).getBlock().getType() != Material.AIR) {
+            entity.getWorld().createExplosion(entity, 2F);
+            entity.getWorld().playSound(entity.getLocation(), Sound.BLOCK_ANVIL_LAND, 1F, 0.5F);
+            boss.setFalling(false);
+        }
+    }
 
 }

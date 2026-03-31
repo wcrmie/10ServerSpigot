@@ -4,7 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import worm.me.gamesystems.world.mob.boss.ZiglinJouster;
+import worm.me.gamesystems.world.mob.boss.HoglinJouster;
 
 public class SpawnPiglinJousterBossCommand implements CommandExecutor {
 
@@ -15,7 +15,7 @@ public class SpawnPiglinJousterBossCommand implements CommandExecutor {
             return true;
         }
 
-        ZiglinJouster.spawnAt(player.getLocation());
+        HoglinJouster.spawnAt(player.getLocation());
         player.sendMessage("Ziglin Jouster spawned.");
         return true;
     }

@@ -166,22 +166,19 @@ public class IronGolemBoss extends Boss {
 
     @Override
     public void handleDeath(EntityDeathEvent event) {
-
         event.getDrops().clear();
-
-
         List<ItemStack> drops = generateDrops();
-
         for (ItemStack drop : drops) {
             event.getDrops().add(drop);
         }
-
-        destroyBossBar();
-
+        disable();
     }
 
     @Override
     public void enable() {
+        bossMap.put(m_boss, this);
+        getBossEntities().add(m_boss);
+        getBossBars().add(bossBar);
     }
 
     @Override
