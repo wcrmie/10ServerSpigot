@@ -1,6 +1,5 @@
 package worm.me.data;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -10,34 +9,24 @@ import worm.me.playersystems.abilities.Abilities;
 import worm.me.data.levels.Levels;
 import worm.me.Server;
 
-import java.lang.constant.Constable;
 import java.util.*;
 
 public class Unlocks {
-
-    // Allow maps with different key types to be stored in a list
-    public static List<? extends Map<? extends Constable, int[]>> unlockTypes = Arrays.asList(
-            Server.stones,
-            Server.dirts,
-            Server.planks,
-            Server.miscs,
-            Abilities.abilityRequirements
-    );
 
     public static String[] requirementsTranslation(int[] requirements){
 
 
         List<String> translation = new ArrayList<>();
-        translation.add(ChatColor.GOLD + "" + ChatColor.BOLD + "Requirements: \n");
+        translation.add("<gold><b>Requirements:</b> \n");
         translation.add(" ");
 
         for (int i = 0; i < 8; i++){
 
             if (requirements[i] != 0){
-                translation.add(ChatColor.YELLOW + Levels.skills.get(i) + " " + requirements[i] + "\n" );
+                translation.add("<yellow>" + Levels.skills.get(i) + " " + requirements[i] + "\n" );
             }
         }
-        return translation.toArray(new String[translation.size()]);
+        return translation.toArray(new String[0]);
     }
 
     public static boolean hasAbilityUnlocked(Player p, int ability){

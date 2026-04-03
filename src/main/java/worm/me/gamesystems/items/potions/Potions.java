@@ -18,7 +18,7 @@ public class Potions {
 
     public static ItemStack createPotion(PotionType potionType) {
 
-        ItemStack potion = new Item.ItemBuilder(Item.create(Material.POTION, ChatColor.WHITE + potionType.getName(), ChatColor.DARK_GRAY + potionType.getLore())).addComponent(DataComponentTypes.MAX_STACK_SIZE, 4).build();
+        ItemStack potion = new Item.ItemBuilder(Item.create(Material.POTION, "<white>" + potionType.getName(), "<dark_gray>" + potionType.getLore())).addComponent(DataComponentTypes.MAX_STACK_SIZE, 4).build();
 
         PotionMeta meta = (PotionMeta) potion.getItemMeta();
 

@@ -34,11 +34,12 @@ import worm.me.gamesystems.world.PlayArea;
 import worm.me.gamesystems.world.blocks.ArtBlocks;
 import worm.me.gamesystems.world.border.OutOfBorDer;
 import worm.me.gamesystems.world.mob.traders.Trader;
-import worm.me.gamesystems.world.mob.traders.VillagerProfession;
+import worm.me.gamesystems.world.mob.traders.CustomProfession;
 import worm.me.playersystems.abilities.Abilities;
 import worm.me.playersystems.abilities.Ability;
 import worm.me.playersystems.abilities.AbilityAttemptEvent;
 import worm.me.playersystems.abilities.passive.SlimeBoots;
+import worm.me.playersystems.attributes.LocatorBar;
 import worm.me.playersystems.attributes.SizeModifier;
 import worm.me.data.Vault;
 import worm.me.data.VoidPlayer;
@@ -149,13 +150,17 @@ public class GameplayListener implements Listener {
 
         Player player = e.getPlayer();
 
-        if (e.getTo().getY() < 200) {
+        if (e.getTo().getY() < 190) {
             player.damage(1000000);
         } else {
             boolean allowed = Server.zoneGridManager.isInAllowedGrid(e.getTo());
             if (!allowed) {
                 OutOfBorDer.apply(player);
             }
+        }
+
+        if (e.getFrom().distanceSquared(e.getTo()) > 0.01) {
+            LocatorBar.handlePlayerMovement(e.getPlayer());
         }
 
         if (e.getFrom().getX() != e.getTo().getX() || e.getFrom().getY() != e.getTo().getY() || e.getFrom().getZ() != e.getTo().getZ()) {
@@ -230,7 +235,7 @@ public class GameplayListener implements Listener {
 
 
                 PersistentDataContainer pdc = tome.getItemMeta().getPersistentDataContainer();
-                int[] genetics = pdc.getOrDefault(new NamespacedKey(Server.getPlugin(), "genetics"), PersistentDataType.INTEGER_ARRAY, new int[VillagerProfession.values().length]);
+                int[] genetics = pdc.getOrDefault(new NamespacedKey(Server.getPlugin(), "genetics"), PersistentDataType.INTEGER_ARRAY, new int[CustomProfession.values().length]);
 
                 player.getInventory().setItem(e.getHand(), new ItemStack(Material.AIR));
 
@@ -319,10 +324,99 @@ public class GameplayListener implements Listener {
                 }
             }
 
-            if (player.getInventory().getHelmet().getType().equals(Material.BELL)) {
+            switch (player.getInventory().getHelmet().getType()) {
 
-                player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BELL_USE, 1F, 2F);
+                case BELL: {
 
+                    player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BELL_USE, 1F, 2F);
+                    break;
+
+                }
+
+                case NOTE_BLOCK: {
+
+                    player.getWorld().playSound(player.getLocation(), Objects.requireNonNull(Instrument.values()[ThreadLocalRandom.current().nextInt(0, 15)].getSound()), 1F, ThreadLocalRandom.current().nextFloat(1.0f,2.0f));
+                    break;
+
+                }
+
+                case HONEY_BLOCK: {
+                    player.getWorld().playSound(player.getLocation(), Sound.BLOCK_HONEY_BLOCK_PLACE, 1F, 0.5F);
+                    break;
+                }
+
+                case CHEST: {
+
+                    int RNG = ThreadLocalRandom.current().nextInt(0, 1);
+
+                    if (RNG == 0) player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 1F, 2F);
+
+                    if (RNG == 1) player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 1F, 2F);
+
+                    break;
+
+                }
+
+                case SLIME_BLOCK: {
+
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_SLIME_JUMP, 1F, 2F);
+
+                    break;
+
+                }
+
+                case ZOMBIE_HEAD: {
+
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ZOMBIE_HURT, 1F, 1.3F);
+                    break;
+
+                }
+
+                case SKELETON_SKULL: {
+
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_SKELETON_HURT, 1F, 1.3F);
+                    break;
+
+                }
+
+                case CREEPER_HEAD: {
+
+
+                    int RNG = ThreadLocalRandom.current().nextInt(0, 25);
+
+                    if (RNG == 25) {
+
+                        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_CREEPER_PRIMED, 1F, 1.3F);
+
+                    } else player.getWorld().playSound(player.getLocation(), Sound.ENTITY_CREEPER_HURT, 1F, 1.3F);
+
+                    break;
+
+                }
+
+                case PIGLIN_HEAD: {
+
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_PIGLIN_HURT, 1F, 1.3F);
+
+                    break;
+
+                }
+
+                case BEE_NEST: {
+
+                    player.getWorld().playSound(player.getLocation(), Sound.ENTITY_BEE_HURT, 1F, 1.3F);
+
+                    break;
+
+                }
+
+                case DECORATED_POT: {
+
+                    player.getWorld().playSound(player.getLocation(), Sound.BLOCK_DECORATED_POT_SHATTER, 1F, 1.3F);
+                    break;
+
+                }
+                
             }
 
             ProtectedRegion region = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld())).getRegion("spawn");

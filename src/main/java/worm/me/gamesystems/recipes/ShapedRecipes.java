@@ -1,6 +1,5 @@
 package worm.me.gamesystems.recipes;
 
-import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -53,24 +52,25 @@ public class ShapedRecipes {
 
 
         // ID 3, 4, and 5
-        shapedRecipeMap.put(new ItemStack(Material.CHAINMAIL_CHESTPLATE, 1), List.of(List.of(new ItemStack(Material.IRON_INGOT), new ItemStack(Material.AIR), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET),
-                new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_INGOT)), List.of(Item.create(Material.STONE, "CHAINMAIL_CHESTPLATE"))));
 
-        shapedRecipeMap.put(new ItemStack(Material.CHAINMAIL_LEGGINGS, 1), List.of(List.of(new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.AIR), new ItemStack(Material.IRON_NUGGET),
-                new ItemStack(Material.IRON_INGOT), new ItemStack(Material.AIR), new ItemStack(Material.IRON_INGOT)), List.of(Item.create(Material.STONE, "CHAINMAIL_LEGGINGS"))));
 
-        shapedRecipeMap.put(new ItemStack(Material.CHAINMAIL_BOOTS, 1), List.of(List.of(new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.AIR), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.AIR), new ItemStack(Material.IRON_INGOT),
+        shapedRecipeMap.put(new ItemStack(Material.CHAINMAIL_CHESTPLATE, 1), List.of(List.of(new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.AIR), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_NUGGET),
+                new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_NUGGET)), List.of(Item.create(Material.STONE, "CHAINMAIL_CHESTPLATE"))));
+
+        shapedRecipeMap.put(new ItemStack(Material.CHAINMAIL_LEGGINGS, 1), List.of(List.of(new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.AIR), new ItemStack(Material.IRON_NUGGET),
+                new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.AIR), new ItemStack(Material.IRON_NUGGET)), List.of(Item.create(Material.STONE, "CHAINMAIL_LEGGINGS"))));
+
+        shapedRecipeMap.put(new ItemStack(Material.CHAINMAIL_BOOTS, 1), List.of(List.of(new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.AIR), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.IRON_NUGGET), new ItemStack(Material.AIR), new ItemStack(Material.IRON_NUGGET),
                 new ItemStack(Material.AIR), new ItemStack(Material.AIR), new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "CHAINMAIL_BOOTS"))));
 
-        // ID 6, 7, 8
-        ItemStack emeraldChestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
-        ItemStack emeraldLeggings = new ItemStack(Material.LEATHER_LEGGINGS);
-        ItemStack emeraldBoots = new ItemStack(Material.LEATHER_BOOTS);
+                // ID 6, 7, 8
+        ItemStack emeraldChestplate = new Item.ItemBuilder(Item.create(Material.LEATHER_CHESTPLATE, "<green>Emerald Chestplate")).setUnbreakable(true).build();
+        ItemStack emeraldLeggings = new Item.ItemBuilder(Item.create(Material.LEATHER_LEGGINGS, "<green>Emerald Leggings")).setUnbreakable(true).build();
+        ItemStack emeraldBoots = new Item.ItemBuilder(Item.create(Material.LEATHER_BOOTS, "<green>Emerald Boots")).setUnbreakable(true).build();
 
         LeatherArmorMeta meta = (LeatherArmorMeta) emeraldChestplate.getItemMeta();
         assert meta != null;
-        meta.setDisplayName(ChatColor.GREEN + "Emerald Chestplate");
-        meta.setUnbreakable(true);
+
         meta.setColor(Color.GREEN);
         meta.setMaxStackSize(4);
 
@@ -79,15 +79,11 @@ public class ShapedRecipes {
         shapedRecipeMap.put(emeraldChestplate, List.of(List.of(new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD),
                 new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD)), List.of(Item.create(Material.STONE, "EMERALD_CHESTPLATE"))));
 
-        meta.setDisplayName(ChatColor.GREEN + "Emerald Leggings");
-        meta.setMaxStackSize(4);
         emeraldLeggings.setItemMeta(meta);
 
         shapedRecipeMap.put(emeraldLeggings, List.of(List.of(new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD),
                 new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD)), List.of(Item.create(Material.STONE, "EMERALD_LEGGINGS"))));
 
-        meta.setDisplayName(ChatColor.GREEN + "Emerald Boots");
-        meta.setMaxStackSize(4);
         emeraldBoots.setItemMeta(meta);
 
         shapedRecipeMap.put(emeraldBoots, List.of(List.of(new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD), new ItemStack(Material.EMERALD), new ItemStack(Material.AIR), new ItemStack(Material.EMERALD),
@@ -257,10 +253,10 @@ public class ShapedRecipes {
         shapedRecipeMap.put(new ItemStack(Material.TNT), List.of(List.of(new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.GOLD_INGOT), new ItemStack(Material.GUNPOWDER),
                 new ItemStack(Material.SAND), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.SAND)), List.of(Item.create(Material.STONE, "TNT"))));
 
-        shapedRecipeMap.put(Item.create(Material.WOODEN_PICKAXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "WOODEN_PICKAXE"))));
-        shapedRecipeMap.put(Item.create(Material.WOODEN_AXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "WOODEN_AXE"))));
-        shapedRecipeMap.put(Item.create(Material.WOODEN_SWORD, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "WOODEN_SWORD"))));
-        shapedRecipeMap.put(Item.create(Material.WOODEN_SHOVEL, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"), List.of(List.of(new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "WOODEN_SHOVEL"))));
+        shapedRecipeMap.put(Item.create(Material.WOODEN_PICKAXE, null, "<gray>Upgrade this tool by clicking on it with", "<gray>16 Cobblestone"), List.of(List.of(new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "WOODEN_PICKAXE"))));
+        shapedRecipeMap.put(Item.create(Material.WOODEN_AXE, null, "<gray>Upgrade this tool by clicking on it with", "<gray>16 Cobblestone"), List.of(List.of(new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "WOODEN_AXE"))));
+        shapedRecipeMap.put(Item.create(Material.WOODEN_SWORD, null, "<gray>Upgrade this tool by clicking on it with", "<gray>16 Cobblestone"), List.of(List.of(new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "WOODEN_SWORD"))));
+        shapedRecipeMap.put(Item.create(Material.WOODEN_SHOVEL, null, "<gray>Upgrade this tool by clicking on it with", "<gray>16 Cobblestone"), List.of(List.of(new ItemStack(Material.AIR),new ItemStack(Material.OAK_PLANKS),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR),new ItemStack(Material.AIR),new ItemStack(Material.STICK),new ItemStack(Material.AIR)), List.of(Item.create(Material.STONE, "WOODEN_SHOVEL"))));
 
         shapedRecipeMap.put(BreezeRod.createBreezeRod(), List.of(List.of(new ItemStack(Material.AIR), new ItemStack(Material.AIR),new ItemStack(Material.BREEZE_ROD),new ItemStack(Material.AIR),new ItemStack(Material.BREEZE_ROD),new ItemStack(Material.STRING),new ItemStack(Material.BREEZE_ROD),new ItemStack(Material.AIR),new ItemStack(Material.STRING)), List.of(Item.create(Material.STONE, "BREEZE_FISHING_ROD"))));
 
@@ -391,11 +387,9 @@ public class ShapedRecipes {
     }
 
     private ItemStack createSlimeBoots() {
-        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS, 1);
+        ItemStack boots = new Item.ItemBuilder(Item.create(Material.LEATHER_BOOTS, "<green>Slime Boots", "<yellow>All fall damage is nullified while wearing these.", "<gray>[SNEAK]</gray> to cancel a bounce.")).build();
         ItemMeta meta = boots.getItemMeta();
 
-        // Set name and color
-        meta.setDisplayName(ChatColor.GREEN + "Slime Boots");
         ((LeatherArmorMeta)meta).setColor(Color.LIME);
 
         meta.addEnchant(Enchantment.UNBREAKING, 2, true);
@@ -406,10 +400,6 @@ public class ShapedRecipes {
                 PersistentDataType.STRING,
                 "true"
         );
-
-        List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "All fall damage is nullified while wearing these. [SNEAK] to cancel a bounce.");
-        meta.setLore(lore);
 
         boots.setItemMeta(meta);
         return boots;

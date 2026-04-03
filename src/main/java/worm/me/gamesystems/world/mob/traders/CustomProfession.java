@@ -4,9 +4,9 @@ import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.Consumable;
 import io.papermc.paper.datacomponent.item.FoodProperties;
 import io.papermc.paper.datacomponent.item.consumable.ConsumeEffect;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.potion.PotionEffect;
@@ -19,8 +19,8 @@ import worm.me.utils.Item;
 import java.util.List;
 import java.util.Map;
 
-public enum VillagerProfession {
-    ARMORER("Armorer", List.of(
+public enum CustomProfession {
+    ARMORER("Armorer",Villager.Profession.ARMORER, List.of(
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.CHAINMAIL_LEGGINGS), new ItemStack(Material.GOLD_INGOT), 3, 10, true, 5)
                     .newTrade(new ItemStack(Material.CHAINMAIL_BOOTS), new ItemStack(Material.GOLD_NUGGET, 6), 3, 10, true, 5)
@@ -59,7 +59,7 @@ public enum VillagerProfession {
                     .newTrade(new ItemStack(Material.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE), new ItemStack(Material.EMERALD, 5), 3, 10, true, 5)
                     .build())),
 
-    BUTCHER("Butcher", List.of(
+    BUTCHER("Butcher",Villager.Profession.BUTCHER, List.of(
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.MUTTON, 2), 5, 25, true, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.CHICKEN, 3), 5, 25, true, 5)
@@ -76,7 +76,7 @@ public enum VillagerProfession {
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.BEEF), 5, 20, true, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.PORKCHOP, 2), 5, 20, true, 5)
                     .newTrade(new ItemStack(Material.LEATHER), new ItemStack(Material.GOLD_NUGGET, 3), 3, 10, true, 5)
-                    .newTrade(new ItemStack(Material.GOLD_NUGGET), Item.create(Material.QUARTZ, ChatColor.WHITE + "Salt"), 5, 7, true, 5)
+                    .newTrade(new ItemStack(Material.GOLD_NUGGET), Item.create(Material.QUARTZ, "<white><!i>Salt"), 5, 7, true, 5)
                     .build(),
 
             new Trader.TradeBuilder()
@@ -92,10 +92,10 @@ public enum VillagerProfession {
                             .addComponent(DataComponentTypes.CONSUMABLE, Consumable.consumable().addEffect(ConsumeEffect.applyStatusEffects(List.of(new PotionEffect(PotionEffectType.LUCK, 60, 1)), 1f)).consumeSeconds(2).build())
                             .build(),
                             new ItemStack(Material.GOLD_INGOT, 3), 3, 5, true, 5)
-                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.COOKED_BEEF, 8)).addComponent(DataComponentTypes.FOOD, FoodProperties.food().nutrition(10).saturation(14).build()).setName(ChatColor.WHITE + "Filet Mignon").build(), new ItemStack(Material.EMERALD, 1), 5, 10, true, 5)
+                    .newTrade(new Item.ItemBuilder(new ItemStack(Material.COOKED_BEEF, 8)).addComponent(DataComponentTypes.FOOD, FoodProperties.food().nutrition(10).saturation(14).build()).setName("<white><!i>Filet Mignon").build(), new ItemStack(Material.EMERALD, 1), 5, 10, true, 5)
                     .build())),
 
-    CARTOGRAPHER("Cartographer", List.of(
+    CARTOGRAPHER("Cartographer",Villager.Profession.CARTOGRAPHER, List.of(
             new Trader.TradeBuilder()
                     .newTrade(CartographerCompass.createCompass(IslandType.DEFAULT), new ItemStack(Material.GOLD_INGOT, 3), 1, 50, true, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET, 1), new ItemStack(Material.PAPER, 8), 5, 50, true, 5)
@@ -127,7 +127,7 @@ public enum VillagerProfession {
                     .newTrade(CartographerCompass.createCompass(IslandType.VILLAGE), new ItemStack(Material.EMERALD, 30), 1, 5, true, 5)
                     .newTrade(CartographerCompass.createCompass(IslandType.MUSHROOM), new ItemStack(Material.GOLD_INGOT, 7), 1, 5, true, 5)
                     .build())),
-    CLERIC("Cleric", List.of(
+    CLERIC("Cleric",Villager.Profession.CLERIC, List.of(
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.ROTTEN_FLESH, 12), 3, 10, true, 5)
                     .newTrade(new ItemStack(Material.REDSTONE, 6), new ItemStack(Material.GOLD_NUGGET), 3, 10, true, 5)
@@ -161,7 +161,7 @@ public enum VillagerProfession {
                     .newTrade(new ItemStack(Material.OMINOUS_TRIAL_KEY), new ItemStack(Material.EMERALD, 1), 1, 10, true, 5)
                     .newTrade(new ItemStack(Material.OMINOUS_BOTTLE), new ItemStack(Material.EMERALD, 16), 1, 5, true, 5)
                     .build())),
-    FARMER("Farmer", List.of(
+    FARMER("Farmer",Villager.Profession.FARMER, List.of(
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.WHEAT, 8), 5, 50, true, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.POTATO, 18), 5, 20, true, 5)
@@ -193,7 +193,7 @@ public enum VillagerProfession {
                     .newTrade(new ItemStack(Material.GOLDEN_CARROT, 12), new ItemStack(Material.EMERALD, 1), 2, 10, true, 5)
                     .newTrade(new ItemStack(Material.GOLDEN_CARROT, 16), new ItemStack(Material.EMERALD, 1), 2, 10, true, 5)
                     .build())),
-    FISHERMAN("Fisherman", List.of(
+    FISHERMAN("Fisherman",Villager.Profession.FISHERMAN, List.of(
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.COD, 6), 5, 50, true, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.SALMON, 4), 5, 20, true, 5)
@@ -229,7 +229,7 @@ public enum VillagerProfession {
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.OAK_BOAT, 1), 3, 5, true, 5)
                     .newTrade(new ItemStack(Material.HEART_OF_THE_SEA), new ItemStack(Material.EMERALD, 16), 1, 50, true, 5)
                     .build())),
-    FLETCHER("Fletcher", List.of(
+    FLETCHER("Fletcher",Villager.Profession.FLETCHER, List.of(
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.STICK, 24), 5, 10, true, 5)
                     .newTrade(new ItemStack(Material.ARROW, 24), new ItemStack(Material.GOLD_NUGGET), 3, 10, true, 5)
@@ -259,7 +259,7 @@ public enum VillagerProfession {
                     .newTrade(new Item.ItemBuilder(new ItemStack(Material.BOW)).addEnchantment(Enchantment.INFINITY, 1).build(), new ItemStack(Material.EMERALD, 12), 1, 10, true, 5)
                     .newTrade(new Item.ItemBuilder(new ItemStack(Material.CROSSBOW)).addEnchantment(Enchantment.MULTISHOT, 1).build(), new ItemStack(Material.EMERALD, 10), 1, 10, true, 5)
                     .build())),
-    LEATHERWORKER("Leatherworker", List.of(
+    LEATHERWORKER("Leatherworker",Villager.Profession.LEATHERWORKER, List.of(
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.BUNDLE), new ItemStack(Material.GOLD_NUGGET, 3), 3, 100, true, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.RABBIT_HIDE, 8), 6, 10, true, 5)
@@ -315,7 +315,7 @@ public enum VillagerProfession {
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.RABBIT_HIDE, 4), 10, 3, true, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.LEATHER, 2), 10, 3, true, 5)
                     .build())),
-    LIBRARIAN("Librarian", List.of(
+    LIBRARIAN("Librarian",Villager.Profession.LIBRARIAN, List.of(
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.PAPER, 8), 5, 50, true, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.LEATHER, 5), 5, 20, true, 5)
@@ -358,7 +358,7 @@ public enum VillagerProfession {
                     .newTrade(new Item.ItemBuilder(new ItemStack(Material.ENCHANTED_BOOK)).addEnchantment(Enchantment.MULTISHOT, 1).build(), new ItemStack(Material.EMERALD, 10), 1, 5, true, 5)
                     .build())),
 
-    MASON("Mason", List.of(
+    MASON("Mason",Villager.Profession.MASON, List.of(
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.CLAY_BALL, 16), 4, 10, true, 5)
                     .newTrade(new ItemStack(Material.BRICK,16), new ItemStack(Material.GOLD_NUGGET, 4), 4, 10, true, 5)
@@ -430,7 +430,7 @@ public enum VillagerProfession {
                     .newTrade(new ItemStack(Material.RED_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1, true, 5)
                     .newTrade(new ItemStack(Material.BLACK_TERRACOTTA, 8), new ItemStack(Material.GOLD_NUGGET, 1), 8, 1, true, 5)
                     .build())),
-    SHEPHERD("Shepherd", List.of(
+    SHEPHERD("Shepherd",Villager.Profession.SHEPHERD, List.of(
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.STRING, 8), 6, 10, true, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.WHITE_WOOL, 8), 6, 10, true, 5)
@@ -493,7 +493,7 @@ public enum VillagerProfession {
                     .newTrade(new ItemStack(Material.PIGLIN_BANNER_PATTERN, 1), new ItemStack(Material.GOLD_INGOT, 4), 1, 1, true, 5)
                     .build())),
 
-    TOOLSMITH("Toolsmith", List.of(
+    TOOLSMITH("Toolsmith",Villager.Profession.TOOLSMITH, List.of(
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.STONE_PICKAXE), new ItemStack(Material.GOLD_NUGGET, 5), 2, 30, true, 5)
                     .newTrade(new ItemStack(Material.STONE_SHOVEL), new ItemStack(Material.GOLD_NUGGET, 5), 2, 30, true, 5)
@@ -534,7 +534,7 @@ public enum VillagerProfession {
                     .newTrade(new ItemStack(Material.DIAMOND_HOE, 2), new ItemStack(Material.EMERALD_BLOCK, 5), 1, 10, true, 5)
                     .build())),
 
-    WEAPONSMITH("Weaponsmith", List.of(
+    WEAPONSMITH("Weaponsmith",Villager.Profession.WEAPONSMITH, List.of(
             new Trader.TradeBuilder()
                     .newTrade(new ItemStack(Material.STONE_SWORD), new ItemStack(Material.GOLD_NUGGET, 5), 2, 20, true, 5)
                     .newTrade(new ItemStack(Material.GOLD_NUGGET), new ItemStack(Material.COAL, 4), 5, 15, true, 5)
@@ -568,19 +568,22 @@ public enum VillagerProfession {
                     .newTrade(new ItemStack(Material.DIAMOND_SWORD, 2), new ItemStack(Material.EMERALD_BLOCK, 5), 1, 10, true, 5)
                     .build()));
 
-    private final String professionName;
-
+    private final String name;
+    private final Villager.Profession bukkitProfession;
     private final List<Map<MerchantRecipe, Integer>> trades;
 
-
-    VillagerProfession(String professionName, List<Map<MerchantRecipe, Integer>> trades) {
-        this.professionName = professionName;
+    CustomProfession(String name, Villager.Profession bukkitProfession, List<Map<MerchantRecipe, Integer>> trades) {
+        this.name = name;
+        this.bukkitProfession = bukkitProfession;
         this.trades = trades;
-
     }
 
     public String getName() {
-        return professionName;
+        return name;
+    }
+
+    public Villager.Profession getBukkitProfession() {
+        return bukkitProfession;
     }
 
     public List<Map<MerchantRecipe, Integer>> getTrades() {

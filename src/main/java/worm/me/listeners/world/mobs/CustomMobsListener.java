@@ -27,7 +27,7 @@ import worm.me.gamesystems.world.mob.boss.Boss;
 import worm.me.gamesystems.world.mob.boss.IronGolemBoss;
 import worm.me.gamesystems.world.mob.boss.HoglinJouster;
 import worm.me.gamesystems.world.mob.traders.Trader;
-import worm.me.gamesystems.world.mob.traders.VillagerProfession;
+import worm.me.gamesystems.world.mob.traders.CustomProfession;
 import worm.me.utils.Item;
 
 import java.util.ArrayList;
@@ -107,6 +107,9 @@ public class CustomMobsListener implements Listener {
 
     public static ItemStack generateKnowledgeTome() {
         VillagerProfession profession = determineProfession();
+
+        CustomProfession profession = determineProfession();
+
         int[] genetics = new Trader.GeneticsBuilder().addGenetic(profession).build();
 
         ItemStack tome = new ItemStack(Material.KNOWLEDGE_BOOK);
@@ -130,9 +133,11 @@ public class CustomMobsListener implements Listener {
                 .build();
     }
 
-    public static VillagerProfession determineProfession() {
-        return VillagerProfession.values()[
-                ThreadLocalRandom.current().nextInt(VillagerProfession.values().length)];
+    public static CustomProfession determineProfession() {
+
+        int RNG = ThreadLocalRandom.current().nextInt(0, CustomProfession.values().length);
+        return CustomProfession.values()[RNG];
+
     }
 
     public static void restoreBosses() {
@@ -161,5 +166,7 @@ public class CustomMobsListener implements Listener {
             boss.setFalling(false);
         }
     }
+
+    // --------------------END IRON GOLEM BOSS-----------------------
 
 }

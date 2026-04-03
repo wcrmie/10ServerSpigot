@@ -9,7 +9,7 @@ import java.util.Map;
 
 public enum LootTable {
 
-    DIRT(Map.of(new ItemStack(Material.DIRT), 25, (Item.create(Material.QUARTZ, ChatColor.WHITE + "Salt")), 15, new ItemStack(Material.WHEAT_SEEDS), 10));
+    DIRT(Map.of(new ItemStack(Material.DIRT), 25, (Item.create(Material.QUARTZ, "<white>Salt")), 15, new ItemStack(Material.WHEAT_SEEDS), 10));
 
     private final Map<ItemStack, Integer> weights;
 

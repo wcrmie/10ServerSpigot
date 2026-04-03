@@ -9,10 +9,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.MerchantRecipe;
 import worm.me.Server;
 import worm.me.gamesystems.world.mob.traders.Trader;
-import worm.me.gamesystems.world.mob.traders.VillagerProfession;
+import worm.me.playersystems.attributes.LocatorBar;
+import worm.me.gamesystems.world.mob.traders.CustomProfession;
 import worm.me.utils.Item;
 
 import java.util.Arrays;
+
+import static worm.me.gamesystems.world.mob.traders.Trader.getGenetics;
 
 public class VillagerListener implements Listener {
 
@@ -20,6 +23,7 @@ public class VillagerListener implements Listener {
     public void onVillagerSpawn(EntitySpawnEvent event) {
 
         if (event.getEntity() instanceof Villager villy) {
+            LocatorBar.attachVillager(villy);
 
             if (villy.getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.CURED)) {
 
@@ -38,7 +42,7 @@ public class VillagerListener implements Listener {
 
             villy.setProfession(Villager.Profession.NITWIT);
 
-            if (!Arrays.equals(Trader.getGenetics(villy), new int[VillagerProfession.values().length])) villy.setProfession(Villager.Profession.NONE);
+            if (!Arrays.equals(getGenetics(villy), new int[CustomProfession.values().length])) villy.setProfession(Villager.Profession.NONE);
 
         }
 
@@ -52,27 +56,13 @@ public class VillagerListener implements Listener {
             Villager mother = (Villager) event.getMother();
             Villager father = (Villager) event.getFather();
 
-            int[] motherGenetics = Trader.getGenetics(mother);
-            int[] fatherGenetics = Trader.getGenetics(father);
+            int[] motherGenetics = getGenetics(mother);
+            int[] fatherGenetics = getGenetics(father);
 
             Trader.addGenetics(child, motherGenetics);
             Trader.addGenetics(child, fatherGenetics);
 
         }
-    }
-
-    @EventHandler
-    public void onVillagerEmploy(VillagerCareerChangeEvent event) {
-
-        Villager villager = event.getEntity();
-
-        if (event.getProfession() == Villager.Profession.NONE) {
-            event.setCancelled(true);
-            return;
-        }
-
-        if (Trader.getGenetics(villager)[VillagerProfession.valueOf(event.getProfession().toString()).ordinal()] != 1) event.setCancelled(true);
-
     }
 
     @EventHandler
@@ -87,7 +77,7 @@ public class VillagerListener implements Listener {
         MerchantRecipe trade = Trader.replaceTrade(villager, level);
 
         if (trade == null) {
-            trade = new MerchantRecipe(new Item.ItemBuilder(new ItemStack(Material.BARRIER)).setName(ChatColor.RED + "ERROR -- PLS CONTACT ADMINS").build(), 0);
+            trade = new MerchantRecipe(new Item.ItemBuilder(new ItemStack(Material.BARRIER)).setName("<red>ERROR -- PLS CONTACT ADMINS").build(), 0);
             trade.addIngredient(new ItemStack(Material.BARRIER));
         }
 
@@ -97,5 +87,38 @@ public class VillagerListener implements Listener {
 
     }
 
+    @EventHandler
+    public void onProfessionChange(VillagerCareerChangeEvent event) {
+        Villager villager = event.getEntity();
+        Villager.Profession currentProf = villager.getProfession();
+        Villager.Profession newProf = event.getProfession();
+
+        if (currentProf != Villager.Profession.NONE && currentProf != Villager.Profession.NITWIT) {
+            event.setCancelled(true);
+            return;
+        }
+
+        if (newProf == Villager.Profession.NONE || newProf == Villager.Profession.NITWIT) {
+            return;
+        }
+
+        NamespacedKey professionKey = newProf.getKey();
+        int[] genetics = getGenetics(villager);
+
+        boolean hasGeneticMatch = false;
+        for (CustomProfession myEnum : CustomProfession.values()) {
+            if (myEnum.getBukkitProfession().getKey().equals(professionKey)) {
+                int index = myEnum.ordinal();
+                if (index < genetics.length && genetics[index] == 1) {
+                    hasGeneticMatch = true;
+                }
+                break;
+            }
+        }
+
+        if (!hasGeneticMatch) {
+            event.setCancelled(true);
+        }
+    }
 
 }

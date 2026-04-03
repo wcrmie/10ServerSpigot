@@ -2,6 +2,7 @@ package worm.me.gamesystems.items.gear.tools;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -17,17 +18,15 @@ import java.util.Map;
 
 public class Tools {
 
-    public static Map<Player, List<ItemStack>> playerTools = new HashMap<>();
-
     public static void toolsGrantInitial(Player p){
 
         // Create tools
         List<ItemStack> tools = new ArrayList<>();
 
-        tools.add(Item.create(Material.WOODEN_PICKAXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
-        tools.add(Item.create(Material.WOODEN_AXE, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
-        tools.add(Item.create(Material.WOODEN_SWORD, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
-        tools.add(Item.create(Material.WOODEN_SHOVEL, "", ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
+        tools.add(Item.create(Material.WOODEN_PICKAXE, null, "<yellow>Upgrade this tool by clicking on it with", "<yellow>16 Cobblestone"));
+        tools.add(Item.create(Material.WOODEN_AXE, null, "<yellow>Upgrade this tool by clicking on it with", "<yellow>16 Cobblestone"));
+        tools.add(Item.create(Material.WOODEN_SWORD, null, "<yellow>Upgrade this tool by clicking on it with", "<yellow>16 Cobblestone"));
+        tools.add(Item.create(Material.WOODEN_SHOVEL, null, "<yellow>Upgrade this tool by clicking on it with", "<yellow>16 Cobblestone"));
 
         ItemMeta toolMeta = tools.getFirst().getItemMeta();
 
@@ -56,7 +55,10 @@ public class Tools {
 
             if (newTool.toString().contains("STONE")){
 
-                toolMeta.setLore(List.of(ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "2 Iron Ingots"));
+                ItemStack newToolItem = new ItemStack(newTool);
+                newToolItem = new EnchantsUpgrade().upgradeEnchants(newToolItem);
+                return new Item.ItemBuilder(newToolItem).setLore("<yellow>Upgrade this tool by clicking on it with", "<yellow>2 Iron Ingots").build();
+
             }
 
             ItemStack newToolItem = new ItemStack(newTool);
@@ -82,17 +84,6 @@ public class Tools {
                 toolMeta.setLore(List.of(" "));
             }
 
-            if (downgrade.toString().contains("WOODEN")){
-                toolMeta.setUnbreakable(true);
-
-                toolMeta.setLore(List.of(ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "16 Cobblestone"));
-
-            } else if (downgrade.toString().contains("STONE")) {
-
-                toolMeta.setLore(List.of(ChatColor.DARK_GRAY + "Upgrade this tool by clicking on it with", ChatColor.DARK_GRAY + "2 Iron Ingots"));
-
-            }
-
             ItemStack newToolItem = new ItemStack(downgrade);
 
             newToolItem.setItemMeta(toolMeta);
@@ -102,6 +93,16 @@ public class Tools {
             damageable.setDamage(0);
 
             newToolItem.setItemMeta(damageable);
+
+            if (downgrade.toString().contains("WOODEN")){
+
+                return new Item.ItemBuilder(newToolItem).setLore("<yellow>Upgrade this tool by clicking on it with", "<yellow>16 Cobblestone").setUnbreakable(true).build();
+
+            } else if (downgrade.toString().contains("STONE")) {
+
+                return new Item.ItemBuilder(newToolItem).setLore("<yellow>Upgrade this tool by clicking on it with", "<yellow>2 Iron Ingots").build();
+
+            }
 
             return newToolItem;
         }

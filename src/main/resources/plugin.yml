@@ -6,6 +6,14 @@ authors: [ worm, clem, Boolean ]
 depend: [WorldGuard]
 softdepend: [MessageHead]
 commands:
+  tutorial:
+    aliases:
+      - help
+      - guide
+      - tut
+      - ?
+      - what
+    usage: /<command> [<page>]
   resetspawn:
     permission: admin
     usage: /<command>

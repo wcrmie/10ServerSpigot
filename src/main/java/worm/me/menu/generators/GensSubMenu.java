@@ -1,8 +1,5 @@
 package worm.me.menu.generators;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -15,10 +12,11 @@ import org.jetbrains.annotations.NotNull;
 import worm.me.data.Unlocks;
 import worm.me.menu.Menu;
 import worm.me.playersystems.generator.GeneratorType;
-import worm.me.utils.GuiConstructor;
+import worm.me.utils.menu.GuiConstructor;
 import worm.me.utils.Item;
 import worm.me.utils.chat.Message;
 import worm.me.utils.chat.MessageType;
+import worm.me.utils.menu.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +53,9 @@ public class GensSubMenu extends Menu implements InventoryHolder {
 
                 Material material = materials.removeFirst();
 
-                ItemStack item = Item.create(material, "");
+                ItemStack item = Item.create(material, null);
 
-                if (!Unlocks.hasGenUnlocked(getViewer(), material)) item = Item.create(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + item.getType().toString() + " (LOCKED)", Unlocks.requirementsTranslation(generatorType.getGenerators().get(material)));
+                if (!Unlocks.hasGenUnlocked(getViewer(), material)) item = Item.create(Material.RED_STAINED_GLASS_PANE, "<red>" + item.getType() + " (LOCKED)", Unlocks.requirementsTranslation(generatorType.getGenerators().get(material)));
 
                 inventory.setItem(slots[j] + (i * 9), item);
 
@@ -83,6 +81,13 @@ public class GensSubMenu extends Menu implements InventoryHolder {
 
         if (clickedItem == null || clickedItem.getType().isAir() || clickedItem.getType().equals(Material.GRAY_STAINED_GLASS_PANE)) return;
 
+        if (clickedItem.equals(MenuItem.BACK.getItem())) {
+
+            GensMainMenu menu = new GensMainMenu(player);
+            menu.open();
+
+        }
+
         if (generatorType.getMaterials().contains(clickedItem.getType())) {
 
             if (Unlocks.hasGenUnlocked(player, clickedItem.getType())){
@@ -90,11 +95,20 @@ public class GensSubMenu extends Menu implements InventoryHolder {
                 PersistentDataContainer container = player.getPersistentDataContainer();
                 container.set(generatorType.getKey(), PersistentDataType.STRING, clickedItem.getType().toString());
 
-                player.sendMessage(Component.text(
+                player.sendMessage(
 
-                        Message.create(MessageType.SUCCESS, String.format("Your %s item has been changed to %s", generatorType.getName(), ((TextComponent) clickedItem.displayName()).content()))
+                    Message.create(
 
-                ));
+                        MessageType.SUCCESS,
+
+                        String.format(
+                                "Your %s item has been changed to ",
+                                generatorType.getName()
+
+                        )
+
+                    ).append(clickedItem.effectiveName())
+                );
 
             }
 

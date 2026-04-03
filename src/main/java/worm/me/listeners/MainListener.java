@@ -1,6 +1,5 @@
 package worm.me.listeners;
 
-import net.kyori.adventure.text.TextComponent;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -9,27 +8,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import worm.me.menu.*;
-import worm.me.menu.abilities.AbilitiesSubMenu;
-import worm.me.menu.generators.GensSubMenu;
-import worm.me.menu.recipes.RecipeSpecificMenu;
-import worm.me.utils.GuiConstructor;
-import worm.me.Server;
-import worm.me.menu.recipes.RecipeBrowserMenu;
-import worm.me.menu.abilities.AbilitiesMainMenu;
 import worm.me.gamesystems.items.gear.Upgrade;
-import worm.me.menu.generators.GensMainMenu;
-import worm.me.data.*;
 //import worm.me.playersystems.social.legacyhats.Hats;
 import worm.me.utils.info.GuideBook;
 //import worm.me.playersystems.social.skins.SkinGui;
 import worm.me.gamesystems.items.gear.tools.ToolsEvents;
 import worm.me.utils.Item;
+import worm.me.utils.menu.MenuItem;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -167,12 +155,7 @@ public class MainListener implements Listener {
             event.setCancelled(true);
         }
 
-        if (inventory.getHolder() instanceof MainSubMenu && Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).getType() == Material.SPECTRAL_ARROW && event.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Go Back")) {
-            MainGUIMenu mainGUIMenu = new MainGUIMenu(player);
-            mainGUIMenu.open();
-        }
-
-        if (inventory.getHolder() instanceof Menu menu) {
+        if (player.getOpenInventory().getTopInventory().getHolder() instanceof Menu menu) {
 
             event.setCancelled(true);
 
@@ -181,7 +164,11 @@ public class MainListener implements Listener {
             menu.handleClick(event);
         }
 
-        if (Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).isSimilar(Item.create(Material.BARRIER, ChatColor.RED + "Close Menu", " ", ChatColor.GRAY + "Close this menu."))) player.closeInventory();
+        if (inventory.getHolder() instanceof MainSubMenu menu && Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).equals(MenuItem.BACK.getItem())) {
+            menu.goBack(player);
+        }
+
+        if (Objects.requireNonNullElse(event.getCurrentItem(), new ItemStack(Material.STRUCTURE_VOID)).isSimilar(MenuItem.CLOSE.getItem())) player.closeInventory();
 
     }
 }

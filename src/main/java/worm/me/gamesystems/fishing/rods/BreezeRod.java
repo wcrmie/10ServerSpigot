@@ -1,5 +1,6 @@
 package worm.me.gamesystems.fishing.rods;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -9,31 +10,52 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
+import worm.me.utils.Item;
 
 import java.util.List;
 
 public class BreezeRod {
 
     public static ItemStack createBreezeRod() {
-        ItemStack breezeRod = new ItemStack(Material.FISHING_ROD);
-        ItemMeta meta = breezeRod.getItemMeta();
 
-        meta.setDisplayName(ChatColor.AQUA + "Quick Rod");
-        meta.setLore(List.of("", ChatColor.GRAY + "Fish Caught: 0"));
-
-        meta.setUnbreakable(true);
-
-        PersistentDataContainer pdc = meta.getPersistentDataContainer();
-
-        pdc.set(new NamespacedKey(Server.getPlugin(), "rod"), PersistentDataType.STRING, "breeze_rod");
-        pdc.set(new NamespacedKey(Server.getPlugin(), "fish_caught"), PersistentDataType.INTEGER, 0);
-
-        breezeRod.setItemMeta(meta);
+        ItemStack breezeRod = new Item.ItemBuilder(
+                Item.create(
+                        Material.FISHING_ROD,
+                        "<aqua>Quick Rod",
+                        "",
+                        "<gray>Fish Caught: 0"
+                )
+        ).addPersistent(
+                PersistentDataType.STRING,
+                "breeze_rod",
+                "rod"
+        ).addPersistent(
+                PersistentDataType.INTEGER,
+                0,
+                "fish_caught"
+        ).setUnbreakable(true).build();
 
         return breezeRod;
     }
 
     public static void caught(ItemStack rod) {
+
+        int caught;
+
+        try {
+
+            caught = Item.getPersistent(rod, PersistentDataType.INTEGER, "fish_caught");
+
+        } catch (Exception e) {
+
+            caught = 0;
+
+        }
+
+        caught++;
+
+        Item.addPersistent(rod, PersistentDataType.INTEGER, caught, "fish_caught");
+
         ItemMeta meta = rod.getItemMeta();
 
 
@@ -44,7 +66,7 @@ public class BreezeRod {
 
         pdc.set(new NamespacedKey(Server.getPlugin(), "fish_caught"), PersistentDataType.INTEGER, fishCaught);
 
-        meta.setLore(List.of("", ChatColor.GRAY + "Fish Caught: " + fishCaught));
+        meta.setLore(List.of("", ChatColor.GRAY + "Fish Caught: " + caught));
 
         rod.setItemMeta(meta);
 

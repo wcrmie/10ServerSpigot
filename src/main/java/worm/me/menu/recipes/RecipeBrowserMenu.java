@@ -1,7 +1,5 @@
 package worm.me.menu.recipes;
 
-import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -12,9 +10,10 @@ import org.jetbrains.annotations.NotNull;
 import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.menu.MainSubMenu;
 import worm.me.menu.PagedMenu;
-import worm.me.utils.GuiConstructor;
-import worm.me.menu.MainGUIMenu;
+import worm.me.utils.menu.GuiConstructor;
+import worm.me.menu.main.MainGUIMenu;
 import worm.me.utils.Item;
+import worm.me.utils.menu.MenuItem;
 
 public class RecipeBrowserMenu extends PagedMenu implements InventoryHolder, MainSubMenu {
 
@@ -34,17 +33,17 @@ public class RecipeBrowserMenu extends PagedMenu implements InventoryHolder, Mai
     @Override
     public Inventory initialize() {
 
-        Inventory inventory = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Recipes Page " + getPage(), 54, this);
+        Inventory inventory = GuiConstructor.chestInventory("<dark_gray>Recipes Page " + getPage(), 54, this);
 
         if (getPage() > 1){
 
-            inventory.setItem(48, Item.create(Material.ARROW, ChatColor.GRAY + "Previous Page"));
+            inventory.setItem(48, MenuItem.PREVIOUS_PAGE.getItem());
 
         }
 
-        inventory.setItem(50, Item.create(Material.ARROW, ChatColor.GRAY + "Next Page"));
+        inventory.setItem(50, MenuItem.NEXT_PAGE.getItem());
 
-        inventory.setItem(4, Item.create(Material.CRAFTING_TABLE, ChatColor.GRAY + "Recipes"));
+        inventory.setItem(4, Item.create(Material.CRAFTING_TABLE, "<gray>Recipes"));
 
         int slot = 9;
 
@@ -87,13 +86,13 @@ public class RecipeBrowserMenu extends PagedMenu implements InventoryHolder, Mai
 
         Player player = (Player) e.getWhoClicked();
 
-        if (item.displayName().contains(Component.text("Next Page"))){
+        if (item.equals(MenuItem.NEXT_PAGE.getItem())) {
             turnPage(getPage() + 1);
 
-        } else if (item.displayName().contains(Component.text("Previous Page"))){
+        } else if (item.equals(MenuItem.PREVIOUS_PAGE.getItem())) {
             turnPage(getPage() - 1);
 
-        } else if (e.getCurrentItem().equals(Item.create(Material.SPECTRAL_ARROW, ChatColor.GRAY + "Go Back"))){
+        } else if (item.equals(MenuItem.BACK.getItem())) {
 
             MainGUIMenu menu = new MainGUIMenu(player);
             menu.open();

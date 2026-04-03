@@ -1,5 +1,6 @@
 package worm.me.listeners.player.custom;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -99,7 +100,7 @@ public class LevellingListener implements Listener {
         }
 
         if (e.getEntity().getType() == EntityType.PLAYER) {
-            e.getDrops().add(Item.create(Material.ROTTEN_FLESH, ChatColor.WHITE + "Player Flesh", ChatColor.GRAY + "A Player's flesh."));
+            e.getDrops().add(Item.create(Material.ROTTEN_FLESH, "<white>Player Flesh", "<gray>A Player's flesh."));
         }
     }
 
@@ -115,7 +116,19 @@ public class LevellingListener implements Listener {
             int color = distance == 0 ? 255 : (int) Math.round(255 - 255 * (distance / (player.getWorld().getWorldBorder().getSize() + 50)));
             if (color < 50) color = 50;
             String hexColor = String.format("#%02x%02x%02x", color, color, color);
-            p.sendMessage(net.md_5.bungee.api.ChatColor.of(hexColor) + "[" + ChatColor.RED + "☠" + net.md_5.bungee.api.ChatColor.of(hexColor) + "] " + e.getDeathMessage());
+
+            p.sendMessage(MiniMessage.miniMessage().deserialize(
+
+
+                    String.format(
+
+                            "<%s>[<red>☠</red>] %s",
+                            hexColor,
+                            e.getDeathMessage()
+
+                    )
+
+            ));
 
         }
     }

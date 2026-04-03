@@ -1,5 +1,6 @@
 package worm.me.menu.recipes;
 
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -10,8 +11,9 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import worm.me.gamesystems.recipes.ShapedRecipes;
 import worm.me.menu.Menu;
-import worm.me.utils.GuiConstructor;
+import worm.me.utils.menu.GuiConstructor;
 import worm.me.utils.Item;
+import worm.me.utils.menu.MenuItem;
 
 public class RecipeSpecificMenu extends Menu implements InventoryHolder {
 
@@ -28,7 +30,7 @@ public class RecipeSpecificMenu extends Menu implements InventoryHolder {
     @Override
     public Inventory initialize() {
 
-        Inventory inventory = GuiConstructor.chestInventory(ChatColor.DARK_GRAY + "Recipe of " + itemStack.displayName(), 45, this);
+        Inventory inventory = GuiConstructor.chestInventory(MiniMessage.miniMessage().deserialize("<dark_gray>Recipe of ").append(itemStack.effectiveName()), 45, this);
 
         inventory.setItem(23, Item.create(Material.CRAFTING_TABLE, " "));
 
@@ -68,7 +70,7 @@ public class RecipeSpecificMenu extends Menu implements InventoryHolder {
     public void handleClick(InventoryClickEvent event) {
         event.setCancelled(true);
 
-        if (event.getCurrentItem().equals(Item.create(Material.SPECTRAL_ARROW, ChatColor.GRAY + "Go Back"))) {
+        if (event.getCurrentItem().equals(MenuItem.BACK.getItem())) {
 
             RecipeBrowserMenu recipeBrowserMenu = new RecipeBrowserMenu(getViewer(), 1);
             recipeBrowserMenu.open();

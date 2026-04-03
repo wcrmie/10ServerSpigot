@@ -1,5 +1,6 @@
 package worm.me.gamesystems.items.gear.tools;
 
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -59,6 +60,9 @@ public class LodestoneTeleporter {
         ));
 
         compass.setItemMeta(meta);
+
+        compass.setData(DataComponentTypes.MAX_STACK_SIZE, 1);
+
         item.setAmount(item.getAmount() - 1);
         return compass;
     }
@@ -89,6 +93,8 @@ public class LodestoneTeleporter {
                 )),
                 MiniMessage.miniMessage().deserialize("")
         ));
+
+
         item.setItemMeta(meta);
     }
 
