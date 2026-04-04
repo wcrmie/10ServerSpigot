@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import worm.me.Server;
+import worm.me.utils.Item;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,25 +23,21 @@ public class PiglinTradeManager {
     public static ItemStack generateTome(PiglinTrades type) {
         if (!type.requiresTome()) throw new IllegalArgumentException("Cannot create a tome for DEFAULT.");
 
-        ItemStack tome = new ItemStack(Material.KNOWLEDGE_BOOK);
-        ItemMeta meta = tome.getItemMeta();
+        ItemStack tome = Item.create(Material.KNOWLEDGE_BOOK,
+                "<gold>Piglin Knowledge Tome",
+                "<gray>Right-click a <gold>Cured Piglin <gray>to teach them the ways of:",
+                " ",
+                "<yellow>" + type.getName(),
+                " ",
+                "<dark_gray>" + type.getDescription()
+        );
 
+        ItemMeta meta = tome.getItemMeta();
         if (meta == null) {
             Server.getPlugin().getLogger().severe("Failed to create ItemMeta for KNOWLEDGE_BOOK.");
             return null;
         }
-
         meta.getPersistentDataContainer().set(TOME_TYPE_KEY, PersistentDataType.STRING, type.name());
-        meta.setDisplayName("<gold>Piglin Knowledge Tome");
-
-        List<String> lore = new ArrayList<>();
-        lore.add("<gray>Right-click a " + "<gold>Cured Piglin" + "<gray> to teach them the ways of:");
-        lore.add("");
-        lore.add("<yellow>" + type.getName());
-        lore.add("");
-        lore.add("<dark_grey> "+ type.getDescription());
-        meta.setLore(lore);
-
         tome.setItemMeta(meta);
         return tome;
     }

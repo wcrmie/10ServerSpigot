@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public enum PiglinTrades {
 
 
-    DEFAULT("Default", null, () -> {
+    DEFAULT("DEFAULT", null, () -> {
         List<LootEntry> loot = new ArrayList<>();
         loot.add(new LootEntry(new ItemStack(Material.NETHERRACK, 16),  25));
         loot.add(new LootEntry(new ItemStack(Material.BLACKSTONE, 16),  25));
@@ -42,7 +42,7 @@ public enum PiglinTrades {
         loot.add(new LootEntry(PiglinCure.createCureCarrot(), 5));
         return loot;
     }),
-    Jouster("jouster", null, () -> {
+    JOUSTER("JOUSTER", null, () -> {
         List<LootEntry> loot = new ArrayList<>();
         loot.add(new LootEntry(new ItemStack(Material.NETHERRACK, 16),  20));
         loot.add(new LootEntry(new ItemStack(Material.BLACKSTONE, 16),  20));

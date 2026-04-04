@@ -12,7 +12,10 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.EntityEquipment;
-import org.bukkit.inventory.ItemFlag;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ArmorMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -29,9 +32,13 @@ import org.bukkit.util.Vector;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import worm.me.Server;
+import worm.me.gamesystems.world.mob.PiglinTraders.PiglinCure;
+import worm.me.gamesystems.world.mob.PiglinTraders.PiglinTradeManager;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static worm.me.gamesystems.world.mob.PiglinTraders.PiglinTrades.JOUSTER;
 
 public class HoglinJouster extends Boss {
     private static final double STAGE_1_MAX_HEALTH                 = 200.0;
@@ -72,6 +79,7 @@ public class HoglinJouster extends Boss {
     private boolean isBarRefilling    = false;
     private float   barRefillProgress = 0f;
     private static final float BAR_REFILL_SPEED = 1f / 60f;
+    private ProtectedRegion spawnProtectedRegion = null;
 
     public  static final Set<Block>      temporaryBlocks  = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final        Map<Block, Long> blockExpirations = new ConcurrentHashMap<>();
@@ -146,6 +154,7 @@ public class HoglinJouster extends Boss {
 
     @Override
     public void enable() {
+        spawnProtectedRegion = fetchSpawnRegion();
         bossMap.put(m_boss, this);
         if (hoglin != null) bossMap.put(hoglin, this);
         getBossEntities().add(m_boss);
@@ -275,6 +284,8 @@ public class HoglinJouster extends Boss {
     public void handleDeath(EntityDeathEvent event) {
         if (!event.getEntity().equals(m_boss)) return;
         event.getDrops().clear();
+        event.getDrops().add(PiglinCure.createCureCarrot());
+        event.getDrops().add(PiglinTradeManager.generateTome(JOUSTER));
         Location loc = event.getEntity().getLocation();
         event.getEntity().getWorld().playSound(loc, Sound.ENTITY_PIGLIN_BRUTE_DEATH, 1.3f, 0.7f);
         event.getEntity().getWorld().spawnParticle(Particle.SMOKE, loc, 10, 1.0, 1.0, 1.0, 0.0);
@@ -328,22 +339,21 @@ public class HoglinJouster extends Boss {
             return;
         }
 
+        LivingEntity primary = getPrimaryEntity();
         double current, max;
-        if (stage == 1 && hoglin != null && hoglin.isValid()) {
-            current = hoglin.getHealth();
-            max     = STAGE_1_MAX_HEALTH;
-        } else if (m_boss instanceof LivingEntity living) {
-            current = living.getHealth();
-            max     = STAGE_2_MAX_HEALTH;
+        if (primary != null && primary.isValid() && !primary.isDead()) {
+            current = primary.getHealth();
+            max     = primary.getAttribute(Attribute.MAX_HEALTH).getValue();
         } else {
-            current = max = STAGE_2_MAX_HEALTH;
+            current = 0;
+            max     = stage == 1 ? STAGE_1_MAX_HEALTH : STAGE_2_MAX_HEALTH;
         }
-        float pct = (float) Math.max(0.0, Math.min(1.0, current / max));
-        bossBar.progress(pct);
 
+        float  pct    = (float) Math.max(0.0, Math.min(1.0, current / max));
         String format = stage == 1
-                ? String.format("<yellow>Piglin Jouster - %.0f%%", pct * 100)
+                ? String.format("<yellow>Piglin Jouster - %.0f%%",       pct * 100)
                 : String.format("<red>Piglin Jouster Stage II - %.0f%%", pct * 100);
+        bossBar.progress(pct);
         bossBar.name(MiniMessage.miniMessage().deserialize(format));
     }
 
@@ -740,6 +750,7 @@ public class HoglinJouster extends Boss {
             for (int z = -1; z <= 1; z++) {
                 Block b = loc.clone().add(x, -1, z).getBlock();
                 if (primary.getBoundingBox().contains(b.getX() + 0.5, b.getY() + 0.5, b.getZ() + 0.5)) continue;
+                if (isInSpawnRegion(b)) continue;
                 if (b.getType().isAir() || b.isLiquid()) {
                     b.setType(Material.NETHERRACK);
                     temporaryBlocks.add(b);
@@ -838,6 +849,7 @@ public class HoglinJouster extends Boss {
         for (int x = -1; x <= 1; x++) for (int y = 0; y <= 2; y++) for (int z = -1; z <= 1; z++) {
             Block b = center.clone().add(x, y, z).getBlock();
             if (b.getType().isAir() || UNBREAKABLE_BLOCKS.contains(b.getType())) continue;
+            if (isInSpawnRegion(b)) continue;
             if (b.getType() == Material.NETHERRACK) b.setType(Material.AIR); else b.breakNaturally();
             temporaryBlocks.remove(b);
             blockExpirations.remove(b);
@@ -846,6 +858,7 @@ public class HoglinJouster extends Boss {
 
     private void breakSafely(Block block) {
         if (block.getType().isAir() || UNBREAKABLE_BLOCKS.contains(block.getType())) return;
+        if (isInSpawnRegion(block)) return;
         if (block.getType() == Material.NETHERRACK) block.setType(Material.AIR); else block.breakNaturally();
         temporaryBlocks.remove(block);
         blockExpirations.remove(block);
@@ -950,5 +963,18 @@ public class HoglinJouster extends Boss {
         }
         boss.enable();
         boss.updateBossBar();
+    }
+
+    private ProtectedRegion fetchSpawnRegion() {
+        RegionManager rm = WorldGuard.getInstance()
+                .getPlatform()
+                .getRegionContainer()
+                .get(BukkitAdapter.adapt(spawnLocation.getWorld()));
+        return rm == null ? null : rm.getRegion("spawn");
+    }
+
+    private boolean isInSpawnRegion(Block block) {
+        return spawnProtectedRegion != null
+                && spawnProtectedRegion.contains(block.getX(), block.getY(), block.getZ());
     }
 }

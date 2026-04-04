@@ -19,6 +19,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import worm.me.Server;
+import worm.me.utils.Item;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,19 +56,16 @@ public class PiglinCure {
     }
 
     public static ItemStack createCureCarrot() {
-        ItemStack item = new ItemStack(Material.GOLDEN_CARROT);
+        ItemStack item = Item.create(Material.GOLDEN_CARROT,
+                "<yellow>Enchanted Golden Carrot",
+                "<gray>A carrot soaked in golden magic.",
+                " ",
+                "<gray>Right-click a <gold>Zombified Piglin <gray>to begin curing."
+        );
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("<yellow>Enchanted Golden Carrot");
-        List<String> lore = new ArrayList<>();
-        lore.add("<gray>A carrot soaked in golden magic.");
-        lore.add("");
-        lore.add("<gray>Right-click a " + "<qold>Zombified Piglin" + "<gray> to begin curing.");
-        meta.setLore(lore);
         meta.getPersistentDataContainer().set(getCureKey(), PersistentDataType.BYTE, (byte) 1);
-
         meta.addEnchant(Enchantment.LUCK_OF_THE_SEA, 1, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-
         item.setItemMeta(meta);
         return item;
     }
